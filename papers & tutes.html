@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papers & Tutes | PKA Edu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .bg-blob { animation: blob 7s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+        @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col text-slate-800">
+
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-orange-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-4000"></div>
+    </div>
+
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-5">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                <i class="ph ph-book-open text-blue-600"></i> PKA Edu
+            </a>
+            <nav class="hidden md:flex gap-8 items-center">
+                <a href="index.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</a>
+                <a href="about us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">About Us</a>
+                <a href="papers & tutes.html" class="font-medium text-blue-600">Papers & Tutes</a>
+                <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
+                <a href="contact us.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all">Join Now</a>
+            </nav>
+            <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
+        </div>
+        
+        <div id="mobileMenu" class="hidden absolute top-full left-0 w-full glass-panel flex flex-col py-4 px-6 md:hidden shadow-2xl">
+            <a href="index.html" class="py-3 border-b border-slate-200 text-slate-700 font-medium">Home</a>
+            <a href="about us.html" class="py-3 border-b border-slate-200 text-slate-700 font-medium">About Us</a>
+            <a href="papers & tutes.html" class="py-3 border-b border-slate-200 text-blue-600 font-medium">Papers & Tutes</a>
+            <a href="contact us.html" class="py-3 text-slate-700 font-medium">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-32 pb-12">
+        <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
+            
+            <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
+                <h1 class="text-4xl font-bold mb-4">Study Materials</h1>
+                <p class="text-slate-600 text-lg mb-6">Access all the latest past papers and exclusive tutes directly from our secure Google Drive.</p>
+                
+                <a href="https://drive.google.com/drive/folders/1Fc3EjLywKIHdw7lUCF67OIMPxdsJw068?usp=drive_link" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0F9D58] text-white font-medium hover:bg-[#0b8043] transition-colors shadow-lg shadow-green-500/20">
+                    <i class="ph-fill ph-google-drive-logo text-xl"></i> Open Master Drive Folder
+                </a>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer" data-aos="fade-up" data-aos-delay="100">
+                <button onclick="filterItems('AL Past Papers', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 bg-slate-900 text-white shadow-lg scale-105">AL Past Papers</button>
+                <button onclick="filterItems('OL Past Papers', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">OL Past Papers</button>
+                <button onclick="filterItems('Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Tutes</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
+                </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 rounded-t-[3rem] mt-12 relative z-10">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 text-2xl font-bold text-white mb-6">
+                        <i class="ph ph-book-open text-blue-500"></i> PKA Edu
+                    </div>
+                    <p class="text-slate-400 max-w-sm mb-6">Empowering students with premium educational resources, structured methodologies, and expert guidance to achieve extraordinary results.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
+                    <ul class="flex flex-col gap-3">
+                        <li><a href="index.html" class="hover:text-blue-400 transition-colors">Home</a></li>
+                        <li><a href="about us.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
+                        <li><a href="papers & tutes.html" class="hover:text-blue-400 transition-colors">Papers & Tutes</a></li>
+                        <li><a href="contact us.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Contact</h4>
+                    <ul class="flex flex-col gap-3">
+                        <li>+94 76 639 0768</li>
+                        <li>contact@pkaedu.com</li>
+                        <li>Colombo, Sri Lanka</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm relative">
+                <p>&copy; 2024 Pradeep K. Athulawansha. All rights reserved.</p>
+                <p class="text-slate-500">Designed for Excellence</p>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="absolute right-0 -top-6 w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg transition-colors">
+                    <i class="ph ph-caret-up"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true });
+        
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 20) {
+                nav.classList.add('glass-panel', 'py-3'); nav.classList.remove('bg-transparent', 'py-5');
+            } else {
+                nav.classList.remove('glass-panel', 'py-3'); nav.classList.add('bg-transparent', 'py-5');
+            }
+        });
+
+        // ---------------------------------------------------------
+        // ADD YOUR SPECIFIC GOOGLE DRIVE FILE LINKS HERE
+        // Replace '#' with the "Share -> Copy Link" from Google Drive
+        // ---------------------------------------------------------
+        const resources = [
+            // AL PAST PAPERS
+            { title: '2020 A/L Exam Paper - Part 1', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1ul5BPlj3PbGAks9BJquPNiQlYZ8_os1e/view?usp=sharing' },
+            { title: '2020 A/L Exam Paper - Part 2', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: '#https://drive.google.com/file/d/1f3jJO9_02p2QogpTspxPLX7FN0pqF3jC/view?usp=sharing' },
+
+            
+            // OL PAST PAPERS
+            { title: '2020 O/L Exam Paper - Part 1', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1jQVPypnstGYs9SGGzOpvWLzfQAuGkcTw/view?usp=sharing' },
+            { title: '2020 O/L Exam Paper - Part 2', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1Pw-BXO8Ic2l2uZ0_QPzUIA60eqcOslwP/view?usp=sharing' },
+            
+            // TUTES
+            { title: 'Term 1 Mechanics Tute', category: 'Tutes', desc: 'Comprehensive theory and exercises.', driveLink: '#' },
+            { title: 'Electronics Summary', category: 'Tutes', desc: 'Quick revision notes.', driveLink: '#' },
+            { title: 'Thermal Physics Guide', category: 'Tutes', desc: 'In-depth diagrams and examples.', driveLink: '#' }
+        ];
+
+        function renderItems(category) {
+            const grid = document.getElementById('resourceGrid');
+            grid.innerHTML = '';
+            const filtered = resources.filter(res => res.category === category);
+            
+            filtered.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
+                
+                // Target="_blank" opens the Google Drive file securely in a new tab
+                card.innerHTML = `
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4285F4] to-[#34A853] text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-2xl shadow-md">
+                        <i class="ph-fill ph-google-drive-logo"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">${item.title}</h3>
+                    <p class="text-slate-600 mb-8 flex-grow">${item.desc}</p>
+                    
+                    <a href="${item.driveLink}" target="_blank" onclick="checkLink(event, '${item.driveLink}')" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium bg-slate-100 text-slate-800 group-hover:bg-gradient-to-r group-hover:from-[#4285F4] group-hover:to-[#34A853] group-hover:text-white transition-all duration-300 shadow-sm cursor-pointer border border-slate-200 group-hover:border-transparent">
+                        <i class="ph ph-arrow-square-out text-xl"></i> <span>View / Download</span>
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Helper to alert if the link hasn't been updated yet
+        function checkLink(event, link) {
+            if(link === '#') {
+                event.preventDefault();
+                alert('File link not added yet! Please update the "driveLink" in the code with the specific Google Drive file link.');
+            }
+        }
+
+        function filterItems(category, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
+                b.classList.add('glass-panel', 'text-slate-600');
+            });
+            btn.classList.remove('glass-panel', 'text-slate-600');
+            btn.classList.add('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
+            
+            renderItems(category);
+        }
+
+        // Initialize with AL Past Papers
+        renderItems('AL Past Papers');
+    </script>
+</body>
+</html>

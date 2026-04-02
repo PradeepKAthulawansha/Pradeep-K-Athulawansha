@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Pradeep K. Athulawansha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .bg-blob { animation: blob 7s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+        @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col text-slate-800">
+
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-orange-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-4000"></div>
+    </div>
+
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-5">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                <i class="ph ph-book-open text-blue-600"></i> PKA Edu
+            </a>
+            <nav class="hidden md:flex gap-8 items-center">
+                <a href="index.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</a>
+                <a href="about us.html" class="font-medium text-blue-600">About Us</a>
+                <a href="papers & tutes.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Papers & Tutes</a>
+                <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
+                <a href="contact us.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all">Join Now</a>
+            </nav>
+            <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
+        </div>
+        <div id="mobileMenu" class="hidden absolute top-full left-0 w-full glass-panel flex flex-col py-4 px-6 md:hidden shadow-2xl">
+            <a href="index.html" class="py-3 border-b border-slate-200 text-slate-700 font-medium">Home</a>
+            <a href="about us.html" class="py-3 border-b border-slate-200 text-blue-600 font-medium">About Us</a>
+            <a href="papers & tutes.html" class="py-3 border-b border-slate-200 text-slate-700 font-medium">Papers & Tutes</a>
+            <a href="contact us.html" class="py-3 text-slate-700 font-medium">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-32 pb-12">
+        <div class="container mx-auto px-6 md:px-12">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">About the Teacher</h1>
+                <p class="text-slate-600">Dedicated to transforming complex concepts into simple, understandable logic.</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-16 items-center mb-24">
+                <div class="lg:w-5/12 w-full" data-aos="fade-right">
+                    <div class="aspect-[4/5] rounded-[2.5rem] bg-slate-200 overflow-hidden shadow-2xl relative">
+                        <img src="PK.jpg" alt="Teacher" class="w-full h-full object-cover" />
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent pt-24 pb-8 px-8">
+                            <h3 class="text-white text-2xl font-bold mb-1">Pradeep K. Athulawansha</h3>
+                            <p class="text-blue-400 font-medium">Senior Educational Consultant</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-7/12 flex flex-col gap-6" data-aos="fade-left">
+                    <h2 class="text-3xl font-bold text-slate-800">A Legacy of Excellence in Business Studies</h2>
+                    <p class="text-slate-600 leading-relaxed text-lg">
+                        With over a decade of teaching experience, Pradeep has cultivated a unique methodology that bridges the gap between theoretical knowledge and practical application. His classes are renowned for interactive discussions, comprehensive paper discussions, and a highly structured syllabus coverage.
+                    </p>
+                    
+                    <ul class="flex flex-col gap-3 my-4">
+                        <li class="flex items-center gap-3 text-slate-700 font-medium"><i class="ph-fill ph-check-circle text-blue-500 text-xl"></i> Proven track record of high passing rates</li>
+                        <li class="flex items-center gap-3 text-slate-700 font-medium"><i class="ph-fill ph-check-circle text-blue-500 text-xl"></i> Individual attention and personalized feedback</li>
+                        <li class="flex items-center gap-3 text-slate-700 font-medium"><i class="ph-fill ph-check-circle text-blue-500 text-xl"></i> Modern teaching aids and interactive sessions</li>
+                        <li class="flex items-center gap-3 text-slate-700 font-medium"><i class="ph-fill ph-check-circle text-blue-500 text-xl"></i> Comprehensive coverage of past papers</li>
+                    </ul>
+                    
+                    <div class="grid sm:grid-cols-2 gap-6 mt-4">
+                        <div class="glass-panel p-8 rounded-3xl">
+                            <i class="ph-fill ph-target text-orange-500 text-4xl mb-4"></i>
+                            <h4 class="text-xl font-bold mb-3 text-slate-800">Our Mission</h4>
+                            <p class="text-slate-600 leading-relaxed text-sm">To provide accessible, high-quality education that empowers students to achieve academic brilliance.</p>
+                        </div>
+                        <div class="glass-panel p-8 rounded-3xl">
+                            <i class="ph-fill ph-lightbulb text-blue-500 text-4xl mb-4"></i>
+                            <h4 class="text-xl font-bold mb-3 text-slate-800">Our Vision</h4>
+                            <p class="text-slate-600 leading-relaxed text-sm">To be the most trusted educational platform, shaping the future leaders and innovators of tomorrow.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 rounded-t-[3rem] mt-12 relative z-10">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 text-2xl font-bold text-white mb-6">
+                        <i class="ph ph-book-open text-blue-500"></i> PKA Edu
+                    </div>
+                    <p class="text-slate-400 max-w-sm mb-6">Empowering students with premium educational resources, structured methodologies, and expert guidance to achieve extraordinary results.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xl hover:bg-blue-600 hover:text-white transition-all"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xl hover:bg-pink-600 hover:text-white transition-all"><i class="ph ph-instagram-logo"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xl hover:bg-red-600 hover:text-white transition-all"><i class="ph ph-youtube-logo"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
+                    <ul class="flex flex-col gap-3">
+                        <li><a href="index.html" class="hover:text-blue-400 transition-colors">Home</a></li>
+                        <li><a href="about us.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
+                        <li><a href="papers & tutes.html" class="hover:text-blue-400 transition-colors">Papers & Tutes</a></li>
+                        <li><a href="contact us.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Contact</h4>
+                    <ul class="flex flex-col gap-3">
+                        <li>+94 76 639 0768</li>
+                        <li>contact@pkaedu.com</li>
+                        <li>Colombo, Sri Lanka</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm relative">
+                <p>&copy; 2024 Pradeep K. Athulawansha. All rights reserved.</p>
+                <p class="text-slate-500">Designed for Excellence</p>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="absolute right-0 -top-6 w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg transition-colors">
+                    <i class="ph ph-caret-up"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true });
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 20) {
+                nav.classList.add('glass-panel', 'py-3'); nav.classList.remove('bg-transparent', 'py-5');
+            } else {
+                nav.classList.remove('glass-panel', 'py-3'); nav.classList.add('bg-transparent', 'py-5');
+            }
+        });
+    </script>
+</body>
+</html>
