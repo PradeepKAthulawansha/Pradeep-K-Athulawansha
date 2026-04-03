@@ -106,4 +106,156 @@
                     <div class="flex items-center gap-2 text-2xl font-bold text-white mb-6">
                         <i class="ph ph-book-open text-blue-500"></i> PKA Edu
                     </div>
-                    <p class="text-slate-400 max-w-
+                    <p class="text-slate-400 max-w-sm mb-6">Empowering students with premium educational resources, structured methodologies, and expert guidance to achieve extraordinary results.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
+                    <ul class="flex flex-col gap-3">
+                        <li><a href="index.html" class="hover:text-blue-400 transition-colors">Home</a></li>
+                        <li><a href="about us.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
+                        <li><a href="papers & tutes.html" class="hover:text-blue-400 transition-colors">Papers & Tutes</a></li>
+                        <li><a href="contact us.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Contact</h4>
+                    <ul class="flex flex-col gap-3">
+                        <li>+94 71 915 14 15</li>
+                        <li>web.pradeepkathulawansha@gmail.com</li>
+                        <li>Kandy, Sri Lanka</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm relative">
+                <p>&copy; 2024 Pradeep K. Athulawansha. All rights reserved.</p>
+                <p class="text-slate-500">Designed for Excellence</p>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="absolute right-0 -top-6 w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg transition-colors">
+                    <i class="ph ph-caret-up"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true });
+        
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 20) {
+                nav.classList.add('glass-panel', 'py-3'); nav.classList.remove('bg-transparent', 'py-5');
+            } else {
+                nav.classList.remove('glass-panel', 'py-3'); nav.classList.add('bg-transparent', 'py-5');
+            }
+        });
+
+        const resources = [
+            // AL PAST PAPERS
+            { title: '2020 A/L Exam Paper - Part 1', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1ul5BPlj3PbGAks9BJquPNiQlYZ8_os1e/view?usp=sharing', passcode: null },
+            { title: '2020 A/L Exam Paper - Part 2', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1f3jJO9_02p2QogpTspxPLX7FN0pqF3jC/view?usp=sharing', passcode: null },
+
+            // OL PAST PAPERS
+            { title: '2020 O/L Exam Paper - Part 1', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1jQVPypnstGYs9SGGzOpvWLzfQAuGkcTw/view?usp=sharing', passcode: null },
+            { title: '2020 O/L Exam Paper - Part 2', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1Pw-BXO8Ic2l2uZ0_QPzUIA60eqcOslwP/view?usp=sharing', passcode: null },
+            
+            // A/L TUTES (With Passcodes)
+            { title: 'මානව සම්පත් කලමණාකරණය - 16 පාඩම', category: 'A/L Tutes', desc: 'Comprehensive theory and exercises.', driveLink: 'https://drive.google.com/file/d/1Lu8yk0enZxr0ullmkSDGfc2J98SR0ly1/view?usp=sharing', passcode: 'T100245W' },
+            { title: 'ව්‍යාපාර සැලැස්ම හැදින්වීම -18 පාඩම', category: 'A/L Tutes', desc: 'In-depth diagrams and examples.', driveLink: 'https://drive.google.com/file/d/1nLFBBFymfCbokAADt7J9LL6o-HrzpeWB/view?usp=sharing', passcode: 'P340900G' },
+
+            // O/L TUTES (With Passcodes)
+            { title: 'O-L Commerce Short Notes', category: 'O/L Tutes', desc: 'Quick revision notes.', driveLink: 'https://drive.google.com/file/d/1-YPEhBnpqAnJyv8ftCH-SO558WaT6hcA/view?usp=sharing', passcode: 'K230450E' }
+        ];
+
+        // Global variables to store what the user clicked
+        let currentTargetLink = '';
+        let currentRequiredPasscode = '';
+
+        function renderItems(category) {
+            const grid = document.getElementById('resourceGrid');
+            grid.innerHTML = '';
+            const filtered = resources.filter(res => res.category === category);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet.</p>`;
+                return;
+            }
+
+            filtered.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
+                
+                const passArg = item.passcode ? `'${item.passcode}'` : 'null';
+
+                card.innerHTML = `
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4285F4] to-[#34A853] text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-2xl shadow-md">
+                        <i class="ph-fill ph-google-drive-logo"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">${item.title}</h3>
+                    <p class="text-slate-600 mb-8 flex-grow">${item.desc}</p>
+                    
+                    <a href="${item.driveLink}" onclick="handleAccess(event, '${item.driveLink}', ${passArg})" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium bg-slate-100 text-slate-800 group-hover:bg-gradient-to-r group-hover:from-[#4285F4] group-hover:to-[#34A853] group-hover:text-white transition-all duration-300 shadow-sm cursor-pointer border border-slate-200 group-hover:border-transparent">
+                        <i class="ph ph-arrow-square-out text-xl"></i> <span>View / Download</span>
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function handleAccess(event, link, requiredPasscode) {
+            event.preventDefault(); 
+
+            if (link === '#' || link === '') {
+                alert('File link not added yet! Please update the "driveLink".');
+                return;
+            }
+
+            if (requiredPasscode !== null) {
+                // Prepare and show the custom modal
+                currentTargetLink = link;
+                currentRequiredPasscode = requiredPasscode;
+                
+                document.getElementById('passcodeInput').value = ''; // clear old input
+                document.getElementById('errorMessage').classList.add('opacity-0'); // hide error
+                document.getElementById('passcodeModal').classList.remove('hidden'); // show modal
+            } else {
+                // No passcode needed, open right away
+                window.open(link, '_blank');
+            }
+        }
+
+        // Functions to control the new Modal
+        function closeModal() {
+            document.getElementById('passcodeModal').classList.add('hidden');
+        }
+
+        function verifyAndOpen() {
+            const userInput = document.getElementById('passcodeInput').value.trim();
+            
+            if (userInput === currentRequiredPasscode) {
+                closeModal();
+                // Because this is triggered by a real button click, browsers allow it 100%
+                window.open(currentTargetLink, '_blank');
+            } else {
+                // Show error message visually
+                document.getElementById('errorMessage').classList.remove('opacity-0');
+            }
+        }
+
+        function filterItems(category, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
+                b.classList.add('glass-panel', 'text-slate-600');
+            });
+            btn.classList.remove('glass-panel', 'text-slate-600');
+            btn.classList.add('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
+            
+            renderItems(category);
+        }
+
+        // Initialize
+        renderItems('AL Past Papers');
+    </script>
+</body>
+</html>
