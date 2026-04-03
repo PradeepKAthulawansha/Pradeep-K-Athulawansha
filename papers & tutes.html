@@ -179,7 +179,7 @@
             });
         }
 
-        function handleAccess(event, link, requiredPasscode) {
+function handleAccess(event, link, requiredPasscode) {
             event.preventDefault(); 
 
             if (link === '#' || link === '') {
@@ -190,14 +190,21 @@
             if (requiredPasscode !== null) {
                 const userInput = prompt("This document need to Purchase. If you Done the Payment Please enter the access code to view it:");
                 
-                if (userInput === null) return; 
+                if (userInput === null) return; // User clicked Cancel
 
                 if (userInput.trim() === requiredPasscode) {
-                    window.open(link, '_blank');
+                    // 1. Try to open in a new tab
+                    let newTab = window.open(link, '_blank');
+                    
+                    // 2. If the pop-up blocker blocked it, open in the same tab instead
+                    if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+                        window.location.href = link;
+                    }
                 } else {
                     alert("Incorrect access code! Access denied.");
                 }
             } else {
+                // Files without passwords can safely open in a new tab without being blocked
                 window.open(link, '_blank');
             }
         }
