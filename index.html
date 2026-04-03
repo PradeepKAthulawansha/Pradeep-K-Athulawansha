@@ -285,81 +285,92 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // --- SPLASH SCREEN LOGIC ---
-        window.addEventListener('load', function() {
+        // --- SPLASH SCREEN & AOS LOGIC ---
+        document.addEventListener("DOMContentLoaded", function() {
             document.body.style.overflow = 'hidden';
             setTimeout(function() {
-                document.getElementById('pka-intro').classList.add('hide-intro');
+                const introElement = document.getElementById('pka-intro');
+                if(introElement) {
+                    introElement.classList.add('hide-intro');
+                }
                 setTimeout(function() {
                     document.body.style.overflow = 'auto';
                     document.body.style.overflowX = 'hidden';
                     AOS.init({ once: true, offset: 50 });
                 }, 800);
             }, 2500); 
+
+            // --- INTERACTIVE SIMULATOR LOGIC ---
+            const effortSlider = document.getElementById('effort-slider');
+            const qualitySlider = document.getElementById('quality-slider');
+            const effortVal = document.getElementById('effort-val');
+            const qualityVal = document.getElementById('quality-val');
+            const successRate = document.getElementById('success-rate');
+            const successMsg = document.getElementById('success-msg');
+            
+            // Safety check: Only run if the elements exist
+            if (effortSlider && qualitySlider && effortVal && qualityVal && successRate && successMsg) {
+                
+                function updateSimulation() {
+                    const effort = parseInt(effortSlider.value);
+                    const quality = parseInt(qualitySlider.value);
+                    
+                    // Update labels
+                    effortVal.innerText = effort + '%';
+                    qualityVal.innerText = quality + '%';
+                    
+                    // Calculate Success
+                    const average = Math.round((effort + quality) / 2);
+                    successRate.innerText = average;
+                    
+                    // Change text based on score
+                    if(average >= 90) {
+                        successMsg.innerText = "Island Rank Potential! 🏆";
+                        successMsg.className = "text-orange-500 text-sm font-bold mt-2";
+                        document.documentElement.style.setProperty('--sim-success-color', '#f97316'); 
+                    } else if (average >= 75) {
+                        successMsg.innerText = "Guaranteed 'A' Pass! ⭐";
+                        successMsg.className = "text-purple-500 text-sm font-bold mt-2";
+                        document.documentElement.style.setProperty('--sim-success-color', '#a855f7'); 
+                    } else {
+                        successMsg.innerText = "Solid Foundation.";
+                        successMsg.className = "text-blue-500 text-sm font-medium mt-2";
+                        document.documentElement.style.setProperty('--sim-success-color', '#3b82f6'); 
+                    }
+
+                    // Adjust Animation Speed
+                    let speed = 7.5 - (average * 0.06); 
+                    document.documentElement.style.setProperty('--sim-speed', speed + 's');
+                }
+
+                // Add Listeners
+                effortSlider.addEventListener('input', updateSimulation);
+                qualitySlider.addEventListener('input', updateSimulation);
+                
+                // Initialize
+                updateSimulation();
+            }
         });
         
         // --- MOBILE MENU ---
-        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        function toggleMenu() { 
+            const menu = document.getElementById('mobileMenu');
+            if(menu) menu.classList.toggle('hidden'); 
+        }
         
         // --- NAVBAR SCROLL ---
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
-            if(window.scrollY > 20) {
-                nav.classList.add('glass-panel', 'py-3');
-                nav.classList.remove('bg-transparent', 'py-5');
-            } else {
-                nav.classList.remove('glass-panel', 'py-3');
-                nav.classList.add('bg-transparent', 'py-5');
+            if(nav) {
+                if(window.scrollY > 20) {
+                    nav.classList.add('glass-panel', 'py-3');
+                    nav.classList.remove('bg-transparent', 'py-5');
+                } else {
+                    nav.classList.remove('glass-panel', 'py-3');
+                    nav.classList.add('bg-transparent', 'py-5');
+                }
             }
         });
-
-        // --- INTERACTIVE SIMULATOR LOGIC ---
-        const effortSlider = document.getElementById('effort-slider');
-        const qualitySlider = document.getElementById('quality-slider');
-        const effortVal = document.getElementById('effort-val');
-        const qualityVal = document.getElementById('quality-val');
-        const successRate = document.getElementById('success-rate');
-        const successMsg = document.getElementById('success-msg');
-        
-        function updateSimulation() {
-            const effort = parseInt(effortSlider.value);
-            const quality = parseInt(qualitySlider.value);
-            
-            // Update labels
-            effortVal.innerText = effort + '%';
-            qualityVal.innerText = quality + '%';
-            
-            // Calculate Success
-            const average = Math.round((effort + quality) / 2);
-            successRate.innerText = average;
-            
-            // Change text based on score
-            if(average >= 90) {
-                successMsg.innerText = "Island Rank Potential! 🏆";
-                successMsg.className = "text-orange-500 text-sm font-bold mt-2";
-                document.documentElement.style.setProperty('--sim-success-color', '#f97316'); // Orange
-            } else if (average >= 75) {
-                successMsg.innerText = "Guaranteed 'A' Pass! ⭐";
-                successMsg.className = "text-purple-500 text-sm font-bold mt-2";
-                document.documentElement.style.setProperty('--sim-success-color', '#a855f7'); // Purple
-            } else {
-                successMsg.innerText = "Solid Foundation.";
-                successMsg.className = "text-blue-500 text-sm font-medium mt-2";
-                document.documentElement.style.setProperty('--sim-success-color', '#3b82f6'); // Blue
-            }
-
-            // Adjust Animation Speed (Higher average = faster speed)
-            // Range: 100% avg = 1.5s (fast). 30% avg = 6s (slow)
-            let speed = 7.5 - (average * 0.06); 
-            document.documentElement.style.setProperty('--sim-speed', speed + 's');
-        }
-
-        // Add Listeners
-        effortSlider.addEventListener('input', updateSimulation);
-        qualitySlider.addEventListener('input', updateSimulation);
-        
-        // Initialize
-        updateSimulation();
     </script>
 </body>
 </html>
