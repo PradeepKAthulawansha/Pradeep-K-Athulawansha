@@ -472,6 +472,33 @@
                 });
             }
 
+            // ==========================================
+            // NEW FIX: Stop audio on tab switch/navigate
+            // ==========================================
+            
+            // 1. Pause if user switches to a different browser tab
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    audio.pause();
+                } else {
+                    // Resume when they come back to the tab
+                    audio.play().catch(e => console.log(e));
+                }
+            });
+
+            // 2. Ensure audio is stopped when page unloads (navigating away or closing)
+            window.addEventListener('beforeunload', function() {
+                audio.pause();
+                audio.currentTime = 0; // Reset audio position
+            });
+            
+            // 3. Fallback for mobile browsers caching the page
+            window.addEventListener('pagehide', function() {
+                audio.pause();
+            });
+            // ==========================================
+
+
             // Countdown Logic Setup
             const targetDate = new Date("April 14, 2026 12:00:00").getTime();
             const countdownWrapper = document.getElementById("countdown-wrapper");
