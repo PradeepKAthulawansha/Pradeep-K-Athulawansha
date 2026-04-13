@@ -9,254 +9,74 @@
 
     <style>
         /* Base Styles & Resets */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', 'Noto Sans Sinhala', sans-serif; background-color: #fffaf0; color: #4a2511; overflow-x: hidden; position: relative; }
 
-        body {
-            font-family: 'Poppins', 'Noto Sans Sinhala', sans-serif;
-            background-color: #fffaf0;
-            color: #4a2511;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* =========================================
-           Avurudu Loader Animation (Sun / Surya)
-           ========================================= */
+        /* Loader Animation */
         #loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            /* Fallback background if video fails to load */
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(135deg, #ff9a44 0%, #fc6076 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease-in-out, visibility 1s;
-            overflow: hidden; /* Keeps video contained */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 1s ease-in-out, visibility 1s; overflow: hidden;
         }
 
-        /* Background Video Styling */
         #avurudu-video-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: 1; /* Place at the very back */
-            transform: translateX(-50%) translateY(-50%);
-            object-fit: cover;
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+            width: auto; height: auto; z-index: 1; transform: translateX(-50%) translateY(-50%); object-fit: cover;
         }
 
-        /* Overlay to ensure text remains readable over bright videos */
         .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* Adjust opacity (0.4) to make it darker or lighter */
-            z-index: 2;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 2;
         }
 
-        /* Ensure loader content stays above the video and overlay */
-        .sun-container, .loader-text, #start-btn {
-            position: relative;
-            z-index: 3; 
-        }
-
-        .sun-container {
-            width: 120px;
-            height: 120px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .sun {
-            width: 80px;
-            height: 80px;
-            background: #ffeb3b;
-            border-radius: 50%;
-            box-shadow: 0 0 40px #ffeb3b, 0 0 80px #ff9800;
-            animation: pulse 1.5s infinite alternate;
-            z-index: 2;
-        }
-
-        .rays {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            animation: spin 8s linear infinite;
-        }
-
-        .rays::before, .rays::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 10px;
-            height: 100%;
-            background: rgba(255, 235, 59, 0.6);
-            transform: translateX(-50%);
-            border-radius: 50%;
-        }
-
-        .rays::after {
-            transform: translateX(-50%) rotate(90deg);
-        }
-
-        .rays-2 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            animation: spin 8s linear infinite reverse;
-        }
-        
-        .rays-2::before, .rays-2::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 10px;
-            height: 100%;
-            background: rgba(255, 152, 0, 0.5);
-            transform: translateX(-50%) rotate(45deg);
-            border-radius: 50%;
-        }
-
-        .rays-2::after {
-            transform: translateX(-50%) rotate(135deg);
-        }
+        .sun-container, .loader-text, #start-btn { position: relative; z-index: 3; }
+        .sun-container { width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; }
+        .sun { width: 80px; height: 80px; background: #ffeb3b; border-radius: 50%; box-shadow: 0 0 40px #ffeb3b, 0 0 80px #ff9800; animation: pulse 1.5s infinite alternate; z-index: 2; }
+        .rays { position: absolute; width: 100%; height: 100%; animation: spin 8s linear infinite; }
+        .rays::before, .rays::after { content: ''; position: absolute; top: 0; left: 50%; width: 10px; height: 100%; background: rgba(255, 235, 59, 0.6); transform: translateX(-50%); border-radius: 50%; }
+        .rays::after { transform: translateX(-50%) rotate(90deg); }
+        .rays-2 { position: absolute; width: 100%; height: 100%; animation: spin 8s linear infinite reverse; }
+        .rays-2::before, .rays-2::after { content: ''; position: absolute; top: 0; left: 50%; width: 10px; height: 100%; background: rgba(255, 152, 0, 0.5); transform: translateX(-50%) rotate(45deg); border-radius: 50%; }
+        .rays-2::after { transform: translateX(-50%) rotate(135deg); }
 
         .loader-text {
-            color: #ffffff;
-            font-size: 2rem;
-            font-weight: 700;
-            text-align: center;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); /* Strengthened shadow for video background */
-            animation: bounce 2s infinite ease-in-out;
-            padding: 0 20px;
-            margin-bottom: 30px;
+            color: #ffffff; font-size: 2rem; font-weight: 700; text-align: center;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8); animation: bounce 2s infinite ease-in-out; padding: 0 20px; margin-bottom: 30px;
         }
 
         /* Button Styling */
         .awurudu-btn {
-            position: relative;
-            display: inline-block;
-            padding: 20px 40px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            font-family: 'Noto Sans Sinhala', sans-serif;
-            color: #ffffff;
-            text-decoration: none;
-            background: linear-gradient(45deg, #e65100, #ffb300);
-            border-radius: 50px;
-            box-shadow: 0 10px 20px rgba(230, 81, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-            border: 3px solid #ffca28;
-            text-align: center;
-            min-width: 250px;
-            z-index: 30;
-            cursor: pointer;
+            position: relative; display: inline-block; padding: 20px 40px; font-size: 1.5rem; font-weight: 700;
+            font-family: 'Noto Sans Sinhala', sans-serif; color: #ffffff; text-decoration: none;
+            background: linear-gradient(45deg, #e65100, #ffb300); border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(230, 81, 0, 0.3); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; border: 3px solid #ffca28; text-align: center; min-width: 250px; z-index: 30; cursor: pointer;
         }
-
-        .awurudu-btn:hover:not(.disabled-btn) {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 15px 25px rgba(230, 81, 0, 0.5);
-            background: linear-gradient(45deg, #ffb300, #e65100);
-            border-color: #ffffff;
-        }
-
+        .awurudu-btn:hover:not(.disabled-btn) { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 25px rgba(230, 81, 0, 0.5); background: linear-gradient(45deg, #ffb300, #e65100); border-color: #ffffff; }
         .awurudu-btn:not(.disabled-btn)::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg);
-            animation: shine 3s infinite;
+            transform: skewX(-25deg); animation: shine 3s infinite;
         }
+        .disabled-btn { background: #bdbdbd !important; border-color: #9e9e9e !important; color: #fafafa !important; box-shadow: none !important; cursor: not-allowed !important; pointer-events: none !important; opacity: 0.8; }
 
-        /* Disabled Button Styling */
-        .disabled-btn {
-            background: #bdbdbd !important;
-            border-color: #9e9e9e !important;
-            color: #fafafa !important;
-            box-shadow: none !important;
-            cursor: not-allowed !important;
-            pointer-events: none !important;
-            opacity: 0.8;
-        }
-
-        /* =========================================
-           Main Content Styles
-           ========================================= */
-        #main-content {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .content-box {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 50px;
-            border-radius: 30px;
-            border: 4px solid #ff9800;
-            box-shadow: 0 15px 35px rgba(230, 81, 0, 0.15), inset 0 0 20px rgba(255, 152, 0, 0.2);
-            text-align: center;
-            max-width: 900px;
-            width: 100%;
-            position: relative;
-            z-index: 20;
-        }
-
+        /* Main Content Styles */
+        #main-content { opacity: 0; transform: translateY(30px); transition: opacity 1.2s ease-out, transform 1.2s ease-out; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: relative; z-index: 10; }
+        .content-box { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); padding: 50px; border-radius: 30px; border: 4px solid #ff9800; box-shadow: 0 15px 35px rgba(230, 81, 0, 0.15), inset 0 0 20px rgba(255, 152, 0, 0.2); text-align: center; max-width: 900px; width: 100%; position: relative; z-index: 20; }
         .header-section { margin-bottom: 30px; }
         .brand-name { font-size: 1.5rem; color: #e65100; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
         .main-title { font-size: 3rem; color: #bf360c; font-weight: 800; text-shadow: 2px 2px 0px rgba(255, 202, 40, 0.5); margin-bottom: 15px; }
         .sub-title { font-size: 1.2rem; color: #5d4037; font-weight: bold; }
 
-        /* Countdown Section Styles */
-        #countdown-wrapper {
-            background: rgba(255, 235, 59, 0.2);
-            border: 2px dashed #ff9800;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            display: inline-block;
-            width: 100%;
-            max-width: 600px;
-        }
+        /* Countdown */
+        #countdown-wrapper { background: rgba(255, 235, 59, 0.2); border: 2px dashed #ff9800; padding: 20px; border-radius: 15px; margin-bottom: 30px; display: inline-block; width: 100%; max-width: 600px; }
         .countdown-main-msg { font-size: 1.1rem; color: #d84315; font-weight: 700; margin-bottom: 10px; }
         .countdown-sec-msg { font-size: 1.2rem; color: #4a2511; font-weight: 600; }
         #countdown-timer { color: #bf360c; font-size: 1.5rem; font-weight: 800; font-family: 'Poppins', sans-serif; background: #fff; padding: 5px 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: inline-block; margin-left: 10px; }
 
-        /* Buttons Container */
         .button-container { display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap; width: 100%; }
 
-        /* Floating Food Animations */
+        /* Floating Food */
         .festival-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
         .floating-item { position: absolute; font-size: 2.5rem; bottom: -50px; opacity: 0; animation: floatUp linear infinite; }
         .item-1 { left: 10%; animation-duration: 12s; animation-delay: 0s; font-size: 3rem; }
@@ -268,14 +88,12 @@
         .item-7 { left: 50%; animation-duration: 13s; animation-delay: 7s; font-size: 2.2rem; }
         .item-8 { left: 15%; animation-duration: 14s; animation-delay: 8s; font-size: 2.6rem; }
 
-        /* Keyframes */
         @keyframes pulse { 0% { transform: scale(0.9); box-shadow: 0 0 20px #ffeb3b; } 100% { transform: scale(1.1); box-shadow: 0 0 60px #ffeb3b, 0 0 100px #ff9800; } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; } }
 
-        /* Mobile Responsiveness */
         @media screen and (max-width: 768px) {
             .content-box { padding: 30px 15px; border-radius: 20px; }
             .main-title { font-size: 2.2rem; }
@@ -292,7 +110,7 @@
 </head>
 <body>
 
-    <audio id="avurudu-audio" src="MeAwuruduKale.mp3" loop preload="auto"></audio>
+    <audio id="avurudu-audio" src="MeAwuruduKale.mp3" loop autoplay preload="auto"></audio>
 
     <div id="loader-wrapper">
         
@@ -308,7 +126,7 @@
         </div>
         <h1 class="loader-text">සුභ සිංහල හා හින්දු අලුත් අවුරුද්දක් වේවා!</h1>
         
-        <button id="start-btn" class="awurudu-btn" style="padding: 10px 40px; font-size: 1.2rem; min-width: auto;">
+        <button id="start-btn" class="awurudu-btn" style="padding: 10px 40px; font-size: 1.2rem; min-width: auto; display: none;">
             ඇතුල් වන්න (Enter)
         </button>
     </div>
@@ -366,44 +184,54 @@
             const audio = document.getElementById('avurudu-audio');
             const startBtn = document.getElementById('start-btn');
             
-            startBtn.addEventListener('click', function() {
-                // Play audio instantly upon click
-                audio.play().catch(e => console.log("Audio play failed:", e));
+            // Reusable function to transition out of the loading screen
+            function startExperience() {
+                loader.style.opacity = '0';
                 
-                // Hide the button to prevent double-clicking
-                startBtn.style.opacity = '0';
-                
-                // Let the sun animation play for 1 second with the music before fading out
                 setTimeout(function() {
-                    loader.style.opacity = '0';
+                    loader.style.visibility = 'hidden';
                     
-                    // Wait for the fade out transition to finish
-                    setTimeout(function() {
-                        loader.style.visibility = 'hidden';
-                        
-                        // Stop the background video from playing invisibly to save resources
-                        const bgVideo = document.getElementById('avurudu-video-bg');
-                        if(bgVideo) { bgVideo.pause(); }
-                        
-                        // Show background food animations
-                        bgAnimations.style.display = 'block';
-
-                        // Fade in and slide up the main content and buttons
-                        mainContent.style.opacity = '1';
-                        mainContent.style.transform = 'translateY(0)';
-                    }, 1000); 
+                    const bgVideo = document.getElementById('avurudu-video-bg');
+                    if(bgVideo) { bgVideo.pause(); }
+                    
+                    bgAnimations.style.display = 'block';
+                    mainContent.style.opacity = '1';
+                    mainContent.style.transform = 'translateY(0)';
                 }, 1000); 
+            }
+
+            // ==========================================
+            // SMART AUTOPLAY LOGIC
+            // ==========================================
+            let playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // SUCCESS! The browser allowed autoplay.
+                    // Keep the loader visible for 3.5 seconds to enjoy the video, then automatically fade to content.
+                    setTimeout(startExperience, 3500);
+                })
+                .catch(error => {
+                    // FAILED! The browser blocked autoplay.
+                    // We MUST show the start button so the user isn't stuck.
+                    console.log("Browser blocked autoplay. Showing fallback Enter button.");
+                    startBtn.style.display = 'inline-block';
+                });
+            }
+
+            // Fallback click event for when autoplay was blocked
+            startBtn.addEventListener('click', function() {
+                audio.play().catch(e => console.log(e));
+                startBtn.style.opacity = '0';
+                setTimeout(startExperience, 500); // Transition out faster if they clicked
             });
 
 
-            // ==========================================
             // Audio Lifecycle fixes
-            // ==========================================
             document.addEventListener('visibilitychange', function() {
                 if (document.hidden) {
                     audio.pause();
                 } else if (loader.style.visibility === 'hidden') {
-                    // Only resume if they have already passed the loader
                     audio.play().catch(e => console.log(e));
                 }
             });
@@ -416,8 +244,6 @@
             window.addEventListener('pagehide', function() {
                 audio.pause();
             });
-            // ==========================================
-
 
             // Countdown Logic Setup
             const targetDate = new Date("April 14, 2026 12:00:00").getTime();
@@ -425,13 +251,11 @@
             const countdownTimerElement = document.getElementById("countdown-timer");
             const actionBtns = document.querySelectorAll(".awurudu-btn");
 
-            // Initial Check: Disable buttons if time hasn't passed
             const initialNow = new Date().getTime();
             if (targetDate - initialNow > 0) {
                 countdownWrapper.style.display = "inline-block";
                 actionBtns.forEach(btn => {
-                    // Temporarily store the link and remove it to strictly prevent access
-                    if (btn.id !== "start-btn") { // Don't disable the new start button
+                    if (btn.id !== "start-btn") { 
                         btn.setAttribute("data-href", btn.getAttribute("href"));
                         btn.removeAttribute("href");
                         btn.classList.add("disabled-btn");
@@ -439,7 +263,6 @@
                 });
             }
 
-            // Update the count down every 1 second
             const timerInterval = setInterval(function() {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
