@@ -115,115 +115,7 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             animation: bounce 2s infinite ease-in-out;
             padding: 0 20px;
-        }
-
-        /* =========================================
-           Main Content Styles
-           ========================================= */
-        #main-content {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Decorative Border */
-        .content-box {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 50px;
-            border-radius: 30px;
-            border: 4px solid #ff9800;
-            box-shadow: 0 15px 35px rgba(230, 81, 0, 0.15), inset 0 0 20px rgba(255, 152, 0, 0.2);
-            text-align: center;
-            max-width: 900px;
-            width: 100%;
-            position: relative;
-            z-index: 20;
-        }
-
-        .header-section {
             margin-bottom: 30px;
-        }
-
-        .brand-name {
-            font-size: 1.5rem;
-            color: #e65100;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-
-        .main-title {
-            font-size: 3rem;
-            color: #bf360c;
-            font-weight: 800;
-            text-shadow: 2px 2px 0px rgba(255, 202, 40, 0.5);
-            margin-bottom: 15px;
-        }
-
-        .sub-title {
-            font-size: 1.2rem;
-            color: #5d4037;
-            font-weight: bold;
-        }
-
-        /* =========================================
-           Countdown Section Styles
-           ========================================= */
-        #countdown-wrapper {
-            background: rgba(255, 235, 59, 0.2);
-            border: 2px dashed #ff9800;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            display: inline-block;
-            width: 100%;
-            max-width: 600px;
-        }
-
-        .countdown-main-msg {
-            font-size: 1.1rem;
-            color: #d84315;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .countdown-sec-msg {
-            font-size: 1.2rem;
-            color: #4a2511;
-            font-weight: 600;
-        }
-
-        #countdown-timer {
-            color: #bf360c;
-            font-size: 1.5rem;
-            font-weight: 800;
-            font-family: 'Poppins', sans-serif;
-            background: #fff;
-            padding: 5px 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            display: inline-block;
-            margin-left: 10px;
-        }
-
-        /* Buttons Container */
-        .button-container {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            width: 100%;
         }
 
         /* Button Styling */
@@ -245,6 +137,7 @@
             text-align: center;
             min-width: 250px;
             z-index: 30;
+            cursor: pointer;
         }
 
         .awurudu-btn:hover:not(.disabled-btn) {
@@ -278,28 +171,62 @@
         }
 
         /* =========================================
-           Floating Avurudu Food Animations
+           Main Content Styles
            ========================================= */
-        .festival-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1; /* Keep it behind the main content box */
-            pointer-events: none; /* Allows clicking through the animations */
-        }
-
-        .floating-item {
-            position: absolute;
-            font-size: 2.5rem;
-            bottom: -50px;
+        #main-content {
             opacity: 0;
-            animation: floatUp linear infinite;
+            transform: translateY(30px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
         }
 
-        /* Distributing the elements (Food/Kavili items) and setting timings */
+        .content-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 30px;
+            border: 4px solid #ff9800;
+            box-shadow: 0 15px 35px rgba(230, 81, 0, 0.15), inset 0 0 20px rgba(255, 152, 0, 0.2);
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            z-index: 20;
+        }
+
+        .header-section { margin-bottom: 30px; }
+        .brand-name { font-size: 1.5rem; color: #e65100; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+        .main-title { font-size: 3rem; color: #bf360c; font-weight: 800; text-shadow: 2px 2px 0px rgba(255, 202, 40, 0.5); margin-bottom: 15px; }
+        .sub-title { font-size: 1.2rem; color: #5d4037; font-weight: bold; }
+
+        /* Countdown Section Styles */
+        #countdown-wrapper {
+            background: rgba(255, 235, 59, 0.2);
+            border: 2px dashed #ff9800;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: inline-block;
+            width: 100%;
+            max-width: 600px;
+        }
+        .countdown-main-msg { font-size: 1.1rem; color: #d84315; font-weight: 700; margin-bottom: 10px; }
+        .countdown-sec-msg { font-size: 1.2rem; color: #4a2511; font-weight: 600; }
+        #countdown-timer { color: #bf360c; font-size: 1.5rem; font-weight: 800; font-family: 'Poppins', sans-serif; background: #fff; padding: 5px 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: inline-block; margin-left: 10px; }
+
+        /* Buttons Container */
+        .button-container { display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap; width: 100%; }
+
+        /* Floating Food Animations */
+        .festival-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
+        .floating-item { position: absolute; font-size: 2.5rem; bottom: -50px; opacity: 0; animation: floatUp linear infinite; }
         .item-1 { left: 10%; animation-duration: 12s; animation-delay: 0s; font-size: 3rem; }
         .item-2 { left: 25%; animation-duration: 15s; animation-delay: 2s; font-size: 2rem; }
         .item-3 { left: 40%; animation-duration: 10s; animation-delay: 4s; font-size: 2.5rem; }
@@ -309,93 +236,31 @@
         .item-7 { left: 50%; animation-duration: 13s; animation-delay: 7s; font-size: 2.2rem; }
         .item-8 { left: 15%; animation-duration: 14s; animation-delay: 8s; font-size: 2.6rem; }
 
-        /* =========================================
-           Keyframe Animations
-           ========================================= */
-        @keyframes pulse {
-            0% { transform: scale(0.9); box-shadow: 0 0 20px #ffeb3b; }
-            100% { transform: scale(1.1); box-shadow: 0 0 60px #ffeb3b, 0 0 100px #ff9800; }
-        }
+        /* Keyframes */
+        @keyframes pulse { 0% { transform: scale(0.9); box-shadow: 0 0 20px #ffeb3b; } 100% { transform: scale(1.1); box-shadow: 0 0 60px #ffeb3b, 0 0 100px #ff9800; } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; } }
 
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            20% { left: 200%; }
-            100% { left: 200%; }
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(0.8);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.8; /* Fade in */
-            }
-            90% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-110vh) rotate(360deg) scale(1.2);
-                opacity: 0; /* Fade out at the top */
-            }
-        }
-
-        /* =========================================
-           Mobile Responsiveness
-           ========================================= */
+        /* Mobile Responsiveness */
         @media screen and (max-width: 768px) {
-            .content-box {
-                padding: 30px 15px;
-                border-radius: 20px;
-            }
-            .main-title {
-                font-size: 2.2rem;
-            }
-            .brand-name {
-                font-size: 1.2rem;
-            }
-            .button-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .awurudu-btn {
-                width: 100%;
-                font-size: 1.3rem;
-                padding: 15px 20px;
-            }
-            .loader-text {
-                font-size: 1.5rem;
-            }
-            .floating-item {
-                font-size: 1.8rem;
-            }
-            .countdown-main-msg {
-                font-size: 1rem;
-            }
-            .countdown-sec-msg {
-                font-size: 1.1rem;
-            }
-            #countdown-timer {
-                font-size: 1.2rem;
-                display: block;
-                margin: 10px auto 0;
-                width: fit-content;
-            }
+            .content-box { padding: 30px 15px; border-radius: 20px; }
+            .main-title { font-size: 2.2rem; }
+            .brand-name { font-size: 1.2rem; }
+            .button-container { flex-direction: column; gap: 20px; }
+            .awurudu-btn { width: 100%; font-size: 1.3rem; padding: 15px 20px; }
+            .loader-text { font-size: 1.5rem; }
+            .floating-item { font-size: 1.8rem; }
+            .countdown-main-msg { font-size: 1rem; }
+            .countdown-sec-msg { font-size: 1.1rem; }
+            #countdown-timer { font-size: 1.2rem; display: block; margin: 10px auto 0; width: fit-content; }
         }
     </style>
 </head>
 <body>
 
-    <audio id="avurudu-audio" src="MeAwuruduKale.mp3" loop autoplay preload="auto"></audio>
+    <audio id="avurudu-audio" src="MeAwuruduKale.mp3" loop preload="auto"></audio>
 
     <div id="loader-wrapper">
         <div class="sun-container">
@@ -404,6 +269,10 @@
             <div class="sun"></div>
         </div>
         <h1 class="loader-text">සුභ සිංහල හා හින්දු අලුත් අවුරුද්දක් වේවා!</h1>
+        
+        <button id="start-btn" class="awurudu-btn" style="padding: 10px 40px; font-size: 1.2rem; min-width: auto;">
+            ඇතුල් වන්න (Enter)
+        </button>
     </div>
 
     <div class="festival-bg" id="bg-animations" style="display: none;">
@@ -458,41 +327,54 @@
             const mainContent = document.getElementById('main-content');
             const bgAnimations = document.getElementById('bg-animations');
             const audio = document.getElementById('avurudu-audio');
+            const startBtn = document.getElementById('start-btn');
             
-            // Try to play audio immediately
-            let playPromise = audio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay blocked by browser. Waiting for user to click anywhere.");
-                    // Fallback: If blocked, wait for the user's first click/touch anywhere on the page
-                    document.body.addEventListener('click', function() {
-                        audio.play();
-                    }, { once: true });
-                });
-            }
+            // ==========================================
+            // NEW FIX: Wait for Start Button Click
+            // ==========================================
+            startBtn.addEventListener('click', function() {
+                // Play audio instantly upon click
+                audio.play().catch(e => console.log("Audio play failed:", e));
+                
+                // Hide the button to prevent double-clicking
+                startBtn.style.opacity = '0';
+                
+                // Let the sun animation play for 1 second with the music before fading out
+                setTimeout(function() {
+                    loader.style.opacity = '0';
+                    
+                    // Wait for the fade out transition to finish
+                    setTimeout(function() {
+                        loader.style.visibility = 'hidden';
+                        
+                        // Show background food animations
+                        bgAnimations.style.display = 'block';
+
+                        // Fade in and slide up the main content and buttons
+                        mainContent.style.opacity = '1';
+                        mainContent.style.transform = 'translateY(0)';
+                    }, 1000); 
+                }, 1000); 
+            });
+
 
             // ==========================================
-            // NEW FIX: Stop audio on tab switch/navigate
+            // Audio Lifecycle fixes
             // ==========================================
-            
-            // 1. Pause if user switches to a different browser tab
             document.addEventListener('visibilitychange', function() {
                 if (document.hidden) {
                     audio.pause();
-                } else {
-                    // Resume when they come back to the tab
+                } else if (loader.style.visibility === 'hidden') {
+                    // Only resume if they have already passed the loader
                     audio.play().catch(e => console.log(e));
                 }
             });
 
-            // 2. Ensure audio is stopped when page unloads (navigating away or closing)
             window.addEventListener('beforeunload', function() {
                 audio.pause();
-                audio.currentTime = 0; // Reset audio position
+                audio.currentTime = 0;
             });
             
-            // 3. Fallback for mobile browsers caching the page
             window.addEventListener('pagehide', function() {
                 audio.pause();
             });
@@ -511,9 +393,11 @@
                 countdownWrapper.style.display = "inline-block";
                 actionBtns.forEach(btn => {
                     // Temporarily store the link and remove it to strictly prevent access
-                    btn.setAttribute("data-href", btn.getAttribute("href"));
-                    btn.removeAttribute("href");
-                    btn.classList.add("disabled-btn");
+                    if (btn.id !== "start-btn") { // Don't disable the new start button
+                        btn.setAttribute("data-href", btn.getAttribute("href"));
+                        btn.removeAttribute("href");
+                        btn.classList.add("disabled-btn");
+                    }
                 });
             }
 
@@ -528,19 +412,16 @@
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                    // Format Time Display
                     let timeString = "";
                     if (days > 0) timeString += `${days}d `;
                     timeString += `${hours}h ${minutes}m ${seconds}s`;
                     countdownTimerElement.innerText = timeString;
 
                 } else {
-                    // Target Time Reached!
                     clearInterval(timerInterval);
                     countdownWrapper.style.display = "none";
                     
                     actionBtns.forEach(btn => {
-                        // Restore links and remove disabled styles
                         if(btn.hasAttribute("data-href")) {
                             btn.setAttribute("href", btn.getAttribute("data-href"));
                             btn.removeAttribute("data-href");
@@ -549,26 +430,6 @@
                     });
                 }
             }, 1000);
-
-            // Set how long the Awurudu animation should stay (3.5 seconds)
-            setTimeout(function() {
-                
-                // Fade out the loader
-                loader.style.opacity = '0';
-                
-                // Wait for the fade out transition to finish
-                setTimeout(function() {
-                    loader.style.visibility = 'hidden';
-                    
-                    // Show background food animations
-                    bgAnimations.style.display = 'block';
-
-                    // Fade in and slide up the main content and buttons
-                    mainContent.style.opacity = '1';
-                    mainContent.style.transform = 'translateY(0)';
-                }, 1000); 
-
-            }, 3500); 
         });
     </script>
 
