@@ -12,13 +12,22 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
         .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .auth-glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
         .bg-blob { animation: blob 7s infinite; }
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
         @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
-        /* Custom animation for modal */
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .modal-animate { animation: slideUp 0.3s ease-out forwards; }
+        
+        /* Custom Input Styles */
+        .auth-input { width: 100%; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); outline: none; transition: all 0.3s; margin-bottom: 12px; font-size: 15px; }
+        .auth-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; transition: all 0.3s; margin-top: 10px; }
+        .auth-btn:hover { box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3); transform: translateY(-2px); }
+        .auth-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .link-text { color: #3b82f6; cursor: pointer; font-size: 14px; transition: color 0.3s; }
+        .link-text:hover { color: #1d4ed8; text-decoration: underline; }
     </style>
 </head>
 <body class="relative min-h-screen flex flex-col text-slate-800">
@@ -37,10 +46,10 @@
             <nav class="hidden md:flex gap-8 items-center">
                 <a href="index.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</a>
                 <a href="about us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">About Us</a>
-                <a href="papers & tutes.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Papers & Tutes</a>
-                <a href="contact us.html" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Contact</a>
+                <a href="papers & tutes.html" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Papers & Tutes</a>
+                <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
                 <a href="contact us.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Join Now</a>
-               <a href="Awurudu Special.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all hover:-translate-y-1">Awurudu Special</a>
+                <a href="Awurudu Special.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all hover:-translate-y-1">Awurudu Special</a>
             </nav>
             <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
         </div>
@@ -48,34 +57,106 @@
         <div id="mobileMenu" class="hidden absolute top-full left-0 w-full glass-panel flex flex-col py-4 px-6 md:hidden shadow-2xl border-t border-white/40">
             <a href="index.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Home</a>
             <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
-            <a href="papers & tutes.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Papers & Tutes</a>
+            <a href="papers & tutes.html" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Papers & Tutes</a>
             <a href="Awurudu Special.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Awurudu Special</a>
-            <a href="contact us.html" class="py-3 text-blue-600 font-medium">Contact</a>
+            <a href="contact us.html" class="py-3 text-slate-700 font-medium">Contact</a>
         </div>
     </header>
 
     <main class="flex-grow pt-32 pb-12">
         <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
             
-            <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
-                <h1 class="text-4xl font-bold mb-4">Study Materials</h1>
-                <p class="text-slate-600 text-lg mb-6">Access all the latest past papers and exclusive tutes directly from our secure Google Drive.</p>
+            <div id="loadingAuth" class="flex justify-center items-center h-64">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+            </div>
+
+            <div id="authContainer" class="max-w-md mx-auto hidden mt-10">
                 
-                <a href="https://drive.google.com/drive/folders/1Fc3EjLywKIHdw7lUCF67OIMPxdsJw068?usp=drive_link" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0F9D58] text-white font-medium hover:bg-[#0b8043] transition-colors shadow-lg shadow-green-500/20">
-                    <i class="ph-fill ph-google-drive-logo text-xl"></i> Open Master Drive Folder
-                </a>
+                <div id="loginSection" class="auth-glass p-10 rounded-3xl text-center" data-aos="fade-up">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
+                    <h2 class="text-2xl font-bold mb-1 text-slate-800">Student Login</h2>
+                    <p class="text-slate-500 mb-6 text-sm">Access your exclusive study materials</p>
+                    
+                    <input type="email" id="loginEmail" class="auth-input" placeholder="Email Address">
+                    <input type="password" id="loginPassword" class="auth-input" placeholder="Password">
+                    <button id="loginBtn" class="auth-btn" onclick="window.loginUser()">Log In to Portal</button>
+                    
+                    <div class="flex justify-between mt-6 px-2">
+                        <span class="link-text" onclick="window.toggleAuthView('forgotSection')">Forgot Password?</span>
+                        <span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span>
+                    </div>
+                </div>
+
+                <div id="signupSection" class="auth-glass p-10 rounded-3xl text-center hidden" data-aos="fade-up">
+                    <h2 class="text-2xl font-bold mb-1 text-slate-800">Register Now</h2>
+                    <p class="text-slate-500 mb-6 text-sm">Create your student account</p>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="regName" class="auth-input col-span-2" placeholder="Full Name">
+                        <input type="date" id="regDob" class="auth-input text-slate-500">
+                        <input type="tel" id="regPhone" class="auth-input" placeholder="Phone No (071...)">
+                    </div>
+                    <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
+                    <input type="text" id="regUsername" class="auth-input" placeholder="Username">
+                    <input type="password" id="regPassword" class="auth-input" placeholder="Create Password">
+                    
+                    <button id="signupBtn" class="auth-btn" onclick="window.registerUser()">Create Account</button>
+                    <div class="mt-5">
+                        <span class="text-slate-500 text-sm">Already have an account? </span>
+                        <span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')">Log In</span>
+                    </div>
+                </div>
+
+                <div id="forgotSection" class="auth-glass p-10 rounded-3xl text-center hidden" data-aos="fade-up">
+                    <div class="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-lock-key-open"></i></div>
+                    <h2 class="text-2xl font-bold mb-1 text-slate-800">Reset Password</h2>
+                    <p class="text-slate-500 mb-6 text-sm">Enter your email to receive a reset link</p>
+                    
+                    <input type="email" id="forgotEmail" class="auth-input" placeholder="Registered Email">
+                    <button id="resetBtn" class="auth-btn mb-4" onclick="window.resetUserPassword()">Send Reset Link</button>
+                    
+                    <span class="link-text" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Login</span>
+                </div>
+
             </div>
 
-            <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer" data-aos="fade-up" data-aos-delay="100">
-                <button onclick="filterItems('AL Past Papers', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 bg-slate-900 text-white shadow-lg scale-105">AL Past Papers</button>
-                <button onclick="filterItems('OL Past Papers', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">OL Past Papers</button>
-                <button onclick="filterItems('A/L Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">A/L Tutes</button>
-                <button onclick="filterItems('O/L Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">O/L Tutes</button>
-            </div>
+            <div id="dashboardContainer" class="hidden">
+                
+                <div class="glass-panel p-6 rounded-2xl mb-10 flex flex-col md:flex-row justify-between items-center gap-4" data-aos="fade-down">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center text-xl font-bold shadow-md">
+                            <i class="ph-fill ph-student"></i>
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-sm font-medium">Student Portal</p>
+                            <h2 id="welcomeMsg" class="text-xl font-bold text-slate-800">Welcome back!</h2>
+                        </div>
+                    </div>
+                    <button onclick="window.logoutUser()" class="px-6 py-2 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 hover:border-red-200 font-medium transition-colors flex items-center gap-2">
+                        <i class="ph ph-sign-out"></i> Log Out
+                    </button>
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
-            </div>
+                <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
+                    <h1 class="text-4xl font-bold mb-4">Study Materials</h1>
+                    <p class="text-slate-600 text-lg mb-6">Access all the latest past papers and exclusive tutes directly from our secure Google Drive.</p>
+                    
+                    <a href="https://drive.google.com/drive/folders/1Fc3EjLywKIHdw7lUCF67OIMPxdsJw068?usp=drive_link" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0F9D58] text-white font-medium hover:bg-[#0b8043] transition-colors shadow-lg shadow-green-500/20">
+                        <i class="ph-fill ph-google-drive-logo text-xl"></i> Open Master Drive Folder
+                    </a>
+                </div>
 
+                <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer" data-aos="fade-up" data-aos-delay="100">
+                    <button onclick="filterItems('AL Past Papers', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 bg-slate-900 text-white shadow-lg scale-105">AL Past Papers</button>
+                    <button onclick="filterItems('OL Past Papers', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">OL Past Papers</button>
+                    <button onclick="filterItems('A/L Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">A/L Tutes</button>
+                    <button onclick="filterItems('O/L Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">O/L Tutes</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
+                    </div>
+
+            </div>
         </div>
     </main>
 
@@ -95,10 +176,12 @@
             
             <p id="errorMessage" class="text-red-500 text-sm text-center font-medium h-5 mb-4 opacity-0 transition-opacity">Incorrect access code. Please try again.</p>
             
-            <button onclick="verifyAndOpen()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/30 transition-all active:scale-[0.98]">
+            <button onclick="verifyAndOpen()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/30 transition-all active:scale-[0.98] mb-4">
                 Unlock & View
             </button>
-            <a href ="contact us.html"> Click Here To Purchase Tutes</a>
+            <div class="text-center">
+                <a href="contact us.html" class="text-sm text-blue-600 hover:underline font-medium">Click Here To Purchase Tutes</a>
+            </div>
         </div>
     </div>
 
@@ -154,24 +237,17 @@
             }
         });
 
+        // Resources Data
         const resources = [
-            // AL PAST PAPERS
             { title: '2020 A/L Exam Paper - Part 1', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1ul5BPlj3PbGAks9BJquPNiQlYZ8_os1e/view?usp=sharing', passcode: null },
             { title: '2020 A/L Exam Paper - Part 2', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1f3jJO9_02p2QogpTspxPLX7FN0pqF3jC/view?usp=sharing', passcode: null },
-
-            // OL PAST PAPERS
             { title: '2020 O/L Exam Paper - Part 1', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1jQVPypnstGYs9SGGzOpvWLzfQAuGkcTw/view?usp=sharing', passcode: null },
             { title: '2020 O/L Exam Paper - Part 2', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1Pw-BXO8Ic2l2uZ0_QPzUIA60eqcOslwP/view?usp=sharing', passcode: null },
-            
-            // A/L TUTES (With Passcodes)
             { title: 'මානව සම්පත් කලමණාකරණය - 16 පාඩම', category: 'A/L Tutes', desc: 'Comprehensive theory and exercises.', driveLink: 'https://drive.google.com/file/d/1Lu8yk0enZxr0ullmkSDGfc2J98SR0ly1/view?usp=sharing', passcode: 'T100245W' },
             { title: 'ව්‍යාපාර සැලැස්ම හැදින්වීම -18 පාඩම', category: 'A/L Tutes', desc: 'In-depth diagrams and examples.', driveLink: 'https://drive.google.com/file/d/1nLFBBFymfCbokAADt7J9LL6o-HrzpeWB/view?usp=sharing', passcode: 'P340900G' },
-
-            // O/L TUTES (With Passcodes)
             { title: 'O-L Commerce Short Notes', category: 'O/L Tutes', desc: 'Quick revision notes.', driveLink: 'https://drive.google.com/file/d/1-YPEhBnpqAnJyv8ftCH-SO558WaT6hcA/view?usp=sharing', passcode: 'K230450E' }
         ];
 
-        // Global variables to store what the user clicked
         let currentTargetLink = '';
         let currentRequiredPasscode = '';
 
@@ -188,7 +264,6 @@
             filtered.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
-                
                 const passArg = item.passcode ? `'${item.passcode}'` : 'null';
 
                 card.innerHTML = `
@@ -197,7 +272,6 @@
                     </div>
                     <h3 class="text-xl font-bold text-slate-800 mb-3">${item.title}</h3>
                     <p class="text-slate-600 mb-8 flex-grow">${item.desc}</p>
-                    
                     <a href="${item.driveLink}" onclick="handleAccess(event, '${item.driveLink}', ${passArg})" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium bg-slate-100 text-slate-800 group-hover:bg-gradient-to-r group-hover:from-[#4285F4] group-hover:to-[#34A853] group-hover:text-white transition-all duration-300 shadow-sm cursor-pointer border border-slate-200 group-hover:border-transparent">
                         <i class="ph ph-arrow-square-out text-xl"></i> <span>View / Download</span>
                     </a>
@@ -208,40 +282,27 @@
 
         function handleAccess(event, link, requiredPasscode) {
             event.preventDefault(); 
-
-            if (link === '#' || link === '') {
-                alert('File link not added yet! Please update the "driveLink".');
-                return;
-            }
+            if (link === '#' || link === '') { alert('File link not added yet!'); return; }
 
             if (requiredPasscode !== null) {
-                // Prepare and show the custom modal
                 currentTargetLink = link;
                 currentRequiredPasscode = requiredPasscode;
-                
-                document.getElementById('passcodeInput').value = ''; // clear old input
-                document.getElementById('errorMessage').classList.add('opacity-0'); // hide error
-                document.getElementById('passcodeModal').classList.remove('hidden'); // show modal
+                document.getElementById('passcodeInput').value = ''; 
+                document.getElementById('errorMessage').classList.add('opacity-0'); 
+                document.getElementById('passcodeModal').classList.remove('hidden'); 
             } else {
-                // No passcode needed, open right away
                 window.open(link, '_blank');
             }
         }
 
-        // Functions to control the new Modal
-        function closeModal() {
-            document.getElementById('passcodeModal').classList.add('hidden');
-        }
+        function closeModal() { document.getElementById('passcodeModal').classList.add('hidden'); }
 
         function verifyAndOpen() {
             const userInput = document.getElementById('passcodeInput').value.trim();
-            
             if (userInput === currentRequiredPasscode) {
                 closeModal();
-                // Because this is triggered by a real button click, browsers allow it 100%
                 window.open(currentTargetLink, '_blank');
             } else {
-                // Show error message visually
                 document.getElementById('errorMessage').classList.remove('opacity-0');
             }
         }
@@ -253,12 +314,134 @@
             });
             btn.classList.remove('glass-panel', 'text-slate-600');
             btn.classList.add('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
-            
             renderItems(category);
         }
 
-        // Initialize
+        // Initialize grid on load
         renderItems('AL Past Papers');
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        // Your Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
+            authDomain: "pradeep-k-athulawansha.firebaseapp.com",
+            projectId: "pradeep-k-athulawansha",
+            storageBucket: "pradeep-k-athulawansha.firebasestorage.app",
+            messagingSenderId: "950027835210",
+            appId: "1:950027835210:web:a2894cd14833dc101bd3b3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Track Auth State Changes (The Magic Part)
+        onAuthStateChanged(auth, async (user) => {
+            document.getElementById('loadingAuth').classList.add('hidden'); // Hide loader
+            
+            if (user) {
+                // User is signed in -> Show Dashboard
+                document.getElementById('authContainer').classList.add('hidden');
+                document.getElementById('dashboardContainer').classList.remove('hidden');
+                
+                // Fetch User Name
+                try {
+                    const docSnap = await getDoc(doc(db, "students", user.uid));
+                    if (docSnap.exists()) {
+                        document.getElementById('welcomeMsg').innerText = "Welcome back, " + docSnap.data().fullName + "!";
+                    }
+                } catch (e) {
+                    console.log("Error fetching user data", e);
+                }
+            } else {
+                // User is signed out -> Show Login
+                document.getElementById('dashboardContainer').classList.add('hidden');
+                document.getElementById('authContainer').classList.remove('hidden');
+                window.toggleAuthView('loginSection');
+            }
+        });
+
+        // Global UI Toggles for Auth
+        window.toggleAuthView = function(showId) {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('signupSection').classList.add('hidden');
+            document.getElementById('forgotSection').classList.add('hidden');
+            document.getElementById(showId).classList.remove('hidden');
+        }
+
+        // Global Firebase Functions
+        window.registerUser = async function() {
+            const name = document.getElementById('regName').value;
+            const dob = document.getElementById('regDob').value;
+            const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const btn = document.getElementById('signupBtn');
+
+            if(!name || !email || !password) { alert("Please fill in Name, Email, and Password!"); return; }
+
+            btn.disabled = true; btn.innerText = "Processing...";
+            try {
+                const userCred = await createUserWithEmailAndPassword(auth, email, password);
+                await setDoc(doc(db, "students", userCred.user.uid), {
+                    fullName: name, birthday: dob, email: email, phone: phone, username: username, role: "student"
+                });
+                alert("Account Created! You are now logged in.");
+            } catch (error) {
+                alert("Error: " + error.message);
+                btn.disabled = false; btn.innerText = "Create Account";
+            }
+        }
+
+        window.loginUser = async function() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+
+            if(!email || !password) { alert("Enter Email and Password!"); return; }
+
+            btn.disabled = true; btn.innerText = "Logging in...";
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // View toggle handled by onAuthStateChanged
+            } catch (error) {
+                alert("Login Failed: Invalid Email or Password.");
+                btn.disabled = false; btn.innerText = "Log In to Portal";
+            }
+        }
+
+        window.resetUserPassword = async function() {
+            const email = document.getElementById('forgotEmail').value;
+            if(!email) { alert("Please enter your email."); return; }
+            const btn = document.getElementById('resetBtn');
+            btn.disabled = true; btn.innerText = "Sending...";
+            
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("Reset link sent to " + email);
+                window.toggleAuthView('loginSection');
+            } catch (error) {
+                alert("Error: " + error.message);
+            } finally {
+                btn.disabled = false; btn.innerText = "Send Reset Link";
+            }
+        }
+
+        window.logoutUser = async function() {
+            try {
+                await signOut(auth);
+                // Clearing inputs
+                document.querySelectorAll('.auth-input').forEach(input => input.value = '');
+            } catch (error) {
+                alert("Error logging out.");
+            }
+        }
     </script>
 </body>
 </html>
