@@ -286,6 +286,7 @@
                         <li><a href="about us.html" class="hover:text-blue-400 hover:translate-x-1 inline-block transition-transform">About Us</a></li>
                         <li><a href="papers & tutes.html" class="hover:text-blue-400 hover:translate-x-1 inline-block transition-transform">Papers & Tutes</a></li>
                         <li><a href="contact us.html" class="hover:text-blue-400 hover:translate-x-1 inline-block transition-transform">Contact</a></li>
+                        <li><a href="admin.html" class="hover:text-blue-400 hover:translate-x-1 inline-block transition-transform">Admin Only</a></li>
                     </ul>
                 </div>
                 <div>
@@ -400,44 +401,6 @@
         });
     </script>
     
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Set the target date: April 14, 2026 at 12:06:00 PM
-            const targetDate = new Date("April 14, 2026 12:06:00").getTime();
 
-            const countdownInterval = setInterval(function() {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                // Time calculations
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Update the HTML (Pad with zero if less than 10)
-                const daysEl = document.getElementById("cd-days");
-                if(daysEl) {
-                    daysEl.innerText = days < 10 ? "0" + days : days;
-                    document.getElementById("cd-hours").innerText = hours < 10 ? "0" + hours : hours;
-                    document.getElementById("cd-minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-                    document.getElementById("cd-seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
-                }
-
-                // If the countdown is over, show a celebration message
-                if (distance < 0) {
-                    clearInterval(countdownInterval);
-                    const countdownContainer = document.getElementById("awurudu-countdown");
-                    if(countdownContainer) {
-                        countdownContainer.innerHTML = `
-                            <div class="bg-gradient-to-r from-red-600 to-orange-500 text-white px-6 py-3 rounded-xl font-bold text-xl shadow-lg flex items-center gap-2 animate-[pulse_2s_infinite]">
-                                <i class="ph-fill ph-fire text-2xl"></i> නැකත උදා විය! සුබ අලුත් අවුරුද්දක් වේවා!
-                            </div>
-                        `;
-                    }
-                }
-            }, 1000);
-        });
-    </script>
 </body>
 </html>
