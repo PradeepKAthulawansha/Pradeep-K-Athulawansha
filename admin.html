@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Add New Tutes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
+    </style>
+</head>
+<body class="p-10 text-slate-800">
+
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-xl border border-slate-200">
+        <h2 class="text-3xl font-bold mb-6 text-blue-600">Admin Panel - Add New Resource</h2>
+        <p class="text-slate-500 mb-8">Fill this form to add a new Paper or Tute to the student portal.</p>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-semibold mb-2">Title / Lesson Name</label>
+                <input type="text" id="resTitle" class="w-full p-3 border rounded-xl outline-none focus:border-blue-500" placeholder="e.g. 2024 A/L Exam Paper - Part 1">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold mb-2">Category</label>
+                <select id="resCategory" class="w-full p-3 border rounded-xl outline-none focus:border-blue-500 bg-white">
+                    <option value="AL Past Papers">AL Past Papers</option>
+                    <option value="OL Past Papers">OL Past Papers</option>
+                    <option value="A/L Tutes">A/L Tutes</option>
+                    <option value="O/L Tutes">O/L Tutes</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold mb-2">Short Description</label>
+                <input type="text" id="resDesc" class="w-full p-3 border rounded-xl outline-none focus:border-blue-500" placeholder="e.g. Complete past paper and marking scheme.">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold mb-2">Google Drive PDF Link</label>
+                <input type="url" id="resLink" class="w-full p-3 border rounded-xl outline-none focus:border-blue-500" placeholder="Paste Google Drive Link Here">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold mb-2">Unlock Passcode (Leave empty if free)</label>
+                <input type="text" id="resPasscode" class="w-full p-3 border rounded-xl outline-none focus:border-blue-500" placeholder="e.g. K230450E">
+            </div>
+
+            <button id="addBtn" onclick="addResource()" class="w-full py-4 mt-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors">
+                Add to Database
+            </button>
+        </div>
+        
+        <p id="statusMsg" class="mt-4 text-center font-medium hidden"></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
+            authDomain: "pradeep-k-athulawansha.firebaseapp.com",
+            projectId: "pradeep-k-athulawansha",
+            storageBucket: "pradeep-k-athulawansha.firebasestorage.app",
+            messagingSenderId: "950027835210",
+            appId: "1:950027835210:web:a2894cd14833dc101bd3b3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.addResource = async function() {
+            const title = document.getElementById('resTitle').value;
+            const category = document.getElementById('resCategory').value;
+            const desc = document.getElementById('resDesc').value;
+            const driveLink = document.getElementById('resLink').value;
+            const passcodeVal = document.getElementById('resPasscode').value.trim();
+            const passcode = passcodeVal === "" ? null : passcodeVal;
+
+            const btn = document.getElementById('addBtn');
+            const status = document.getElementById('statusMsg');
+
+            if(!title || !desc || !driveLink) {
+                alert("Please fill Title, Description and Drive Link!");
+                return;
+            }
+
+            btn.disabled = true; btn.innerText = "Adding...";
+            
+            try {
+                // Generate a unique ID for the document (e.g. al_past_papers_12345)
+                const docId = category.replace(/[^a-zA-Z]/g, '').toLowerCase() + '_' + Date.now();
+
+                // Add to 'resources' collection in Firestore
+                await addDoc(collection(db, "resources"), {
+                    id: docId,
+                    title: title,
+                    category: category,
+                    desc: desc,
+                    driveLink: driveLink,
+                    passcode: passcode,
+                    createdAt: new Date()
+                });
+
+                status.innerText = "✅ Successfully Added!";
+                status.className = "mt-4 text-center font-medium text-green-600";
+                
+                // Clear form
+                document.querySelectorAll('input').forEach(i => i.value = '');
+            } catch (error) {
+                console.error(error);
+                status.innerText = "❌ Error adding resource: " + error.message;
+                status.className = "mt-4 text-center font-medium text-red-600";
+            } finally {
+                btn.disabled = false; btn.innerText = "Add to Database";
+                status.classList.remove('hidden');
+                setTimeout(() => status.classList.add('hidden'), 4000);
+            }
+        }
+    </script>
+</body>
+</html>
