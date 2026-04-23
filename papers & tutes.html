@@ -20,7 +20,6 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .modal-animate { animation: slideUp 0.3s ease-out forwards; }
         
-        /* Custom Input Styles */
         .auth-input { width: 100%; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); outline: none; transition: all 0.3s; margin-bottom: 12px; font-size: 15px; }
         .auth-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
         .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; transition: all 0.3s; margin-top: 10px; }
@@ -49,7 +48,8 @@
                 <a href="papers & tutes.html" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Papers & Tutes</a>
                 <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
                 <a href="contact us.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Join Now</a>
-                <a href="log in.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Log in</a>
+                <a href="Awurudu Special.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all hover:-translate-y-1">Awurudu Special</a>
+            </nav>
             <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
         </div>
         
@@ -70,7 +70,6 @@
             </div>
 
             <div id="authContainer" class="max-w-md mx-auto hidden mt-10">
-                
                 <div id="loginSection" class="auth-glass p-10 rounded-3xl text-center" data-aos="fade-up">
                     <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
                     <h2 class="text-2xl font-bold mb-1 text-slate-800">Student Login</h2>
@@ -93,7 +92,7 @@
                     <div class="grid grid-cols-2 gap-2">
                         <input type="text" id="regName" class="auth-input col-span-2" placeholder="Full Name">
                         <input type="date" id="regDob" class="auth-input text-slate-500">
-                        <input type="tel" id="regPhone" class="auth-input" placeholder="Phone No (071...)">
+                        <input type="tel" id="regPhone" class="auth-input" placeholder="Phone No">
                     </div>
                     <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
                     <input type="text" id="regUsername" class="auth-input" placeholder="Username">
@@ -113,14 +112,11 @@
                     
                     <input type="email" id="forgotEmail" class="auth-input" placeholder="Registered Email">
                     <button id="resetBtn" class="auth-btn mb-4" onclick="window.resetUserPassword()">Send Reset Link</button>
-                    
                     <span class="link-text" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Login</span>
                 </div>
-
             </div>
 
             <div id="dashboardContainer" class="hidden">
-                
                 <div class="glass-panel p-6 rounded-2xl mb-10 flex flex-col md:flex-row justify-between items-center gap-4" data-aos="fade-down">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center text-xl font-bold shadow-md">
@@ -138,11 +134,7 @@
 
                 <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
                     <h1 class="text-4xl font-bold mb-4">Study Materials</h1>
-                    <p class="text-slate-600 text-lg mb-6">Access all the latest past papers and exclusive tutes directly from our secure Google Drive.</p>
-                    
-                    <a href="https://drive.google.com/drive/folders/1Fc3EjLywKIHdw7lUCF67OIMPxdsJw068?usp=drive_link" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0F9D58] text-white font-medium hover:bg-[#0b8043] transition-colors shadow-lg shadow-green-500/20">
-                        <i class="ph-fill ph-google-drive-logo text-xl"></i> Open Master Drive Folder
-                    </a>
+                    <p class="text-slate-600 text-lg mb-6">Access your unlocked past papers and exclusive tutes.</p>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer" data-aos="fade-up" data-aos-delay="100">
@@ -154,7 +146,6 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
                     </div>
-
             </div>
         </div>
     </main>
@@ -169,163 +160,27 @@
                 <i class="ph-fill ph-lock-key"></i>
             </div>
             <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Protected Document</h3>
-            <p class="text-slate-500 mb-6 text-center text-sm">This document requires purchase. If you have done the payment, please enter your access code below.</p>
+            <p class="text-slate-500 mb-6 text-center text-sm">Enter the access code provided to you to unlock this document permanently.</p>
             
             <input type="text" id="passcodeInput" class="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all mb-2 text-center text-lg font-medium tracking-widest placeholder:tracking-normal" placeholder="Enter Access Code">
             
             <p id="errorMessage" class="text-red-500 text-sm text-center font-medium h-5 mb-4 opacity-0 transition-opacity">Incorrect access code. Please try again.</p>
             
-            <button onclick="verifyAndOpen()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/30 transition-all active:scale-[0.98] mb-4">
-                Unlock & View
+            <button id="verifyBtn" onclick="window.verifyAndOpen()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/30 transition-all active:scale-[0.98] mb-4">
+                Unlock Permanently
             </button>
             <div class="text-center">
-                <a href="contact us.html" class="text-sm text-blue-600 hover:underline font-medium">Click Here To Purchase Tutes</a>
+                <a href="contact us.html" class="text-sm text-blue-600 hover:underline font-medium">Click Here To Purchase Code</a>
             </div>
         </div>
     </div>
 
-    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 rounded-t-[3rem] mt-12 relative z-10">
-        <div class="container mx-auto px-6 md:px-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 text-2xl font-bold text-white mb-6">
-                        <i class="ph ph-book-open text-blue-500"></i> Business Studies with Pradeep K. Athulawansha
-                    </div>
-                    <p class="text-slate-400 max-w-sm mb-6">Empowering students with premium educational resources, structured methodologies, and expert guidance to achieve extraordinary results.</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
-                    <ul class="flex flex-col gap-3">
-                        <li><a href="index.html" class="hover:text-blue-400 transition-colors">Home</a></li>
-                        <li><a href="about us.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
-                        <li><a href="papers & tutes.html" class="hover:text-blue-400 transition-colors">Papers & Tutes</a></li>
-                        <li><a href="contact us.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Contact</h4>
-                    <ul class="flex flex-col gap-3">
-                        <li>+94 71 915 14 15</li>
-                        <li>web.pradeepkathulawansha@gmail.com</li>
-                        <li>Kandy, Sri Lanka</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm relative">
-                <p>&copy; 2026 Pradeep K. Athulawansha. All rights reserved.</p>
-                <p class="text-slate-500">Designed for Excellence</p>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="absolute right-0 -top-6 w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg transition-colors">
-                    <i class="ph ph-caret-up"></i>
-                </button>
-            </div>
-        </div>
-    </footer>
-
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ once: true });
-        
-        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
-        
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if(window.scrollY > 20) {
-                nav.classList.add('glass-panel', 'py-3'); nav.classList.remove('bg-transparent', 'py-5');
-            } else {
-                nav.classList.remove('glass-panel', 'py-3'); nav.classList.add('bg-transparent', 'py-5');
-            }
-        });
-
-        // Resources Data
-        const resources = [
-            { title: '2020 A/L Exam Paper - Part 1', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1ul5BPlj3PbGAks9BJquPNiQlYZ8_os1e/view?usp=sharing', passcode: null },
-            { title: '2020 A/L Exam Paper - Part 2', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1f3jJO9_02p2QogpTspxPLX7FN0pqF3jC/view?usp=sharing', passcode: null },
-            { title: '2020 O/L Exam Paper - Part 1', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1jQVPypnstGYs9SGGzOpvWLzfQAuGkcTw/view?usp=sharing', passcode: null },
-            { title: '2020 O/L Exam Paper - Part 2', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1Pw-BXO8Ic2l2uZ0_QPzUIA60eqcOslwP/view?usp=sharing', passcode: null },
-            { title: 'මානව සම්පත් කලමණාකරණය - 16 පාඩම', category: 'A/L Tutes', desc: 'Comprehensive theory and exercises.', driveLink: 'https://drive.google.com/file/d/1Lu8yk0enZxr0ullmkSDGfc2J98SR0ly1/view?usp=sharing', passcode: 'T100245W' },
-            { title: 'ව්‍යාපාර සැලැස්ම හැදින්වීම -18 පාඩම', category: 'A/L Tutes', desc: 'In-depth diagrams and examples.', driveLink: 'https://drive.google.com/file/d/1nLFBBFymfCbokAADt7J9LL6o-HrzpeWB/view?usp=sharing', passcode: 'P340900G' },
-            { title: 'O-L Commerce Short Notes', category: 'O/L Tutes', desc: 'Quick revision notes.', driveLink: 'https://drive.google.com/file/d/1-YPEhBnpqAnJyv8ftCH-SO558WaT6hcA/view?usp=sharing', passcode: 'K230450E' }
-        ];
-
-        let currentTargetLink = '';
-        let currentRequiredPasscode = '';
-
-        function renderItems(category) {
-            const grid = document.getElementById('resourceGrid');
-            grid.innerHTML = '';
-            const filtered = resources.filter(res => res.category === category);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet.</p>`;
-                return;
-            }
-
-            filtered.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
-                const passArg = item.passcode ? `'${item.passcode}'` : 'null';
-
-                card.innerHTML = `
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#4285F4] to-[#34A853] text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-2xl shadow-md">
-                        <i class="ph-fill ph-google-drive-logo"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">${item.title}</h3>
-                    <p class="text-slate-600 mb-8 flex-grow">${item.desc}</p>
-                    <a href="${item.driveLink}" onclick="handleAccess(event, '${item.driveLink}', ${passArg})" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium bg-slate-100 text-slate-800 group-hover:bg-gradient-to-r group-hover:from-[#4285F4] group-hover:to-[#34A853] group-hover:text-white transition-all duration-300 shadow-sm cursor-pointer border border-slate-200 group-hover:border-transparent">
-                        <i class="ph ph-arrow-square-out text-xl"></i> <span>View / Download</span>
-                    </a>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function handleAccess(event, link, requiredPasscode) {
-            event.preventDefault(); 
-            if (link === '#' || link === '') { alert('File link not added yet!'); return; }
-
-            if (requiredPasscode !== null) {
-                currentTargetLink = link;
-                currentRequiredPasscode = requiredPasscode;
-                document.getElementById('passcodeInput').value = ''; 
-                document.getElementById('errorMessage').classList.add('opacity-0'); 
-                document.getElementById('passcodeModal').classList.remove('hidden'); 
-            } else {
-                window.open(link, '_blank');
-            }
-        }
-
-        function closeModal() { document.getElementById('passcodeModal').classList.add('hidden'); }
-
-        function verifyAndOpen() {
-            const userInput = document.getElementById('passcodeInput').value.trim();
-            if (userInput === currentRequiredPasscode) {
-                closeModal();
-                window.open(currentTargetLink, '_blank');
-            } else {
-                document.getElementById('errorMessage').classList.remove('opacity-0');
-            }
-        }
-
-        function filterItems(category, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
-                b.classList.add('glass-panel', 'text-slate-600');
-            });
-            btn.classList.remove('glass-panel', 'text-slate-600');
-            btn.classList.add('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
-            renderItems(category);
-        }
-
-        // Initialize grid on load
-        renderItems('AL Past Papers');
-    </script>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-        // Your Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
             authDomain: "pradeep-k-athulawansha.firebaseapp.com",
@@ -339,33 +194,66 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Track Auth State Changes (The Magic Part)
+        AOS.init({ once: true });
+        window.toggleMenu = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 20) {
+                nav.classList.add('glass-panel', 'py-3'); nav.classList.remove('bg-transparent', 'py-5');
+            } else {
+                nav.classList.remove('glass-panel', 'py-3'); nav.classList.add('bg-transparent', 'py-5');
+            }
+        });
+
+        // 1. Resources array (Added 'id' field for tracking unlocks)
+        const resources = [
+            { id: 'al_past_2020_p1', title: '2020 A/L Exam Paper - Part 1', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1ul5BPlj3PbGAks9BJquPNiQlYZ8_os1e/view?usp=sharing', passcode: null },
+            { id: 'al_past_2020_p2', title: '2020 A/L Exam Paper - Part 2', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1f3jJO9_02p2QogpTspxPLX7FN0pqF3jC/view?usp=sharing', passcode: null },
+            { id: 'ol_past_2020_p1', title: '2020 O/L Exam Paper - Part 1', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1jQVPypnstGYs9SGGzOpvWLzfQAuGkcTw/view?usp=sharing', passcode: null },
+            { id: 'ol_past_2020_p2', title: '2020 O/L Exam Paper - Part 2', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1Pw-BXO8Ic2l2uZ0_QPzUIA60eqcOslwP/view?usp=sharing', passcode: null },
+            { id: 'al_tute_16', title: 'මානව සම්පත් කලමණාකරණය - 16 පාඩම', category: 'A/L Tutes', desc: 'Comprehensive theory and exercises.', driveLink: 'https://drive.google.com/file/d/1Lu8yk0enZxr0ullmkSDGfc2J98SR0ly1/view?usp=sharing', passcode: 'T100245W' },
+            { id: 'al_tute_18', title: 'ව්‍යාපාර සැලැස්ම හැදින්වීම -18 පාඩම', category: 'A/L Tutes', desc: 'In-depth diagrams and examples.', driveLink: 'https://drive.google.com/file/d/1nLFBBFymfCbokAADt7J9LL6o-HrzpeWB/view?usp=sharing', passcode: 'P340900G' },
+            { id: 'ol_tute_shortnotes', title: 'O-L Commerce Short Notes', category: 'O/L Tutes', desc: 'Quick revision notes.', driveLink: 'https://drive.google.com/file/d/1-YPEhBnpqAnJyv8ftCH-SO558WaT6hcA/view?usp=sharing', passcode: 'K230450E' }
+        ];
+
+        // Global State for the User
+        let currentUser = null;
+        let currentUserUnlockedTutes = [];
+        let currentActiveCategory = 'AL Past Papers';
+
+        // Track Auth State Changes
         onAuthStateChanged(auth, async (user) => {
-            document.getElementById('loadingAuth').classList.add('hidden'); // Hide loader
-            
+            document.getElementById('loadingAuth').classList.add('hidden'); 
             if (user) {
-                // User is signed in -> Show Dashboard
+                currentUser = user;
                 document.getElementById('authContainer').classList.add('hidden');
                 document.getElementById('dashboardContainer').classList.remove('hidden');
                 
-                // Fetch User Name
                 try {
                     const docSnap = await getDoc(doc(db, "students", user.uid));
                     if (docSnap.exists()) {
-                        document.getElementById('welcomeMsg').innerText = "Welcome back, " + docSnap.data().fullName + "!";
+                        const data = docSnap.data();
+                        document.getElementById('welcomeMsg').innerText = "Welcome back, " + data.fullName + "!";
+                        // Load unlocked tutes list from Database
+                        if(data.unlockedTutes) {
+                            currentUserUnlockedTutes = data.unlockedTutes;
+                        }
                     }
-                } catch (e) {
-                    console.log("Error fetching user data", e);
-                }
+                } catch (e) { console.log(e); }
+                
+                // Render items after loading user data
+                window.renderItems(currentActiveCategory);
             } else {
-                // User is signed out -> Show Login
+                currentUser = null;
+                currentUserUnlockedTutes = [];
                 document.getElementById('dashboardContainer').classList.add('hidden');
                 document.getElementById('authContainer').classList.remove('hidden');
                 window.toggleAuthView('loginSection');
             }
         });
 
-        // Global UI Toggles for Auth
+        // UI Toggles
         window.toggleAuthView = function(showId) {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('signupSection').classList.add('hidden');
@@ -373,7 +261,121 @@
             document.getElementById(showId).classList.remove('hidden');
         }
 
-        // Global Firebase Functions
+        // Render Dashboard Items
+        window.renderItems = function(category) {
+            currentActiveCategory = category;
+            const grid = document.getElementById('resourceGrid');
+            grid.innerHTML = '';
+            const filtered = resources.filter(res => res.category === category);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet.</p>`;
+                return;
+            }
+
+            filtered.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
+                
+                // Check if this item is already unlocked by the student
+                const isUnlocked = item.passcode === null || currentUserUnlockedTutes.includes(item.id);
+                
+                // Dynamic styling based on locked/unlocked state
+                const iconClass = isUnlocked ? "ph-google-drive-logo" : "ph-lock-key";
+                const bgColors = isUnlocked ? "from-[#4285F4] to-[#34A853]" : "from-slate-600 to-slate-800";
+                const btnText = isUnlocked ? "View / Download" : "Unlock Document";
+                const btnClass = isUnlocked ? "bg-slate-100 text-slate-800 group-hover:bg-gradient-to-r group-hover:from-[#4285F4] group-hover:to-[#34A853] group-hover:text-white" : "bg-slate-800 text-white hover:bg-slate-700";
+                
+                // Convert passcode to string to pass to the handler securely
+                const passArg = item.passcode ? `'${item.passcode}'` : 'null';
+
+                card.innerHTML = `
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${bgColors} text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-2xl shadow-md">
+                        <i class="ph-fill ${iconClass}"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">${item.title}</h3>
+                    <p class="text-slate-600 mb-8 flex-grow">${item.desc}</p>
+                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', ${passArg})" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium ${btnClass} transition-all duration-300 shadow-sm border border-slate-200 group-hover:border-transparent">
+                        <i class="ph ph-${isUnlocked ? 'arrow-square-out' : 'lock'} text-xl"></i> <span>${btnText}</span>
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Modal Variables
+        let currentTargetId = '';
+        let currentTargetLink = '';
+        let currentRequiredPasscode = '';
+
+        // Handle Click on Document
+        window.handleAccess = function(event, id, link, requiredPasscode) {
+            event.preventDefault(); 
+            if (link === '#' || link === '') { alert('File link not added yet!'); return; }
+
+            // Check if already unlocked in user's profile or doesn't need a passcode
+            if (requiredPasscode === null || currentUserUnlockedTutes.includes(id)) {
+                window.open(link, '_blank');
+            } else {
+                // Needs passcode and not unlocked yet
+                currentTargetId = id;
+                currentTargetLink = link;
+                currentRequiredPasscode = requiredPasscode;
+                
+                document.getElementById('passcodeInput').value = ''; 
+                document.getElementById('errorMessage').classList.add('opacity-0'); 
+                document.getElementById('passcodeModal').classList.remove('hidden'); 
+            }
+        }
+
+        window.closeModal = function() { document.getElementById('passcodeModal').classList.add('hidden'); }
+
+        // Verify Passcode and Save to Database
+        window.verifyAndOpen = async function() {
+            const userInput = document.getElementById('passcodeInput').value.trim();
+            const btn = document.getElementById('verifyBtn');
+            
+            if (userInput === currentRequiredPasscode) {
+                btn.innerText = "Unlocking...";
+                btn.disabled = true;
+
+                try {
+                    // 1. Update Firestore Database (Save the unlocked ID)
+                    await updateDoc(doc(db, "students", currentUser.uid), {
+                        unlockedTutes: arrayUnion(currentTargetId)
+                    });
+                    
+                    // 2. Update Local Array
+                    currentUserUnlockedTutes.push(currentTargetId);
+                    
+                    // 3. Open PDF and close modal
+                    window.closeModal();
+                    window.open(currentTargetLink, '_blank');
+                    
+                    // 4. Refresh the UI to show the 'Unlocked' icon
+                    window.renderItems(currentActiveCategory);
+                } catch (error) {
+                    alert("Error saving unlock data. Please try again.");
+                } finally {
+                    btn.innerText = "Unlock Permanently";
+                    btn.disabled = false;
+                }
+            } else {
+                document.getElementById('errorMessage').classList.remove('opacity-0');
+            }
+        }
+
+        window.filterItems = function(category, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
+                b.classList.add('glass-panel', 'text-slate-600');
+            });
+            btn.classList.remove('glass-panel', 'text-slate-600');
+            btn.classList.add('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
+            window.renderItems(category);
+        }
+
+        // Firebase Auth Functions
         window.registerUser = async function() {
             const name = document.getElementById('regName').value;
             const dob = document.getElementById('regDob').value;
@@ -388,8 +390,9 @@
             btn.disabled = true; btn.innerText = "Processing...";
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
+                // අලුත් ළමයෙක් හැදෙද්දි unlockedTutes කියන හිස් Array එකකුත් එකතු වෙනවා
                 await setDoc(doc(db, "students", userCred.user.uid), {
-                    fullName: name, birthday: dob, email: email, phone: phone, username: username, role: "student"
+                    fullName: name, birthday: dob, email: email, phone: phone, username: username, role: "student", unlockedTutes: []
                 });
                 alert("Account Created! You are now logged in.");
             } catch (error) {
@@ -408,7 +411,6 @@
             btn.disabled = true; btn.innerText = "Logging in...";
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // View toggle handled by onAuthStateChanged
             } catch (error) {
                 alert("Login Failed: Invalid Email or Password.");
                 btn.disabled = false; btn.innerText = "Log In to Portal";
@@ -435,11 +437,8 @@
         window.logoutUser = async function() {
             try {
                 await signOut(auth);
-                // Clearing inputs
                 document.querySelectorAll('.auth-input').forEach(input => input.value = '');
-            } catch (error) {
-                alert("Error logging out.");
-            }
+            } catch (error) { alert("Error logging out."); }
         }
     </script>
 </body>
