@@ -43,4 +43,401 @@
         .intro-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 700; color: white; opacity: 0; animation: fadeUp 0.6s ease forwards 0.3s; line-height: 1.1; }
         .intro-title span { background: linear-gradient(to right, #3b82f6, #a855f7); -webkit-background-clip: text; color: transparent; }
         .intro-subtitle { font-size: clamp(0.9rem, 3vw, 1.1rem); color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: fadeUp 0.6s ease forwards 0.6s; margin-top: 1rem; }
-        .loading-bar-container { width: min(200px, 80%); height: 4px; background: rgba(255,255,2
+        .loading-bar-container { width: min(200px, 80%); height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 2rem; overflow: hidden; opacity: 0; animation: fadeIn 0.4s ease forwards 0.9s; }
+        .loading-bar { height: 100%; width: 0%; background: linear-gradient(to right, #3b82f6, #a855f7); animation: loadProgress 1.5s ease-in-out forwards 1s; }
+        .hide-intro { transform: translateY(-100%); }
+
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
+
+        /* --- INTERACTIVE SIMULATION CSS --- */
+        .sim-container { position: relative; width: 100%; height: 250px; background: #0f172a; border-radius: 1rem; overflow: hidden; border: 2px solid #1e293b; }
+        .sim-factory { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 180px; height: 180px; z-index: 10; transition: transform 0.3s; }
+        .sim-gear { transform-origin: center; animation: spin var(--sim-speed) linear infinite; fill: var(--sim-success-color); transition: fill 0.3s; }
+        .sim-smoke { animation: smokeRise var(--sim-speed) linear infinite; fill: #334155; }
+        
+        .sim-entity { position: absolute; top: 120px; font-size: 28px; opacity: 0; z-index: 5; transition: top 0.3s, font-size 0.3s; }
+        .sim-input-entity { animation: simEnter var(--sim-speed) linear infinite; color: #94a3b8; }
+        .sim-output-entity { animation: simExit var(--sim-speed) linear infinite; color: var(--sim-success-color); text-shadow: 0 0 10px var(--sim-success-color); transition: color 0.3s; }
+
+        @media (max-width: 640px) {
+            .sim-container { height: 200px; }
+            .sim-factory { transform: translate(-50%, -50%) scale(0.75); }
+            .sim-entity { top: 95px; font-size: 22px; }
+        }
+
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes smokeRise { 0% { transform: translateY(0) scale(1); opacity: 0.8; } 100% { transform: translateY(-40px) scale(1.5); opacity: 0; } }
+        @keyframes simEnter {
+            0% { left: -10%; opacity: 0; transform: scale(0.8); }
+            20% { opacity: 1; }
+            45% { left: 45%; opacity: 1; transform: scale(1); }
+            50% { left: 50%; opacity: 0; }
+            100% { left: 50%; opacity: 0; }
+        }
+        @keyframes simExit {
+            0% { left: 50%; opacity: 0; }
+            50% { left: 50%; opacity: 0; transform: scale(0.8); }
+            55% { left: 55%; opacity: 1; transform: scale(1); }
+            80% { opacity: 1; }
+            100% { left: 110%; opacity: 0; }
+        }
+        
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; }
+        #effort-slider::-webkit-slider-thumb { background: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+        #quality-slider::-webkit-slider-thumb { background: #a855f7; box-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
+
+        /* --- Infinite Marquee --- */
+        .marquee-container { overflow: hidden; white-space: nowrap; width: 100vw; margin-left: calc(-50vw + 50%); background: #0f172a; padding: 1.2rem 0; transform: rotate(-1.5deg) scale(1.05); margin-top: 2rem; margin-bottom: 3rem; z-index: 10; position: relative; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1);}
+        .marquee-content { display: inline-block; animation: marquee 25s linear infinite; color: white; font-weight: 500; text-transform: uppercase; letter-spacing: 3px; }
+        .marquee-content span { color: #3b82f6; margin: 0 15px; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col text-slate-800">
+
+    <div id="scroll-progress"></div>
+
+    <div id="pka-intro">
+        <h1 class="intro-title">Pradeep K.<br><span>Athulawansha</span></h1>
+        <p class="intro-subtitle">Mastering Business Studies</p>
+        <div class="loading-bar-container"><div class="loading-bar"></div></div>
+    </div>
+
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-orange-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-4000"></div>
+    </div>
+
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-5">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                <i class="ph ph-book-open text-blue-600"></i> Business Studies
+            </a>
+            <nav class="hidden md:flex gap-8 items-center">
+                <a href="index.html" class="font-medium text-blue-600">Home</a>
+                <a href="about us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">About Us</a>
+                <a href="papers & tutes.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Papers & Tutes</a>
+                <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
+                <a href="contact us.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all hover:-translate-y-1">Join Now</a>
+                <a href="log in.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all hover:-translate-y-1">Log in</a>
+            </nav>
+            <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden absolute top-full left-0 w-full glass-panel flex flex-col py-4 px-6 md:hidden shadow-2xl border-t border-white/20">
+            <a href="index.html" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Home</a>
+            <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
+            <a href="papers & tutes.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Papers & Tutes</a>
+            <a href="contact us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Contact</a>
+            <a href="Awurudu Special.html" class="py-3 text-slate-700 font-medium text-red-600">Awurudu Special</a>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-12 flex-grow relative z-10">
+        
+        <div class="container mx-auto px-6 md:px-12">
+            <section class="flex flex-col-reverse md:flex-row items-center justify-between gap-12 min-h-[70vh]">
+                <div class="md:w-1/2 flex flex-col gap-6 text-center md:text-left items-center md:items-start" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-blue-100/50 text-blue-700 font-semibold text-sm w-max border border-blue-200 shadow-sm backdrop-blur-sm">
+                        Empowering the Next Generation
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight">
+                        Learn with <br />
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500">
+                            Pradeep K. Athulawansha
+                        </span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-600 max-w-lg">
+                        Master your subjects with specialized techniques, comprehensive study materials, and a proven track record of producing top island ranks.
+                    </p>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
+                        <a href="contact us.html" class="px-8 py-3 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 hover:-translate-y-1 flex items-center gap-2">
+                            Start Learning <i class="ph ph-arrow-right"></i>
+                        </a>
+                        <a href="papers & tutes.html" class="px-8 py-3 rounded-full glass-panel font-medium hover:bg-white transition-all hover:-translate-y-1 shadow-lg">
+                            View Papers
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 w-full max-w-md lg:max-w-none mx-auto" data-aos="zoom-in" data-aos-duration="1000">
+                    <div class="w-full aspect-square md:aspect-auto md:h-[500px] lg:h-[600px] rounded-[3rem] bg-gradient-to-tr from-blue-500/20 to-purple-500/20 backdrop-blur-3xl border border-white/40 shadow-2xl relative overflow-hidden flex items-center justify-center p-8 group">
+                        <div class="absolute inset-0 bg-[url('main.jpg')] bg-cover bg-center opacity-70 mix-blend-overlay rounded-[3rem] group-hover:scale-105 transition-transform duration-700"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="marquee-container shadow-2xl">
+            <div class="marquee-content text-xs sm:text-sm md:text-base">
+                Island Rankings <span>✦</span> 100% Syllabus Coverage <span>✦</span> Interactive Tutes <span>✦</span> Personal Attention <span>✦</span> Proven Results <span>✦</span> 
+                Island Rankings <span>✦</span> 100% Syllabus Coverage <span>✦</span> Interactive Tutes <span>✦</span> Personal Attention <span>✦</span> Proven Results <span>✦</span>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 md:px-12">
+            <section class="py-16 my-6" data-aos="fade-up">
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 md:p-12 shadow-xl border border-white/60">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">The Result Transformation</h2>
+                        <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">In business, inputs determine outputs. See how combining your effort with our expert teaching methods produces professional, high-ranking results.</p>
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+                        <div class="w-full lg:w-1/3 space-y-8 bg-white/60 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/50 shadow-sm">
+                            <div>
+                                <label class="flex justify-between text-sm font-bold text-slate-700 mb-3">
+                                    <span class="flex items-center gap-2"><i class="ph ph-user text-blue-500 text-lg"></i> Student Effort</span> 
+                                    <span id="effort-val" class="text-blue-600 bg-blue-100 px-2 py-0.5 rounded shadow-sm">50%</span>
+                                </label>
+                                <input type="range" id="effort-slider" min="10" max="100" value="50" class="w-full h-2 bg-slate-200 rounded-lg appearance-none outline-none">
+                            </div>
+                            <div>
+                                <label class="flex justify-between text-sm font-bold text-slate-700 mb-3">
+                                    <span class="flex items-center gap-2"><i class="ph ph-chalkboard-teacher text-purple-500 text-lg"></i> Teaching Quality</span> 
+                                    <span id="quality-val" class="text-purple-600 bg-purple-100 px-2 py-0.5 rounded shadow-sm">90%</span>
+                                </label>
+                                <input type="range" id="quality-slider" min="50" max="100" value="90" class="w-full h-2 bg-slate-200 rounded-lg appearance-none outline-none">
+                            </div>
+                            <div class="pt-6 border-t border-slate-200/60 text-center">
+                                <p class="text-xs sm:text-sm text-slate-500 uppercase tracking-wider font-semibold mb-1">Projected Output</p>
+                                <div class="text-4xl sm:text-5xl font-bold text-slate-800 flex items-center justify-center gap-2">
+                                    <span id="success-rate">70</span><span class="text-2xl text-slate-500">%</span>
+                                </div>
+                                <p id="success-msg" class="text-blue-600 text-sm font-medium mt-2">Solid Foundation.</p>
+                            </div>
+                        </div>
+
+                        <div class="w-full lg:w-2/3">
+                            <div class="sim-container shadow-inner">
+                                <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 20px 20px;"></div>
+                                
+                                <svg class="sim-factory" viewBox="0 0 200 200">
+                                    <circle class="sim-smoke" cx="140" cy="40" r="15" />
+                                    <circle class="sim-smoke" cx="140" cy="60" r="10" style="animation-delay: 0.5s;" />
+                                    <path d="M40,160 L40,80 L80,50 L120,80 L160,50 L160,160 Z" fill="#1e293b" stroke="#475569" stroke-width="4" stroke-linejoin="round"/>
+                                    <rect x="90" y="100" width="20" height="20" fill="#334155" />
+                                    <path class="sim-gear" d="M120,60 l2,-4 l4,0 l2,4 l4,2 l0,4 l-4,2 l-2,4 l-4,0 l-2,-4 l-4,-2 l0,-4 z" />
+                                    <path class="sim-gear" style="animation-delay: -1s;" d="M80,60 l2,-4 l4,0 l2,4 l4,2 l0,4 l-4,2 l-2,4 l-4,0 l-2,-4 l-4,-2 l0,-4 z" />
+                                </svg>
+
+                                <div class="sim-entity sim-input-entity" style="animation-delay: 0s;"><i class="ph ph-student"></i></div>
+                                <div class="sim-entity sim-input-entity" style="animation-delay: 1.3s;"><i class="ph ph-student"></i></div>
+                                <div class="sim-entity sim-input-entity" style="animation-delay: 2.6s;"><i class="ph ph-student"></i></div>
+
+                                <div class="sim-entity sim-output-entity" style="animation-delay: 0.6s;"><i class="ph-fill ph-briefcase"></i></div>
+                                <div class="sim-entity sim-output-entity" style="animation-delay: 1.9s;"><i class="ph-fill ph-briefcase"></i></div>
+                                <div class="sim-entity sim-output-entity" style="animation-delay: 3.2s;"><i class="ph-fill ph-briefcase"></i></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] sm:text-xs text-slate-500 mt-3 uppercase tracking-wider font-semibold px-2 sm:px-4">
+                                <span>Input</span>
+                                <span class="hidden sm:inline">Transformation</span>
+                                <span>Output</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                    <div class="glass-panel p-8 rounded-3xl text-center flex flex-col items-center gap-4 hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up" data-aos-delay="0">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 text-white flex items-center justify-center shadow-lg text-3xl"><i class="ph ph-users"></i></div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-slate-800">5000+</h3>
+                        <p class="text-slate-600 font-medium">Students Taught</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-3xl text-center flex flex-col items-center gap-4 hover:-translate-y-2 transition-transform duration-300" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 text-white flex items-center justify-center shadow-lg text-3xl"><i class="ph ph-medal"></i></div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-slate-800">15+</h3>
+                        <p class="text-slate-600 font-medium">Years Experience</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-3xl text-center flex flex-col items-center gap-4 hover:-translate-y-2 transition-transform duration-300 sm:col-span-2 md:col-span-1" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 text-white flex items-center justify-center shadow-lg text-3xl"><i class="ph ph-check-circle"></i></div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-slate-800">100%</h3>
+                        <p class="text-slate-600 font-medium">Syllabus Coverage</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 rounded-t-[3rem] mt-12 relative z-10">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 text-2xl font-bold text-white mb-6">
+                        <i class="ph ph-book-open text-blue-500"></i> BS with Pradeep K. Athulawansha
+                    </div>
+                    <p class="text-slate-400 max-w-sm mb-6">Empowering students with premium educational resources, structured methodologies, and expert guidance.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xl hover:bg-blue-600 hover:-translate-y-1 hover:text-white transition-all shadow-lg"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xl hover:bg-pink-600 hover:-translate-y-1 hover:text-white transition-all shadow-lg"><i class="ph ph-instagram-logo"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xl hover:bg-red-600 hover:-translate-y-1 hover:text-white transition-all shadow-lg"><i class="ph ph-youtube-logo"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
+                    <ul class="flex flex-col gap-3">
+                        <li><a href="index.html" class="hover:text-blue-400 hover:translate-x-1 inline-block transition-transform">Home</a></li>
+                        <li><a href="about us.html" class="hover:text-blue-400 hover:translate-x-1 inline-block transition-transform">About Us</a></li>
+                        <li><a href="papers & tutes.html" class="hover:text-blue-400 hover:translate-x-1 inline-block transition-transform">Papers & Tutes</a></li>
+                        <li><a href="contact us.html" class="hover:text-blue-400 hover:translate-x-1 inline-block transition-transform">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Contact</h4>
+                    <ul class="flex flex-col gap-3">
+                        <li class="flex items-center gap-2"><i class="ph ph-phone text-blue-500"></i> +94 71 915 14 15</li>
+                        <li class="flex items-center gap-2"><i class="ph ph-envelope text-blue-500"></i> web.pradeepk@gmail.com</li>
+                        <li class="flex items-center gap-2"><i class="ph ph-map-pin text-blue-500"></i> Kandy, Sri Lanka</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm relative text-center md:text-left">
+                <p>&copy; 2026 Pradeep K. Athulawansha. All rights reserved.</p>
+                <p class="text-slate-500">Designed for Excellence | Powered by Pixel Craft Studio</p>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="absolute md:right-0 right-1/2 md:translate-x-0 translate-x-1/2 -top-6 w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg shadow-blue-600/30 transition-colors">
+                    <i class="ph ph-caret-up"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <a href="contact us.html" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-[0_0_15px_rgba(34,197,94,0.5)] hover:scale-110 hover:shadow-[0_0_25px_rgba(34,197,94,0.7)] transition-all z-40 animate-[bounce_2s_infinite]">
+        <i class="ph-fill ph-whatsapp-logo"></i>
+    </a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // --- SPLASH SCREEN & AOS LOGIC ---
+        document.addEventListener("DOMContentLoaded", function() {
+            document.body.style.overflow = 'hidden';
+            setTimeout(function() {
+                const introElement = document.getElementById('pka-intro');
+                if(introElement) {
+                    introElement.classList.add('hide-intro');
+                }
+                setTimeout(function() {
+                    document.body.style.overflow = 'auto';
+                    document.body.style.overflowX = 'hidden';
+                    AOS.init({ once: true, offset: 50 });
+                }, 800);
+            }, 2500); 
+
+            // --- INTERACTIVE SIMULATOR LOGIC ---
+            const effortSlider = document.getElementById('effort-slider');
+            const qualitySlider = document.getElementById('quality-slider');
+            const effortVal = document.getElementById('effort-val');
+            const qualityVal = document.getElementById('quality-val');
+            const successRate = document.getElementById('success-rate');
+            const successMsg = document.getElementById('success-msg');
+            
+            if (effortSlider && qualitySlider && effortVal && qualityVal && successRate && successMsg) {
+                
+                function updateSimulation() {
+                    const effort = parseInt(effortSlider.value);
+                    const quality = parseInt(qualitySlider.value);
+                    
+                    effortVal.innerText = effort + '%';
+                    qualityVal.innerText = quality + '%';
+                    
+                    const average = Math.round((effort + quality) / 2);
+                    successRate.innerText = average;
+                    
+                    if(average >= 90) {
+                        successMsg.innerText = "Island Rank Potential! 🏆";
+                        successMsg.className = "text-orange-500 text-sm font-bold mt-2";
+                        document.documentElement.style.setProperty('--sim-success-color', '#f97316'); 
+                    } else if (average >= 75) {
+                        successMsg.innerText = "Guaranteed 'A' Pass! ⭐";
+                        successMsg.className = "text-purple-500 text-sm font-bold mt-2";
+                        document.documentElement.style.setProperty('--sim-success-color', '#a855f7'); 
+                    } else {
+                        successMsg.innerText = "Solid Foundation.";
+                        successMsg.className = "text-blue-500 text-sm font-medium mt-2";
+                        document.documentElement.style.setProperty('--sim-success-color', '#3b82f6'); 
+                    }
+
+                    let speed = 7.5 - (average * 0.06); 
+                    document.documentElement.style.setProperty('--sim-speed', speed + 's');
+                }
+
+                effortSlider.addEventListener('input', updateSimulation);
+                qualitySlider.addEventListener('input', updateSimulation);
+                updateSimulation();
+            }
+        });
+        
+        // --- MOBILE MENU ---
+        function toggleMenu() { 
+            const menu = document.getElementById('mobileMenu');
+            if(menu) menu.classList.toggle('hidden'); 
+        }
+        
+        // --- NAVBAR & SCROLL PROGRESS ---
+        window.addEventListener('scroll', () => {
+            // Navbar behavior
+            const nav = document.getElementById('navbar');
+            if(nav) {
+                if(window.scrollY > 20) {
+                    nav.classList.add('glass-panel', 'py-3');
+                    nav.classList.remove('bg-transparent', 'py-5');
+                } else {
+                    nav.classList.remove('glass-panel', 'py-3');
+                    nav.classList.add('bg-transparent', 'py-5');
+                }
+            }
+            
+            // Scroll Progress Bar behavior
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+        });
+    </script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set the target date: April 14, 2026 at 12:06:00 PM
+            const targetDate = new Date("April 14, 2026 12:06:00").getTime();
+
+            const countdownInterval = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                // Time calculations
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Update the HTML (Pad with zero if less than 10)
+                const daysEl = document.getElementById("cd-days");
+                if(daysEl) {
+                    daysEl.innerText = days < 10 ? "0" + days : days;
+                    document.getElementById("cd-hours").innerText = hours < 10 ? "0" + hours : hours;
+                    document.getElementById("cd-minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+                    document.getElementById("cd-seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+                }
+
+                // If the countdown is over, show a celebration message
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    const countdownContainer = document.getElementById("awurudu-countdown");
+                    if(countdownContainer) {
+                        countdownContainer.innerHTML = `
+                            <div class="bg-gradient-to-r from-red-600 to-orange-500 text-white px-6 py-3 rounded-xl font-bold text-xl shadow-lg flex items-center gap-2 animate-[pulse_2s_infinite]">
+                                <i class="ph-fill ph-fire text-2xl"></i> නැකත උදා විය! සුබ අලුත් අවුරුද්දක් වේවා!
+                            </div>
+                        `;
+                    }
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
