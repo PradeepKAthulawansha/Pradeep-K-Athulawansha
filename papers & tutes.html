@@ -40,7 +40,7 @@
     <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-5">
         <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                <i class="ph ph-book-open text-blue-600"></i> Business Studies With Pradeep K. Athulawansha
+                <i class="ph ph-book-open text-blue-600"></i> Business Studies With Pradeep
             </a>
             <nav class="hidden md:flex gap-8 items-center">
                 <a href="index.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</a>
@@ -48,7 +48,6 @@
                 <a href="papers & tutes.html" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Papers & Tutes</a>
                 <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
                 <a href="contact us.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Join Now</a>
-                <a href="Awurudu Special.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all hover:-translate-y-1">Awurudu Special</a>
             </nav>
             <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
         </div>
@@ -57,7 +56,6 @@
             <a href="index.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Home</a>
             <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
             <a href="papers & tutes.html" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Papers & Tutes</a>
-            <a href="Awurudu Special.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Awurudu Special</a>
             <a href="contact us.html" class="py-3 text-slate-700 font-medium">Contact</a>
         </div>
     </header>
@@ -70,14 +68,12 @@
             </div>
 
             <div id="authContainer" class="max-w-md mx-auto hidden mt-10">
-                
                 <div id="loginSection" class="auth-glass p-10 rounded-3xl text-center" data-aos="fade-up">
                     <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
                     <h2 class="text-2xl font-bold mb-1 text-slate-800">Student Login</h2>
                     <p class="text-slate-500 mb-6 text-sm">Access your exclusive study materials</p>
                     
                     <input type="email" id="loginEmail" class="auth-input" placeholder="Email Address">
-                    
                     <div class="relative mb-3">
                         <input type="password" id="loginPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Password">
                         <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl transition-colors outline-none">
@@ -193,7 +189,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        // New: Added getDocs, collection, query, orderBy to fetch resources
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
@@ -211,45 +208,36 @@
         AOS.init({ once: true });
         window.toggleMenu = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
         
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if(window.scrollY > 20) {
-                nav.classList.add('glass-panel', 'py-3'); nav.classList.remove('bg-transparent', 'py-5');
-            } else {
-                nav.classList.remove('glass-panel', 'py-3'); nav.classList.add('bg-transparent', 'py-5');
-            }
-        });
-
-        // Show/Hide Password Toggle Function (New addition)
         window.togglePassword = function(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.replace("ph-eye", "ph-eye-slash");
-            } else {
-                input.type = "password";
-                icon.classList.replace("ph-eye-slash", "ph-eye");
-            }
+            if (input.type === "password") { input.type = "text"; icon.classList.replace("ph-eye", "ph-eye-slash"); } 
+            else { input.type = "password"; icon.classList.replace("ph-eye-slash", "ph-eye"); }
         }
 
-        const resources = [
-            { id: 'al_past_2020_p1', title: '2020 A/L Exam Paper - Part 1', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1ul5BPlj3PbGAks9BJquPNiQlYZ8_os1e/view?usp=sharing', passcode: null },
-            { id: 'al_past_2020_p2', title: '2020 A/L Exam Paper - Part 2', category: 'AL Past Papers', desc: 'Complete past paper and marking scheme.', driveLink: 'https://drive.google.com/file/d/1f3jJO9_02p2QogpTspxPLX7FN0pqF3jC/view?usp=sharing', passcode: null },
-            { id: 'ol_past_2020_p1', title: '2020 O/L Exam Paper - Part 1', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1jQVPypnstGYs9SGGzOpvWLzfQAuGkcTw/view?usp=sharing', passcode: null },
-            { id: 'ol_past_2020_p2', title: '2020 O/L Exam Paper - Part 2', category: 'OL Past Papers', desc: 'Complete past paper for O/L students.', driveLink: 'https://drive.google.com/file/d/1Pw-BXO8Ic2l2uZ0_QPzUIA60eqcOslwP/view?usp=sharing', passcode: null },
-            { id: 'al_tute_16', title: 'මානව සම්පත් කලමණාකරණය - 16 පාඩම', category: 'A/L Tutes', desc: 'Comprehensive theory and exercises.', driveLink: 'https://drive.google.com/file/d/1Lu8yk0enZxr0ullmkSDGfc2J98SR0ly1/view?usp=sharing', passcode: 'T100245W' },
-            { id: 'al_tute_18', title: 'ව්‍යාපාර සැලැස්ම හැදින්වීම -18 පාඩම', category: 'A/L Tutes', desc: 'In-depth diagrams and examples.', driveLink: 'https://drive.google.com/file/d/1nLFBBFymfCbokAADt7J9LL6o-HrzpeWB/view?usp=sharing', passcode: 'P340900G' },
-            { id: 'ol_tute_shortnotes', title: 'O-L Commerce Short Notes', category: 'O/L Tutes', desc: 'Quick revision notes.', driveLink: 'https://drive.google.com/file/d/1-YPEhBnpqAnJyv8ftCH-SO558WaT6hcA/view?usp=sharing', passcode: 'K230450E' }
-        ];
-
+        // We will store resources fetched from DB here
+        let dbResources = [];
         let currentUser = null;
         let currentUserUnlockedTutes = [];
         let currentActiveCategory = 'AL Past Papers';
 
+        // Fetch Resources from Firebase Database
+        async function fetchResourcesFromDB() {
+            try {
+                const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                dbResources = [];
+                querySnapshot.forEach((doc) => {
+                    dbResources.push(doc.data());
+                });
+            } catch (error) {
+                console.error("Error fetching resources:", error);
+            }
+        }
+
         onAuthStateChanged(auth, async (user) => {
             document.getElementById('loadingAuth').classList.add('hidden'); 
-            if (user) {
+            if (user && user.email !== "admin@pradeepk.com") {
                 currentUser = user;
                 document.getElementById('authContainer').classList.add('hidden');
                 document.getElementById('dashboardContainer').classList.remove('hidden');
@@ -263,7 +251,10 @@
                     }
                 } catch (e) { console.log(e); }
                 
+                // Fetch the papers Admin uploaded and render them
+                await fetchResourcesFromDB();
                 window.renderItems(currentActiveCategory);
+                
             } else {
                 currentUser = null;
                 currentUserUnlockedTutes = [];
@@ -284,10 +275,12 @@
             currentActiveCategory = category;
             const grid = document.getElementById('resourceGrid');
             grid.innerHTML = '';
-            const filtered = resources.filter(res => res.category === category);
+            
+            // Filter the dynamically fetched array
+            const filtered = dbResources.filter(res => res.category === category);
             
             if (filtered.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet.</p>`;
+                grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet. Check back later!</p>`;
                 return;
             }
 
@@ -295,7 +288,7 @@
                 const card = document.createElement('div');
                 card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
                 
-                const isUnlocked = item.passcode === null || currentUserUnlockedTutes.includes(item.id);
+                const isUnlocked = item.passcode === null || item.passcode === "" || currentUserUnlockedTutes.includes(item.id);
                 const iconClass = isUnlocked ? "ph-google-drive-logo" : "ph-lock-key";
                 const bgColors = isUnlocked ? "from-[#4285F4] to-[#34A853]" : "from-slate-600 to-slate-800";
                 const btnText = isUnlocked ? "View / Download" : "Unlock Document";
@@ -389,7 +382,7 @@
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
                 await setDoc(doc(db, "students", userCred.user.uid), {
-                    fullName: name, birthday: dob, email: email, phone: phone, username: username, role: "student", unlockedTutes: []
+                    fullName: name, birthday: dob, email: email, phone: phone, username: username, role: "student", unlockedTutes: [], createdAt: new Date()
                 });
                 alert("Account Created! You are now logged in.");
             } catch (error) {
