@@ -47,7 +47,6 @@
                 <a href="about us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">About Us</a>
                 <a href="papers & tutes.html" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Papers & Tutes</a>
                 <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
-                <a href="contact us.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Join Now</a>
             </nav>
             <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
         </div>
@@ -76,13 +75,12 @@
                     <input type="email" id="loginEmail" class="auth-input" placeholder="Email Address">
                     <div class="relative mb-3">
                         <input type="password" id="loginPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Password">
-                        <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl transition-colors outline-none">
+                        <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none">
                             <i id="loginEye" class="ph ph-eye"></i>
                         </button>
                     </div>
 
                     <button id="loginBtn" class="auth-btn mt-2" onclick="window.loginUser()">Log In to Portal</button>
-                    
                     <div class="flex justify-between mt-6 px-2">
                         <span class="link-text" onclick="window.toggleAuthView('forgotSection')">Forgot Password?</span>
                         <span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span>
@@ -100,10 +98,9 @@
                     </div>
                     <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
                     <input type="text" id="regUsername" class="auth-input" placeholder="Username">
-                    
                     <div class="relative mb-3">
                         <input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Create Password">
-                        <button type="button" onclick="window.togglePassword('regPassword', 'regEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl transition-colors outline-none">
+                        <button type="button" onclick="window.togglePassword('regPassword', 'regEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none">
                             <i id="regEye" class="ph ph-eye"></i>
                         </button>
                     </div>
@@ -119,7 +116,6 @@
                     <div class="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-lock-key-open"></i></div>
                     <h2 class="text-2xl font-bold mb-1 text-slate-800">Reset Password</h2>
                     <p class="text-slate-500 mb-6 text-sm">Enter your email to receive a reset link</p>
-                    
                     <input type="email" id="forgotEmail" class="auth-input" placeholder="Registered Email">
                     <button id="resetBtn" class="auth-btn mb-4" onclick="window.resetUserPassword()">Send Reset Link</button>
                     <span class="link-text" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Login</span>
@@ -127,7 +123,8 @@
             </div>
 
             <div id="dashboardContainer" class="hidden">
-                <div class="glass-panel p-6 rounded-2xl mb-10 flex flex-col md:flex-row justify-between items-center gap-4" data-aos="fade-down">
+                
+                <div class="glass-panel p-6 rounded-2xl mb-6 flex flex-col md:flex-row justify-between items-center gap-4" data-aos="fade-down">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center text-xl font-bold shadow-md">
                             <i class="ph-fill ph-student"></i>
@@ -137,9 +134,28 @@
                             <h2 id="welcomeMsg" class="text-xl font-bold text-slate-800">Welcome back!</h2>
                         </div>
                     </div>
-                    <button onclick="window.logoutUser()" class="px-6 py-2 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 hover:border-red-200 font-medium transition-colors flex items-center gap-2">
-                        <i class="ph ph-sign-out"></i> Log Out
-                    </button>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 rounded-full border-2 border-blue-100 text-blue-600 hover:bg-blue-50 hover:border-blue-200 font-medium transition-colors flex items-center gap-2">
+                            <i class="ph ph-gear text-lg"></i> <span class="hidden md:inline">Profile</span>
+                        </button>
+                        <button onclick="window.logoutUser()" class="px-4 py-2 md:px-6 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 hover:border-red-200 font-medium transition-colors flex items-center gap-2">
+                            <i class="ph ph-sign-out text-lg"></i> <span class="hidden md:inline">Log Out</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="noticeBoard" class="hidden bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-6 mb-10 text-white shadow-lg relative overflow-hidden" data-aos="fade-down">
+                    <div class="absolute -right-10 -top-10 text-white/20 text-9xl"><i class="ph-fill ph-megaphone"></i></div>
+                    <div class="relative z-10 flex flex-col md:flex-row items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-2xl shrink-0"><i class="ph-fill ph-bell-ringing"></i></div>
+                        <div class="flex-grow">
+                            <h3 id="noticeTitleDisplay" class="text-xl font-bold mb-1">Notice Title</h3>
+                            <p id="noticeMessageDisplay" class="text-orange-50 max-w-2xl text-sm md:text-base">Notice message goes here...</p>
+                            <p id="noticeDateDisplay" class="text-xs font-medium text-orange-200 mt-3"></p>
+                        </div>
+                        <button onclick="document.getElementById('noticeBoard').classList.add('hidden')" class="md:ml-auto text-white/70 hover:text-white text-xl p-2"><i class="ph ph-x"></i></button>
+                    </div>
                 </div>
 
                 <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
@@ -162,25 +178,53 @@
 
     <div id="passcodeModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 transition-opacity">
         <div class="bg-white w-full max-w-md p-8 rounded-3xl relative shadow-2xl modal-animate border border-slate-100">
-            <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors text-2xl">
-                <i class="ph ph-x"></i>
-            </button>
-            
-            <div class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-3xl mb-6 mx-auto">
-                <i class="ph-fill ph-lock-key"></i>
-            </div>
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors text-2xl"><i class="ph ph-x"></i></button>
+            <div class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-3xl mb-6 mx-auto"><i class="ph-fill ph-lock-key"></i></div>
             <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Protected Document</h3>
             <p class="text-slate-500 mb-6 text-center text-sm">Enter the access code provided to you to unlock this document permanently.</p>
-            
-            <input type="text" id="passcodeInput" class="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all mb-2 text-center text-lg font-medium tracking-widest placeholder:tracking-normal" placeholder="Enter Access Code">
-            
+            <input type="text" id="passcodeInput" class="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 mb-2 text-center text-lg font-medium tracking-widest placeholder:tracking-normal" placeholder="Enter Access Code">
             <p id="errorMessage" class="text-red-500 text-sm text-center font-medium h-5 mb-4 opacity-0 transition-opacity">Incorrect access code. Please try again.</p>
-            
             <button id="verifyBtn" onclick="window.verifyAndOpen()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/30 transition-all active:scale-[0.98] mb-4">
                 Unlock Permanently
             </button>
-            <div class="text-center">
-                <a href="contact us.html" class="text-sm text-blue-600 hover:underline font-medium">Click Here To Purchase Code</a>
+            <div class="text-center"><a href="contact us.html" class="text-sm text-blue-600 hover:underline font-medium">Click Here To Purchase Code</a></div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 transition-opacity">
+        <div class="bg-white w-full max-w-md p-8 rounded-3xl relative shadow-2xl modal-animate border border-slate-100">
+            <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors text-2xl"><i class="ph ph-x"></i></button>
+            <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center text-3xl mb-4 mx-auto"><i class="ph-fill ph-user-gear"></i></div>
+            <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">My Profile</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-slate-500">Full Name</label>
+                    <input type="text" id="profName" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-slate-500">Email Address</label>
+                    <input type="email" id="profEmail" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-slate-700">Phone Number <span class="text-blue-500">*</span></label>
+                    <input type="tel" id="profPhone" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1 text-slate-700">New Password <span class="text-xs text-slate-400 font-normal">(Leave blank to keep current)</span></label>
+                    <div class="relative">
+                        <input type="password" id="profPassword" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300 pr-12" placeholder="Enter new password">
+                        <button type="button" onclick="window.togglePassword('profPassword', 'profEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none">
+                            <i id="profEye" class="ph ph-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="profStatus" class="p-3 text-center text-sm font-medium rounded-xl hidden mt-2"></div>
+                
+                <button id="profSaveBtn" onclick="window.saveProfile()" class="w-full py-4 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all active:scale-[0.98] mt-4 shadow-lg shadow-slate-900/20">
+                    Save Changes
+                </button>
             </div>
         </div>
     </div>
@@ -188,8 +232,8 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        // New: Added getDocs, collection, query, orderBy to fetch resources
+        // ADDED updatePassword function
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -207,32 +251,24 @@
 
         AOS.init({ once: true });
         window.toggleMenu = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
-        
         window.togglePassword = function(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
+            const input = document.getElementById(inputId); const icon = document.getElementById(iconId);
             if (input.type === "password") { input.type = "text"; icon.classList.replace("ph-eye", "ph-eye-slash"); } 
             else { input.type = "password"; icon.classList.replace("ph-eye-slash", "ph-eye"); }
         }
 
-        // We will store resources fetched from DB here
         let dbResources = [];
         let currentUser = null;
+        let currentUserData = null; // Store data to show in Profile Modal
         let currentUserUnlockedTutes = [];
         let currentActiveCategory = 'AL Past Papers';
 
-        // Fetch Resources from Firebase Database
         async function fetchResourcesFromDB() {
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
-                dbResources = [];
-                querySnapshot.forEach((doc) => {
-                    dbResources.push(doc.data());
-                });
-            } catch (error) {
-                console.error("Error fetching resources:", error);
-            }
+                const querySnapshot = await getDocs(q); dbResources = [];
+                querySnapshot.forEach((doc) => { dbResources.push(doc.data()); });
+            } catch (error) { console.error(error); }
         }
 
         onAuthStateChanged(auth, async (user) => {
@@ -245,191 +281,179 @@
                 try {
                     const docSnap = await getDoc(doc(db, "students", user.uid));
                     if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        document.getElementById('welcomeMsg').innerText = "Welcome back, " + data.fullName + "!";
-                        if(data.unlockedTutes) { currentUserUnlockedTutes = data.unlockedTutes; }
+                        currentUserData = docSnap.data(); // Save for Profile
+                        document.getElementById('welcomeMsg').innerText = "Welcome back, " + currentUserData.fullName + "!";
+                        if(currentUserData.unlockedTutes) { currentUserUnlockedTutes = currentUserData.unlockedTutes; }
                     }
+
+                    // Load Notice
+                    const noticeSnap = await getDoc(doc(db, "settings", "current_notice"));
+                    if (noticeSnap.exists()) {
+                        const noticeData = noticeSnap.data();
+                        if (noticeData.active) {
+                            document.getElementById('noticeTitleDisplay').innerText = noticeData.title;
+                            document.getElementById('noticeMessageDisplay').innerText = noticeData.message;
+                            if(noticeData.date) document.getElementById('noticeDateDisplay').innerText = "Published: " + noticeData.date.toDate().toLocaleDateString();
+                            document.getElementById('noticeBoard').classList.remove('hidden');
+                        }
+                    }
+
                 } catch (e) { console.log(e); }
                 
-                // Fetch the papers Admin uploaded and render them
                 await fetchResourcesFromDB();
                 window.renderItems(currentActiveCategory);
                 
             } else {
-                currentUser = null;
-                currentUserUnlockedTutes = [];
+                currentUser = null; currentUserData = null; currentUserUnlockedTutes = [];
                 document.getElementById('dashboardContainer').classList.add('hidden');
                 document.getElementById('authContainer').classList.remove('hidden');
                 window.toggleAuthView('loginSection');
             }
         });
 
+        // --- PROFILE SETTINGS LOGIC ---
+        window.openProfile = function() {
+            if(currentUserData) {
+                document.getElementById('profName').value = currentUserData.fullName || '';
+                document.getElementById('profEmail').value = currentUserData.email || '';
+                document.getElementById('profPhone').value = currentUserData.phone || '';
+                document.getElementById('profPassword').value = '';
+                document.getElementById('profStatus').classList.add('hidden');
+                document.getElementById('profileModal').classList.remove('hidden');
+            }
+        }
+
+        window.closeProfile = function() { document.getElementById('profileModal').classList.add('hidden'); }
+
+        window.saveProfile = async function() {
+            const phone = document.getElementById('profPhone').value.trim();
+            const newPassword = document.getElementById('profPassword').value;
+            const btn = document.getElementById('profSaveBtn');
+            const status = document.getElementById('profStatus');
+
+            btn.disabled = true; btn.innerText = "Saving..."; status.classList.add('hidden');
+
+            try {
+                // Update Firestore
+                await updateDoc(doc(db, "students", currentUser.uid), { phone: phone });
+                currentUserData.phone = phone; // update locally
+
+                // Update Password if typed
+                if(newPassword.length > 0) {
+                    if(newPassword.length < 6) throw new Error("Password should be at least 6 characters.");
+                    await updatePassword(currentUser, newPassword);
+                }
+
+                status.innerText = "✅ Profile updated successfully!";
+                status.className = "p-3 mt-2 text-center text-sm font-medium rounded-xl bg-green-50 text-green-700";
+                status.classList.remove('hidden');
+
+                setTimeout(() => { window.closeProfile(); }, 2000);
+
+            } catch (error) {
+                console.error(error);
+                let msg = error.message;
+                // Security feature: If user logged in a long time ago, Firebase requires them to re-login to change password
+                if(error.code === 'auth/requires-recent-login') {
+                    msg = "For security, please log out and log in again to change your password.";
+                }
+                status.innerText = "❌ Error: " + msg;
+                status.className = "p-3 mt-2 text-center text-sm font-medium rounded-xl bg-red-50 text-red-700";
+                status.classList.remove('hidden');
+            } finally {
+                btn.disabled = false; btn.innerText = "Save Changes";
+            }
+        }
+
         window.toggleAuthView = function(showId) {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('signupSection').classList.add('hidden');
-            document.getElementById('forgotSection').classList.add('hidden');
-            document.getElementById(showId).classList.remove('hidden');
+            document.getElementById('loginSection').classList.add('hidden'); document.getElementById('signupSection').classList.add('hidden');
+            document.getElementById('forgotSection').classList.add('hidden'); document.getElementById(showId).classList.remove('hidden');
         }
 
         window.renderItems = function(category) {
-            currentActiveCategory = category;
-            const grid = document.getElementById('resourceGrid');
-            grid.innerHTML = '';
-            
-            // Filter the dynamically fetched array
+            currentActiveCategory = category; const grid = document.getElementById('resourceGrid'); grid.innerHTML = '';
             const filtered = dbResources.filter(res => res.category === category);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet. Check back later!</p>`;
-                return;
-            }
+            if (filtered.length === 0) { grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet. Check back later!</p>`; return; }
 
             filtered.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
-                
+                const card = document.createElement('div'); card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
                 const isUnlocked = item.passcode === null || item.passcode === "" || currentUserUnlockedTutes.includes(item.id);
                 const iconClass = isUnlocked ? "ph-google-drive-logo" : "ph-lock-key";
                 const bgColors = isUnlocked ? "from-[#4285F4] to-[#34A853]" : "from-slate-600 to-slate-800";
                 const btnText = isUnlocked ? "View / Download" : "Unlock Document";
                 const btnClass = isUnlocked ? "bg-slate-100 text-slate-800 group-hover:bg-gradient-to-r group-hover:from-[#4285F4] group-hover:to-[#34A853] group-hover:text-white" : "bg-slate-800 text-white hover:bg-slate-700";
-                
                 const passArg = item.passcode ? `'${item.passcode}'` : 'null';
 
                 card.innerHTML = `
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${bgColors} text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 text-2xl shadow-md">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${bgColors} text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-2xl shadow-md">
                         <i class="ph-fill ${iconClass}"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">${item.title}</h3>
-                    <p class="text-slate-600 mb-8 flex-grow">${item.desc}</p>
-                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', ${passArg})" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium ${btnClass} transition-all duration-300 shadow-sm border border-slate-200 group-hover:border-transparent">
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">${item.title}</h3><p class="text-slate-600 mb-8 flex-grow">${item.desc}</p>
+                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', ${passArg})" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium ${btnClass} transition-all duration-300 shadow-sm border border-slate-200">
                         <i class="ph ph-${isUnlocked ? 'arrow-square-out' : 'lock'} text-xl"></i> <span>${btnText}</span>
-                    </button>
-                `;
+                    </button>`;
                 grid.appendChild(card);
             });
         }
 
-        let currentTargetId = '';
-        let currentTargetLink = '';
-        let currentRequiredPasscode = '';
-
+        let currentTargetId = ''; let currentTargetLink = ''; let currentRequiredPasscode = '';
         window.handleAccess = function(event, id, link, requiredPasscode) {
-            event.preventDefault(); 
-            if (link === '#' || link === '') { alert('File link not added yet!'); return; }
-
-            if (requiredPasscode === null || currentUserUnlockedTutes.includes(id)) {
-                window.open(link, '_blank');
-            } else {
+            event.preventDefault(); if (link === '#' || link === '') { alert('File link not added yet!'); return; }
+            if (requiredPasscode === null || currentUserUnlockedTutes.includes(id)) { window.open(link, '_blank'); } 
+            else {
                 currentTargetId = id; currentTargetLink = link; currentRequiredPasscode = requiredPasscode;
-                document.getElementById('passcodeInput').value = ''; 
-                document.getElementById('errorMessage').classList.add('opacity-0'); 
+                document.getElementById('passcodeInput').value = ''; document.getElementById('errorMessage').classList.add('opacity-0'); 
                 document.getElementById('passcodeModal').classList.remove('hidden'); 
             }
         }
-
         window.closeModal = function() { document.getElementById('passcodeModal').classList.add('hidden'); }
 
         window.verifyAndOpen = async function() {
-            const userInput = document.getElementById('passcodeInput').value.trim();
-            const btn = document.getElementById('verifyBtn');
-            
+            const userInput = document.getElementById('passcodeInput').value.trim(); const btn = document.getElementById('verifyBtn');
             if (userInput === currentRequiredPasscode) {
-                btn.innerText = "Unlocking...";
-                btn.disabled = true;
-
+                btn.innerText = "Unlocking..."; btn.disabled = true;
                 try {
-                    await updateDoc(doc(db, "students", currentUser.uid), {
-                        unlockedTutes: arrayUnion(currentTargetId)
-                    });
-                    currentUserUnlockedTutes.push(currentTargetId);
-                    window.closeModal();
-                    window.open(currentTargetLink, '_blank');
-                    window.renderItems(currentActiveCategory);
-                } catch (error) {
-                    alert("Error saving unlock data. Please try again.");
-                } finally {
-                    btn.innerText = "Unlock Permanently";
-                    btn.disabled = false;
-                }
-            } else {
-                document.getElementById('errorMessage').classList.remove('opacity-0');
-            }
+                    await updateDoc(doc(db, "students", currentUser.uid), { unlockedTutes: arrayUnion(currentTargetId) });
+                    currentUserUnlockedTutes.push(currentTargetId); window.closeModal(); window.open(currentTargetLink, '_blank'); window.renderItems(currentActiveCategory);
+                } catch (error) { alert("Error saving unlock data. Please try again."); } 
+                finally { btn.innerText = "Unlock Permanently"; btn.disabled = false; }
+            } else { document.getElementById('errorMessage').classList.remove('opacity-0'); }
         }
 
         window.filterItems = function(category, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
-                b.classList.add('glass-panel', 'text-slate-600');
-            });
-            btn.classList.remove('glass-panel', 'text-slate-600');
-            btn.classList.add('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105');
-            window.renderItems(category);
+            document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105'); b.classList.add('glass-panel', 'text-slate-600'); });
+            btn.classList.remove('glass-panel', 'text-slate-600'); btn.classList.add('bg-slate-900', 'text-white', 'shadow-lg', 'scale-105'); window.renderItems(category);
         }
 
         window.registerUser = async function() {
-            const name = document.getElementById('regName').value;
-            const dob = document.getElementById('regDob').value;
-            const email = document.getElementById('regEmail').value;
-            const phone = document.getElementById('regPhone').value;
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
+            const name = document.getElementById('regName').value; const dob = document.getElementById('regDob').value; const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value; const username = document.getElementById('regUsername').value; const password = document.getElementById('regPassword').value;
             const btn = document.getElementById('signupBtn');
-
             if(!name || !email || !password) { alert("Please fill in Name, Email, and Password!"); return; }
-
             btn.disabled = true; btn.innerText = "Processing...";
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                await setDoc(doc(db, "students", userCred.user.uid), {
-                    fullName: name, birthday: dob, email: email, phone: phone, username: username, role: "student", unlockedTutes: [], createdAt: new Date()
-                });
+                await setDoc(doc(db, "students", userCred.user.uid), { fullName: name, birthday: dob, email: email, phone: phone, username: username, role: "student", unlockedTutes: [], createdAt: new Date() });
                 alert("Account Created! You are now logged in.");
-            } catch (error) {
-                alert("Error: " + error.message);
-                btn.disabled = false; btn.innerText = "Create Account";
-            }
+            } catch (error) { alert("Error: " + error.message); btn.disabled = false; btn.innerText = "Create Account"; }
         }
 
         window.loginUser = async function() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const btn = document.getElementById('loginBtn');
-
+            const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value; const btn = document.getElementById('loginBtn');
             if(!email || !password) { alert("Enter Email and Password!"); return; }
-
             btn.disabled = true; btn.innerText = "Logging in...";
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                alert("Login Failed: Invalid Email or Password.");
-                btn.disabled = false; btn.innerText = "Log In to Portal";
-            }
+            try { await signInWithEmailAndPassword(auth, email, password); } 
+            catch (error) { alert("Login Failed: Invalid Email or Password."); btn.disabled = false; btn.innerText = "Log In to Portal"; }
         }
 
         window.resetUserPassword = async function() {
-            const email = document.getElementById('forgotEmail').value;
-            if(!email) { alert("Please enter your email."); return; }
-            const btn = document.getElementById('resetBtn');
-            btn.disabled = true; btn.innerText = "Sending...";
-            
-            try {
-                await sendPasswordResetEmail(auth, email);
-                alert("Reset link sent to " + email);
-                window.toggleAuthView('loginSection');
-            } catch (error) {
-                alert("Error: " + error.message);
-            } finally {
-                btn.disabled = false; btn.innerText = "Send Reset Link";
-            }
+            const email = document.getElementById('forgotEmail').value; if(!email) { alert("Please enter your email."); return; }
+            const btn = document.getElementById('resetBtn'); btn.disabled = true; btn.innerText = "Sending...";
+            try { await sendPasswordResetEmail(auth, email); alert("Reset link sent to " + email); window.toggleAuthView('loginSection'); } 
+            catch (error) { alert("Error: " + error.message); } finally { btn.disabled = false; btn.innerText = "Send Reset Link"; }
         }
 
-        window.logoutUser = async function() {
-            try {
-                await signOut(auth);
-                document.querySelectorAll('.auth-input').forEach(input => input.value = '');
-            } catch (error) { alert("Error logging out."); }
-        }
+        window.logoutUser = async function() { try { await signOut(auth); document.querySelectorAll('.auth-input').forEach(i => i.value = ''); } catch (error) { alert("Error logging out."); } }
     </script>
 </body>
 </html>
