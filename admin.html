@@ -12,7 +12,6 @@
         .glass-card { background: white; border-radius: 24px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
         .hidden { display: none !important; }
         .modal { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); }
-        /* Scrollbar for tables */
         ::-webkit-scrollbar { height: 8px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
@@ -55,40 +54,57 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <div class="lg:col-span-1 glass-card p-6 md:p-8 h-fit">
-                <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph ph-plus-circle text-blue-600"></i> Add Material</h3>
-                <div class="space-y-4">
-                    <input type="text" id="resTitle" class="w-full p-3 border rounded-xl" placeholder="Title (e.g. 2024 A/L Paper)">
-                    <select id="resCategory" class="w-full p-3 border rounded-xl bg-white">
-                        <option value="AL Past Papers">AL Past Papers</option>
-                        <option value="OL Past Papers">OL Past Papers</option>
-                        <option value="A/L Tutes">A/L Tutes</option>
-                        <option value="O/L Tutes">O/L Tutes</option>
-                    </select>
-                    <input type="text" id="resPasscode" class="w-full p-3 border rounded-xl" placeholder="Passcode (Empty if free)">
-                    <textarea id="resDesc" rows="2" class="w-full p-3 border rounded-xl" placeholder="Short Description"></textarea>
-                    
-                    <div class="border-t pt-4 mt-2">
-                        <label class="block text-sm font-semibold mb-2 text-blue-600">Option 1: Upload PDF File</label>
-                        <input type="file" id="resFile" accept=".pdf" class="w-full p-2 border rounded-xl bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-2 text-slate-500">Option 2: Google Drive Link</label>
-                        <input type="url" id="resLink" class="w-full p-3 border rounded-xl" placeholder="Paste Drive Link">
-                    </div>
+            <div class="lg:col-span-1 space-y-8">
+                <div class="glass-card p-6 md:p-8">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph ph-plus-circle text-blue-600"></i> Add Material</h3>
+                    <div class="space-y-4">
+                        <input type="text" id="resTitle" class="w-full p-3 border rounded-xl" placeholder="Title (e.g. 2024 A/L Paper)">
+                        <select id="resCategory" class="w-full p-3 border rounded-xl bg-white">
+                            <option value="AL Past Papers">AL Past Papers</option>
+                            <option value="OL Past Papers">OL Past Papers</option>
+                            <option value="A/L Tutes">A/L Tutes</option>
+                            <option value="O/L Tutes">O/L Tutes</option>
+                        </select>
+                        <input type="text" id="resPasscode" class="w-full p-3 border rounded-xl" placeholder="Passcode (Empty if free)">
+                        <textarea id="resDesc" rows="2" class="w-full p-3 border rounded-xl" placeholder="Short Description"></textarea>
+                        
+                        <div class="border-t pt-4 mt-2">
+                            <label class="block text-sm font-semibold mb-2 text-blue-600">Upload PDF File</label>
+                            <input type="file" id="resFile" accept=".pdf" class="w-full p-2 border rounded-xl bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-slate-500">OR Google Drive Link</label>
+                            <input type="url" id="resLink" class="w-full p-3 border rounded-xl" placeholder="Paste Drive Link">
+                        </div>
 
-                    <button id="addBtn" onclick="addResource()" class="w-full py-4 mt-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all active:scale-[0.98]">
-                        Publish Resource
-                    </button>
-                    <div id="uploadProgressContainer" class="w-full bg-gray-200 rounded-full h-2.5 mt-2 hidden">
-                        <div id="uploadProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        <button id="addBtn" onclick="addResource()" class="w-full py-4 mt-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all">Publish Resource</button>
+                        <div id="uploadProgressContainer" class="w-full bg-gray-200 rounded-full h-2.5 mt-2 hidden">
+                            <div id="uploadProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <div id="statusMsg" class="mt-2 p-3 rounded-xl text-center font-medium text-sm hidden"></div>
                     </div>
-                    <div id="statusMsg" class="mt-2 p-3 rounded-xl text-center font-medium text-sm hidden"></div>
+                </div>
+
+                <div class="glass-card p-6 md:p-8 border-l-4 border-orange-500">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-megaphone text-orange-500"></i> Broadcast Notice</h3>
+                    <div class="space-y-4">
+                        <input type="text" id="noticeTitle" class="w-full p-3 border rounded-xl bg-orange-50 focus:border-orange-500 outline-none" placeholder="Notice Title (e.g. Special Class)">
+                        <textarea id="noticeMessage" rows="3" class="w-full p-3 border rounded-xl bg-orange-50 focus:border-orange-500 outline-none" placeholder="Type your message here..."></textarea>
+                        
+                        <div class="flex gap-2">
+                            <button id="noticeBtn" onclick="publishNotice()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold hover:shadow-lg transition-all text-sm">
+                                Broadcast
+                            </button>
+                            <button onclick="clearNotice()" class="px-4 py-3 rounded-xl bg-slate-100 text-slate-600 font-bold hover:bg-slate-200 transition-all text-sm" title="Remove active notice">
+                                <i class="ph ph-trash"></i> Remove
+                            </button>
+                        </div>
+                        <div id="noticeStatus" class="mt-2 p-3 rounded-xl text-center font-medium text-sm hidden"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="lg:col-span-2 space-y-8">
-                
                 <div class="glass-card p-6 md:p-8">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Resources</h3>
                     <div class="overflow-x-auto border rounded-xl">
@@ -101,9 +117,7 @@
                                     <th class="p-4 border-b">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="resourceTableBody" class="text-sm">
-                                <tr><td colspan="4" class="p-4 text-center text-slate-500">Loading resources...</td></tr>
-                            </tbody>
+                            <tbody id="resourceTableBody" class="text-sm"><tr><td colspan="4" class="p-4 text-center text-slate-500">Loading...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -118,16 +132,13 @@
                                     <th class="p-4 border-b">Phone</th>
                                     <th class="p-4 border-b">Email</th>
                                     <th class="p-4 border-b">Unlocked</th>
-                                    <th class="p-4 border-b">Joined Date</th>
+                                    <th class="p-4 border-b">Joined</th>
                                 </tr>
                             </thead>
-                            <tbody id="studentTableBody" class="text-sm">
-                                <tr><td colspan="5" class="p-4 text-center text-slate-500">Loading students...</td></tr>
-                            </tbody>
+                            <tbody id="studentTableBody" class="text-sm"><tr><td colspan="5" class="p-4 text-center text-slate-500">Loading...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -136,7 +147,6 @@
         <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl">
             <button onclick="closeEditModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <h3 class="text-2xl font-bold mb-6 text-slate-800">Edit Resource</h3>
-            
             <input type="hidden" id="editId">
             <div class="space-y-4">
                 <input type="text" id="editTitle" class="w-full p-3 border rounded-xl" placeholder="Title">
@@ -149,10 +159,7 @@
                 <input type="text" id="editDesc" class="w-full p-3 border rounded-xl" placeholder="Description">
                 <input type="text" id="editPasscode" class="w-full p-3 border rounded-xl" placeholder="Passcode (Empty if free)">
                 <input type="url" id="editLink" class="w-full p-3 border rounded-xl" placeholder="File Link">
-                
-                <button id="updateBtn" onclick="updateResource()" class="w-full py-3 rounded-xl bg-green-600 text-white font-bold hover:bg-green-700 transition-all">
-                    Save Changes
-                </button>
+                <button id="updateBtn" onclick="updateResource()" class="w-full py-3 rounded-xl bg-green-600 text-white font-bold hover:bg-green-700">Save Changes</button>
             </div>
         </div>
     </div>
@@ -160,7 +167,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        // Added 'setDoc' for notices
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
         const firebaseConfig = {
@@ -178,8 +186,7 @@
         const storage = getStorage(app);
 
         window.togglePassword = function(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
+            const input = document.getElementById(inputId); const icon = document.getElementById(iconId);
             if (input.type === "password") { input.type = "text"; icon.classList.replace("ph-eye", "ph-eye-slash"); } 
             else { input.type = "password"; icon.classList.replace("ph-eye-slash", "ph-eye"); }
         }
@@ -188,8 +195,7 @@
             if (user && user.email === "admin@pradeepk.com") {
                 document.getElementById('adminLoginSection').classList.add('hidden');
                 document.getElementById('adminDashboardSection').classList.remove('hidden');
-                loadResources();
-                loadStudents(); // New: Load Students
+                loadResources(); loadStudents();
             } else {
                 document.getElementById('adminDashboardSection').classList.add('hidden');
                 document.getElementById('adminLoginSection').classList.remove('hidden');
@@ -197,191 +203,140 @@
         });
 
         window.adminLogin = async function() {
-            const userVal = document.getElementById('adminUsername').value.trim();
-            const passVal = document.getElementById('adminPassword').value;
-            const err = document.getElementById('loginError');
-            if(!userVal || !passVal) return;
+            const userVal = document.getElementById('adminUsername').value.trim(); const passVal = document.getElementById('adminPassword').value;
+            const err = document.getElementById('loginError'); if(!userVal || !passVal) return;
             try { await signInWithEmailAndPassword(auth, userVal + ".com", passVal); err.classList.add('hidden'); } 
             catch (error) { err.classList.remove('hidden'); }
         }
 
         window.adminLogout = async function() { await signOut(auth); }
 
-        // --- LOAD STUDENTS (NEW) ---
+        // --- PUBLISH NOTICE (NEW) ---
+        window.publishNotice = async function() {
+            const title = document.getElementById('noticeTitle').value;
+            const message = document.getElementById('noticeMessage').value;
+            const btn = document.getElementById('noticeBtn');
+            const status = document.getElementById('noticeStatus');
+
+            if(!title || !message) { alert("Title and Message are required!"); return; }
+
+            btn.disabled = true; btn.innerText = "Broadcasting...";
+            try {
+                // සෙටින්ග්ස් කියලා වෙනම Document එකකට පණිවිඩය සේව් කරනවා
+                await setDoc(doc(db, "settings", "current_notice"), {
+                    title: title, message: message, date: new Date(), active: true
+                });
+                status.innerText = "✅ Notice Broadcasted!";
+                status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
+                document.getElementById('noticeTitle').value = ''; document.getElementById('noticeMessage').value = '';
+            } catch(e) {
+                status.innerText = "❌ Error: " + e.message;
+                status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-red-50 text-red-700";
+            } finally {
+                btn.disabled = false; btn.innerText = "Broadcast";
+                status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 5000);
+            }
+        }
+
+        // --- CLEAR NOTICE (NEW) ---
+        window.clearNotice = async function() {
+            if(confirm("Are you sure you want to remove the active notice?")) {
+                try {
+                    await setDoc(doc(db, "settings", "current_notice"), { active: false }, { merge: true });
+                    alert("Notice removed from student dashboard!");
+                } catch(e) { console.error(e); }
+            }
+        }
+
         window.loadStudents = async function() {
             const tbody = document.getElementById('studentTableBody');
-            tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">Loading students...</td></tr>';
             try {
-                // Fetch all students
-                const querySnapshot = await getDocs(collection(db, "students"));
-                tbody.innerHTML = '';
-                
-                if(querySnapshot.empty) { 
-                    tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No students registered yet.</td></tr>'; 
-                    return; 
-                }
-                
+                const querySnapshot = await getDocs(collection(db, "students")); tbody.innerHTML = '';
+                if(querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No students yet.</td></tr>'; return; }
                 querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    // Admin should not be in the student list
-                    if(data.role === 'admin' || doc.id === 'admin') return; 
-
+                    const data = doc.data(); if(data.role === 'admin' || doc.id === 'admin') return; 
                     const unlocks = data.unlockedTutes ? data.unlockedTutes.length : 0;
-                    
-                    // Format Date if exists
-                    let joinDate = "N/A";
-                    if(data.createdAt) {
-                        const d = data.createdAt.toDate();
-                        joinDate = d.toLocaleDateString();
-                    }
-
+                    let joinDate = "N/A"; if(data.createdAt) joinDate = data.createdAt.toDate().toLocaleDateString();
                     tbody.innerHTML += `
-                        <tr class="border-b hover:bg-slate-50 transition-colors">
+                        <tr class="border-b hover:bg-slate-50">
                             <td class="p-4 font-semibold text-slate-800">${data.fullName || 'Unknown'}</td>
                             <td class="p-4"><a href="tel:${data.phone}" class="text-blue-600 hover:underline">${data.phone || 'N/A'}</a></td>
                             <td class="p-4 text-slate-500">${data.email || 'N/A'}</td>
                             <td class="p-4"><span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold">${unlocks} Docs</span></td>
                             <td class="p-4 text-slate-500 text-xs">${joinDate}</td>
-                        </tr>
-                    `;
-                });
-            } catch (error) { console.error("Error loading students:", error); }
-        }
-
-        // --- LOAD RESOURCES ---
-        window.loadResources = async function() {
-            const tbody = document.getElementById('resourceTableBody');
-            try {
-                // Sort by createdAt descending
-                const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
-                tbody.innerHTML = '';
-                if(querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
-                
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const isFree = !data.passcode ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs">Free</span>' : data.passcode;
-                    
-                    tbody.innerHTML += `
-                        <tr class="border-b hover:bg-slate-50 transition-colors">
-                            <td class="p-4 font-medium text-slate-800 truncate max-w-[200px]" title="${data.title}">${data.title}</td>
-                            <td class="p-4 text-slate-500">${data.category}</td>
-                            <td class="p-4">${isFree}</td>
-                            <td class="p-4 flex gap-2">
-                                <button onclick="openEditModal('${doc.id}', '${data.title.replace(/'/g, "\\'")}', '${data.category}', '${data.desc.replace(/'/g, "\\'")}', '${data.passcode || ''}', '${data.driveLink}')" class="px-2 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200"><i class="ph ph-pencil-simple"></i></button>
-                                <button onclick="deleteResource('${doc.id}', '${data.driveLink}')" class="px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200"><i class="ph ph-trash"></i></button>
-                            </td>
-                        </tr>
-                    `;
+                        </tr>`;
                 });
             } catch (error) { console.error(error); }
         }
 
+        window.loadResources = async function() {
+            const tbody = document.getElementById('resourceTableBody');
+            try {
+                const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q); tbody.innerHTML = '';
+                if(querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data(); const isFree = !data.passcode ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs">Free</span>' : data.passcode;
+                    tbody.innerHTML += `
+                        <tr class="border-b hover:bg-slate-50">
+                            <td class="p-4 font-medium text-slate-800 truncate max-w-[150px]" title="${data.title}">${data.title}</td>
+                            <td class="p-4 text-slate-500">${data.category}</td>
+                            <td class="p-4">${isFree}</td>
+                            <td class="p-4 flex gap-2">
+                                <button onclick="openEditModal('${doc.id}', '${data.title.replace(/'/g, "\\'")}', '${data.category}', '${data.desc.replace(/'/g, "\\'")}', '${data.passcode || ''}', '${data.driveLink}')" class="px-2 py-1 bg-blue-100 text-blue-600 rounded"><i class="ph ph-pencil-simple"></i></button>
+                                <button onclick="deleteResource('${doc.id}', '${data.driveLink}')" class="px-2 py-1 bg-red-100 text-red-600 rounded"><i class="ph ph-trash"></i></button>
+                            </td>
+                        </tr>`;
+                });
+            } catch (error) { console.error(error); }
+        }
+
+        // Functions for add, delete, edit are same as before...
         window.addResource = async function() {
-            const title = document.getElementById('resTitle').value;
-            const category = document.getElementById('resCategory').value;
-            const desc = document.getElementById('resDesc').value;
-            const fileInput = document.getElementById('resFile').files[0];
-            let driveLink = document.getElementById('resLink').value;
-            const passcodeVal = document.getElementById('resPasscode').value.trim();
-            const passcode = passcodeVal === "" ? null : passcodeVal;
+            const title = document.getElementById('resTitle').value; const category = document.getElementById('resCategory').value;
+            const desc = document.getElementById('resDesc').value; const fileInput = document.getElementById('resFile').files[0];
+            let driveLink = document.getElementById('resLink').value; const passcodeVal = document.getElementById('resPasscode').value.trim();
+            const passcode = passcodeVal === "" ? null : passcodeVal; const btn = document.getElementById('addBtn'); const status = document.getElementById('statusMsg');
+            const progressCont = document.getElementById('uploadProgressContainer'); const progressBar = document.getElementById('uploadProgressBar');
 
-            const btn = document.getElementById('addBtn');
-            const status = document.getElementById('statusMsg');
-            const progressCont = document.getElementById('uploadProgressContainer');
-            const progressBar = document.getElementById('uploadProgressBar');
-
-            if(!title || !desc) { alert("Title and Description are required!"); return; }
-            if(!fileInput && !driveLink) { alert("Please upload a file OR provide a Drive Link!"); return; }
+            if(!title || !desc) { alert("Title and Description required!"); return; }
+            if(!fileInput && !driveLink) { alert("Upload file OR provide Link!"); return; }
 
             btn.disabled = true; btn.innerText = "Publishing...";
-            
             try {
                 const customId = category.replace(/[^a-zA-Z]/g, '').toLowerCase() + '_' + Date.now();
-
                 if(fileInput) {
-                    progressCont.classList.remove('hidden');
-                    const storageRef = ref(storage, 'papers/' + customId + '_' + fileInput.name);
+                    progressCont.classList.remove('hidden'); const storageRef = ref(storage, 'papers/' + customId + '_' + fileInput.name);
                     const uploadTask = uploadBytesResumable(storageRef, fileInput);
-
                     await new Promise((resolve, reject) => {
-                        uploadTask.on('state_changed', 
-                            (snapshot) => {
-                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                progressBar.style.width = progress + '%';
-                            }, 
-                            (error) => reject(error), 
-                            async () => {
-                                driveLink = await getDownloadURL(uploadTask.snapshot.ref);
-                                resolve();
-                            }
-                        );
+                        uploadTask.on('state_changed', (snapshot) => { progressBar.style.width = (snapshot.bytesTransferred / snapshot.totalBytes) * 100 + '%'; }, 
+                        (error) => reject(error), async () => { driveLink = await getDownloadURL(uploadTask.snapshot.ref); resolve(); });
                     });
                 }
-
-                await addDoc(collection(db, "resources"), {
-                    id: customId, title: title, category: category, desc: desc, driveLink: driveLink, passcode: passcode, createdAt: new Date()
-                });
-
-                status.innerText = "✅ Successfully Published!";
-                status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
-                
-                document.getElementById('resTitle').value = ''; document.getElementById('resDesc').value = '';
-                document.getElementById('resLink').value = ''; document.getElementById('resPasscode').value = '';
-                document.getElementById('resFile').value = '';
-                progressCont.classList.add('hidden'); progressBar.style.width = '0%';
-                loadResources(); 
-            } catch (error) {
-                status.innerText = "❌ Error: " + error.message;
-                status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-red-50 text-red-700";
-            } finally {
-                btn.disabled = false; btn.innerText = "Publish Resource";
-                status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 5000);
-            }
+                await addDoc(collection(db, "resources"), { id: customId, title: title, category: category, desc: desc, driveLink: driveLink, passcode: passcode, createdAt: new Date() });
+                status.innerText = "✅ Successfully Published!"; status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
+                document.querySelectorAll('#resTitle, #resDesc, #resLink, #resPasscode, #resFile').forEach(i=>i.value='');
+                progressCont.classList.add('hidden'); progressBar.style.width = '0%'; loadResources(); 
+            } catch (error) { status.innerText = "❌ Error: " + error.message; status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-red-50 text-red-700"; } 
+            finally { btn.disabled = false; btn.innerText = "Publish Resource"; status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 5000); }
         }
 
         window.deleteResource = async function(docId, fileUrl) {
-            if(!confirm("Are you sure you want to delete this resource?")) return;
-            try {
-                await deleteDoc(doc(db, "resources", docId));
-                if(fileUrl.includes("firebasestorage.googleapis.com")) {
-                    const fileRef = ref(storage, fileUrl);
-                    await deleteObject(fileRef).catch(e => console.log("File not in storage"));
-                }
-                alert("Deleted successfully!");
-                loadResources(); 
-            } catch (error) { alert("Error deleting: " + error.message); }
+            if(!confirm("Delete this resource?")) return;
+            try { await deleteDoc(doc(db, "resources", docId)); if(fileUrl.includes("firebasestorage")) { const fileRef = ref(storage, fileUrl); await deleteObject(fileRef).catch(e=>console.log(e)); } alert("Deleted!"); loadResources(); } catch (error) { alert("Error: " + error.message); }
         }
 
-        window.openEditModal = function(id, title, category, desc, passcode, link) {
-            document.getElementById('editId').value = id;
-            document.getElementById('editTitle').value = title;
-            document.getElementById('editCategory').value = category;
-            document.getElementById('editDesc').value = desc;
-            document.getElementById('editPasscode').value = passcode;
-            document.getElementById('editLink').value = link;
-            document.getElementById('editModal').classList.remove('hidden');
+        window.openEditModal = function(id, title, cat, desc, pass, link) {
+            document.getElementById('editId').value = id; document.getElementById('editTitle').value = title; document.getElementById('editCategory').value = cat;
+            document.getElementById('editDesc').value = desc; document.getElementById('editPasscode').value = pass; document.getElementById('editLink').value = link; document.getElementById('editModal').classList.remove('hidden');
         }
-
         window.closeEditModal = function() { document.getElementById('editModal').classList.add('hidden'); }
-
         window.updateResource = async function() {
-            const id = document.getElementById('editId').value;
-            const btn = document.getElementById('updateBtn');
-            btn.innerText = "Saving...";
+            const id = document.getElementById('editId').value; const btn = document.getElementById('updateBtn'); btn.innerText = "Saving...";
             try {
-                const docRef = doc(db, "resources", id);
-                await updateDoc(docRef, {
-                    title: document.getElementById('editTitle').value,
-                    category: document.getElementById('editCategory').value,
-                    desc: document.getElementById('editDesc').value,
-                    passcode: document.getElementById('editPasscode').value || null,
-                    driveLink: document.getElementById('editLink').value
-                });
-                closeEditModal();
-                loadResources();
-            } catch (error) { alert("Error updating: " + error.message); }
-            finally { btn.innerText = "Save Changes"; }
+                await updateDoc(doc(db, "resources", id), { title: document.getElementById('editTitle').value, category: document.getElementById('editCategory').value, desc: document.getElementById('editDesc').value, passcode: document.getElementById('editPasscode').value || null, driveLink: document.getElementById('editLink').value });
+                closeEditModal(); loadResources();
+            } catch (error) { alert("Error: " + error.message); } finally { btn.innerText = "Save Changes"; }
         }
     </script>
 </body>
