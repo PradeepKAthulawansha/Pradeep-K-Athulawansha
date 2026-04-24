@@ -12,6 +12,9 @@
         .glass-card { background: white; border-radius: 24px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
         .hidden { display: none !important; }
         .modal { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); }
+        /* Scrollbar for tables */
+        ::-webkit-scrollbar { height: 8px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="p-6 md:p-10 text-slate-800 items-center justify-center">
@@ -36,71 +39,95 @@
         <p id="loginError" class="text-red-500 text-sm mt-4 font-medium hidden">Incorrect Username or Password!</p>
     </div>
 
-    <div id="adminDashboardSection" class="glass-card p-8 md:p-10 w-full max-w-5xl mx-auto hidden mt-4">
-        <div class="flex justify-between items-center mb-8 border-b pb-6">
+    <div id="adminDashboardSection" class="w-full max-w-6xl mx-auto hidden mt-4">
+        
+        <div class="glass-card p-6 md:p-8 flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
                 <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
-                    <i class="ph-fill ph-database text-blue-600"></i> Resource Manager
+                    <i class="ph-fill ph-database text-blue-600"></i> Master Dashboard
                 </h2>
-                <p class="text-slate-500 mt-2">Publish, edit, and delete student materials.</p>
+                <p class="text-slate-500 mt-2">Manage your study materials and view registered students.</p>
             </div>
-            <button onclick="adminLogout()" class="px-5 py-2 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center gap-2">
+            <button onclick="adminLogout()" class="px-5 py-2 mt-4 md:mt-0 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center gap-2">
                 <i class="ph ph-sign-out"></i> Logout
             </button>
         </div>
 
-        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 mb-10">
-            <h3 class="text-xl font-bold mb-4"><i class="ph ph-plus-circle text-blue-600"></i> Add New Material</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" id="resTitle" class="w-full p-3 border rounded-xl" placeholder="Title (e.g. 2024 A/L Paper)">
-                <select id="resCategory" class="w-full p-3 border rounded-xl bg-white">
-                    <option value="AL Past Papers">AL Past Papers</option>
-                    <option value="OL Past Papers">OL Past Papers</option>
-                    <option value="A/L Tutes">A/L Tutes</option>
-                    <option value="O/L Tutes">O/L Tutes</option>
-                </select>
-                <input type="text" id="resPasscode" class="w-full p-3 border rounded-xl" placeholder="Unlock Passcode (Leave empty if free)">
-                <input type="text" id="resDesc" class="w-full p-3 border rounded-xl" placeholder="Short Description">
-                
-                <div class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 border-t pt-4 mt-2">
-                    <div>
-                        <label class="block text-sm font-semibold mb-2 text-blue-600">Option 1: Direct File Upload (PDF)</label>
-                        <input type="file" id="resFile" accept=".pdf" class="w-full p-2 border rounded-xl bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-1 glass-card p-6 md:p-8 h-fit">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph ph-plus-circle text-blue-600"></i> Add Material</h3>
+                <div class="space-y-4">
+                    <input type="text" id="resTitle" class="w-full p-3 border rounded-xl" placeholder="Title (e.g. 2024 A/L Paper)">
+                    <select id="resCategory" class="w-full p-3 border rounded-xl bg-white">
+                        <option value="AL Past Papers">AL Past Papers</option>
+                        <option value="OL Past Papers">OL Past Papers</option>
+                        <option value="A/L Tutes">A/L Tutes</option>
+                        <option value="O/L Tutes">O/L Tutes</option>
+                    </select>
+                    <input type="text" id="resPasscode" class="w-full p-3 border rounded-xl" placeholder="Passcode (Empty if free)">
+                    <textarea id="resDesc" rows="2" class="w-full p-3 border rounded-xl" placeholder="Short Description"></textarea>
+                    
+                    <div class="border-t pt-4 mt-2">
+                        <label class="block text-sm font-semibold mb-2 text-blue-600">Option 1: Upload PDF File</label>
+                        <input type="file" id="resFile" accept=".pdf" class="w-full p-2 border rounded-xl bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-2 text-slate-500">Option 2: Google Drive Link (If large file)</label>
+                        <label class="block text-sm font-semibold mb-2 text-slate-500">Option 2: Google Drive Link</label>
                         <input type="url" id="resLink" class="w-full p-3 border rounded-xl" placeholder="Paste Drive Link">
                     </div>
-                </div>
 
-                <div class="col-span-1 md:col-span-2 pt-2">
-                    <button id="addBtn" onclick="addResource()" class="w-full py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all active:scale-[0.98]">
+                    <button id="addBtn" onclick="addResource()" class="w-full py-4 mt-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all active:scale-[0.98]">
                         Publish Resource
                     </button>
-                    <div id="uploadProgressContainer" class="w-full bg-gray-200 rounded-full h-2.5 mt-4 hidden">
+                    <div id="uploadProgressContainer" class="w-full bg-gray-200 rounded-full h-2.5 mt-2 hidden">
                         <div id="uploadProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
                     </div>
+                    <div id="statusMsg" class="mt-2 p-3 rounded-xl text-center font-medium text-sm hidden"></div>
                 </div>
             </div>
-            <div id="statusMsg" class="mt-4 p-3 rounded-xl text-center font-medium hidden"></div>
-        </div>
 
-        <div>
-            <h3 class="text-xl font-bold mb-4"><i class="ph ph-folder text-blue-600"></i> Manage Existing Resources</h3>
-            <div class="overflow-x-auto border rounded-xl">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-100 text-slate-600 text-sm">
-                            <th class="p-4 border-b">Title</th>
-                            <th class="p-4 border-b">Category</th>
-                            <th class="p-4 border-b">Passcode</th>
-                            <th class="p-4 border-b">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="resourceTableBody" class="text-sm">
-                        <tr><td colspan="4" class="p-4 text-center text-slate-500">Loading resources...</td></tr>
-                    </tbody>
-                </table>
+            <div class="lg:col-span-2 space-y-8">
+                
+                <div class="glass-card p-6 md:p-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Resources</h3>
+                    <div class="overflow-x-auto border rounded-xl">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-600 text-sm">
+                                    <th class="p-4 border-b">Title</th>
+                                    <th class="p-4 border-b">Category</th>
+                                    <th class="p-4 border-b">Passcode</th>
+                                    <th class="p-4 border-b">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resourceTableBody" class="text-sm">
+                                <tr><td colspan="4" class="p-4 text-center text-slate-500">Loading resources...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 md:p-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-users text-green-600"></i> Registered Students</h3>
+                    <div class="overflow-x-auto border rounded-xl">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-600 text-sm">
+                                    <th class="p-4 border-b">Name</th>
+                                    <th class="p-4 border-b">Phone</th>
+                                    <th class="p-4 border-b">Email</th>
+                                    <th class="p-4 border-b">Unlocked</th>
+                                    <th class="p-4 border-b">Joined Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody" class="text-sm">
+                                <tr><td colspan="5" class="p-4 text-center text-slate-500">Loading students...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -133,7 +160,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
         const firebaseConfig = {
@@ -148,9 +175,8 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app); // New: Storage Initialization
+        const storage = getStorage(app);
 
-        // Password Show/Hide
         window.togglePassword = function(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
@@ -162,7 +188,8 @@
             if (user && user.email === "admin@pradeepk.com") {
                 document.getElementById('adminLoginSection').classList.add('hidden');
                 document.getElementById('adminDashboardSection').classList.remove('hidden');
-                loadResources(); // Load table data
+                loadResources();
+                loadStudents(); // New: Load Students
             } else {
                 document.getElementById('adminDashboardSection').classList.add('hidden');
                 document.getElementById('adminLoginSection').classList.remove('hidden');
@@ -180,28 +207,69 @@
 
         window.adminLogout = async function() { await signOut(auth); }
 
-        // --- 1. Load Resources for Table ---
+        // --- LOAD STUDENTS (NEW) ---
+        window.loadStudents = async function() {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">Loading students...</td></tr>';
+            try {
+                // Fetch all students
+                const querySnapshot = await getDocs(collection(db, "students"));
+                tbody.innerHTML = '';
+                
+                if(querySnapshot.empty) { 
+                    tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No students registered yet.</td></tr>'; 
+                    return; 
+                }
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    // Admin should not be in the student list
+                    if(data.role === 'admin' || doc.id === 'admin') return; 
+
+                    const unlocks = data.unlockedTutes ? data.unlockedTutes.length : 0;
+                    
+                    // Format Date if exists
+                    let joinDate = "N/A";
+                    if(data.createdAt) {
+                        const d = data.createdAt.toDate();
+                        joinDate = d.toLocaleDateString();
+                    }
+
+                    tbody.innerHTML += `
+                        <tr class="border-b hover:bg-slate-50 transition-colors">
+                            <td class="p-4 font-semibold text-slate-800">${data.fullName || 'Unknown'}</td>
+                            <td class="p-4"><a href="tel:${data.phone}" class="text-blue-600 hover:underline">${data.phone || 'N/A'}</a></td>
+                            <td class="p-4 text-slate-500">${data.email || 'N/A'}</td>
+                            <td class="p-4"><span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold">${unlocks} Docs</span></td>
+                            <td class="p-4 text-slate-500 text-xs">${joinDate}</td>
+                        </tr>
+                    `;
+                });
+            } catch (error) { console.error("Error loading students:", error); }
+        }
+
+        // --- LOAD RESOURCES ---
         window.loadResources = async function() {
             const tbody = document.getElementById('resourceTableBody');
-            tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">Loading...</td></tr>';
             try {
-                const querySnapshot = await getDocs(collection(db, "resources"));
+                // Sort by createdAt descending
+                const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
                 tbody.innerHTML = '';
                 if(querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
                 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    const docId = doc.id; // Firebase internal document ID
                     const isFree = !data.passcode ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs">Free</span>' : data.passcode;
                     
                     tbody.innerHTML += `
                         <tr class="border-b hover:bg-slate-50 transition-colors">
-                            <td class="p-4 font-medium">${data.title}</td>
+                            <td class="p-4 font-medium text-slate-800 truncate max-w-[200px]" title="${data.title}">${data.title}</td>
                             <td class="p-4 text-slate-500">${data.category}</td>
                             <td class="p-4">${isFree}</td>
                             <td class="p-4 flex gap-2">
-                                <button onclick="openEditModal('${docId}', '${data.title.replace(/'/g, "\\'")}', '${data.category}', '${data.desc.replace(/'/g, "\\'")}', '${data.passcode || ''}', '${data.driveLink}')" class="px-3 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200"><i class="ph ph-pencil-simple"></i> Edit</button>
-                                <button onclick="deleteResource('${docId}', '${data.driveLink}')" class="px-3 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200"><i class="ph ph-trash"></i> Delete</button>
+                                <button onclick="openEditModal('${doc.id}', '${data.title.replace(/'/g, "\\'")}', '${data.category}', '${data.desc.replace(/'/g, "\\'")}', '${data.passcode || ''}', '${data.driveLink}')" class="px-2 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200"><i class="ph ph-pencil-simple"></i></button>
+                                <button onclick="deleteResource('${doc.id}', '${data.driveLink}')" class="px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200"><i class="ph ph-trash"></i></button>
                             </td>
                         </tr>
                     `;
@@ -209,7 +277,6 @@
             } catch (error) { console.error(error); }
         }
 
-        // --- 2. Add/Upload Resource ---
         window.addResource = async function() {
             const title = document.getElementById('resTitle').value;
             const category = document.getElementById('resCategory').value;
@@ -232,7 +299,6 @@
             try {
                 const customId = category.replace(/[^a-zA-Z]/g, '').toLowerCase() + '_' + Date.now();
 
-                // If File is selected, Upload to Firebase Storage first
                 if(fileInput) {
                     progressCont.classList.remove('hidden');
                     const storageRef = ref(storage, 'papers/' + customId + '_' + fileInput.name);
@@ -253,45 +319,40 @@
                     });
                 }
 
-                // Save to Firestore Database
                 await addDoc(collection(db, "resources"), {
                     id: customId, title: title, category: category, desc: desc, driveLink: driveLink, passcode: passcode, createdAt: new Date()
                 });
 
                 status.innerText = "✅ Successfully Published!";
-                status.className = "mt-4 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
+                status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
                 
-                // Reset form
-                document.querySelectorAll('input').forEach(i => i.value = '');
+                document.getElementById('resTitle').value = ''; document.getElementById('resDesc').value = '';
+                document.getElementById('resLink').value = ''; document.getElementById('resPasscode').value = '';
+                document.getElementById('resFile').value = '';
                 progressCont.classList.add('hidden'); progressBar.style.width = '0%';
-                loadResources(); // Refresh table
+                loadResources(); 
             } catch (error) {
                 status.innerText = "❌ Error: " + error.message;
-                status.className = "mt-4 p-3 rounded-xl text-center font-medium bg-red-50 text-red-700";
+                status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-red-50 text-red-700";
             } finally {
                 btn.disabled = false; btn.innerText = "Publish Resource";
                 status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 5000);
             }
         }
 
-        // --- 3. Delete Resource ---
         window.deleteResource = async function(docId, fileUrl) {
             if(!confirm("Are you sure you want to delete this resource?")) return;
             try {
-                // Delete from Database
                 await deleteDoc(doc(db, "resources", docId));
-                
-                // Delete from Storage if it was a directly uploaded file
                 if(fileUrl.includes("firebasestorage.googleapis.com")) {
                     const fileRef = ref(storage, fileUrl);
-                    await deleteObject(fileRef).catch(e => console.log("File not in storage or already deleted"));
+                    await deleteObject(fileRef).catch(e => console.log("File not in storage"));
                 }
                 alert("Deleted successfully!");
-                loadResources(); // Refresh table
+                loadResources(); 
             } catch (error) { alert("Error deleting: " + error.message); }
         }
 
-        // --- 4. Edit Resource ---
         window.openEditModal = function(id, title, category, desc, passcode, link) {
             document.getElementById('editId').value = id;
             document.getElementById('editTitle').value = title;
@@ -308,7 +369,6 @@
             const id = document.getElementById('editId').value;
             const btn = document.getElementById('updateBtn');
             btn.innerText = "Saving...";
-            
             try {
                 const docRef = doc(db, "resources", id);
                 await updateDoc(docRef, {
