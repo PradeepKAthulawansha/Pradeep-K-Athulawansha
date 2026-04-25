@@ -8,54 +8,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
     
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
         .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .auth-glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
-        .bg-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .modal-animate { animation: slideUp 0.3s ease-out forwards; }
-        
         .auth-input { width: 100%; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); outline: none; transition: all 0.3s; margin-bottom: 12px; font-size: 15px; }
         .auth-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
         .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; transition: all 0.3s; margin-top: 10px; }
-        .auth-btn:hover { box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3); transform: translateY(-2px); }
-        .auth-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         .link-text { color: #3b82f6; cursor: pointer; font-size: 14px; transition: color 0.3s; }
         .link-text:hover { color: #1d4ed8; text-decoration: underline; }
     </style>
 </head>
 <body class="relative min-h-screen flex flex-col text-slate-800">
 
-    <div class="fixed inset-0 z-[-1] pointer-events-none">
-        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob"></div>
-        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-2000"></div>
-        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-orange-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-4000"></div>
-    </div>
-
-    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-5">
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
         <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                 <i class="ph ph-book-open text-blue-600"></i> Business Studies
             </a>
             <nav class="hidden md:flex gap-8 items-center">
                 <a href="index.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</a>
-                <a href="about us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">About Us</a>
                 <a href="papers & tutes.html" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Papers & Tutes</a>
-                <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
             </nav>
-            <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
-        </div>
-        
-        <div id="mobileMenu" class="hidden absolute top-full left-0 w-full glass-panel flex flex-col py-4 px-6 md:hidden shadow-2xl border-t border-white/40">
-            <a href="index.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Home</a>
-            <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
-            <a href="papers & tutes.html" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Papers & Tutes</a>
-            <a href="contact us.html" class="py-3 text-slate-700 font-medium">Contact</a>
         </div>
     </header>
 
@@ -67,176 +43,76 @@
             </div>
 
             <div id="authContainer" class="max-w-md mx-auto hidden mt-10">
-                <div id="loginSection" class="auth-glass p-10 rounded-3xl text-center" data-aos="fade-up">
-                    <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
+                <div id="loginSection" class="auth-glass p-10 rounded-3xl text-center">
                     <h2 class="text-2xl font-bold mb-1 text-slate-800">Student Login</h2>
-                    <p class="text-slate-500 mb-6 text-sm">Access your exclusive study materials</p>
-                    <input type="email" id="loginEmail" class="auth-input" placeholder="Email Address">
-                    <div class="relative mb-3">
-                        <input type="password" id="loginPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Password">
-                        <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="loginEye" class="ph ph-eye"></i></button>
-                    </div>
+                    <input type="email" id="loginEmail" class="auth-input mt-6" placeholder="Email Address">
+                    <input type="password" id="loginPassword" class="auth-input" placeholder="Password">
                     <button id="loginBtn" class="auth-btn mt-2" onclick="window.loginUser()">Log In to Portal</button>
                     <div class="flex justify-between mt-6 px-2">
-                        <span class="link-text" onclick="window.toggleAuthView('forgotSection')">Forgot Password?</span>
                         <span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span>
                     </div>
                 </div>
 
-                <div id="signupSection" class="auth-glass p-10 rounded-3xl text-center hidden" data-aos="fade-up">
-                    <h2 class="text-2xl font-bold mb-1 text-slate-800">Register Now</h2>
-                    <p class="text-slate-500 mb-6 text-sm">Create your student account</p>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="regName" class="auth-input col-span-2" placeholder="Full Name">
-                        <input type="date" id="regDob" class="auth-input text-slate-500">
-                        <input type="tel" id="regPhone" class="auth-input" placeholder="Phone No">
-                    </div>
+                <div id="signupSection" class="auth-glass p-10 rounded-3xl text-center hidden">
+                    <h2 class="text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
+                    <input type="text" id="regName" class="auth-input" placeholder="Full Name">
                     <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
-                    <input type="text" id="regUsername" class="auth-input" placeholder="Username">
-                    <div class="relative mb-3">
-                        <input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Create Password">
-                        <button type="button" onclick="window.togglePassword('regPassword', 'regEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="regEye" class="ph ph-eye"></i></button>
-                    </div>
+                    <input type="tel" id="regPhone" class="auth-input" placeholder="Phone No">
+                    <input type="password" id="regPassword" class="auth-input" placeholder="Create Password">
                     <button id="signupBtn" class="auth-btn mt-2" onclick="window.registerUser()">Create Account</button>
-                    <div class="mt-5">
-                        <span class="text-slate-500 text-sm">Already have an account? </span>
-                        <span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')">Log In</span>
-                    </div>
-                </div>
-
-                <div id="forgotSection" class="auth-glass p-10 rounded-3xl text-center hidden" data-aos="fade-up">
-                    <div class="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-lock-key-open"></i></div>
-                    <h2 class="text-2xl font-bold mb-1 text-slate-800">Reset Password</h2>
-                    <p class="text-slate-500 mb-6 text-sm">Enter your email to receive a reset link</p>
-                    <input type="email" id="forgotEmail" class="auth-input" placeholder="Registered Email">
-                    <button id="resetBtn" class="auth-btn mb-4" onclick="window.resetUserPassword()">Send Reset Link</button>
-                    <span class="link-text" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Login</span>
+                    <div class="mt-5"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')">Back to Log In</span></div>
                 </div>
             </div>
 
             <div id="dashboardContainer" class="hidden">
-                <div class="glass-panel p-6 rounded-2xl mb-6 flex flex-col md:flex-row justify-between items-center gap-4" data-aos="fade-down">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center shadow-lg border-2 border-white">
-                            <img id="dashboardAvatarImg" src="" alt="Profile" class="w-full h-full object-cover hidden">
-                            <i id="dashboardAvatarIcon" class="ph-fill ph-student text-2xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-slate-500 text-sm font-medium">Student Portal</p>
-                            <h2 id="welcomeMsg" class="text-xl font-bold text-slate-800">Welcome back!</h2>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-2">
-                        <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 rounded-full border-2 border-blue-100 text-blue-600 hover:bg-blue-50 hover:border-blue-200 font-medium transition-colors flex items-center gap-2">
-                            <i class="ph ph-user-circle text-lg"></i> <span class="hidden md:inline">Profile</span>
-                        </button>
-                        <button onclick="window.logoutUser()" class="px-4 py-2 md:px-6 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 hover:border-red-200 font-medium transition-colors flex items-center gap-2">
-                            <i class="ph ph-sign-out text-lg"></i> <span class="hidden md:inline">Log Out</span>
-                        </button>
-                    </div>
+                <div class="glass-panel p-6 rounded-2xl mb-6 flex justify-between items-center">
+                    <h2 id="welcomeMsg" class="text-xl font-bold text-slate-800">Welcome!</h2>
+                    <button onclick="window.logoutUser()" class="px-6 py-2 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 font-medium">Log Out</button>
                 </div>
 
-                <div id="noticeBoard" class="hidden bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-6 mb-10 text-white shadow-lg relative overflow-hidden" data-aos="fade-down">
-                    <div class="absolute -right-10 -top-10 text-white/20 text-9xl"><i class="ph-fill ph-megaphone"></i></div>
-                    <div class="relative z-10 flex flex-col md:flex-row items-start gap-4">
-                        <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-2xl shrink-0"><i class="ph-fill ph-bell-ringing"></i></div>
-                        <div class="flex-grow">
-                            <h3 id="noticeTitleDisplay" class="text-xl font-bold mb-1">Notice Title</h3>
-                            <p id="noticeMessageDisplay" class="text-orange-50 max-w-2xl text-sm md:text-base">Notice message goes here...</p>
-                            <p id="noticeDateDisplay" class="text-xs font-medium text-orange-200 mt-3"></p>
-                        </div>
-                        <button onclick="document.getElementById('noticeBoard').classList.add('hidden')" class="md:ml-auto text-white/70 hover:text-white text-xl p-2"><i class="ph ph-x"></i></button>
-                    </div>
+                <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer">
+                    <button onclick="filterItems('Grade 10 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 bg-slate-900 text-white shadow-lg scale-105">Grade 10 Tutes</button>
+                    <button onclick="filterItems('Grade 11 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 11 Tutes</button>
+                    <button onclick="filterItems('Grade 12 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 12 Tutes</button>
+                    <button onclick="filterItems('Grade 13 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 13 Tutes</button>
                 </div>
 
-                <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
-                    <h1 class="text-4xl font-bold mb-4">Study Materials</h1>
-                    <p class="text-slate-600 text-lg mb-6">Access your unlocked past papers and exclusive tutes.</p>
-                </div>
-
-                <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer" data-aos="fade-up" data-aos-delay="100">
-                    <button onclick="filterItems('AL Past Papers', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 bg-slate-900 text-white shadow-lg scale-105">AL Past Papers</button>
-                    <button onclick="filterItems('OL Past Papers', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">OL Past Papers</button>
-                    <button onclick="filterItems('A/L Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">A/L Tutes</button>
-                    <button onclick="filterItems('O/L Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">O/L Tutes</button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid"></div>
             </div>
         </div>
     </main>
 
-    <div id="passcodeModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 transition-opacity">
-        <div class="bg-white w-full max-w-md p-8 rounded-3xl relative shadow-2xl modal-animate border border-slate-100">
-            <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors text-2xl"><i class="ph ph-x"></i></button>
-            <div class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-3xl mb-6 mx-auto"><i class="ph-fill ph-lock-key"></i></div>
-            <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Protected Document</h3>
-            <p class="text-slate-500 mb-6 text-center text-sm">Enter the access code provided to you to unlock this document permanently.</p>
-            <input type="text" id="passcodeInput" class="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 mb-2 text-center text-lg font-medium tracking-widest placeholder:tracking-normal" placeholder="Enter Access Code">
-            <p id="errorMessage" class="text-red-500 text-sm text-center font-medium h-5 mb-4 opacity-0 transition-opacity">Incorrect access code. Please try again.</p>
-            <button id="verifyBtn" onclick="window.verifyAndOpen()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/30 transition-all active:scale-[0.98] mb-4">
-                Unlock Permanently
-            </button>
-        </div>
-    </div>
-
-    <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 transition-opacity">
-        <div class="bg-white w-full max-w-md p-8 rounded-3xl relative shadow-2xl modal-animate border border-slate-100 max-h-[90vh] overflow-y-auto">
-            <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors text-2xl"><i class="ph ph-x"></i></button>
+    <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4">
+        <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="document.getElementById('shippingModal').classList.add('hidden')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             
-            <h3 class="text-2xl font-bold text-slate-800 mb-4 text-center">My Profile</h3>
+            <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mb-4 mx-auto"><i class="ph-fill ph-truck"></i></div>
+            <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Shipping Details</h3>
             
-            <div class="relative w-28 h-28 mx-auto mb-6 group cursor-pointer" onclick="document.getElementById('profImageInput').click()">
-                <img id="profImagePreview" src="https://ui-avatars.com/api/?name=User&background=eff6ff&color=2563eb" alt="Profile" class="w-full h-full rounded-full object-cover border-4 border-slate-100 shadow-md">
-                <div class="absolute inset-0 bg-slate-900/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="ph-fill ph-camera text-white text-3xl"></i>
-                </div>
-                <input type="file" id="profImageInput" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="window.previewImage(event)">
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl mb-6">
+                <p class="text-sm text-blue-800 font-medium">මෙම ගෙවීම සිදු කල පසු හැකි ඉක්මනින් අදාල tute එක ඔබ වෙත courier මාර්ගයෙන් ලැබෙන අතර, එතෙක් සහා Life time භාවිතය සදහා Tute එකට අදාල PDF එක ඔබගේ profile එක තුළ Unlock වනු ඇත.</p>
             </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-500">Full Name</label>
-                    <input type="text" id="profName" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-500">Email Address</label>
-                    <input type="email" id="profEmail" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-700">Phone Number <span class="text-blue-500">*</span></label>
-                    <input type="tel" id="profPhone" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-700">New Password <span class="text-xs text-slate-400 font-normal">(Leave blank to keep current)</span></label>
-                    <div class="relative">
-                        <input type="password" id="profPassword" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300 pr-12" placeholder="Enter new password">
-                        <button type="button" onclick="window.togglePassword('profPassword', 'profEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="profEye" class="ph ph-eye"></i></button>
-                    </div>
-                </div>
-                
-                <div id="profProgressContainer" class="w-full bg-slate-200 rounded-full h-1.5 mt-2 hidden">
-                    <div id="profProgressBar" class="bg-blue-600 h-1.5 rounded-full" style="width: 0%"></div>
-                </div>
 
-                <div id="profStatus" class="p-3 text-center text-sm font-medium rounded-xl hidden mt-2"></div>
+            <div class="space-y-4">
+                <input type="text" id="shipName" class="w-full p-3 border rounded-xl" placeholder="Full Name (Delivery Name)">
+                <textarea id="shipAddress" rows="2" class="w-full p-3 border rounded-xl" placeholder="Full Delivery Address"></textarea>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="shipPostal" class="w-full p-3 border rounded-xl" placeholder="Postal Code">
+                    <input type="tel" id="shipPhone1" class="w-full p-3 border rounded-xl" placeholder="Mobile Number 1">
+                </div>
+                <input type="tel" id="shipPhone2" class="w-full p-3 border rounded-xl" placeholder="Mobile Number 2 (Optional)">
                 
-                <button id="profSaveBtn" onclick="window.saveProfile()" class="w-full py-4 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all active:scale-[0.98] mt-4 shadow-lg shadow-slate-900/20">
-                    Save Profile Changes
+                <button id="payBtn" onclick="window.initiatePayment()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg hover:shadow-lg mt-4 flex justify-center items-center gap-2">
+                    Pay <span id="payAmountDisplay"></span> via PayHere
                 </button>
             </div>
         </div>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-        // IMPORT STORAGE for Images
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
@@ -250,21 +126,15 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app); // Init Storage
-
-        AOS.init({ once: true });
-        window.toggleMenu = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
-        window.togglePassword = function(inputId, iconId) {
-            const input = document.getElementById(inputId); const icon = document.getElementById(iconId);
-            if (input.type === "password") { input.type = "text"; icon.classList.replace("ph-eye", "ph-eye-slash"); } 
-            else { input.type = "password"; icon.classList.replace("ph-eye-slash", "ph-eye"); }
-        }
 
         let dbResources = [];
         let currentUser = null;
         let currentUserData = null; 
         let currentUserUnlockedTutes = [];
-        let currentActiveCategory = 'AL Past Papers';
+        let currentActiveCategory = 'Grade 10 Tutes'; // Default Tab changed
+
+        // PAYMENT VARIABLES
+        let currentPurchaseTute = null; // Store tute details when paying
 
         async function fetchResourcesFromDB() {
             try {
@@ -272,20 +142,6 @@
                 const querySnapshot = await getDocs(q); dbResources = [];
                 querySnapshot.forEach((doc) => { dbResources.push(doc.data()); });
             } catch (error) { console.error(error); }
-        }
-
-        function updateAvatarDisplay() {
-            const dashboardImg = document.getElementById('dashboardAvatarImg');
-            const dashboardIcon = document.getElementById('dashboardAvatarIcon');
-            
-            if (currentUserData && currentUserData.profilePic) {
-                dashboardImg.src = currentUserData.profilePic;
-                dashboardImg.classList.remove('hidden');
-                dashboardIcon.classList.add('hidden');
-            } else {
-                dashboardImg.classList.add('hidden');
-                dashboardIcon.classList.remove('hidden');
-            }
         }
 
         onAuthStateChanged(auth, async (user) => {
@@ -301,19 +157,6 @@
                         currentUserData = docSnap.data(); 
                         document.getElementById('welcomeMsg').innerText = "Welcome back, " + currentUserData.fullName + "!";
                         if(currentUserData.unlockedTutes) { currentUserUnlockedTutes = currentUserData.unlockedTutes; }
-                        
-                        updateAvatarDisplay(); // Update Dashboard Avatar
-                    }
-
-                    const noticeSnap = await getDoc(doc(db, "settings", "current_notice"));
-                    if (noticeSnap.exists()) {
-                        const noticeData = noticeSnap.data();
-                        if (noticeData.active) {
-                            document.getElementById('noticeTitleDisplay').innerText = noticeData.title;
-                            document.getElementById('noticeMessageDisplay').innerText = noticeData.message;
-                            if(noticeData.date) document.getElementById('noticeDateDisplay').innerText = "Published: " + noticeData.date.toDate().toLocaleDateString();
-                            document.getElementById('noticeBoard').classList.remove('hidden');
-                        }
                     }
                 } catch (e) { console.log(e); }
                 
@@ -324,174 +167,148 @@
                 currentUser = null; currentUserData = null; currentUserUnlockedTutes = [];
                 document.getElementById('dashboardContainer').classList.add('hidden');
                 document.getElementById('authContainer').classList.remove('hidden');
-                window.toggleAuthView('loginSection');
             }
         });
 
-        // --- PROFILE IMAGE PREVIEW ---
-        window.previewImage = function(event) {
-            const input = event.target;
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profImagePreview').src = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // --- PROFILE LOGIC ---
-        window.openProfile = function() {
-            if(currentUserData) {
-                document.getElementById('profName').value = currentUserData.fullName || '';
-                document.getElementById('profEmail').value = currentUserData.email || '';
-                document.getElementById('profPhone').value = currentUserData.phone || '';
-                document.getElementById('profPassword').value = '';
-                
-                // Show Current Image or Default Avatar
-                const fallbackImg = `https://ui-avatars.com/api/?name=${currentUserData.fullName}&background=eff6ff&color=2563eb`;
-                document.getElementById('profImagePreview').src = currentUserData.profilePic ? currentUserData.profilePic : fallbackImg;
-                
-                document.getElementById('profStatus').classList.add('hidden');
-                document.getElementById('profProgressContainer').classList.add('hidden');
-                document.getElementById('profImageInput').value = ''; // Reset input
-                
-                document.getElementById('profileModal').classList.remove('hidden');
-            }
-        }
-
-        window.closeProfile = function() { document.getElementById('profileModal').classList.add('hidden'); }
-
-        window.saveProfile = async function() {
-            const phone = document.getElementById('profPhone').value.trim();
-            const newPassword = document.getElementById('profPassword').value;
-            const fileInput = document.getElementById('profImageInput').files[0];
-            
-            const btn = document.getElementById('profSaveBtn');
-            const status = document.getElementById('profStatus');
-            const progressCont = document.getElementById('profProgressContainer');
-            const progressBar = document.getElementById('profProgressBar');
-
-            btn.disabled = true; btn.innerText = "Saving Changes..."; status.classList.add('hidden');
-
-            try {
-                let finalPicUrl = currentUserData.profilePic || null;
-
-                // 1. Image Upload Logic
-                if(fileInput) {
-                    progressCont.classList.remove('hidden');
-                    status.innerText = "Uploading Profile Picture...";
-                    status.className = "p-3 mt-2 text-center text-sm font-medium rounded-xl bg-blue-50 text-blue-700";
-                    status.classList.remove('hidden');
-
-                    const storageRef = ref(storage, 'profiles/' + currentUser.uid + '_avatar');
-                    const uploadTask = uploadBytesResumable(storageRef, fileInput);
-
-                    await new Promise((resolve, reject) => {
-                        uploadTask.on('state_changed', 
-                            (snapshot) => {
-                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                progressBar.style.width = progress + '%';
-                            }, 
-                            (error) => reject(error), 
-                            async () => {
-                                finalPicUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                                resolve();
-                            }
-                        );
-                    });
-                }
-
-                // 2. Update Firestore
-                await updateDoc(doc(db, "students", currentUser.uid), { 
-                    phone: phone,
-                    profilePic: finalPicUrl 
-                });
-                
-                currentUserData.phone = phone; 
-                currentUserData.profilePic = finalPicUrl;
-                updateAvatarDisplay(); // Update Dashboard UI instantly
-
-                // 3. Update Password
-                if(newPassword.length > 0) {
-                    if(newPassword.length < 6) throw new Error("Password should be at least 6 characters.");
-                    await updatePassword(currentUser, newPassword);
-                }
-
-                status.innerText = "✅ Profile updated successfully!";
-                status.className = "p-3 mt-2 text-center text-sm font-medium rounded-xl bg-green-50 text-green-700";
-                status.classList.remove('hidden');
-                progressCont.classList.add('hidden');
-
-                setTimeout(() => { window.closeProfile(); }, 2000);
-
-            } catch (error) {
-                console.error(error);
-                let msg = error.message;
-                if(error.code === 'auth/requires-recent-login') {
-                    msg = "For security, please log out and log in again to change your password.";
-                }
-                status.innerText = "❌ Error: " + msg;
-                status.className = "p-3 mt-2 text-center text-sm font-medium rounded-xl bg-red-50 text-red-700";
-                status.classList.remove('hidden');
-            } finally {
-                btn.disabled = false; btn.innerText = "Save Profile Changes";
-            }
-        }
-
         window.toggleAuthView = function(showId) {
             document.getElementById('loginSection').classList.add('hidden'); document.getElementById('signupSection').classList.add('hidden');
-            document.getElementById('forgotSection').classList.add('hidden'); document.getElementById(showId).classList.remove('hidden');
+            document.getElementById(showId).classList.remove('hidden');
         }
 
         window.renderItems = function(category) {
             currentActiveCategory = category; const grid = document.getElementById('resourceGrid'); grid.innerHTML = '';
             const filtered = dbResources.filter(res => res.category === category);
-            if (filtered.length === 0) { grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet. Check back later!</p>`; return; }
+            if (filtered.length === 0) { grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet.</p>`; return; }
 
             filtered.forEach((item) => {
-                const card = document.createElement('div'); card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full";
-                const isUnlocked = item.passcode === null || item.passcode === "" || currentUserUnlockedTutes.includes(item.id);
-                const iconClass = isUnlocked ? "ph-google-drive-logo" : "ph-lock-key";
-                const bgColors = isUnlocked ? "from-[#4285F4] to-[#34A853]" : "from-slate-600 to-slate-800";
-                const btnText = isUnlocked ? "View / Download" : "Unlock Document";
-                const btnClass = isUnlocked ? "bg-slate-100 text-slate-800 group-hover:bg-gradient-to-r group-hover:from-[#4285F4] group-hover:to-[#34A853] group-hover:text-white" : "bg-slate-800 text-white hover:bg-slate-700";
-                const passArg = item.passcode ? `'${item.passcode}'` : 'null';
+                const card = document.createElement('div'); card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full bg-white/50";
+                
+                const priceVal = parseFloat(item.price);
+                const isFree = isNaN(priceVal) || priceVal <= 0;
+                const isUnlocked = isFree || currentUserUnlockedTutes.includes(item.id);
+                
+                let btnText = "View / Download PDF";
+                let btnClass = "bg-slate-100 text-slate-800 hover:bg-green-500 hover:text-white";
+                let icon = "ph-folder-open";
+
+                if(!isUnlocked) {
+                    btnText = `Buy Now - Rs. ${priceVal}`;
+                    btnClass = "bg-slate-900 text-white hover:bg-blue-600";
+                    icon = "ph-shopping-cart";
+                }
 
                 card.innerHTML = `
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${bgColors} text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-2xl shadow-md">
-                        <i class="ph-fill ${iconClass}"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">${item.title}</h3><p class="text-slate-600 mb-8 flex-grow">${item.desc}</p>
-                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', ${passArg})" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-medium ${btnClass} transition-all duration-300 shadow-sm border border-slate-200">
-                        <i class="ph ph-${isUnlocked ? 'arrow-square-out' : 'lock'} text-xl"></i> <span>${btnText}</span>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">${item.title}</h3>
+                    <p class="text-slate-600 text-sm mb-6 flex-grow">${item.desc}</p>
+                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', '${item.price}', '${item.title.replace(/'/g, "\\'")}')" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold ${btnClass} transition-all duration-300 shadow-sm border border-slate-200">
+                        <i class="ph ${icon} text-xl"></i> <span>${btnText}</span>
                     </button>`;
                 grid.appendChild(card);
             });
         }
 
-        let currentTargetId = ''; let currentTargetLink = ''; let currentRequiredPasscode = '';
-        window.handleAccess = function(event, id, link, requiredPasscode) {
-            event.preventDefault(); if (link === '#' || link === '') { alert('File link not added yet!'); return; }
-            if (requiredPasscode === null || currentUserUnlockedTutes.includes(id)) { window.open(link, '_blank'); } 
-            else {
-                currentTargetId = id; currentTargetLink = link; currentRequiredPasscode = requiredPasscode;
-                document.getElementById('passcodeInput').value = ''; document.getElementById('errorMessage').classList.add('opacity-0'); 
-                document.getElementById('passcodeModal').classList.remove('hidden'); 
+        window.handleAccess = function(event, id, link, price, title) {
+            event.preventDefault(); 
+            const priceVal = parseFloat(price);
+            const isFree = isNaN(priceVal) || priceVal <= 0;
+
+            if (isFree || currentUserUnlockedTutes.includes(id)) { 
+                window.open(link, '_blank'); 
+            } else {
+                // Open Shipping Form for Payment
+                currentPurchaseTute = { id: id, title: title, price: priceVal, link: link };
+                
+                // Pre-fill form if data exists
+                if(currentUserData) {
+                    document.getElementById('shipName').value = currentUserData.fullName || "";
+                    document.getElementById('shipPhone1').value = currentUserData.phone || "";
+                }
+                
+                document.getElementById('payAmountDisplay').innerText = `Rs. ${priceVal}`;
+                document.getElementById('shippingModal').classList.remove('hidden'); 
             }
         }
-        window.closeModal = function() { document.getElementById('passcodeModal').classList.add('hidden'); }
 
-        window.verifyAndOpen = async function() {
-            const userInput = document.getElementById('passcodeInput').value.trim(); const btn = document.getElementById('verifyBtn');
-            if (userInput === currentRequiredPasscode) {
-                btn.innerText = "Unlocking..."; btn.disabled = true;
+        // --- PAYHERE INTEGRATION ---
+        window.initiatePayment = function() {
+            const name = document.getElementById('shipName').value;
+            const address = document.getElementById('shipAddress').value;
+            const postal = document.getElementById('shipPostal').value;
+            const phone1 = document.getElementById('shipPhone1').value;
+            const phone2 = document.getElementById('shipPhone2').value;
+
+            if(!name || !address || !postal || !phone1) { alert("Please fill all required shipping details."); return; }
+
+            // 1. Prepare Order ID
+            const orderId = "TUTE_" + Date.now();
+
+            // 2. Set PayHere Variables (Sandbox test mode enabled)
+            var payment = {
+                "sandbox": true, // Change to false when going live
+                "merchant_id": "1211149", // YOUR PAYHERE MERCHANT ID GOES HERE
+                "return_url": window.location.href, // Dummy return URL
+                "cancel_url": window.location.href,
+                "notify_url": "https://dummy-notify-url.com", // Normally points to a backend server
+                "order_id": orderId,
+                "items": currentPurchaseTute.title,
+                "amount": currentPurchaseTute.price,
+                "currency": "LKR",
+                "first_name": name,
+                "last_name": "",
+                "email": currentUser.email,
+                "phone": phone1,
+                "address": address,
+                "city": "Sri Lanka",
+                "country": "Sri Lanka"
+            };
+
+            // 3. Trigger PayHere
+            payhere.startPayment(payment);
+
+            // 4. Handle PayHere Success
+            payhere.onCompleted = async function onCompleted(paidOrderId) {
+                document.getElementById('payBtn').innerText = "Processing Order...";
                 try {
-                    await updateDoc(doc(db, "students", currentUser.uid), { unlockedTutes: arrayUnion(currentTargetId) });
-                    currentUserUnlockedTutes.push(currentTargetId); window.closeModal(); window.open(currentTargetLink, '_blank'); window.renderItems(currentActiveCategory);
-                } catch (error) { alert("Error saving unlock data. Please try again."); } 
-                finally { btn.innerText = "Unlock Permanently"; btn.disabled = false; }
-            } else { document.getElementById('errorMessage').classList.remove('opacity-0'); }
+                    // Save Courier Order to DB
+                    await setDoc(doc(db, "orders", paidOrderId), {
+                        orderId: paidOrderId,
+                        studentId: currentUser.uid,
+                        studentName: name,
+                        email: currentUser.email,
+                        phone1: phone1,
+                        phone2: phone2,
+                        address: address,
+                        postalCode: postal,
+                        tuteId: currentPurchaseTute.id,
+                        tuteTitle: currentPurchaseTute.title,
+                        amount: currentPurchaseTute.price,
+                        date: new Date()
+                    });
+
+                    // Unlock Tute for Student Profile
+                    await updateDoc(doc(db, "students", currentUser.uid), {
+                        unlockedTutes: arrayUnion(currentPurchaseTute.id)
+                    });
+                    
+                    currentUserUnlockedTutes.push(currentPurchaseTute.id);
+                    document.getElementById('shippingModal').classList.add('hidden');
+                    alert("Payment Successful! PDF is now unlocked and the physical Tute will be shipped to you.");
+                    window.renderItems(currentActiveCategory);
+                    window.open(currentPurchaseTute.link, '_blank'); // Auto open PDF
+                    
+                } catch (e) {
+                    alert("Payment received, but error updating profile. Please contact Admin.");
+                    console.error(e);
+                }
+            };
+
+            payhere.onDismissed = function onDismissed() {
+                console.log("Payment dismissed");
+            };
+
+            payhere.onError = function onError(error) {
+                alert("Error connecting to gateway: " + error);
+            };
         }
 
         window.filterItems = function(category, btn) {
@@ -501,33 +318,21 @@
 
         window.registerUser = async function() {
             const name = document.getElementById('regName').value; const dob = document.getElementById('regDob').value; const email = document.getElementById('regEmail').value;
-            const phone = document.getElementById('regPhone').value; const username = document.getElementById('regUsername').value; const password = document.getElementById('regPassword').value;
-            const btn = document.getElementById('signupBtn');
-            if(!name || !email || !password) { alert("Please fill in Name, Email, and Password!"); return; }
-            btn.disabled = true; btn.innerText = "Processing...";
+            const phone = document.getElementById('regPhone').value; const password = document.getElementById('regPassword').value;
+            if(!name || !email || !password) { alert("Please fill Name, Email, and Password!"); return; }
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                await setDoc(doc(db, "students", userCred.user.uid), { fullName: name, birthday: dob, email: email, phone: phone, username: username, role: "student", unlockedTutes: [], profilePic: null, createdAt: new Date() });
-                alert("Account Created! You are now logged in.");
-            } catch (error) { alert("Error: " + error.message); btn.disabled = false; btn.innerText = "Create Account"; }
+                await setDoc(doc(db, "students", userCred.user.uid), { fullName: name, birthday: dob, email: email, phone: phone, role: "student", unlockedTutes: [], createdAt: new Date() });
+            } catch (error) { alert("Error: " + error.message); }
         }
 
         window.loginUser = async function() {
-            const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value; const btn = document.getElementById('loginBtn');
-            if(!email || !password) { alert("Enter Email and Password!"); return; }
-            btn.disabled = true; btn.innerText = "Logging in...";
-            try { await signInWithEmailAndPassword(auth, email, password); } 
-            catch (error) { alert("Login Failed: Invalid Email or Password."); btn.disabled = false; btn.innerText = "Log In to Portal"; }
+            const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value;
+            if(!email || !password) return;
+            try { await signInWithEmailAndPassword(auth, email, password); } catch (error) { alert("Invalid Credentials."); }
         }
 
-        window.resetUserPassword = async function() {
-            const email = document.getElementById('forgotEmail').value; if(!email) { alert("Please enter your email."); return; }
-            const btn = document.getElementById('resetBtn'); btn.disabled = true; btn.innerText = "Sending...";
-            try { await sendPasswordResetEmail(auth, email); alert("Reset link sent to " + email); window.toggleAuthView('loginSection'); } 
-            catch (error) { alert("Error: " + error.message); } finally { btn.disabled = false; btn.innerText = "Send Reset Link"; }
-        }
-
-        window.logoutUser = async function() { try { await signOut(auth); document.querySelectorAll('.auth-input').forEach(i => i.value = ''); } catch (error) { alert("Error logging out."); } }
+        window.logoutUser = async function() { await signOut(auth); }
     </script>
 </body>
 </html>
