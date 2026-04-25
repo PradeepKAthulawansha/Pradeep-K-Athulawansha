@@ -19,33 +19,23 @@
 <body class="p-6 md:p-10 text-slate-800 items-center justify-center">
 
     <div id="adminLoginSection" class="glass-card p-10 w-full max-w-md mx-auto text-center">
-        <div class="w-20 h-20 rounded-full bg-slate-900 text-white flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg">
-            <i class="ph-fill ph-shield-check"></i>
-        </div>
+        <div class="w-20 h-20 rounded-full bg-slate-900 text-white flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg"><i class="ph-fill ph-shield-check"></i></div>
         <h2 class="text-2xl font-bold mb-2 text-slate-900">Admin Access</h2>
-        <p class="text-slate-500 mb-8 text-sm">Please log in to manage resources.</p>
-        
         <div class="space-y-4">
             <input type="text" id="adminUsername" class="w-full p-4 border rounded-xl outline-none focus:border-slate-900 bg-slate-50" placeholder="Username">
             <div class="relative">
                 <input type="password" id="adminPassword" class="w-full p-4 border rounded-xl outline-none focus:border-slate-900 bg-slate-50 pr-12" placeholder="Password">
-                <button type="button" onclick="window.togglePassword('adminPassword', 'adminEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-700 text-2xl transition-colors">
-                    <i id="adminEye" class="ph ph-eye"></i>
-                </button>
+                <button type="button" onclick="window.togglePassword('adminPassword', 'adminEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-700 text-2xl"><i id="adminEye" class="ph ph-eye"></i></button>
             </div>
-            <button onclick="adminLogin()" class="w-full py-4 mt-2 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-all shadow-md active:scale-95">Secure Login</button>
+            <button onclick="adminLogin()" class="w-full py-4 mt-2 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-all shadow-md">Secure Login</button>
         </div>
         <p id="loginError" class="text-red-500 text-sm mt-4 font-medium hidden">Incorrect Username or Password!</p>
     </div>
 
-    <div id="adminDashboardSection" class="w-full max-w-6xl mx-auto hidden mt-4">
-        
+    <div id="adminDashboardSection" class="w-full max-w-7xl mx-auto hidden mt-4">
         <div class="glass-card p-6 md:p-8 flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
-                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
-                    <i class="ph-fill ph-database text-blue-600"></i> Master Dashboard
-                </h2>
-                <p class="text-slate-500 mt-2">Manage your study materials and view registered students.</p>
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3"><i class="ph-fill ph-database text-blue-600"></i> Master Dashboard</h2>
             </div>
             <button onclick="adminLogout()" class="px-5 py-2 mt-4 md:mt-0 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center gap-2">
                 <i class="ph ph-sign-out"></i> Logout
@@ -58,14 +48,14 @@
                 <div class="glass-card p-6 md:p-8">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph ph-plus-circle text-blue-600"></i> Add Material</h3>
                     <div class="space-y-4">
-                        <input type="text" id="resTitle" class="w-full p-3 border rounded-xl" placeholder="Title (e.g. 2024 A/L Paper)">
+                        <input type="text" id="resTitle" class="w-full p-3 border rounded-xl" placeholder="Title (e.g. Grade 12 Tute 1)">
                         <select id="resCategory" class="w-full p-3 border rounded-xl bg-white">
-                            <option value="AL Past Papers">AL Past Papers</option>
-                            <option value="OL Past Papers">OL Past Papers</option>
-                            <option value="A/L Tutes">A/L Tutes</option>
-                            <option value="O/L Tutes">O/L Tutes</option>
+                            <option value="Grade 10 Tutes">Grade 10 Tutes</option>
+                            <option value="Grade 11 Tutes">Grade 11 Tutes</option>
+                            <option value="Grade 12 Tutes">Grade 12 Tutes</option>
+                            <option value="Grade 13 Tutes">Grade 13 Tutes</option>
                         </select>
-                        <input type="text" id="resPasscode" class="w-full p-3 border rounded-xl" placeholder="Passcode (Empty if free)">
+                        <input type="number" id="resPrice" class="w-full p-3 border rounded-xl" placeholder="Price (Rs.) - Leave empty if Free">
                         <textarea id="resDesc" rows="2" class="w-full p-3 border rounded-xl" placeholder="Short Description"></textarea>
                         
                         <div class="border-t pt-4 mt-2">
@@ -88,16 +78,11 @@
                 <div class="glass-card p-6 md:p-8 border-l-4 border-orange-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-megaphone text-orange-500"></i> Broadcast Notice</h3>
                     <div class="space-y-4">
-                        <input type="text" id="noticeTitle" class="w-full p-3 border rounded-xl bg-orange-50 focus:border-orange-500 outline-none" placeholder="Notice Title (e.g. Special Class)">
-                        <textarea id="noticeMessage" rows="3" class="w-full p-3 border rounded-xl bg-orange-50 focus:border-orange-500 outline-none" placeholder="Type your message here..."></textarea>
-                        
+                        <input type="text" id="noticeTitle" class="w-full p-3 border rounded-xl bg-orange-50 outline-none" placeholder="Notice Title">
+                        <textarea id="noticeMessage" rows="3" class="w-full p-3 border rounded-xl bg-orange-50 outline-none" placeholder="Type your message here..."></textarea>
                         <div class="flex gap-2">
-                            <button id="noticeBtn" onclick="publishNotice()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold hover:shadow-lg transition-all text-sm">
-                                Broadcast
-                            </button>
-                            <button onclick="clearNotice()" class="px-4 py-3 rounded-xl bg-slate-100 text-slate-600 font-bold hover:bg-slate-200 transition-all text-sm" title="Remove active notice">
-                                <i class="ph ph-trash"></i> Remove
-                            </button>
+                            <button id="noticeBtn" onclick="publishNotice()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-sm">Broadcast</button>
+                            <button onclick="clearNotice()" class="px-4 py-3 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm"><i class="ph ph-trash"></i> Remove</button>
                         </div>
                         <div id="noticeStatus" class="mt-2 p-3 rounded-xl text-center font-medium text-sm hidden"></div>
                     </div>
@@ -105,6 +90,23 @@
             </div>
 
             <div class="lg:col-span-2 space-y-8">
+                <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Recent Courier Orders</h3>
+                    <div class="overflow-x-auto border rounded-xl">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr class="bg-green-50 text-green-800 text-sm">
+                                    <th class="p-4 border-b">Student Info</th>
+                                    <th class="p-4 border-b">Shipping Address</th>
+                                    <th class="p-4 border-b">Item Ordered</th>
+                                    <th class="p-4 border-b">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody" class="text-sm"><tr><td colspan="4" class="p-4 text-center text-slate-500">Loading orders...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div class="glass-card p-6 md:p-8">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Resources</h3>
                     <div class="overflow-x-auto border rounded-xl">
@@ -113,7 +115,7 @@
                                 <tr class="bg-slate-100 text-slate-600 text-sm">
                                     <th class="p-4 border-b">Title</th>
                                     <th class="p-4 border-b">Category</th>
-                                    <th class="p-4 border-b">Passcode</th>
+                                    <th class="p-4 border-b">Price</th>
                                     <th class="p-4 border-b">Actions</th>
                                 </tr>
                             </thead>
@@ -123,7 +125,7 @@
                 </div>
 
                 <div class="glass-card p-6 md:p-8">
-                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-users text-green-600"></i> Registered Students</h3>
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-users text-blue-600"></i> Registered Students</h3>
                     <div class="overflow-x-auto border rounded-xl">
                         <table class="w-full text-left border-collapse whitespace-nowrap">
                             <thead>
@@ -131,11 +133,10 @@
                                     <th class="p-4 border-b">Name</th>
                                     <th class="p-4 border-b">Phone</th>
                                     <th class="p-4 border-b">Email</th>
-                                    <th class="p-4 border-b">Unlocked</th>
                                     <th class="p-4 border-b">Joined</th>
                                 </tr>
                             </thead>
-                            <tbody id="studentTableBody" class="text-sm"><tr><td colspan="5" class="p-4 text-center text-slate-500">Loading...</td></tr></tbody>
+                            <tbody id="studentTableBody" class="text-sm"><tr><td colspan="4" class="p-4 text-center text-slate-500">Loading...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -143,31 +144,9 @@
         </div>
     </div>
 
-    <div id="editModal" class="fixed inset-0 z-[100] modal hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl">
-            <button onclick="closeEditModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
-            <h3 class="text-2xl font-bold mb-6 text-slate-800">Edit Resource</h3>
-            <input type="hidden" id="editId">
-            <div class="space-y-4">
-                <input type="text" id="editTitle" class="w-full p-3 border rounded-xl" placeholder="Title">
-                <select id="editCategory" class="w-full p-3 border rounded-xl bg-white">
-                    <option value="AL Past Papers">AL Past Papers</option>
-                    <option value="OL Past Papers">OL Past Papers</option>
-                    <option value="A/L Tutes">A/L Tutes</option>
-                    <option value="O/L Tutes">O/L Tutes</option>
-                </select>
-                <input type="text" id="editDesc" class="w-full p-3 border rounded-xl" placeholder="Description">
-                <input type="text" id="editPasscode" class="w-full p-3 border rounded-xl" placeholder="Passcode (Empty if free)">
-                <input type="url" id="editLink" class="w-full p-3 border rounded-xl" placeholder="File Link">
-                <button id="updateBtn" onclick="updateResource()" class="w-full py-3 rounded-xl bg-green-600 text-white font-bold hover:bg-green-700">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        // Added 'setDoc' for notices
         import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
@@ -195,7 +174,7 @@
             if (user && user.email === "admin@pradeepk.com") {
                 document.getElementById('adminLoginSection').classList.add('hidden');
                 document.getElementById('adminDashboardSection').classList.remove('hidden');
-                loadResources(); loadStudents();
+                loadResources(); loadStudents(); loadOrders();
             } else {
                 document.getElementById('adminDashboardSection').classList.add('hidden');
                 document.getElementById('adminLoginSection').classList.remove('hidden');
@@ -211,58 +190,46 @@
 
         window.adminLogout = async function() { await signOut(auth); }
 
-        // --- PUBLISH NOTICE (NEW) ---
-        window.publishNotice = async function() {
-            const title = document.getElementById('noticeTitle').value;
-            const message = document.getElementById('noticeMessage').value;
-            const btn = document.getElementById('noticeBtn');
-            const status = document.getElementById('noticeStatus');
-
-            if(!title || !message) { alert("Title and Message are required!"); return; }
-
-            btn.disabled = true; btn.innerText = "Broadcasting...";
+        window.loadOrders = async function() {
+            const tbody = document.getElementById('ordersTableBody');
             try {
-                // සෙටින්ග්ස් කියලා වෙනම Document එකකට පණිවිඩය සේව් කරනවා
-                await setDoc(doc(db, "settings", "current_notice"), {
-                    title: title, message: message, date: new Date(), active: true
+                const q = query(collection(db, "orders"), orderBy("date", "desc"));
+                const querySnapshot = await getDocs(q); tbody.innerHTML = '';
+                if(querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No recent orders found.</td></tr>'; return; }
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data(); 
+                    let dateStr = "N/A"; if(data.date) dateStr = data.date.toDate().toLocaleString();
+                    tbody.innerHTML += `
+                        <tr class="border-b hover:bg-green-50/50">
+                            <td class="p-4">
+                                <p class="font-bold text-slate-800">${data.studentName}</p>
+                                <p class="text-xs text-slate-500">${data.email}</p>
+                                <p class="text-xs text-blue-600">📞 ${data.phone1} ${data.phone2 ? ' | 📞 '+data.phone2 : ''}</p>
+                            </td>
+                            <td class="p-4 text-slate-700 whitespace-pre-wrap text-xs">${data.address}<br><b>Postal Code:</b> ${data.postalCode}</td>
+                            <td class="p-4">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">${data.tuteTitle}</span>
+                                <p class="text-xs mt-1 text-green-700 font-bold">Paid: Rs. ${data.amount}</p>
+                            </td>
+                            <td class="p-4 text-slate-500 text-xs">${dateStr}</td>
+                        </tr>`;
                 });
-                status.innerText = "✅ Notice Broadcasted!";
-                status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
-                document.getElementById('noticeTitle').value = ''; document.getElementById('noticeMessage').value = '';
-            } catch(e) {
-                status.innerText = "❌ Error: " + e.message;
-                status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-red-50 text-red-700";
-            } finally {
-                btn.disabled = false; btn.innerText = "Broadcast";
-                status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 5000);
-            }
-        }
-
-        // --- CLEAR NOTICE (NEW) ---
-        window.clearNotice = async function() {
-            if(confirm("Are you sure you want to remove the active notice?")) {
-                try {
-                    await setDoc(doc(db, "settings", "current_notice"), { active: false }, { merge: true });
-                    alert("Notice removed from student dashboard!");
-                } catch(e) { console.error(e); }
-            }
+            } catch (error) { console.error(error); }
         }
 
         window.loadStudents = async function() {
             const tbody = document.getElementById('studentTableBody');
             try {
                 const querySnapshot = await getDocs(collection(db, "students")); tbody.innerHTML = '';
-                if(querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No students yet.</td></tr>'; return; }
+                if(querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No students yet.</td></tr>'; return; }
                 querySnapshot.forEach((doc) => {
                     const data = doc.data(); if(data.role === 'admin' || doc.id === 'admin') return; 
-                    const unlocks = data.unlockedTutes ? data.unlockedTutes.length : 0;
                     let joinDate = "N/A"; if(data.createdAt) joinDate = data.createdAt.toDate().toLocaleDateString();
                     tbody.innerHTML += `
                         <tr class="border-b hover:bg-slate-50">
                             <td class="p-4 font-semibold text-slate-800">${data.fullName || 'Unknown'}</td>
                             <td class="p-4"><a href="tel:${data.phone}" class="text-blue-600 hover:underline">${data.phone || 'N/A'}</a></td>
                             <td class="p-4 text-slate-500">${data.email || 'N/A'}</td>
-                            <td class="p-4"><span class="px-2 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold">${unlocks} Docs</span></td>
                             <td class="p-4 text-slate-500 text-xs">${joinDate}</td>
                         </tr>`;
                 });
@@ -276,27 +243,44 @@
                 const querySnapshot = await getDocs(q); tbody.innerHTML = '';
                 if(querySnapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
                 querySnapshot.forEach((doc) => {
-                    const data = doc.data(); const isFree = !data.passcode ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs">Free</span>' : data.passcode;
+                    const data = doc.data(); 
+                    const priceValue = parseFloat(data.price);
+                    const isFree = (isNaN(priceValue) || priceValue <= 0) ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs">Free</span>' : `Rs. ${priceValue}`;
                     tbody.innerHTML += `
                         <tr class="border-b hover:bg-slate-50">
                             <td class="p-4 font-medium text-slate-800 truncate max-w-[150px]" title="${data.title}">${data.title}</td>
                             <td class="p-4 text-slate-500">${data.category}</td>
                             <td class="p-4">${isFree}</td>
                             <td class="p-4 flex gap-2">
-                                <button onclick="openEditModal('${doc.id}', '${data.title.replace(/'/g, "\\'")}', '${data.category}', '${data.desc.replace(/'/g, "\\'")}', '${data.passcode || ''}', '${data.driveLink}')" class="px-2 py-1 bg-blue-100 text-blue-600 rounded"><i class="ph ph-pencil-simple"></i></button>
-                                <button onclick="deleteResource('${doc.id}', '${data.driveLink}')" class="px-2 py-1 bg-red-100 text-red-600 rounded"><i class="ph ph-trash"></i></button>
+                                <button onclick="deleteResource('${doc.id}', '${data.driveLink}')" class="px-3 py-1 bg-red-100 text-red-600 rounded"><i class="ph ph-trash"></i> Delete</button>
                             </td>
                         </tr>`;
                 });
             } catch (error) { console.error(error); }
         }
 
-        // Functions for add, delete, edit are same as before...
+        window.publishNotice = async function() {
+            const title = document.getElementById('noticeTitle').value; const message = document.getElementById('noticeMessage').value;
+            const btn = document.getElementById('noticeBtn'); const status = document.getElementById('noticeStatus');
+            if(!title || !message) { alert("Title and Message are required!"); return; }
+            btn.disabled = true; btn.innerText = "Broadcasting...";
+            try {
+                await setDoc(doc(db, "settings", "current_notice"), { title: title, message: message, date: new Date(), active: true });
+                status.innerText = "✅ Broadcasted!"; status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
+                document.getElementById('noticeTitle').value = ''; document.getElementById('noticeMessage').value = '';
+            } catch(e) { status.innerText = "❌ Error"; status.classList.remove('hidden'); } 
+            finally { btn.disabled = false; btn.innerText = "Broadcast"; status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 3000); }
+        }
+
+        window.clearNotice = async function() {
+            if(confirm("Remove the active notice?")) { await setDoc(doc(db, "settings", "current_notice"), { active: false }, { merge: true }); alert("Removed!"); }
+        }
+
         window.addResource = async function() {
             const title = document.getElementById('resTitle').value; const category = document.getElementById('resCategory').value;
             const desc = document.getElementById('resDesc').value; const fileInput = document.getElementById('resFile').files[0];
-            let driveLink = document.getElementById('resLink').value; const passcodeVal = document.getElementById('resPasscode').value.trim();
-            const passcode = passcodeVal === "" ? null : passcodeVal; const btn = document.getElementById('addBtn'); const status = document.getElementById('statusMsg');
+            let driveLink = document.getElementById('resLink').value; const price = document.getElementById('resPrice').value;
+            const btn = document.getElementById('addBtn'); const status = document.getElementById('statusMsg');
             const progressCont = document.getElementById('uploadProgressContainer'); const progressBar = document.getElementById('uploadProgressBar');
 
             if(!title || !desc) { alert("Title and Description required!"); return; }
@@ -313,9 +297,9 @@
                         (error) => reject(error), async () => { driveLink = await getDownloadURL(uploadTask.snapshot.ref); resolve(); });
                     });
                 }
-                await addDoc(collection(db, "resources"), { id: customId, title: title, category: category, desc: desc, driveLink: driveLink, passcode: passcode, createdAt: new Date() });
-                status.innerText = "✅ Successfully Published!"; status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
-                document.querySelectorAll('#resTitle, #resDesc, #resLink, #resPasscode, #resFile').forEach(i=>i.value='');
+                await addDoc(collection(db, "resources"), { id: customId, title: title, category: category, desc: desc, driveLink: driveLink, price: price, createdAt: new Date() });
+                status.innerText = "✅ Published!"; status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
+                document.querySelectorAll('#resTitle, #resDesc, #resLink, #resPrice, #resFile').forEach(i=>i.value='');
                 progressCont.classList.add('hidden'); progressBar.style.width = '0%'; loadResources(); 
             } catch (error) { status.innerText = "❌ Error: " + error.message; status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-red-50 text-red-700"; } 
             finally { btn.disabled = false; btn.innerText = "Publish Resource"; status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 5000); }
@@ -324,19 +308,6 @@
         window.deleteResource = async function(docId, fileUrl) {
             if(!confirm("Delete this resource?")) return;
             try { await deleteDoc(doc(db, "resources", docId)); if(fileUrl.includes("firebasestorage")) { const fileRef = ref(storage, fileUrl); await deleteObject(fileRef).catch(e=>console.log(e)); } alert("Deleted!"); loadResources(); } catch (error) { alert("Error: " + error.message); }
-        }
-
-        window.openEditModal = function(id, title, cat, desc, pass, link) {
-            document.getElementById('editId').value = id; document.getElementById('editTitle').value = title; document.getElementById('editCategory').value = cat;
-            document.getElementById('editDesc').value = desc; document.getElementById('editPasscode').value = pass; document.getElementById('editLink').value = link; document.getElementById('editModal').classList.remove('hidden');
-        }
-        window.closeEditModal = function() { document.getElementById('editModal').classList.add('hidden'); }
-        window.updateResource = async function() {
-            const id = document.getElementById('editId').value; const btn = document.getElementById('updateBtn'); btn.innerText = "Saving...";
-            try {
-                await updateDoc(doc(db, "resources", id), { title: document.getElementById('editTitle').value, category: document.getElementById('editCategory').value, desc: document.getElementById('editDesc').value, passcode: document.getElementById('editPasscode').value || null, driveLink: document.getElementById('editLink').value });
-                closeEditModal(); loadResources();
-            } catch (error) { alert("Error: " + error.message); } finally { btn.innerText = "Save Changes"; }
         }
     </script>
 </body>
