@@ -23,6 +23,9 @@
         .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; transition: all 0.3s; margin-top: 10px; }
         .link-text { color: #3b82f6; cursor: pointer; font-size: 14px; transition: color 0.3s; }
         .link-text:hover { color: #1d4ed8; text-decoration: underline; }
+        /* Custom Scrollbar for Orders List */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="relative text-slate-800">
@@ -213,7 +216,7 @@
     </div>
 
     <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 transition-opacity">
-        <div class="bg-white w-full max-w-md p-8 rounded-3xl relative shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+        <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors text-2xl"><i class="ph ph-x"></i></button>
             
             <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center text-3xl mb-4 mx-auto"><i class="ph-fill ph-user-gear"></i></div>
@@ -221,19 +224,19 @@
             
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-500">Full Name</label>
+                    <label class="block text-xs font-semibold mb-1 text-slate-500">Full Name</label>
                     <input type="text" id="profName" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-500">Email Address</label>
+                    <label class="block text-xs font-semibold mb-1 text-slate-500">Email Address</label>
                     <input type="email" id="profEmail" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-700">Phone Number <span class="text-blue-500">*</span></label>
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">Phone Number</label>
                     <input type="tel" id="profPhone" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-700">New Password <span class="text-xs text-slate-400 font-normal">(Leave blank to keep current)</span></label>
+                    <label class="block text-xs font-semibold mb-1 text-slate-700">New Password <span class="text-[10px] text-slate-400 font-normal">(Leave blank to keep current)</span></label>
                     <div class="relative">
                         <input type="password" id="profPassword" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300 pr-12" placeholder="Enter new password">
                         <button type="button" onclick="window.togglePassword('profPassword', 'profEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="profEye" class="ph ph-eye"></i></button>
@@ -242,9 +245,16 @@
                 
                 <div id="profStatus" class="p-3 text-center text-sm font-medium rounded-xl hidden mt-2"></div>
                 
-                <button id="profSaveBtn" onclick="window.saveProfile()" class="w-full py-4 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all active:scale-[0.98] mt-4 shadow-lg shadow-slate-900/20">
+                <button id="profSaveBtn" onclick="window.saveProfile()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all active:scale-[0.98] mt-4 shadow-lg shadow-slate-900/20">
                     Save Profile Changes
                 </button>
+            </div>
+
+            <div class="mt-8 border-t border-slate-200 pt-6">
+                <h4 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-blue-600"></i> My Orders & Delivery</h4>
+                <div id="myOrdersContainer" class="space-y-3">
+                    <p class="text-sm text-slate-500 text-center">Loading orders...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -295,7 +305,7 @@
             const dashboardImg = document.getElementById('dashboardAvatarImg');
             const dashboardIcon = document.getElementById('dashboardAvatarIcon');
             if (currentUserData && currentUserData.fullName) {
-                // Generates an avatar using the user's name
+                // TEXT AVATAR NO UPLOAD
                 dashboardImg.src = `https://ui-avatars.com/api/?name=${currentUserData.fullName}&background=eff6ff&color=2563eb`;
                 dashboardImg.classList.remove('hidden'); 
                 dashboardIcon.classList.add('hidden');
@@ -338,6 +348,48 @@
             }
         });
 
+        // --- PROFILE & ORDERS LOGIC ---
+        window.loadMyOrders = async function() {
+            const container = document.getElementById('myOrdersContainer');
+            try {
+                const q = query(collection(db, "orders"));
+                const querySnapshot = await getDocs(q);
+                let myOrders = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if(data.studentId === currentUser.uid) { myOrders.push(data); }
+                });
+
+                // Sort by date newest first
+                myOrders.sort((a, b) => b.date - a.date);
+
+                container.innerHTML = '';
+                if(myOrders.length === 0) { 
+                    container.innerHTML = '<p class="text-sm text-slate-500 text-center py-4 bg-slate-50 rounded-xl">No purchases yet.</p>'; 
+                    return; 
+                }
+
+                myOrders.forEach((order) => {
+                    const status = order.status || 'Processing';
+                    let statusColor = status === 'Delivered' ? 'text-green-700 bg-green-100 border-green-200' : (status === 'Dispatched' ? 'text-blue-700 bg-blue-100 border-blue-200' : 'text-orange-700 bg-orange-100 border-orange-200');
+                    let icon = status === 'Delivered' ? 'ph-check-circle' : (status === 'Dispatched' ? 'ph-truck' : 'ph-hourglass');
+
+                    container.innerHTML += `
+                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50/50 flex flex-col gap-2">
+                            <div class="flex justify-between items-start">
+                                <p class="text-sm font-bold text-slate-800 line-clamp-1">${order.tuteTitle}</p>
+                                <span class="px-2 py-1 text-[10px] font-bold rounded-lg border flex items-center gap-1 ${statusColor}"><i class="ph-fill ${icon}"></i> ${status}</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Amount: Rs. ${order.amount} • Order ID: ${order.orderId.substring(0, 10)}...</p>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                container.innerHTML = '<p class="text-sm text-red-500 text-center">Failed to load orders.</p>';
+            }
+        }
+
         window.openProfile = function() {
             if(currentUserData) {
                 document.getElementById('profName').value = currentUserData.fullName || '';
@@ -346,6 +398,11 @@
                 document.getElementById('profPassword').value = '';
                 
                 document.getElementById('profStatus').classList.add('hidden');
+                
+                // Load Orders when opening profile
+                document.getElementById('myOrdersContainer').innerHTML = '<p class="text-sm text-slate-500 text-center">Loading orders...</p>';
+                window.loadMyOrders();
+
                 document.getElementById('profileModal').classList.remove('hidden');
             }
         }
@@ -357,7 +414,7 @@
             const newPassword = document.getElementById('profPassword').value;
             const btn = document.getElementById('profSaveBtn'); const status = document.getElementById('profStatus');
 
-            btn.disabled = true; btn.innerText = "Saving Changes..."; status.classList.add('hidden');
+            btn.disabled = true; btn.innerText = "Saving..."; status.classList.add('hidden');
 
             try {
                 await updateDoc(doc(db, "students", currentUser.uid), { phone: phone });
@@ -438,9 +495,10 @@
             payhere.onCompleted = async function onCompleted(paidOrderId) {
                 document.getElementById('payBtn').innerText = "Processing Order...";
                 try {
+                    // NEW: Added status 'Processing' when saving order
                     await setDoc(doc(db, "orders", paidOrderId), {
                         orderId: paidOrderId, studentId: currentUser.uid, studentName: name, email: currentUser.email, phone1: phone1, phone2: phone2,
-                        address: address, postalCode: postal, tuteId: currentPurchaseTute.id, tuteTitle: currentPurchaseTute.title, amount: currentPurchaseTute.price, date: new Date()
+                        address: address, postalCode: postal, tuteId: currentPurchaseTute.id, tuteTitle: currentPurchaseTute.title, amount: currentPurchaseTute.price, status: 'Processing', date: new Date()
                     });
                     await updateDoc(doc(db, "students", currentUser.uid), { unlockedTutes: arrayUnion(currentPurchaseTute.id) });
                     currentUserUnlockedTutes.push(currentPurchaseTute.id);
