@@ -13,7 +13,7 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
         .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .auth-glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
+        .auth-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
         .bg-blob { animation: blob 7s infinite; }
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
@@ -23,9 +23,9 @@
         .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; transition: all 0.3s; margin-top: 10px; }
         .link-text { color: #3b82f6; cursor: pointer; font-size: 14px; transition: color 0.3s; }
         .link-text:hover { color: #1d4ed8; text-decoration: underline; }
-        /* Custom Scrollbar for Orders List */
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .modal-backdrop { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); }
     </style>
 </head>
 <body class="relative text-slate-800">
@@ -47,63 +47,25 @@
                 <a href="papers & tutes.html" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Papers & Tutes</a>
                 <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
             </nav>
-            <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
+            <div class="flex items-center gap-4">
+                <button id="navLoginBtn" onclick="window.openAuthModal()" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Login / Register</button>
+                <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
+            </div>
         </div>
         
         <div id="mobileMenu" class="hidden absolute top-full left-0 w-full glass-panel flex flex-col py-4 px-6 md:hidden shadow-2xl border-t border-white/40">
             <a href="index.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Home</a>
             <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
             <a href="papers & tutes.html" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Papers & Tutes</a>
-            <a href="contact us.html" class="py-3 text-slate-700 font-medium">Contact</a>
+            <a href="contact us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Contact</a>
+            <button onclick="window.openAuthModal(); toggleMenu();" class="py-3 text-slate-900 font-bold text-left">Login / Register</button>
         </div>
     </header>
 
     <main class="flex-grow pt-32 pb-12">
         <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
             
-            <div id="loadingAuth" class="flex justify-center items-center h-64">
-                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-            </div>
-
-            <div id="authContainer" class="max-w-md mx-auto hidden mt-10">
-                <div id="loginSection" class="auth-glass p-10 rounded-3xl text-center" data-aos="fade-up">
-                    <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
-                    <h2 class="text-2xl font-bold mb-1 text-slate-800">Student Login</h2>
-                    <input type="email" id="loginEmail" class="auth-input mt-6" placeholder="Email Address">
-                    <div class="relative mb-3">
-                        <input type="password" id="loginPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Password">
-                        <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="loginEye" class="ph ph-eye"></i></button>
-                    </div>
-                    <button id="loginBtn" class="auth-btn mt-2" onclick="window.loginUser()">Log In to Portal</button>
-                    <div class="flex justify-between mt-6 px-2">
-                        <span class="link-text" onclick="window.toggleAuthView('forgotSection')">Forgot Password?</span>
-                        <span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span>
-                    </div>
-                </div>
-
-                <div id="signupSection" class="auth-glass p-10 rounded-3xl text-center hidden" data-aos="fade-up">
-                    <h2 class="text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
-                    <input type="text" id="regName" class="auth-input" placeholder="Full Name">
-                    <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
-                    <input type="tel" id="regPhone" class="auth-input" placeholder="Phone No">
-                    <div class="relative mb-3">
-                        <input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Create Password">
-                        <button type="button" onclick="window.togglePassword('regPassword', 'regEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="regEye" class="ph ph-eye"></i></button>
-                    </div>
-                    <button id="signupBtn" class="auth-btn mt-2" onclick="window.registerUser()">Create Account</button>
-                    <div class="mt-5"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')">Back to Log In</span></div>
-                </div>
-
-                <div id="forgotSection" class="auth-glass p-10 rounded-3xl text-center hidden" data-aos="fade-up">
-                    <div class="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-lock-key-open"></i></div>
-                    <h2 class="text-2xl font-bold mb-1 text-slate-800">Reset Password</h2>
-                    <input type="email" id="forgotEmail" class="auth-input mt-6" placeholder="Registered Email">
-                    <button id="resetBtn" class="auth-btn mb-4" onclick="window.resetUserPassword()">Send Reset Link</button>
-                    <span class="link-text" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Login</span>
-                </div>
-            </div>
-
-            <div id="dashboardContainer" class="hidden">
+            <div id="userDashboardBar" class="hidden">
                 <div class="glass-panel p-6 rounded-2xl mb-6 flex flex-col md:flex-row justify-between items-center gap-4" data-aos="fade-down">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center shadow-lg border-2 border-white">
@@ -137,16 +99,24 @@
                         <button onclick="document.getElementById('noticeBoard').classList.add('hidden')" class="md:ml-auto text-white/70 hover:text-white text-xl p-2"><i class="ph ph-x"></i></button>
                     </div>
                 </div>
-
-                <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer" data-aos="fade-up">
-                    <button onclick="filterItems('Grade 10 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 bg-slate-900 text-white shadow-lg scale-105">Grade 10 Tutes</button>
-                    <button onclick="filterItems('Grade 11 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 11 Tutes</button>
-                    <button onclick="filterItems('Grade 12 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 12 Tutes</button>
-                    <button onclick="filterItems('Grade 13 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 13 Tutes</button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid"></div>
             </div>
+
+            <div class="text-center mb-10" data-aos="fade-up">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-4">Study Materials Library</h1>
+                <p class="text-slate-600 max-w-2xl mx-auto">Browse our premium tutes and past papers. Log in or create an account to access free materials and purchase premium tutes.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer" data-aos="fade-up">
+                <button onclick="filterItems('Grade 10 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 bg-slate-900 text-white shadow-lg scale-105">Grade 10 Tutes</button>
+                <button onclick="filterItems('Grade 11 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 11 Tutes</button>
+                <button onclick="filterItems('Grade 12 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 12 Tutes</button>
+                <button onclick="filterItems('Grade 13 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 13 Tutes</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
+                <div class="col-span-full flex justify-center py-10"><div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div></div>
+            </div>
+
         </div>
     </main>
 
@@ -189,7 +159,50 @@
         </div>
     </footer>
 
-    <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4">
+    <div id="authModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4 transition-opacity">
+        <div class="w-full max-w-md relative">
+            <button onclick="window.closeAuthModal()" class="absolute -top-12 right-0 text-white hover:text-blue-200 text-4xl transition-colors"><i class="ph ph-x"></i></button>
+            
+            <div id="loginSection" class="auth-glass p-10 rounded-3xl text-center shadow-2xl">
+                <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
+                <h2 class="text-2xl font-bold mb-1 text-slate-800">Student Login</h2>
+                <p class="text-slate-500 mb-6 text-sm">Please log in to access this material.</p>
+                <input type="email" id="loginEmail" class="auth-input" placeholder="Email Address">
+                <div class="relative mb-3">
+                    <input type="password" id="loginPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Password">
+                    <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="loginEye" class="ph ph-eye"></i></button>
+                </div>
+                <button id="loginBtn" class="auth-btn mt-2" onclick="window.loginUser()">Log In</button>
+                <div class="flex justify-between mt-6 px-2">
+                    <span class="link-text" onclick="window.toggleAuthView('forgotSection')">Forgot Password?</span>
+                    <span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span>
+                </div>
+            </div>
+
+            <div id="signupSection" class="auth-glass p-10 rounded-3xl text-center hidden shadow-2xl">
+                <h2 class="text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
+                <input type="text" id="regName" class="auth-input" placeholder="Full Name">
+                <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
+                <input type="tel" id="regPhone" class="auth-input" placeholder="Phone No">
+                <div class="relative mb-3">
+                    <input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Create Password">
+                    <button type="button" onclick="window.togglePassword('regPassword', 'regEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="regEye" class="ph ph-eye"></i></button>
+                </div>
+                <button id="signupBtn" class="auth-btn mt-2" onclick="window.registerUser()">Create Account</button>
+                <div class="mt-5"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Log In</span></div>
+            </div>
+
+            <div id="forgotSection" class="auth-glass p-10 rounded-3xl text-center hidden shadow-2xl">
+                <div class="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-lock-key-open"></i></div>
+                <h2 class="text-2xl font-bold mb-1 text-slate-800">Reset Password</h2>
+                <input type="email" id="forgotEmail" class="auth-input mt-6" placeholder="Registered Email">
+                <button id="resetBtn" class="auth-btn mb-4" onclick="window.resetUserPassword()">Send Reset Link</button>
+                <span class="link-text" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Login</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
         <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto">
             <button onclick="document.getElementById('shippingModal').classList.add('hidden')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mb-4 mx-auto"><i class="ph-fill ph-truck"></i></div>
@@ -215,7 +228,7 @@
         </div>
     </div>
 
-    <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4 transition-opacity">
+    <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4 transition-opacity">
         <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors text-2xl"><i class="ph ph-x"></i></button>
             
@@ -293,13 +306,16 @@
         let currentActiveCategory = 'Grade 10 Tutes';
         let currentPurchaseTute = null;
 
-        async function fetchResourcesFromDB() {
+        // FETCH AND RENDER IMMEDIATELY
+        async function initPage() {
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
                 const querySnapshot = await getDocs(q); dbResources = [];
                 querySnapshot.forEach((doc) => { dbResources.push(doc.data()); });
+                window.renderItems(currentActiveCategory);
             } catch (error) { console.error(error); }
         }
+        initPage();
 
         function updateAvatarDisplay() {
             const dashboardImg = document.getElementById('dashboardAvatarImg');
@@ -315,11 +331,11 @@
         }
 
         onAuthStateChanged(auth, async (user) => {
-            document.getElementById('loadingAuth').classList.add('hidden'); 
             if (user && user.email !== "admin@pradeepk.com") {
                 currentUser = user;
-                document.getElementById('authContainer').classList.add('hidden');
-                document.getElementById('dashboardContainer').classList.remove('hidden');
+                document.getElementById('userDashboardBar').classList.remove('hidden');
+                document.getElementById('navLoginBtn').classList.add('hidden');
+                window.closeAuthModal();
                 
                 try {
                     const docSnap = await getDoc(doc(db, "students", user.uid));
@@ -339,13 +355,23 @@
                     }
                 } catch (e) { console.log(e); }
                 
-                await fetchResourcesFromDB(); window.renderItems(currentActiveCategory);
+                window.renderItems(currentActiveCategory); // Re-render to show unlocked items
             } else {
                 currentUser = null; currentUserData = null; currentUserUnlockedTutes = [];
-                document.getElementById('dashboardContainer').classList.add('hidden');
-                document.getElementById('authContainer').classList.remove('hidden');
+                document.getElementById('userDashboardBar').classList.add('hidden');
+                document.getElementById('navLoginBtn').classList.remove('hidden');
+                window.renderItems(currentActiveCategory); // Re-render to show locks
             }
         });
+
+        // --- NEW: AUTH MODAL LOGIC ---
+        window.openAuthModal = function() { document.getElementById('authModal').classList.remove('hidden'); }
+        window.closeAuthModal = function() { document.getElementById('authModal').classList.add('hidden'); }
+
+        window.toggleAuthView = function(showId) {
+            document.getElementById('loginSection').classList.add('hidden'); document.getElementById('signupSection').classList.add('hidden');
+            document.getElementById('forgotSection').classList.add('hidden'); document.getElementById(showId).classList.remove('hidden');
+        }
 
         // --- GENERATE RECEIPT ---
         window.downloadReceipt = function(orderId, title, amount, date) {
@@ -411,9 +437,7 @@
                     </div>
                     
                     <script>
-                        window.onload = function() { 
-                            setTimeout(() => { window.print(); }, 500); 
-                        }
+                        window.onload = function() { setTimeout(() => { window.print(); }, 500); }
                     </script>
                 </body>
                 </html>
@@ -480,12 +504,10 @@
                 document.getElementById('profEmail').value = currentUserData.email || '';
                 document.getElementById('profPhone').value = currentUserData.phone || '';
                 document.getElementById('profPassword').value = '';
-                
                 document.getElementById('profStatus').classList.add('hidden');
                 
                 document.getElementById('myOrdersContainer').innerHTML = '<p class="text-sm text-slate-500 text-center">Loading orders...</p>';
                 window.loadMyOrders();
-
                 document.getElementById('profileModal').classList.remove('hidden');
             }
         }
@@ -517,11 +539,6 @@
             } finally { btn.disabled = false; btn.innerText = "Save Profile Changes"; }
         }
 
-        window.toggleAuthView = function(showId) {
-            document.getElementById('loginSection').classList.add('hidden'); document.getElementById('signupSection').classList.add('hidden');
-            document.getElementById('forgotSection').classList.add('hidden'); document.getElementById(showId).classList.remove('hidden');
-        }
-
         window.renderItems = function(category) {
             currentActiveCategory = category; const grid = document.getElementById('resourceGrid'); grid.innerHTML = '';
             const filtered = dbResources.filter(res => res.category === category);
@@ -530,10 +547,31 @@
             filtered.forEach((item) => {
                 const card = document.createElement('div'); card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full bg-white/50";
                 const priceVal = parseFloat(item.price); const isFree = isNaN(priceVal) || priceVal <= 0;
-                const isUnlocked = isFree || currentUserUnlockedTutes.includes(item.id);
-                let btnText = "View / Download PDF"; let btnClass = "bg-slate-100 text-slate-800 hover:bg-green-500 hover:text-white"; let icon = "ph-folder-open";
+                
+                // Determine logic based on Login Status
+                let isUnlocked = false;
+                let btnText = "Log In to View";
+                let btnClass = "bg-slate-100 text-slate-800 hover:bg-slate-200";
+                let icon = "ph-lock";
 
-                if(!isUnlocked) { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 text-white hover:bg-blue-600"; icon = "ph-shopping-cart"; }
+                if (currentUser) {
+                    isUnlocked = isFree || currentUserUnlockedTutes.includes(item.id);
+                    if (isUnlocked) {
+                        btnText = "View / Download PDF";
+                        btnClass = "bg-slate-100 text-slate-800 hover:bg-green-500 hover:text-white";
+                        icon = "ph-folder-open";
+                    } else {
+                        btnText = `Buy Now - Rs. ${priceVal}`;
+                        btnClass = "bg-slate-900 text-white hover:bg-blue-600";
+                        icon = "ph-shopping-cart";
+                    }
+                } else {
+                    if(!isFree) {
+                        btnText = `Buy Now - Rs. ${priceVal}`;
+                        btnClass = "bg-slate-900 text-white hover:bg-blue-600";
+                        icon = "ph-shopping-cart";
+                    }
+                }
 
                 card.innerHTML = `
                     <h3 class="text-xl font-bold text-slate-800 mb-2">${item.title}</h3><p class="text-slate-600 text-sm mb-6 flex-grow">${item.desc}</p>
@@ -545,7 +583,15 @@
         }
 
         window.handleAccess = function(event, id, link, price, title) {
-            event.preventDefault(); const priceVal = parseFloat(price); const isFree = isNaN(priceVal) || priceVal <= 0;
+            event.preventDefault(); 
+            
+            // CHECK LOGIN: If guest, force login!
+            if (!currentUser) {
+                window.openAuthModal();
+                return;
+            }
+
+            const priceVal = parseFloat(price); const isFree = isNaN(priceVal) || priceVal <= 0;
             if (isFree || currentUserUnlockedTutes.includes(id)) { window.open(link, '_blank'); } 
             else {
                 currentPurchaseTute = { id: id, title: title, price: priceVal, link: link };
@@ -567,8 +613,8 @@
 
             const orderId = "TUTE_" + Date.now();
             var payment = {
-                "sandbox": true, 
-                "merchant_id": "1211149", 
+                "sandbox": true, // Live යද්දි මේක false කරන්න
+                "merchant_id": "1211149", // ඔයාගේ PayHere ID එක දාන්න
                 "return_url": window.location.href, "cancel_url": window.location.href, "notify_url": "https://dummy-notify-url.com",
                 "order_id": orderId, "items": currentPurchaseTute.title, "amount": currentPurchaseTute.price, "currency": "LKR",
                 "first_name": name, "last_name": "", "email": currentUser.email, "phone": phone1, "address": address, "city": "Sri Lanka", "country": "Sri Lanka"
@@ -601,16 +647,20 @@
             const name = document.getElementById('regName').value; const dob = document.getElementById('regDob').value; const email = document.getElementById('regEmail').value;
             const phone = document.getElementById('regPhone').value; const password = document.getElementById('regPassword').value;
             if(!name || !email || !password) { alert("Please fill Name, Email, and Password!"); return; }
+            const btn = document.getElementById('signupBtn'); btn.disabled = true; btn.innerText = "Creating Account...";
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
                 await setDoc(doc(db, "students", userCred.user.uid), { fullName: name, birthday: dob, email: email, phone: phone, role: "student", unlockedTutes: [], createdAt: new Date() });
-            } catch (error) { alert("Error: " + error.message); }
+                // Note: The auth state listener will handle UI changes
+            } catch (error) { alert("Error: " + error.message); btn.disabled = false; btn.innerText = "Create Account"; }
         }
 
         window.loginUser = async function() {
             const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value;
             if(!email || !password) return;
-            try { await signInWithEmailAndPassword(auth, email, password); } catch (error) { alert("Invalid Credentials."); }
+            const btn = document.getElementById('loginBtn'); btn.disabled = true; btn.innerText = "Logging in...";
+            try { await signInWithEmailAndPassword(auth, email, password); } 
+            catch (error) { alert("Invalid Credentials."); btn.disabled = false; btn.innerText = "Log In"; }
         }
 
         window.resetUserPassword = async function() {
