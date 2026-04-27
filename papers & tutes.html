@@ -114,7 +114,8 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
-                </div>
+                <div class="col-span-full flex justify-center py-10"><div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div></div>
+            </div>
 
         </div>
     </main>
@@ -305,7 +306,7 @@
         let currentActiveCategory = 'Grade 10 Tutes';
         let currentPurchaseTute = null;
 
-        // LOAD DATA IMMEDIATELY ON PAGE LOAD
+        // FETCH DATA IMMEDIATELY
         async function initPage() {
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
@@ -372,7 +373,7 @@
             document.getElementById('forgotSection').classList.add('hidden'); document.getElementById(showId).classList.remove('hidden');
         }
 
-        // GENERATE RECEIPT
+        // GENERATE RECEIPT (FIXED THE SCRIPT TAG ISSUE HERE)
         window.downloadReceipt = function(orderId, title, amount, date) {
             const receiptWindow = window.open('', '_blank');
             const htmlContent = `
@@ -404,9 +405,8 @@
                     <div class="details-grid">
                         <div class="details-col">
                             <p style="font-weight: bold; color: #0f172a; margin-bottom: 10px; font-size: 16px;">Billed To:</p>
-                            <p>${currentUserData.fullName}</p>
-                            <p>${currentUserData.email}</p>
-                            <p>${currentUserData.phone}</p>
+                            <p>${currentUserData ? currentUserData.fullName : 'Student'}</p>
+                            <p>${currentUserData ? currentUserData.email : ''}</p>
                         </div>
                         <div class="details-col" style="text-align: right;">
                             <p><strong>Order ID:</strong> ${orderId}</p>
@@ -435,9 +435,9 @@
                         <p>If you have any questions, please contact web.pradeepkathulawansha@gmail.com</p>
                     </div>
                     
-                    <script>
+                    <scr` + `ipt>
                         window.onload = function() { setTimeout(() => { window.print(); }, 500); }
-                    </script>
+                    </scr` + `ipt>
                 </body>
                 </html>
             `;
@@ -470,6 +470,8 @@
                     let statusColor = status === 'Delivered' ? 'text-green-700 bg-green-100 border-green-200' : (status === 'Dispatched' ? 'text-blue-700 bg-blue-100 border-blue-200' : 'text-orange-700 bg-orange-100 border-orange-200');
                     let icon = status === 'Delivered' ? 'ph-check-circle' : (status === 'Dispatched' ? 'ph-truck' : 'ph-hourglass');
                     let dateStr = order.date ? order.date.toDate().toLocaleDateString() : 'N/A';
+                    
+                    const safeTitle = order.tuteTitle ? order.tuteTitle.replace(/'/g, "\\'") : 'Tute';
 
                     container.innerHTML += `
                         <div class="p-4 border border-slate-200 rounded-xl bg-slate-50/50 flex flex-col gap-2">
@@ -484,7 +486,7 @@
                             </div>
                             <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-200">
                                 <p class="text-xs font-bold text-green-600">Rs. ${order.amount}</p>
-                                <button onclick="window.downloadReceipt('${order.orderId}', '${order.tuteTitle.replace(/'/g, "\\'")}', '${order.amount}', '${dateStr}')" class="text-blue-600 hover:text-blue-800 text-xs font-semibold flex items-center gap-1 transition-colors">
+                                <button onclick="window.downloadReceipt('${order.orderId}', '${safeTitle}', '${order.amount}', '${dateStr}')" class="text-blue-600 hover:text-blue-800 text-xs font-semibold flex items-center gap-1 transition-colors">
                                     <i class="ph ph-receipt"></i> Download Receipt
                                 </button>
                             </div>
@@ -569,10 +571,12 @@
                         icon = "ph-shopping-cart";
                     }
                 }
+                
+                const safeTitle = item.title ? item.title.replace(/'/g, "\\'") : 'Tute';
 
                 card.innerHTML = `
                     <h3 class="text-xl font-bold text-slate-800 mb-2">${item.title}</h3><p class="text-slate-600 text-sm mb-6 flex-grow">${item.desc}</p>
-                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', '${item.price}', '${item.title.replace(/'/g, "\\'")}')" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold ${btnClass} transition-all duration-300 border border-slate-200">
+                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', '${item.price}', '${safeTitle}')" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold ${btnClass} transition-all duration-300 border border-slate-200">
                         <i class="ph ${icon} text-xl"></i> <span>${btnText}</span>
                     </button>`;
                 grid.appendChild(card);
