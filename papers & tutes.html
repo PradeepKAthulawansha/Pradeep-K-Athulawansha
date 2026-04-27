@@ -48,7 +48,7 @@
                 <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
             </nav>
             <div class="flex items-center gap-4">
-                <button id="navLoginBtn" onclick="window.openAuthModal()" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Login / Register</button>
+                <button id="navLoginBtn" onclick="window.openAuthModal()" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors shadow-md hover:shadow-lg">Login / Register</button>
                 <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
             </div>
         </div>
@@ -58,13 +58,13 @@
             <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
             <a href="papers & tutes.html" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Papers & Tutes</a>
             <a href="contact us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Contact</a>
-            <button onclick="window.openAuthModal(); toggleMenu();" class="py-3 text-slate-900 font-bold text-left">Login / Register</button>
+            <button onclick="window.openAuthModal(); toggleMenu();" class="py-3 text-blue-600 font-bold text-left">Login / Register</button>
         </div>
     </header>
 
     <main class="flex-grow pt-32 pb-12">
         <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
-            
+
             <div id="userDashboardBar" class="hidden">
                 <div class="glass-panel p-6 rounded-2xl mb-6 flex flex-col md:flex-row justify-between items-center gap-4" data-aos="fade-down">
                     <div class="flex items-center gap-4">
@@ -306,7 +306,7 @@
         let currentActiveCategory = 'Grade 10 Tutes';
         let currentPurchaseTute = null;
 
-        // FETCH AND RENDER IMMEDIATELY
+        // FETCH RESOURCES ON LOAD
         async function initPage() {
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
@@ -355,16 +355,16 @@
                     }
                 } catch (e) { console.log(e); }
                 
-                window.renderItems(currentActiveCategory); // Re-render to show unlocked items
+                window.renderItems(currentActiveCategory);
             } else {
                 currentUser = null; currentUserData = null; currentUserUnlockedTutes = [];
                 document.getElementById('userDashboardBar').classList.add('hidden');
                 document.getElementById('navLoginBtn').classList.remove('hidden');
-                window.renderItems(currentActiveCategory); // Re-render to show locks
+                window.renderItems(currentActiveCategory); 
             }
         });
 
-        // --- NEW: AUTH MODAL LOGIC ---
+        // AUTH MODAL LOGIC
         window.openAuthModal = function() { document.getElementById('authModal').classList.remove('hidden'); }
         window.closeAuthModal = function() { document.getElementById('authModal').classList.add('hidden'); }
 
@@ -373,7 +373,7 @@
             document.getElementById('forgotSection').classList.add('hidden'); document.getElementById(showId).classList.remove('hidden');
         }
 
-        // --- GENERATE RECEIPT ---
+        // GENERATE RECEIPT
         window.downloadReceipt = function(orderId, title, amount, date) {
             const receiptWindow = window.open('', '_blank');
             const htmlContent = `
@@ -446,7 +446,6 @@
             receiptWindow.document.close();
         }
 
-        // --- PROFILE & ORDERS LOGIC ---
         window.loadMyOrders = async function() {
             const container = document.getElementById('myOrdersContainer');
             try {
@@ -548,7 +547,6 @@
                 const card = document.createElement('div'); card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full bg-white/50";
                 const priceVal = parseFloat(item.price); const isFree = isNaN(priceVal) || priceVal <= 0;
                 
-                // Determine logic based on Login Status
                 let isUnlocked = false;
                 let btnText = "Log In to View";
                 let btnClass = "bg-slate-100 text-slate-800 hover:bg-slate-200";
@@ -562,13 +560,13 @@
                         icon = "ph-folder-open";
                     } else {
                         btnText = `Buy Now - Rs. ${priceVal}`;
-                        btnClass = "bg-slate-900 text-white hover:bg-blue-600";
+                        btnClass = "bg-slate-900 text-white hover:bg-blue-600 shadow-md";
                         icon = "ph-shopping-cart";
                     }
                 } else {
                     if(!isFree) {
                         btnText = `Buy Now - Rs. ${priceVal}`;
-                        btnClass = "bg-slate-900 text-white hover:bg-blue-600";
+                        btnClass = "bg-slate-900 text-white hover:bg-blue-600 shadow-md";
                         icon = "ph-shopping-cart";
                     }
                 }
@@ -585,7 +583,6 @@
         window.handleAccess = function(event, id, link, price, title) {
             event.preventDefault(); 
             
-            // CHECK LOGIN: If guest, force login!
             if (!currentUser) {
                 window.openAuthModal();
                 return;
@@ -613,8 +610,8 @@
 
             const orderId = "TUTE_" + Date.now();
             var payment = {
-                "sandbox": true, // Live යද්දි මේක false කරන්න
-                "merchant_id": "1211149", // ඔයාගේ PayHere ID එක දාන්න
+                "sandbox": true, 
+                "merchant_id": "1211149", 
                 "return_url": window.location.href, "cancel_url": window.location.href, "notify_url": "https://dummy-notify-url.com",
                 "order_id": orderId, "items": currentPurchaseTute.title, "amount": currentPurchaseTute.price, "currency": "LKR",
                 "first_name": name, "last_name": "", "email": currentUser.email, "phone": phone1, "address": address, "city": "Sri Lanka", "country": "Sri Lanka"
@@ -651,7 +648,6 @@
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
                 await setDoc(doc(db, "students", userCred.user.uid), { fullName: name, birthday: dob, email: email, phone: phone, role: "student", unlockedTutes: [], createdAt: new Date() });
-                // Note: The auth state listener will handle UI changes
             } catch (error) { alert("Error: " + error.message); btn.disabled = false; btn.innerText = "Create Account"; }
         }
 
