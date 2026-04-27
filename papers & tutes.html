@@ -114,8 +114,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
-                <div class="col-span-full flex justify-center py-10"><div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div></div>
-            </div>
+                </div>
 
         </div>
     </main>
@@ -306,7 +305,7 @@
         let currentActiveCategory = 'Grade 10 Tutes';
         let currentPurchaseTute = null;
 
-        // FETCH RESOURCES ON LOAD
+        // LOAD DATA IMMEDIATELY ON PAGE LOAD
         async function initPage() {
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
