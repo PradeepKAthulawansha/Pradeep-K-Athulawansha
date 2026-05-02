@@ -243,12 +243,13 @@
         async function fetchUserData(uid) {
             showQuizView('quiz-loader');
             try {
-                const userSnap = await getDoc(doc(db, 'users', uid));
+                // වෙනස් කළ කොටස: 'users' වෙනුවට 'students' පාවිච්චි කිරීම
+                const userSnap = await getDoc(doc(db, 'students', uid));
                 const userData = userSnap.exists() ? userSnap.data() : {};
                 
                 document.getElementById('user-points').innerText = userData.points || 0;
                 
-                // ළමයාගේ ඇත්ත නම ගන්න කොටස (Database එකේ නම නැත්නම් විතරක් Student කියලා වැටේ)
+                // ළමයාගේ ඇත්ත නම ගන්න කොටස
                 const realName = userData.fullName || userData.name;
                 document.getElementById('user-name').innerText = realName ? realName.split(' ')[0] : 'Student';
 
@@ -278,8 +279,8 @@
                     return;
                 }
 
-                // Check if user already did THIS specific grade's question today
-                const userSnap = await getDoc(doc(db, 'users', currentUserUid));
+                // වෙනස් කළ කොටස: 'users' වෙනුවට 'students' පාවිච්චි කිරීම
+                const userSnap = await getDoc(doc(db, 'students', currentUserUid));
                 if (userSnap.exists() && userSnap.data().lastSolvedDate === today) {
                     showQuizView('quiz-completed');
                     return;
@@ -318,7 +319,8 @@
             clickedBtn.innerHTML = `<div class="loader !w-6 !h-6 border-[2px] mx-auto"></div>`;
             clickedBtn.disabled = true;
 
-            const userRef = doc(db, 'users', currentUserUid);
+            // වෙනස් කළ කොටස: 'users' වෙනුවට 'students' පාවිච්චි කිරීම
+            const userRef = doc(db, 'students', currentUserUid);
             
             try {
                 // අලුත් ළමයින්ට Error නොයන්න setDoc පාවිච්චි කිරීම සහ grade එක යැවීම
@@ -359,7 +361,8 @@
             const lbContainer = document.getElementById('leaderboard-list');
             
             try {
-                const q = query(collection(db, "users"), where("grade", "==", currentGrade), orderBy("points", "desc"), limit(6));
+                // වෙනස් කළ කොටස: 'users' වෙනුවට 'students' පාවිච්චි කිරීම
+                const q = query(collection(db, "students"), where("grade", "==", currentGrade), orderBy("points", "desc"), limit(6));
                 const querySnapshot = await getDocs(q);
                 
                 lbContainer.innerHTML = '';
