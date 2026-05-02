@@ -22,6 +22,7 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
         .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
         .bg-blob { animation: blob 7s infinite; }
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
@@ -86,6 +87,74 @@
                 </div>
             </div>
         </section>
+
+        <!-- ================= DAILY QUIZ & LEADERBOARD SECTION START ================= -->
+        <section class="py-16 relative z-10">
+            <div class="container mx-auto px-6 md:px-12">
+                
+                <!-- Section Header -->
+                <div class="flex flex-col md:flex-row justify-between items-center mb-10" data-aos="fade-up">
+                    <h2 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4 md:mb-0">
+                        BizMind Daily Challenge 🚀
+                    </h2>
+                    <div class="bg-blue-100/80 backdrop-blur-sm text-blue-700 px-6 py-2.5 rounded-full border border-blue-200 font-bold shadow-sm flex items-center gap-2">
+                        <i class="ph-fill ph-star text-orange-400 text-xl"></i>
+                        Your Points: <span id="user-points">0</span>
+                    </div>
+                </div>
+
+                <!-- Grade Toggle Buttons -->
+                <div class="flex justify-center mb-10" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-white/60 backdrop-blur-md p-1.5 rounded-xl shadow-sm border border-slate-200/50 flex gap-1">
+                        <button id="btn-10" class="px-8 py-2.5 rounded-lg bg-blue-600 text-white font-semibold transition-all shadow-md">Grade 10/11</button>
+                        <button id="btn-12" class="px-8 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold transition-all">Grade 12/13</button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8" data-aos="fade-up" data-aos-delay="200">
+                    <!-- Quiz Area -->
+                    <div class="glass-card p-8 rounded-[2rem]">
+                        <div id="quiz-loader" class="text-center py-12">
+                            <i class="ph ph-spinner animate-spin text-4xl text-blue-600 mb-3 block"></i>
+                            <span class="text-slate-600 font-medium">Checking today's challenge...</span>
+                        </div>
+                        
+                        <div id="quiz-content" class="hidden">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Today's Question</span>
+                            </div>
+                            <h3 id="q-text" class="text-xl font-semibold text-slate-800 mb-8 leading-relaxed"></h3>
+                            <div id="options-container" class="space-y-3">
+                                <!-- Options will be injected here -->
+                            </div>
+                        </div>
+
+                        <div id="quiz-completed" class="hidden text-center py-10">
+                            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                                <i class="ph-bold ph-check text-4xl text-emerald-500"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">නියමයි! 🎉</h3>
+                            <p class="text-slate-600">ඔබ අද දවසේ ප්‍රශ්නයට පිළිතුරු ලබා දී අවසන්. හෙටත් අලුත් අභියෝගයක් සමඟින් හමුවෙමු!</p>
+                        </div>
+                    </div>
+
+                    <!-- Leaderboard Area -->
+                    <div class="glass-card p-8 rounded-[2rem] flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 pb-4 border-b border-slate-200/60">
+                            <i class="ph-fill ph-trophy text-orange-400 text-2xl"></i> Top Performers
+                        </h3>
+                        <div id="leaderboard-list" class="space-y-3 flex-grow">
+                            <div class="text-center py-10 text-slate-500 font-medium flex flex-col items-center">
+                                <i class="ph ph-spinner animate-spin text-3xl text-blue-400 mb-2 block"></i>
+                                Loading Leaderboard...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- ================= DAILY QUIZ & LEADERBOARD SECTION END ================= -->
 
         <section class="py-20 relative z-10 bg-slate-50/50 border-t border-b border-slate-200/50 mt-12">
             <div class="container mx-auto px-6 md:px-12">
@@ -164,9 +233,11 @@
         });
     </script>
 
+    <!-- FIREBASE MODULAR SCRIPT (Updated for both Materials & Quiz) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, getDoc, doc, updateDoc, increment, query, orderBy, limit, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
@@ -179,7 +250,11 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
+        // ----------------------------------------------------
+        // 1. RECENT MATERIALS LOGIC
+        // ----------------------------------------------------
         async function loadRecentMaterials() {
             const grid = document.getElementById('recentMaterialsGrid');
             try {
@@ -192,9 +267,8 @@
                     return;
                 }
 
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    
+                querySnapshot.forEach((document) => {
+                    const data = document.data();
                     const priceValue = parseFloat(data.price);
                     const isFree = (isNaN(priceValue) || priceValue <= 0) ? "Free Access" : `Rs. ${priceValue}`;
                     const iconClass = (isNaN(priceValue) || priceValue <= 0) ? "ph-lock-key-open text-green-500" : "ph-shopping-cart text-orange-500";
@@ -232,6 +306,176 @@
             }
         }
         loadRecentMaterials();
+
+        // ----------------------------------------------------
+        // 2. DAILY QUIZ & LEADERBOARD LOGIC
+        // ----------------------------------------------------
+        let currentGrade = '10/11';
+        let currentUserUid = null;
+        const today = new Date().toISOString().split('T')[0];
+
+        // UI Listeners for Grade Toggle
+        const btn10 = document.getElementById('btn-10');
+        const btn12 = document.getElementById('btn-12');
+
+        btn10.addEventListener('click', () => { switchGrade('10/11'); });
+        btn12.addEventListener('click', () => { switchGrade('12/13'); });
+
+        function switchGrade(grade) {
+            currentGrade = grade;
+            const activeClass = "px-8 py-2.5 rounded-lg bg-blue-600 text-white font-semibold transition-all shadow-md";
+            const inactiveClass = "px-8 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold transition-all";
+            
+            btn10.className = grade === '10/11' ? activeClass : inactiveClass;
+            btn12.className = grade === '12/13' ? activeClass : inactiveClass;
+            
+            loadQuestion();
+            loadLeaderboard();
+        }
+
+        // Auth Observer
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUserUid = user.uid;
+                await checkUserStatus(user.uid);
+            } else {
+                document.getElementById('quiz-loader').innerHTML = `
+                    <div class="text-center py-6">
+                        <i class="ph ph-lock-key text-4xl text-slate-400 mb-3 block"></i>
+                        <span class="text-slate-600 font-medium">අද දවසේ අභියෝගයට සහභාගී වීමට <a href="papers & tutes.html" class="text-blue-600 font-bold underline">Login</a> වන්න.</span>
+                    </div>`;
+            }
+            loadLeaderboard();
+        });
+
+        async function checkUserStatus(uid) {
+            try {
+                const userRef = doc(db, 'users', uid);
+                const userSnap = await getDoc(userRef);
+                const userData = userSnap.exists() ? userSnap.data() : {};
+                
+                document.getElementById('user-points').innerText = userData.points || 0;
+
+                if (userData.lastSolvedDate === today) {
+                    showQuizView('quiz-completed');
+                } else {
+                    // Load question based on user's default grade if available, otherwise use toggle state
+                    if(userData.grade && (userData.grade === '10/11' || userData.grade === '12/13')) {
+                       switchGrade(userData.grade);
+                    } else {
+                       loadQuestion();
+                    }
+                }
+            } catch (error) {
+                console.error("Status Check Error: ", error);
+            }
+        }
+
+        async function loadQuestion() {
+            if(!currentUserUid) return; // Prevent loading if not logged in
+            showQuizView('quiz-loader');
+            
+            try {
+                // Fetch question based on the selected grade format e.g. collection 'dailyQuestions_10_11'
+                const collectionName = currentGrade === '10/11' ? 'dailyQuestions_10_11' : 'dailyQuestions_12_13';
+                const qRef = doc(db, collectionName, today);
+                const qSnap = await getDoc(qRef);
+
+                if (!qSnap.exists()) {
+                    document.getElementById('quiz-loader').innerHTML = `
+                        <div class="text-center py-6">
+                            <i class="ph ph-coffee text-4xl text-slate-400 mb-3 block"></i>
+                            <span class="text-slate-600 font-medium">අද දිනට අදාළ ප්‍රශ්නය තවමත් ඇතුළත් කර නොමැත. පසුව නැවත පැමිණෙන්න!</span>
+                        </div>`;
+                    return;
+                }
+
+                const data = qSnap.data();
+                document.getElementById('q-text').innerText = data.q;
+                
+                const optContainer = document.getElementById('options-container');
+                optContainer.innerHTML = '';
+
+                data.options.forEach((opt, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md transition-all duration-300 font-medium text-slate-700";
+                    btn.innerText = opt;
+                    btn.onclick = () => submitAnswer(index);
+                    optContainer.appendChild(btn);
+                });
+                
+                showQuizView('quiz-content');
+            } catch (error) {
+                console.error("Load Question Error: ", error);
+                document.getElementById('quiz-loader').innerText = "ප්‍රශ්නය ලබාගැනීමේදී දෝෂයක් ඇතිවිය.";
+            }
+        }
+
+        async function submitAnswer(selectedIndex) {
+            if (!currentUserUid) return;
+            const userRef = doc(db, 'users', currentUserUid);
+            
+            try {
+                // Update doc with rule validation
+                await updateDoc(userRef, {
+                    points: increment(10),
+                    lastSolvedDate: today,
+                    lastSubmittedAns: selectedIndex 
+                });
+                alert("නිවැරදි පිළිතුරයි! ඔබට ලකුණු 10ක් එකතු වුණා. 🎉");
+                location.reload();
+            } catch (error) {
+                console.error("Quiz Error:", error);
+                alert("පිළිතුර වැරදියි හෝ ඔබ දැනටමත් අද දිනට අදාළව පිළිතුරු ලබා දී ඇත.");
+            }
+        }
+
+        async function loadLeaderboard() {
+            const lbContainer = document.getElementById('leaderboard-list');
+            try {
+                // Query users where grade matches current toggle, ordered by points
+                const q = query(collection(db, "users"), where("grade", "==", currentGrade), orderBy("points", "desc"), limit(5));
+                const querySnapshot = await getDocs(q);
+                
+                lbContainer.innerHTML = '';
+                
+                if(querySnapshot.empty) {
+                    lbContainer.innerHTML = '<div class="text-center py-6 text-slate-500">No ranks available yet. Be the first!</div>';
+                    return;
+                }
+
+                let rank = 1;
+                querySnapshot.forEach((document) => {
+                    const data = document.data();
+                    let medal = `<span class="text-slate-400 font-bold w-6">#${rank}</span>`;
+                    if (rank === 1) medal = `<span class="text-2xl mr-2">🥇</span>`;
+                    else if (rank === 2) medal = `<span class="text-2xl mr-2">🥈</span>`;
+                    else if (rank === 3) medal = `<span class="text-2xl mr-2">🥉</span>`;
+
+                    lbContainer.innerHTML += `
+                        <div class="flex justify-between items-center p-4 bg-white/60 rounded-xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-3">
+                                ${medal}
+                                <span class="font-bold text-slate-700">${data.name || 'Student'}</span>
+                            </div>
+                            <span class="font-extrabold text-blue-600 bg-blue-100 px-4 py-1.5 rounded-full text-sm shadow-sm">${data.points || 0} pts</span>
+                        </div>
+                    `;
+                    rank++;
+                });
+            } catch (error) {
+                console.error("Leaderboard Error:", error);
+                lbContainer.innerHTML = '<div class="text-center py-6 text-red-400">Failed to load leaderboard. (Check Firebase Indexes)</div>';
+            }
+        }
+
+        function showQuizView(viewId) {
+            document.getElementById('quiz-loader').classList.add('hidden');
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-completed').classList.add('hidden');
+            document.getElementById(viewId).classList.remove('hidden');
+        }
+
     </script>
 </body>
 </html>
