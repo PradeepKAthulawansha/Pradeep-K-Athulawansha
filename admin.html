@@ -206,17 +206,17 @@
                     </div>
                 </div>
 
-                <!-- Registered Students -->
+                <!-- Registered Students (Fixed to show even without names) -->
                 <div class="glass-card p-6 md:p-8">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-users text-blue-600"></i> Registered Students</h3>
-                    <div class="overflow-x-auto border rounded-xl max-h-[300px]">
+                    <div class="overflow-x-auto border rounded-xl max-h-[400px]">
                         <table class="w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
                                 <tr class="text-slate-600 text-sm">
-                                    <th class="p-4 border-b">Name</th>
+                                    <th class="p-4 border-b">Name / UID</th>
                                     <th class="p-4 border-b">Phone</th>
                                     <th class="p-4 border-b">Email</th>
-                                    <th class="p-4 border-b">Joined</th>
+                                    <th class="p-4 border-b">Points</th>
                                 </tr>
                             </thead>
                             <tbody id="studentTableBody" class="text-sm"><tr><td colspan="4" class="p-4 text-center text-slate-500">Loading...</td></tr></tbody>
@@ -297,7 +297,7 @@
         import { getFirestore, collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, orderBy, query, setDoc, where, limit } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
-        // FIREBASE CONFIG - REPLACE THIS
+        // FIREBASE CONFIG - ඔයාගේ විස්තර මෙතන දාන්න
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
             authDomain: "pradeep-k-athulawansha.firebaseapp.com",
@@ -660,24 +660,40 @@
             } catch (e) { container.innerHTML = '<div class="text-center text-xs text-red-400 py-4">Error</div>'; }
         }
 
+        // FIXED STUDENT TABLE
         window.loadStudents = async function() {
             const tbody = document.getElementById('studentTableBody');
             try {
-                const q = query(collection(db, "users"), orderBy("createdAt", "desc")); 
-                const snapshot = await getDocs(q); tbody.innerHTML = '';
-                if(snapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No students yet.</td></tr>'; return; }
+                // Remove orderBy to prevent Index requirements causing issues if names/points vary
+                const snapshot = await getDocs(collection(db, "users")); 
+                tbody.innerHTML = '';
+                
+                if(snapshot.empty) { 
+                    tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No students yet.</td></tr>'; 
+                    return; 
+                }
+
                 snapshot.forEach((doc) => {
-                    const data = doc.data(); if(data.email === 'admin@pradeepk.com') return;
-                    let joinDate = "N/A"; if(data.createdAt) joinDate = data.createdAt.toDate().toLocaleDateString();
+                    const data = doc.data(); 
+                    if(data.email === 'admin@pradeepk.com') return; // Hide admin account
+                    
+                    // Fallback to UID if no name
+                    const name = data.fullName || data.name || `<span class="text-red-400 font-normal">No Name (UID: ${doc.id.substring(0,6)}...)</span>`;
+                    const email = data.email || 'No Email';
+                    const points = data.points || 0;
+                    
                     tbody.innerHTML += `
                         <tr class="border-b hover:bg-slate-50">
-                            <td class="p-4 font-semibold text-slate-700">${data.fullName || 'Unknown'}</td>
-                            <td class="p-4"><a href="tel:${data.phone}" class="text-blue-600">${data.phone || 'N/A'}</a></td>
-                            <td class="p-4 text-slate-500">${data.email || 'N/A'}</td>
-                            <td class="p-4 text-slate-500 text-xs">${joinDate}</td>
+                            <td class="p-4 font-semibold text-slate-700">${name}</td>
+                            <td class="p-4"><a href="tel:${data.phone || ''}" class="text-blue-600">${data.phone || 'N/A'}</a></td>
+                            <td class="p-4 text-slate-500">${email}</td>
+                            <td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td>
                         </tr>`;
                 });
-            } catch (error) { console.error(error); }
+            } catch (error) { 
+                console.error("Student Load Error:", error); 
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">Failed to load.</td></tr>';
+            }
         }
     </script>
 </body>
