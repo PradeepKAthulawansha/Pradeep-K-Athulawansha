@@ -43,8 +43,51 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- LEFT COLUMN -->
             <div class="lg:col-span-1 space-y-8">
-                <div class="glass-card p-6 md:p-8">
+                
+                <!-- NEW: Daily Quiz Uploader -->
+                <div class="glass-card p-6 md:p-8 border-t-4 border-indigo-500">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-rocket-launch text-indigo-600"></i> Daily Quiz</h3>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Date</label>
+                                <input type="date" id="q-date" required class="w-full p-2.5 border rounded-xl text-sm outline-none focus:border-indigo-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Grade</label>
+                                <select id="q-grade" class="w-full p-2.5 border rounded-xl text-sm outline-none bg-white focus:border-indigo-400">
+                                    <option value="10_11">Grade 10/11</option>
+                                    <option value="12_13">Grade 12/13</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea id="q-text" rows="2" required placeholder="Type question here..." class="w-full p-3 border rounded-xl text-sm outline-none focus:border-indigo-400"></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <input type="text" id="opt-0" required placeholder="Option 1" class="w-full p-2.5 border rounded-xl text-sm outline-none">
+                            <input type="text" id="opt-1" required placeholder="Option 2" class="w-full p-2.5 border rounded-xl text-sm outline-none">
+                            <input type="text" id="opt-2" required placeholder="Option 3" class="w-full p-2.5 border rounded-xl text-sm outline-none">
+                            <input type="text" id="opt-3" required placeholder="Option 4" class="w-full p-2.5 border rounded-xl text-sm outline-none">
+                        </div>
+                        <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100">
+                            <label class="block text-xs font-bold text-indigo-800 mb-1">Correct Answer</label>
+                            <select id="q-ans" class="w-full p-2 rounded-lg border border-indigo-200 outline-none text-sm font-semibold text-indigo-700">
+                                <option value="0">Option 1</option>
+                                <option value="1">Option 2</option>
+                                <option value="2">Option 3</option>
+                                <option value="3">Option 4</option>
+                            </select>
+                        </div>
+                        <button id="uploadQuizBtn" onclick="uploadDailyQuiz()" class="w-full py-3 mt-2 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all text-sm">Upload Quiz</button>
+                        <div id="quizStatusMsg" class="mt-2 p-2 rounded-xl text-center font-medium text-xs hidden"></div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 md:p-8 border-t-4 border-blue-500">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph ph-plus-circle text-blue-600"></i> Add Material</h3>
                     <div class="space-y-4">
                         <input type="text" id="resTitle" class="w-full p-3 border rounded-xl" placeholder="Title (e.g. Grade 12 Tute 1)">
@@ -88,6 +131,7 @@
                 </div>
             </div>
 
+            <!-- RIGHT COLUMN -->
             <div class="lg:col-span-2 space-y-8">
                 <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Recent Courier Orders</h3>
@@ -143,6 +187,7 @@
         </div>
     </div>
 
+    <!-- Edit Modal -->
     <div id="editModal" class="fixed inset-0 z-[100] modal hidden flex items-center justify-center p-4 transition-opacity">
         <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl">
             <button onclick="closeEditModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
@@ -199,6 +244,9 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
+        // Set Default date for Quiz Uploader
+        document.getElementById('q-date').valueAsDate = new Date();
+
         window.togglePassword = function(inputId, iconId) {
             const input = document.getElementById(inputId); const icon = document.getElementById(iconId);
             if (input.type === "password") { input.type = "text"; icon.classList.replace("ph-eye", "ph-eye-slash"); } 
@@ -224,6 +272,64 @@
         }
 
         window.adminLogout = async function() { await signOut(auth); }
+
+        // ----------------------------------------------------
+        // NEW: DAILY QUIZ UPLOADER LOGIC
+        // ----------------------------------------------------
+        window.uploadDailyQuiz = async function() {
+            const btn = document.getElementById('uploadQuizBtn');
+            const status = document.getElementById('quizStatusMsg');
+            
+            const date = document.getElementById('q-date').value;
+            const grade = document.getElementById('q-grade').value;
+            const question = document.getElementById('q-text').value;
+            const options = [
+                document.getElementById('opt-0').value,
+                document.getElementById('opt-1').value,
+                document.getElementById('opt-2').value,
+                document.getElementById('opt-3').value
+            ];
+            const correctAns = parseInt(document.getElementById('q-ans').value);
+
+            if(!date || !question || !options[0] || !options[1]) {
+                alert("කරුණාකර ප්‍රශ්නය සහ පිළිතුරු ඇතුළත් කරන්න."); return;
+            }
+
+            btn.innerText = "Uploading..."; btn.disabled = true;
+            status.classList.add('hidden');
+            
+            try {
+                const publicCollection = `dailyQuestions_${grade}`;
+                const secretCollection = `secretAnswers_${grade}`;
+
+                await setDoc(doc(db, publicCollection, date), {
+                    q: question,
+                    options: options
+                });
+
+                await setDoc(doc(db, secretCollection, date), {
+                    ans: correctAns
+                });
+
+                status.innerText = "✅ ප්‍රශ්නය සාර්ථකව Upload විය!";
+                status.className = "mt-2 p-2 rounded-xl text-center font-bold bg-green-50 text-green-700 block";
+                
+                // Clear fields
+                document.getElementById('q-text').value = '';
+                document.getElementById('opt-0').value = '';
+                document.getElementById('opt-1').value = '';
+                document.getElementById('opt-2').value = '';
+                document.getElementById('opt-3').value = '';
+                
+            } catch (error) {
+                console.error("Quiz Upload Error:", error);
+                status.innerText = "❌ Upload Error: " + error.message;
+                status.className = "mt-2 p-2 rounded-xl text-center font-bold bg-red-50 text-red-700 block";
+            } finally {
+                btn.innerText = "Upload Quiz"; btn.disabled = false;
+                setTimeout(() => status.classList.add('hidden'), 4000);
+            }
+        }
 
         // LOAD ORDERS WITH STATUS DROPDOWN
         window.loadOrders = async function() {
@@ -267,7 +373,6 @@
         window.updateOrderStatus = async function(orderId, newStatus) {
             try {
                 await updateDoc(doc(db, "orders", orderId), { status: newStatus });
-                // Refresh list to update colors
                 loadOrders();
             } catch (error) { alert("Error updating status."); console.error(error); }
         }
@@ -302,7 +407,6 @@
                     const priceValue = parseFloat(data.price);
                     const isFree = (isNaN(priceValue) || priceValue <= 0) ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold">Free</span>' : `<span class="font-medium text-slate-700">Rs. ${priceValue}</span>`;
                     
-                    // Pass parameters to Edit Modal
                     const safeTitle = data.title ? data.title.replace(/'/g, "\\'") : '';
                     const safeDesc = data.desc ? data.desc.replace(/'/g, "\\'").replace(/\n/g, " ") : '';
                     const priceArg = data.price || '';
@@ -321,7 +425,6 @@
             } catch (error) { console.error(error); }
         }
 
-        // EDIT RESOURCE LOGIC
         window.openEditModal = function(id, title, category, desc, price, link) {
             document.getElementById('editId').value = id;
             document.getElementById('editTitle').value = title;
@@ -332,9 +435,7 @@
             document.getElementById('editModal').classList.remove('hidden');
         }
 
-        window.closeEditModal = function() {
-            document.getElementById('editModal').classList.add('hidden');
-        }
+        window.closeEditModal = function() { document.getElementById('editModal').classList.add('hidden'); }
 
         window.updateResource = async function() {
             const id = document.getElementById('editId').value;
@@ -354,12 +455,9 @@
                     title: title, category: category, price: price, desc: desc, driveLink: link
                 });
                 closeEditModal();
-                loadResources(); // Refresh Table
-            } catch (error) {
-                alert("Error updating: " + error.message);
-            } finally {
-                btn.innerText = "Save Changes"; btn.disabled = false;
-            }
+                loadResources(); 
+            } catch (error) { alert("Error updating: " + error.message); } 
+            finally { btn.innerText = "Save Changes"; btn.disabled = false; }
         }
 
         window.publishNotice = async function() {
