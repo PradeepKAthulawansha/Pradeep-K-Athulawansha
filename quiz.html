@@ -170,7 +170,8 @@
     <!-- FIREBASE MODULAR SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getFirestore, collection, getDoc, getDocs, doc, updateDoc, increment, query, orderBy, limit, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        // මෙතන setDoc කියන එක අලුතින් එකතු කළා
+        import { getFirestore, collection, getDoc, getDocs, doc, updateDoc, increment, query, orderBy, limit, where, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -287,7 +288,7 @@
                 const optContainer = document.getElementById('options-container');
                 optContainer.innerHTML = '';
 
-                const letters = ['A', 'B', 'C', 'D'];
+                const letters = ['A', 'B', 'C', 'D', 'E', 'F']; // Added more letters just in case there are >4 options
 
                 data.options.forEach((opt, index) => {
                     const btn = document.createElement('button');
@@ -317,12 +318,13 @@
             const userRef = doc(db, 'users', currentUserUid);
             
             try {
-                // Rule validation handles correctness silently
-                await updateDoc(userRef, {
+                // මෙතන තමයි ප්‍රධාන වෙනස - updateDoc වෙනුවට setDoc දාලා, grade එකත් යවනවා
+                await setDoc(userRef, {
                     points: increment(10),
                     lastSolvedDate: today,
-                    lastSubmittedAns: selectedIndex 
-                });
+                    lastSubmittedAns: selectedIndex,
+                    grade: currentGrade
+                }, { merge: true });
                 
                 // Trigger Confetti!
                 triggerConfetti();
