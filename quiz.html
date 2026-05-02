@@ -170,10 +170,10 @@
     <!-- FIREBASE MODULAR SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        // මෙතන setDoc කියන එක අලුතින් එකතු කළා
         import { getFirestore, collection, getDoc, getDocs, doc, updateDoc, increment, query, orderBy, limit, where, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
+        // FIREBASE CONFIG - REPLACE THIS
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
             authDomain: "pradeep-k-athulawansha.firebaseapp.com",
@@ -247,7 +247,10 @@
                 const userData = userSnap.exists() ? userSnap.data() : {};
                 
                 document.getElementById('user-points').innerText = userData.points || 0;
-                document.getElementById('user-name').innerText = userData.fullName ? userData.fullName.split(' ')[0] : 'Student';
+                
+                // ළමයාගේ ඇත්ත නම ගන්න කොටස (Database එකේ නම නැත්නම් විතරක් Student කියලා වැටේ)
+                const realName = userData.fullName || userData.name;
+                document.getElementById('user-name').innerText = realName ? realName.split(' ')[0] : 'Student';
 
                 // Automatically switch to user's registered grade if available
                 if(userData.grade && (userData.grade === '10/11' || userData.grade === '12/13') && userData.grade !== currentGrade) {
@@ -288,7 +291,7 @@
                 const optContainer = document.getElementById('options-container');
                 optContainer.innerHTML = '';
 
-                const letters = ['A', 'B', 'C', 'D', 'E', 'F']; // Added more letters just in case there are >4 options
+                const letters = ['A', 'B', 'C', 'D', 'E', 'F']; 
 
                 data.options.forEach((opt, index) => {
                     const btn = document.createElement('button');
@@ -318,12 +321,12 @@
             const userRef = doc(db, 'users', currentUserUid);
             
             try {
-                // මෙතන තමයි ප්‍රධාන වෙනස - updateDoc වෙනුවට setDoc දාලා, grade එකත් යවනවා
+                // අලුත් ළමයින්ට Error නොයන්න setDoc පාවිච්චි කිරීම සහ grade එක යැවීම
                 await setDoc(userRef, {
                     points: increment(10),
                     lastSolvedDate: today,
                     lastSubmittedAns: selectedIndex,
-                    grade: currentGrade
+                    grade: currentGrade 
                 }, { merge: true });
                 
                 // Trigger Confetti!
@@ -381,7 +384,9 @@
                     const isCurrentUser = document.id === currentUserUid;
                     if(isCurrentUser) highlightClass += " border-blue-500/50";
 
-                    const displayName = data.fullName ? data.fullName.split(' ')[0] : 'Student';
+                    // Leaderboard එකේ නම පෙන්වන කොටස
+                    const realName = data.fullName || data.name;
+                    const displayName = realName ? realName.split(' ')[0] : 'Student';
 
                     lbContainer.innerHTML += `
                         <div class="flex justify-between items-center p-3 rounded-xl border ${highlightClass} transition-all hover:bg-white/10">
