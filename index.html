@@ -8,12 +8,6 @@
     <meta name="title" content="BizMind | Pradeep Sir's Educational Platform">
     <meta name="description" content="බිස්මයින්ඩ් - උසස් පෙළ සහ සාමාන්‍ය පෙළ දරුවන් සඳහා ප්‍රදීප් සර් විසින් හඳුන්වා දෙන නවතම අධ්‍යාපනික අත්දැකීම. දිනපතා ප්‍රශ්නාවලි සහ තවත් බොහෝ දේ.">
 
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bizmind.lk/">
-    <meta property="og:title" content="BizMind | Pradeep Sir's Educational Platform">
-    <meta property="og:description" content="Access premium educational resources, structured methodologies, and expert guidance for A/L & O/L Business Studies.">
-    <meta property="og:image" content="https://bizmind.lk/banner.jpg">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -54,10 +48,8 @@
                 <a href="about us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">About Us</a>
                 <a href="papers & tutes.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Papers & Tutes</a>
                 <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
-                <a href="papers & tutes.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Student Login</a>
-                <a href="quiz.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Daily Quiz</a>
+                <a href="papers & tutes.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Student Portal</a>
             </nav>
-            
             <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
         </div>
         
@@ -65,8 +57,8 @@
             <a href="https://bizmind.lk" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Home</a>
             <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
             <a href="papers & tutes.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Papers & Tutes</a>
-            <a href="contact us.html" class="py-3 text-slate-700 font-medium">Contact</a>
-            <a href="quiz.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50 mt-2 text-center">Daily Quiz</a>
+            <a href="contact us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Contact</a>
+            <a href="papers & tutes.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50 mt-2 text-center">Student Portal</a>
         </div>
     </header>
 
@@ -267,7 +259,6 @@
         AOS.init({ once: true });
         window.toggleMenu = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
 
-        // Beautiful Toast Notification System
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -281,25 +272,17 @@
             }
             container.appendChild(toast);
             setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', '-translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 4500);
+            setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 4500);
         }
 
-        // ================= REVIEWS LOGIC =================
         async function loadReviews() {
             const grid = document.getElementById('reviewsGrid');
             try {
-                // To fetch approved reviews (Assume all are approved for now or add an 'approved: true' query later)
                 const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(6));
                 const querySnapshot = await getDocs(q);
                 
                 grid.innerHTML = '';
-                if(querySnapshot.empty) {
-                    grid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-6">Be the first to share your experience!</p>';
-                    return;
-                }
+                if(querySnapshot.empty) { grid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-6">Be the first to share your experience!</p>'; return; }
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
@@ -307,24 +290,15 @@
                     
                     grid.innerHTML += `
                         <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-lg hover:-translate-y-1 transition-transform">
-                            <div class="flex gap-1 text-orange-400 text-sm mb-4">
-                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
-                            </div>
+                            <div class="flex gap-1 text-orange-400 text-sm mb-4"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
                             <p class="text-slate-600 text-sm italic mb-6 leading-relaxed">"${data.message}"</p>
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center">${initial}</div>
-                                <div>
-                                    <h4 class="font-bold text-slate-800 text-sm">${data.name}</h4>
-                                    <p class="text-xs text-slate-500">${data.grade}</p>
-                                </div>
+                                <div><h4 class="font-bold text-slate-800 text-sm">${data.name}</h4><p class="text-xs text-slate-500">${data.grade}</p></div>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
-            } catch (error) {
-                console.error("Error loading reviews:", error);
-                grid.innerHTML = '<p class="col-span-full text-center text-red-400 py-6">Failed to load reviews.</p>';
-            }
+            } catch (error) { grid.innerHTML = '<p class="col-span-full text-center text-red-400 py-6">Failed to load reviews.</p>'; }
         }
         loadReviews();
 
@@ -333,60 +307,35 @@
             const grade = document.getElementById('revGrade').value;
             const message = document.getElementById('revMessage').value.trim();
 
-            if(!name || !grade || !message) {
-                window.showToast("⚠️ Please fill all details before submitting.", "error");
-                return;
-            }
+            if(!name || !grade || !message) { window.showToast("⚠️ Please fill all details before submitting.", "error"); return; }
 
             try {
-                await addDoc(collection(db, "reviews"), {
-                    name: name,
-                    grade: grade,
-                    message: message,
-                    createdAt: new Date(),
-                    approved: true // You can set this to false and approve them manually via Firebase later
-                });
-                
+                await addDoc(collection(db, "reviews"), { name: name, grade: grade, message: message, createdAt: new Date(), approved: true });
                 document.getElementById('reviewModal').classList.add('hidden');
-                document.getElementById('revName').value = '';
-                document.getElementById('revMessage').value = '';
-                
+                document.getElementById('revName').value = ''; document.getElementById('revMessage').value = '';
                 window.showToast("🎉 Thank you! Your review has been published.", "success");
                 loadReviews();
-            } catch (error) {
-                window.showToast("❌ Failed to submit review. Try again.", "error");
-                console.error(error);
-            }
+            } catch (error) { window.showToast("❌ Failed to submit review. Try again.", "error"); }
         }
 
-        // ================= DAILY QUIZ & LEADERBOARD LOGIC =================
         let currentGrade = '10/11';
         let currentUserUid = null;
         const today = new Date().toISOString().split('T')[0];
 
-        const btn10 = document.getElementById('btn-10');
-        const btn12 = document.getElementById('btn-12');
-
-        btn10.addEventListener('click', () => { switchGrade('10/11'); });
-        btn12.addEventListener('click', () => { switchGrade('12/13'); });
+        const btn10 = document.getElementById('btn-10'); const btn12 = document.getElementById('btn-12');
+        btn10.addEventListener('click', () => { switchGrade('10/11'); }); btn12.addEventListener('click', () => { switchGrade('12/13'); });
 
         function switchGrade(grade) {
             currentGrade = grade;
             const activeClass = "px-8 py-2.5 rounded-lg bg-blue-600 text-white font-semibold transition-all shadow-md";
             const inactiveClass = "px-8 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold transition-all";
-            
-            btn10.className = grade === '10/11' ? activeClass : inactiveClass;
-            btn12.className = grade === '12/13' ? activeClass : inactiveClass;
-            
-            loadQuestion();
-            loadLeaderboard();
+            btn10.className = grade === '10/11' ? activeClass : inactiveClass; btn12.className = grade === '12/13' ? activeClass : inactiveClass;
+            loadQuestion(); loadLeaderboard();
         }
 
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUserUid = user.uid;
-                await checkUserStatus(user.uid);
-            } else {
+            if (user) { currentUserUid = user.uid; await checkUserStatus(user.uid); } 
+            else {
                 document.getElementById('quiz-loader').innerHTML = `
                     <div class="text-center py-6">
                         <i class="ph ph-lock-key text-4xl text-slate-400 mb-3 block"></i>
@@ -398,34 +347,24 @@
 
         async function checkUserStatus(uid) {
             try {
-                const userRef = doc(db, 'users', uid);
-                const userSnap = await getDoc(userRef);
+                const userRef = doc(db, 'users', uid); const userSnap = await getDoc(userRef);
                 const userData = userSnap.exists() ? userSnap.data() : {};
-                
                 document.getElementById('user-points').innerText = userData.points || 0;
 
-                if (userData.lastSolvedDate === today) {
-                    showQuizView('quiz-completed');
-                } else {
-                    if(userData.grade && (userData.grade === '10/11' || userData.grade === '12/13')) {
-                       switchGrade(userData.grade);
-                    } else {
-                       loadQuestion();
-                    }
+                if (userData.lastSolvedDate === today) { showQuizView('quiz-completed'); } 
+                else {
+                    if(userData.grade && (userData.grade === '10/11' || userData.grade === '12/13')) { switchGrade(userData.grade); } 
+                    else { loadQuestion(); }
                 }
-            } catch (error) {
-                console.error("Status Check Error: ", error);
-            }
+            } catch (error) { console.error("Status Check Error: ", error); }
         }
 
         async function loadQuestion() {
             if(!currentUserUid) return;
             showQuizView('quiz-loader');
-            
             try {
                 const collectionName = currentGrade === '10/11' ? 'dailyQuestions_10_11' : 'dailyQuestions_12_13';
-                const qRef = doc(db, collectionName, today);
-                const qSnap = await getDoc(qRef);
+                const qRef = doc(db, collectionName, today); const qSnap = await getDoc(qRef);
 
                 if (!qSnap.exists()) {
                     document.getElementById('quiz-loader').innerHTML = `
@@ -436,43 +375,27 @@
                     return;
                 }
 
-                const data = qSnap.data();
-                document.getElementById('q-text').innerText = data.q;
-                
-                const optContainer = document.getElementById('options-container');
-                optContainer.innerHTML = '';
+                const data = qSnap.data(); document.getElementById('q-text').innerText = data.q;
+                const optContainer = document.getElementById('options-container'); optContainer.innerHTML = '';
 
                 data.options.forEach((opt, index) => {
                     const btn = document.createElement('button');
                     btn.className = "w-full text-left p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md transition-all duration-300 font-medium text-slate-700";
-                    btn.innerText = opt;
-                    btn.onclick = () => submitAnswer(index);
+                    btn.innerText = opt; btn.onclick = () => submitAnswer(index);
                     optContainer.appendChild(btn);
                 });
-                
                 showQuizView('quiz-content');
-            } catch (error) {
-                console.error("Load Question Error: ", error);
-                document.getElementById('quiz-loader').innerText = "ප්‍රශ්නය ලබාගැනීමේදී දෝෂයක් ඇතිවිය.";
-            }
+            } catch (error) { document.getElementById('quiz-loader').innerText = "ප්‍රශ්නය ලබාගැනීමේදී දෝෂයක් ඇතිවිය."; }
         }
 
         async function submitAnswer(selectedIndex) {
             if (!currentUserUid) return;
             const userRef = doc(db, 'users', currentUserUid);
-            
             try {
-                await updateDoc(userRef, {
-                    points: increment(10),
-                    lastSolvedDate: today,
-                    lastSubmittedAns: selectedIndex 
-                });
+                await updateDoc(userRef, { points: increment(10), lastSolvedDate: today, lastSubmittedAns: selectedIndex });
                 window.showToast("🎉 නිවැරදි පිළිතුරයි! ඔබට ලකුණු 10ක් එකතු වුණා.", "success");
                 setTimeout(() => location.reload(), 2000);
-            } catch (error) {
-                console.error("Quiz Error:", error);
-                window.showToast("❌ පිළිතුර වැරදියි හෝ ඔබ දැනටමත් අද දිනට අදාළව පිළිතුරු ලබා දී ඇත.", "error");
-            }
+            } catch (error) { window.showToast("❌ පිළිතුර වැරදියි හෝ ඔබ දැනටමත් අද දිනට අදාළව පිළිතුරු ලබා දී ඇත.", "error"); }
         }
 
         async function loadLeaderboard() {
@@ -480,46 +403,28 @@
             try {
                 const q = query(collection(db, "users"), where("grade", "==", currentGrade), orderBy("points", "desc"), limit(5));
                 const querySnapshot = await getDocs(q);
-                
                 lbContainer.innerHTML = '';
-                
-                if(querySnapshot.empty) {
-                    lbContainer.innerHTML = '<div class="text-center py-6 text-slate-500">No ranks available yet. Be the first!</div>';
-                    return;
-                }
+                if(querySnapshot.empty) { lbContainer.innerHTML = '<div class="text-center py-6 text-slate-500">No ranks available yet. Be the first!</div>'; return; }
 
                 let rank = 1;
                 querySnapshot.forEach((document) => {
                     const data = document.data();
                     let medal = `<span class="text-slate-400 font-bold w-6">#${rank}</span>`;
-                    if (rank === 1) medal = `<span class="text-2xl mr-2">🥇</span>`;
-                    else if (rank === 2) medal = `<span class="text-2xl mr-2">🥈</span>`;
-                    else if (rank === 3) medal = `<span class="text-2xl mr-2">🥉</span>`;
-
+                    if (rank === 1) medal = `<span class="text-2xl mr-2">🥇</span>`; else if (rank === 2) medal = `<span class="text-2xl mr-2">🥈</span>`; else if (rank === 3) medal = `<span class="text-2xl mr-2">🥉</span>`;
                     lbContainer.innerHTML += `
                         <div class="flex justify-between items-center p-4 bg-white/60 rounded-xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex items-center gap-3">
-                                ${medal}
-                                <span class="font-bold text-slate-700">${data.fullName || data.name || 'Student'}</span>
-                            </div>
+                            <div class="flex items-center gap-3">${medal}<span class="font-bold text-slate-700">${data.fullName || data.name || 'Student'}</span></div>
                             <span class="font-extrabold text-blue-600 bg-blue-100 px-4 py-1.5 rounded-full text-sm shadow-sm">${data.points || 0} pts</span>
-                        </div>
-                    `;
+                        </div>`;
                     rank++;
                 });
-            } catch (error) {
-                console.error("Leaderboard Error:", error);
-                lbContainer.innerHTML = '<div class="text-center py-6 text-red-400">Failed to load leaderboard.</div>';
-            }
+            } catch (error) { lbContainer.innerHTML = '<div class="text-center py-6 text-red-400">Failed to load leaderboard.</div>'; }
         }
 
         function showQuizView(viewId) {
-            document.getElementById('quiz-loader').classList.add('hidden');
-            document.getElementById('quiz-content').classList.add('hidden');
-            document.getElementById('quiz-completed').classList.add('hidden');
-            document.getElementById(viewId).classList.remove('hidden');
+            document.getElementById('quiz-loader').classList.add('hidden'); document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-completed').classList.add('hidden'); document.getElementById(viewId).classList.remove('hidden');
         }
-
     </script>
 </body>
 </html>
