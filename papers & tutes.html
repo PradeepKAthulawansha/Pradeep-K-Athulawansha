@@ -178,10 +178,12 @@
                 <h2 class="text-2xl font-bold mb-1 text-slate-800">Student Login</h2>
                 <p class="text-slate-500 mb-6 text-sm">Please log in to access this material.</p>
                 <input type="email" id="loginEmail" class="auth-input" placeholder="Email Address">
+                
                 <div class="relative mb-3">
                     <input type="password" id="loginPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Password">
                     <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="loginEye" class="ph ph-eye"></i></button>
                 </div>
+                
                 <button id="loginBtn" class="auth-btn mt-2" onclick="window.loginUser()">Log In</button>
                 <div class="flex justify-between mt-6 px-2">
                     <span class="link-text" onclick="window.toggleAuthView('forgotSection')">Forgot Password?</span>
@@ -244,7 +246,11 @@
                 <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
                 <input type="tel" id="regPhone" class="auth-input" placeholder="Mobile No (10 Digits)" maxlength="10">
                 
-                <input type="password" id="regPassword" class="auth-input mb-3" placeholder="Strong Password">
+                <div class="relative mb-3">
+                    <input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Strong Password">
+                    <button type="button" onclick="window.togglePassword('regPassword', 'regEyeMain')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="regEyeMain" class="ph ph-eye"></i></button>
+                </div>
+                
                 <div class="relative mb-1">
                     <input type="password" id="regConfirmPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Confirm Password">
                     <button type="button" onclick="window.togglePassword('regConfirmPassword', 'regConfirmEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="regConfirmEye" class="ph ph-eye"></i></button>
@@ -277,7 +283,7 @@
             <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Shipping Details</h3>
             
             <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl mb-6">
-                <p class="text-sm text-blue-800 font-medium">මෙම ගෙවීම සිදු කල පසු හැකි ඉක්මනින් අදාල tute එක ඔබ වෙත courier මාර්ගයෙන් ලැබෙන අතර, එතෙක් සහා Life time භාවිතය सදහා Tute එකට අදාල PDF එක ඔබගේ profile එක තුළ Unlock වනු ඇත.</p>
+                <p class="text-sm text-blue-800 font-medium">මෙම ගෙවීම සිදු කල පසු හැකි ඉක්මනින් අදාල tute එක ඔබ වෙත courier මාර්ගයෙන් ලැබෙන අතර, එතෙක් සහා Life time භාවිතය සදහා Tute එකට අදාල PDF එක ඔබගේ profile එක තුළ Unlock වනු ඇත.</p>
             </div>
 
             <div class="space-y-4">
@@ -326,6 +332,7 @@
                     <label class="block text-xs font-semibold mb-1 text-slate-700">Phone Number</label>
                     <input type="tel" id="profPhone" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300">
                 </div>
+                
                 <div>
                     <label class="block text-xs font-semibold mb-1 text-slate-700">New Password <span class="text-[10px] text-slate-400 font-normal">(Leave blank to keep current)</span></label>
                     <div class="relative">
@@ -373,10 +380,18 @@
 
         AOS.init({ once: true });
         window.toggleMenu = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        
+        // Universal Password Visibility Toggle
         window.togglePassword = function(inputId, iconId) {
-            const input = document.getElementById(inputId); const icon = document.getElementById(iconId);
-            if (input.type === "password") { input.type = "text"; icon.classList.replace("ph-eye", "ph-eye-slash"); } 
-            else { input.type = "password"; icon.classList.replace("ph-eye-slash", "ph-eye"); }
+            const input = document.getElementById(inputId); 
+            const icon = document.getElementById(iconId);
+            if (input.type === "password") { 
+                input.type = "text"; 
+                icon.classList.replace("ph-eye", "ph-eye-slash"); 
+            } else { 
+                input.type = "password"; 
+                icon.classList.replace("ph-eye-slash", "ph-eye"); 
+            }
         }
 
         // Beautiful Toast Notification System
@@ -450,13 +465,12 @@
             } else {
                 if(dashboardImg) dashboardImg.classList.add('hidden');
                 if(dashboardIcon) dashboardIcon.classList.remove('hidden');
-                if(modalImg) html.classList.add('hidden');
+                if(modalImg) modalImg.classList.add('hidden');
                 if(modalIcon) modalIcon.classList.remove('hidden');
             }
         }
 
         onAuthStateChanged(auth, async (user) => {
-            // Checked and ensured collection points to 'users' matching instructions
             if (user && user.email !== "admin@pradeepk.com") {
                 currentUser = user;
                 
@@ -729,7 +743,6 @@
             } finally { btn.disabled = false; btn.innerText = "Save Profile Changes"; }
         }
 
-        // Live Local Real-time Search Handler Logic
         window.handleSearch = function(val) {
             currentSearchQuery = val.trim();
             window.renderItems(currentActiveCategory);
@@ -738,10 +751,8 @@
         window.renderItems = function(category) {
             currentActiveCategory = category; const grid = document.getElementById('resourceGrid'); grid.innerHTML = '';
             
-            // First pass filter by tab category selected
             let filtered = dbResources.filter(res => res.category === category);
             
-            // Intercept and secondary filter query by real-time search string typed
             if (currentSearchQuery) {
                 const searchKey = currentSearchQuery.toLowerCase();
                 filtered = filtered.filter(res => 
@@ -913,7 +924,6 @@
                     email: email, phone: phone, role: "student", unlockedTutes: [], points: 0, createdAt: new Date() 
                 });
 
-                // Enforcing Email Verification protocol before giving entry access
                 await sendEmailVerification(userCred.user);
                 window.showToast("📨 Verification link sent! Please verify your inbox before login.", "success");
                 await signOut(auth);
@@ -932,7 +942,6 @@
             try { 
                 const userCred = await signInWithEmailAndPassword(auth, email, password);
                 
-                // Block entrance access dynamically if email verified status remains false
                 if (!userCred.user.emailVerified) {
                     window.showToast("🔒 Access Denied: Please verify your inbox email link first.", "error");
                     await signOut(auth);
