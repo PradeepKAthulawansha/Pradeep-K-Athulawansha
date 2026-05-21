@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Papers & Tutes | bizmind.lk</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -29,6 +30,10 @@
     </style>
 </head>
 <body class="relative text-slate-800">
+
+    <a href="https://wa.me/94719151415?text=Hello%20Pradeep%20Sir,%20I%20need%20help%20with%20bizmind.lk" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 z-[999] border-2 border-white flex items-center justify-center">
+        <i class="ph-fill ph-whatsapp text-3xl"></i>
+    </a>
 
     <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
 
@@ -147,7 +152,6 @@
                         <li><a href="papers & tutes.html" class="hover:text-blue-400 transition-colors">Papers & Tutes</a></li>
                         <li><a href="contact us.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
                         <li><a href="terms.html" class="hover:text-blue-400 transition-colors text-sm text-slate-400">Terms & Conditions</a></li>
-                        <li><a href="refund.html" class="hover:text-blue-400 transition-colors text-sm text-slate-400">Refund Policy</a></li>
                     </ul>
                 </div>
                 <div>
@@ -161,7 +165,6 @@
             </div>
             <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm relative">
                 <p>&copy; 2026 bizmind.lk | Pradeep K. Athulawansha. All rights reserved.</p>
-                <p class="text-slate-500">Designed for Excellence</p>
                 <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="absolute right-0 -top-6 w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg transition-colors">
                     <i class="ph ph-caret-up"></i>
                 </button>
@@ -193,42 +196,20 @@
 
             <div id="signupSection" class="auth-glass p-8 rounded-3xl text-center hidden shadow-2xl max-h-[85vh] overflow-y-auto custom-scroll">
                 <h2 class="text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
-                
                 <div class="grid grid-cols-2 gap-3 mb-3">
                     <input type="text" id="regFirstName" class="auth-input mb-0" placeholder="First Name">
                     <input type="text" id="regLastName" class="auth-input mb-0" placeholder="Last Name">
                 </div>
-                
                 <input type="text" id="regAddress" class="auth-input" placeholder="Home Address">
-                
                 <div class="grid grid-cols-2 gap-3 mb-3">
                     <select id="regDistrict" class="auth-input mb-0 text-slate-500">
                         <option value="" disabled selected>District</option>
                         <option value="Ampara">Ampara</option>
-                        <option value="Anuradhapura">Anuradhapura</option>
-                        <option value="Badulla">Badulla</option>
-                        <option value="Batticaloa">Batticaloa</option>
                         <option value="Colombo">Colombo</option>
                         <option value="Galle">Galle</option>
-                        <option value="Gampaha">Gampaha</option>
-                        <option value="Hambantota">Hambantota</option>
-                        <option value="Jaffna">Jaffna</option>
-                        <option value="Kalutara">Kalutara</option>
                         <option value="Kandy">Kandy</option>
-                        <option value="Kegalle">Kegalle</option>
-                        <option value="Kilinochchi">Kilinochchi</option>
                         <option value="Kurunegala">Kurunegala</option>
-                        <option value="Mannar">Mannar</option>
-                        <option value="Matale">Matale</option>
                         <option value="Matara">Matara</option>
-                        <option value="Moneragala">Moneragala</option>
-                        <option value="Mullaitivu">Mullaitivu</option>
-                        <option value="Nuwara Eliya">Nuwara Eliya</option>
-                        <option value="Polonnaruwa">Polonnaruwa</option>
-                        <option value="Puttalam">Puttalam</option>
-                        <option value="Ratnapura">Ratnapura</option>
-                        <option value="Trincomalee">Trincomalee</option>
-                        <option value="Vavuniya">Vavuniya</option>
                     </select>
                     <select id="regGrade" class="auth-input mb-0 text-slate-500" onchange="window.toggleNicField()">
                         <option value="" disabled selected>Select Grade</option>
@@ -238,30 +219,24 @@
                         <option value="Grade 13">Grade 13</option>
                     </select>
                 </div>
-
                 <div id="regNicGroup" class="hidden mb-3">
                     <input type="text" id="regNic" class="auth-input mb-0" placeholder="NIC Number (12 Digits)" maxlength="12">
                 </div>
-
                 <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
                 <input type="tel" id="regPhone" class="auth-input" placeholder="Mobile No (10 Digits)" maxlength="10">
-                
                 <div class="relative mb-3">
                     <input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Strong Password">
                     <button type="button" onclick="window.togglePassword('regPassword', 'regEyeMain')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="regEyeMain" class="ph ph-eye"></i></button>
                 </div>
-                
                 <div class="relative mb-1">
                     <input type="password" id="regConfirmPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Confirm Password">
                     <button type="button" onclick="window.togglePassword('regConfirmPassword', 'regConfirmEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="regConfirmEye" class="ph ph-eye"></i></button>
                 </div>
                 <p class="text-[10px] text-slate-500 text-left mb-4 px-2">Must be at least 8 characters long, including letters & numbers.</p>
-
                 <div class="flex items-start gap-2 mb-4 px-1 text-left">
                     <input type="checkbox" id="regTerms" class="w-4 h-4 mt-1 cursor-pointer">
-                    <label for="regTerms" class="text-xs text-slate-500 cursor-pointer select-none">I agree to the <a href="terms.html" target="_blank" class="text-blue-600 hover:underline font-medium">Terms & Conditions</a> and <a href="refund.html" target="_blank" class="text-blue-600 hover:underline font-medium">Refund Policy</a>.</label>
+                    <label for="regTerms" class="text-xs text-slate-500 cursor-pointer select-none">I agree to the <a href="terms.html" target="_blank" class="text-blue-600 hover:underline font-medium">Terms & Conditions</a>.</label>
                 </div>
-
                 <button id="signupBtn" class="auth-btn mt-2" onclick="window.registerUser()">Create Account</button>
                 <div class="mt-5"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Log In</span></div>
             </div>
@@ -281,11 +256,9 @@
             <button onclick="document.getElementById('shippingModal').classList.add('hidden')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mb-4 mx-auto"><i class="ph-fill ph-truck"></i></div>
             <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Shipping Details</h3>
-            
             <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl mb-6">
                 <p class="text-sm text-blue-800 font-medium">මෙම ගෙවීම සිදු කල පසු හැකි ඉක්මනින් අදාල tute එක ඔබ වෙත courier මාර්ගයෙන් ලැබෙන අතර, එතෙක් සහා Life time භාවිතය සදහා Tute එකට අදාල PDF එක ඔබගේ profile එක තුළ Unlock වනු ඇත.</p>
             </div>
-
             <div class="space-y-4">
                 <input type="text" id="shipName" class="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:border-blue-500" placeholder="Full Name (Delivery Name)">
                 <textarea id="shipAddress" rows="2" class="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:border-blue-500" placeholder="Full Delivery Address"></textarea>
@@ -294,7 +267,6 @@
                     <input type="tel" id="shipPhone1" class="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:border-blue-500" placeholder="Mobile Number 1">
                 </div>
                 <input type="tel" id="shipPhone2" class="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:border-blue-500" placeholder="Mobile Number 2 (Optional)">
-                
                 <button id="payBtn" onclick="window.initiatePayment()" class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg hover:shadow-lg mt-4 flex justify-center items-center gap-2">
                     Pay <span id="payAmountDisplay"></span> via PayHere
                 </button>
@@ -305,34 +277,19 @@
     <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4 transition-opacity">
         <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors text-2xl"><i class="ph ph-x"></i></button>
-            
             <div class="relative w-24 h-24 mx-auto mb-4 group cursor-pointer" onclick="document.getElementById('profilePicInput').click()" title="Click to update avatar">
                 <div class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-md bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-4xl">
                     <img id="modalAvatarImg" src="" alt="Profile" class="w-full h-full object-cover hidden">
                     <i id="modalAvatarIcon" class="ph-fill ph-student"></i>
                 </div>
-                <div class="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="ph ph-camera text-xl"></i>
-                </div>
+                <div class="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"><i class="ph ph-camera text-xl"></i></div>
                 <input type="file" id="profilePicInput" accept="image/*" class="hidden" onchange="window.handleProfilePicUpload(event)">
             </div>
-            
             <h3 class="text-xl font-bold text-slate-800 mb-6 text-center">My Profile</h3>
-            
             <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold mb-1 text-slate-500">Full Name</label>
-                    <input type="text" id="profName" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1 text-slate-500">Email Address</label>
-                    <input type="email" id="profEmail" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1 text-slate-700">Phone Number</label>
-                    <input type="tel" id="profPhone" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300">
-                </div>
-                
+                <div><label class="block text-xs font-semibold mb-1 text-slate-500">Full Name</label><input type="text" id="profName" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly></div>
+                <div><label class="block text-xs font-semibold mb-1 text-slate-500">Email Address</label><input type="email" id="profEmail" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly></div>
+                <div><label class="block text-xs font-semibold mb-1 text-slate-700">Phone Number</label><input type="tel" id="profPhone" class="w-full p-3 border rounded-xl focus:border-blue-500 outline-none transition-colors border-slate-300"></div>
                 <div>
                     <label class="block text-xs font-semibold mb-1 text-slate-700">New Password <span class="text-[10px] text-slate-400 font-normal">(Leave blank to keep current)</span></label>
                     <div class="relative">
@@ -340,19 +297,12 @@
                         <button type="button" onclick="window.togglePassword('profPassword', 'profEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="profEye" class="ph ph-eye"></i></button>
                     </div>
                 </div>
-                
                 <div id="profStatus" class="p-3 text-center text-sm font-medium rounded-xl hidden mt-2"></div>
-                
-                <button id="profSaveBtn" onclick="window.saveProfile()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all active:scale-[0.98] mt-4 shadow-lg shadow-slate-900/20">
-                    Save Profile Changes
-                </button>
+                <button id="profSaveBtn" onclick="window.saveProfile()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-all active:scale-[0.98] mt-4 shadow-lg shadow-slate-900/20">Save Profile Changes</button>
             </div>
-
             <div class="mt-8 border-t border-slate-200 pt-6">
                 <h4 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-blue-600"></i> My Orders & Delivery</h4>
-                <div id="myOrdersContainer" class="space-y-3">
-                    <p class="text-sm text-slate-500 text-center">Loading orders...</p>
-                </div>
+                <div id="myOrdersContainer" class="space-y-3"><p class="text-sm text-slate-500 text-center">Loading orders...</p></div>
             </div>
         </div>
     </div>
@@ -381,57 +331,31 @@
         AOS.init({ once: true });
         window.toggleMenu = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
         
-        // Universal Password Visibility Toggle
         window.togglePassword = function(inputId, iconId) {
-            const input = document.getElementById(inputId); 
-            const icon = document.getElementById(iconId);
-            if (input.type === "password") { 
-                input.type = "text"; 
-                icon.classList.replace("ph-eye", "ph-eye-slash"); 
-            } else { 
-                input.type = "password"; 
-                icon.classList.replace("ph-eye-slash", "ph-eye"); 
-            }
+            const input = document.getElementById(inputId); const icon = document.getElementById(iconId);
+            if (input.type === "password") { input.type = "text"; icon.classList.replace("ph-eye", "ph-eye-slash"); } 
+            else { input.type = "password"; icon.classList.replace("ph-eye-slash", "ph-eye"); }
         }
 
-        // Beautiful Toast Notification System
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `p-4 rounded-xl shadow-xl border text-sm font-medium flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto max-w-sm bg-white min-w-[300px]`;
-            if (type === 'success') {
-                toast.classList.add('border-green-200', 'text-green-800', 'bg-green-50/95');
-                toast.innerHTML = `<i class="ph-fill ph-check-circle text-green-500 text-lg"></i> <span>${message}</span>`;
-            } else {
-                toast.classList.add('border-red-200', 'text-red-800', 'bg-red-50/95');
-                toast.innerHTML = `<i class="ph-fill ph-warning-circle text-red-500 text-lg"></i> <span>${message}</span>`;
-            }
+            if (type === 'success') { toast.classList.add('border-green-200', 'text-green-800', 'bg-green-50/95'); toast.innerHTML = `<i class="ph-fill ph-check-circle text-green-500 text-lg"></i> <span>${message}</span>`; } 
+            else { toast.classList.add('border-red-200', 'text-red-800', 'bg-red-50/95'); toast.innerHTML = `<i class="ph-fill ph-warning-circle text-red-500 text-lg"></i> <span>${message}</span>`; }
             container.appendChild(toast);
             setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', '-translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 4500);
+            setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 4500);
         }
 
         window.toggleNicField = function() {
-            const grade = document.getElementById('regGrade').value;
-            const nicGroup = document.getElementById('regNicGroup');
-            if (grade === 'Grade 12' || grade === 'Grade 13') {
-                nicGroup.classList.remove('hidden');
-            } else {
-                nicGroup.classList.add('hidden');
-                document.getElementById('regNic').value = ''; 
-            }
+            const grade = document.getElementById('regGrade').value; const nicGroup = document.getElementById('regNicGroup');
+            if (grade === 'Grade 12' || grade === 'Grade 13') { nicGroup.classList.remove('hidden'); } 
+            else { nicGroup.classList.add('hidden'); document.getElementById('regNic').value = ''; }
         }
 
-        let dbResources = [];
-        let currentUser = null;
-        let currentUserData = null; 
-        let currentUserUnlockedTutes = [];
-        let currentActiveCategory = 'Grade 10 Tutes';
-        let currentPurchaseTute = null;
-        let currentSearchQuery = '';
+        let dbResources = []; let currentUser = null; let currentUserData = null; let currentUserUnlockedTutes = [];
+        let currentActiveCategory = 'Grade 10 Tutes'; let currentPurchaseTute = null; let currentSearchQuery = '';
 
         async function initPage() {
             try {
@@ -444,11 +368,8 @@
         initPage();
 
         function updateAvatarDisplay() {
-            const dashboardImg = document.getElementById('dashboardAvatarImg');
-            const dashboardIcon = document.getElementById('dashboardAvatarIcon');
-            const modalImg = document.getElementById('modalAvatarImg');
-            const modalIcon = document.getElementById('modalAvatarIcon');
-            
+            const dashboardImg = document.getElementById('dashboardAvatarImg'); const dashboardIcon = document.getElementById('dashboardAvatarIcon');
+            const modalImg = document.getElementById('modalAvatarImg'); const modalIcon = document.getElementById('modalAvatarIcon');
             const picUrl = (currentUserData && currentUserData.profilePicUrl) ? currentUserData.profilePicUrl : '';
             
             if (picUrl) {
@@ -463,26 +384,21 @@
                 if(modalImg) { modalImg.src = fallbackUrl; modalImg.classList.remove('hidden'); }
                 if(modalIcon) modalIcon.classList.add('hidden');
             } else {
-                if(dashboardImg) dashboardImg.classList.add('hidden');
-                if(dashboardIcon) dashboardIcon.classList.remove('hidden');
-                if(modalImg) modalImg.classList.add('hidden');
-                if(modalIcon) modalIcon.classList.remove('hidden');
+                if(dashboardImg) dashboardImg.classList.add('hidden'); if(dashboardIcon) dashboardIcon.classList.remove('hidden');
+                if(modalImg) modalImg.classList.add('hidden'); if(modalIcon) modalIcon.classList.remove('hidden');
             }
         }
 
         onAuthStateChanged(auth, async (user) => {
             if (user && user.email !== "admin@pradeepk.com") {
                 currentUser = user;
-                
                 try {
                     const docSnap = await getDoc(doc(db, "users", user.uid));
                     if (docSnap.exists()) {
                         currentUserData = docSnap.data(); 
-                        
                         document.getElementById('userDashboardBar').classList.remove('hidden');
                         document.getElementById('navLoginBtn').classList.add('hidden');
                         window.closeAuthModal();
-                        
                         document.getElementById('welcomeMsg').innerText = "Welcome back, " + currentUserData.fullName + "!";
                         document.getElementById('dashboardPoints').innerText = (currentUserData.points || 0) + " pts";
                         if(currentUserData.unlockedTutes) { currentUserUnlockedTutes = currentUserData.unlockedTutes; }
@@ -497,7 +413,6 @@
                         document.getElementById('noticeBoard').classList.remove('hidden');
                     }
                 } catch (e) { console.log(e); }
-                
                 window.renderItems(currentActiveCategory);
             } else {
                 currentUser = null; currentUserData = null; currentUserUnlockedTutes = [];
@@ -509,38 +424,21 @@
 
         window.openAuthModal = function() { document.getElementById('authModal').classList.remove('hidden'); }
         window.closeAuthModal = function() { document.getElementById('authModal').classList.add('hidden'); }
-
         window.toggleAuthView = function(showId) {
-            document.getElementById('loginSection').classList.add('hidden'); 
-            document.getElementById('signupSection').classList.add('hidden');
-            document.getElementById('forgotSection').classList.add('hidden'); 
-            document.getElementById(showId).classList.remove('hidden');
+            document.getElementById('loginSection').classList.add('hidden'); document.getElementById('signupSection').classList.add('hidden');
+            document.getElementById('forgotSection').classList.add('hidden'); document.getElementById(showId).classList.remove('hidden');
         }
 
-        // Image Compression Logic via Web Canvas API
         function compressImage(file, maxWidth = 250, maxHeight = 250, quality = 0.75) {
             return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
+                const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = event => {
-                    const img = new Image();
-                    img.src = event.target.result;
+                    const img = new Image(); img.src = event.target.result;
                     img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        if (width > height) {
-                            if (width > maxWidth) {
-                                height = Math.round((height * maxWidth) / width); width = maxWidth;
-                            }
-                        } else {
-                            if (height > maxHeight) {
-                                width = Math.round((width * maxHeight) / height); height = maxHeight;
-                            }
-                        }
-                        canvas.width = width; canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
+                        const canvas = document.createElement('canvas'); let width = img.width; let height = img.height;
+                        if (width > height) { if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width = maxWidth; } } 
+                        else { if (height > maxHeight) { width = Math.round((width * maxHeight) / height); height = maxHeight; } }
+                        canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
                         canvas.toBlob(blob => { resolve(blob); }, 'image/jpeg', quality);
                     };
                 };
@@ -549,308 +447,149 @@
         }
 
         window.handleProfilePicUpload = async function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                window.showToast("❌ Please select a valid image file.", "error");
-                return;
-            }
-
+            const file = event.target.files[0]; if (!file) return;
+            if (!file.type.startsWith('image/')) { window.showToast("❌ Please select a valid image file.", "error"); return; }
             window.showToast("⏳ Processing and compressing image...", "success");
             try {
-                // Compress original file to less than 150KB
                 const compressedBlob = await compressImage(file, 250, 250, 0.7);
-                
                 const storageRef = ref(storage, `profile_pics/${currentUser.uid}.jpg`);
                 await uploadBytes(storageRef, compressedBlob);
-                
                 const downloadUrl = await getDownloadURL(storageRef);
                 await updateDoc(doc(db, "users", currentUser.uid), { profilePicUrl: downloadUrl });
-                
-                currentUserData.profilePicUrl = downloadUrl;
-                updateAvatarDisplay();
+                currentUserData.profilePicUrl = downloadUrl; updateAvatarDisplay();
                 window.showToast("✅ Profile picture updated successfully!", "success");
-            } catch (error) {
-                console.error(error);
-                window.showToast("❌ Upload failed: " + error.message, "error");
-            }
+            } catch (error) { window.showToast("❌ Upload failed: " + error.message, "error"); }
         }
 
         window.downloadReceipt = function(orderId, title, amount, date) {
             const receiptWindow = window.open('', '_blank');
             const htmlContent = `
-                <html>
-                <head>
-                    <title>Receipt - ${orderId}</title>
-                    <style>
-                        body { font-family: 'Helvetica Neue', Arial, sans-serif; padding: 40px; color: #333; max-width: 800px; margin: 0 auto; }
-                        .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 30px; }
-                        .logo { font-size: 32px; font-weight: bold; color: #2563eb; margin-bottom: 5px; }
-                        .receipt-title { font-size: 14px; color: #64748b; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;}
-                        .details-grid { display: flex; justify-content: space-between; margin-bottom: 40px; }
-                        .details-col { width: 48%; }
-                        .details-col p { margin: 5px 0; font-size: 14px; }
-                        .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-                        .table th { background: #f8fafc; padding: 15px; text-align: left; border-bottom: 2px solid #e2e8f0; font-size: 14px; color: #475569; }
-                        .table td { padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 15px; }
-                        .total-row { font-size: 20px; font-weight: bold; color: #0f172a; }
-                        .footer { text-align: center; margin-top: 50px; font-size: 13px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; }
-                    </style>
-                </head>
+                <html><head><title>Receipt - ${orderId}</title><style>body { font-family: 'Helvetica Neue', Arial, sans-serif; padding: 40px; color: #333; max-width: 800px; margin: 0 auto; } .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 30px; } .logo { font-size: 32px; font-weight: bold; color: #2563eb; margin-bottom: 5px; } .receipt-title { font-size: 14px; color: #64748b; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;} .details-grid { display: flex; justify-content: space-between; margin-bottom: 40px; } .details-col { width: 48%; } .details-col p { margin: 5px 0; font-size: 14px; } .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; } .table th { background: #f8fafc; padding: 15px; text-align: left; border-bottom: 2px solid #e2e8f0; font-size: 14px; color: #475569; } .table td { padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 15px; } .total-row { font-size: 20px; font-weight: bold; color: #0f172a; } .footer { text-align: center; margin-top: 50px; font-size: 13px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; }</style></head>
                 <body>
-                    <div class="header">
-                        <div class="logo">bizmind.lk</div>
-                        <div style="font-size: 16px; color: #334155; font-weight: 500; margin-bottom: 10px;">By Pradeep K. Athulawansha</div>
-                        <div class="receipt-title">Official Payment Receipt</div>
-                    </div>
-                    
-                    <div class="details-grid">
-                        <div class="details-col">
-                            <p style="font-weight: bold; color: #0f172a; margin-bottom: 10px; font-size: 16px;">Billed To:</p>
-                            <p>${currentUserData ? currentUserData.fullName : 'Student'}</p>
-                            <p>${currentUserData ? currentUserData.email : ''}</p>
-                        </div>
-                        <div class="details-col" style="text-align: right;">
-                            <p><strong>Order ID:</strong> ${orderId}</p>
-                            <p><strong>Date:</strong> ${date}</p>
-                            <p><strong>Payment Method:</strong> PayHere Secure Gateway</p>
-                        </div>
-                    </div>
-
-                    <table class="table">
-                        <tr>
-                            <th>Item Description</th>
-                            <th style="text-align: right;">Amount (LKR)</th>
-                        </tr>
-                        <tr>
-                            <td>${title} <br><span style="font-size: 12px; color: #64748b;">Includes PDF Access + Physical Courier Delivery</span></td>
-                            <td style="text-align: right;">Rs. ${amount}.00</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right; font-weight: bold; padding-top: 25px;">Total Paid:</td>
-                            <td class="total-row" style="text-align: right; padding-top: 25px;">Rs. ${amount}.00</td>
-                        </tr>
-                    </table>
-
-                    <div class="footer">
-                        <p>Thank you for your purchase! This is a system-generated receipt.</p>
-                        <p>If you have any questions, please contact web.pradeepkathulawansha@gmail.com</p>
-                    </div>
-                    
-                    <scr` + `ipt>
-                        window.onload = function() { setTimeout(() => { window.print(); }, 500); }
-                    </scr` + `ipt>
-                </body>
-                </html>
-            `;
-            receiptWindow.document.write(htmlContent);
-            receiptWindow.document.close();
+                    <div class="header"><div class="logo">bizmind.lk</div><div style="font-size: 16px; color: #334155; font-weight: 500; margin-bottom: 10px;">By Pradeep K. Athulawansha</div><div class="receipt-title">Official Payment Receipt</div></div>
+                    <div class="details-grid"><div class="details-col"><p style="font-weight: bold; color: #0f172a; margin-bottom: 10px; font-size: 16px;">Billed To:</p><p>${currentUserData ? currentUserData.fullName : 'Student'}</p><p>${currentUserData ? currentUserData.email : ''}</p></div><div class="details-col" style="text-align: right;"><p><strong>Order ID:</strong> ${orderId}</p><p><strong>Date:</strong> ${date}</p><p><strong>Payment Method:</strong> PayHere Secure Gateway</p></div></div>
+                    <table class="table"><tr><th>Item Description</th><th style="text-align: right;">Amount (LKR)</th></tr><tr><td>${title} <br><span style="font-size: 12px; color: #64748b;">Includes PDF Access + Physical Courier Delivery</span></td><td style="text-align: right;">Rs. ${amount}.00</td></tr><tr><td style="text-align: right; font-weight: bold; padding-top: 25px;">Total Paid:</td><td class="total-row" style="text-align: right; padding-top: 25px;">Rs. ${amount}.00</td></tr></table>
+                    <div class="footer"><p>Thank you for your purchase! This is a system-generated receipt.</p><p>If you have any questions, please contact web.pradeepkathulawansha@gmail.com</p></div>
+                    <scr` + `ipt>window.onload = function() { setTimeout(() => { window.print(); }, 500); }</scr` + `ipt>
+                </body></html>`;
+            receiptWindow.document.write(htmlContent); receiptWindow.document.close();
         }
 
         window.loadMyOrders = async function() {
             const container = document.getElementById('myOrdersContainer');
             try {
-                const q = query(collection(db, "orders"));
-                const querySnapshot = await getDocs(q);
-                let myOrders = [];
-                
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    if(data.studentId === currentUser.uid) { myOrders.push(data); }
-                });
-
+                const q = query(collection(db, "orders")); const querySnapshot = await getDocs(q); let myOrders = [];
+                querySnapshot.forEach((doc) => { const data = doc.data(); if(data.studentId === currentUser.uid) { myOrders.push(data); } });
                 myOrders.sort((a, b) => b.date - a.date);
-
                 container.innerHTML = '';
-                if(myOrders.length === 0) { 
-                    container.innerHTML = '<p class="text-sm text-slate-500 text-center py-4 bg-slate-50 rounded-xl">No purchases yet.</p>'; 
-                    return; 
-                }
+                if(myOrders.length === 0) { container.innerHTML = '<p class="text-sm text-slate-500 text-center py-4 bg-slate-50 rounded-xl">No purchases yet.</p>'; return; }
 
                 myOrders.forEach((order) => {
                     const status = order.status || 'Processing';
                     let statusColor = status === 'Delivered' ? 'text-green-700 bg-green-100 border-green-200' : (status === 'Dispatched' ? 'text-blue-700 bg-blue-100 border-blue-200' : 'text-orange-700 bg-orange-100 border-orange-200');
                     let icon = status === 'Delivered' ? 'ph-check-circle' : (status === 'Dispatched' ? 'ph-truck' : 'ph-hourglass');
                     let dateStr = order.date ? order.date.toDate().toLocaleDateString() : 'N/A';
-                    
                     const safeTitle = order.tuteTitle ? order.tuteTitle.replace(/'/g, "\\'") : 'Tute';
 
                     container.innerHTML += `
                         <div class="p-4 border border-slate-200 rounded-xl bg-slate-50/50 flex flex-col gap-2">
                             <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="text-sm font-bold text-slate-800 line-clamp-1">${order.tuteTitle}</p>
-                                    <p class="text-xs text-slate-500 mt-1">Order ID: ${order.orderId.substring(0, 10)}...</p>
-                                </div>
-                                <div class="flex flex-col items-end gap-2">
-                                    <span class="px-2 py-1 text-[10px] font-bold rounded-lg border flex items-center gap-1 ${statusColor}"><i class="ph-fill ${icon}"></i> ${status}</span>
-                                </div>
+                                <div><p class="text-sm font-bold text-slate-800 line-clamp-1">${order.tuteTitle}</p><p class="text-xs text-slate-500 mt-1">Order ID: ${order.orderId.substring(0, 10)}...</p></div>
+                                <div class="flex flex-col items-end gap-2"><span class="px-2 py-1 text-[10px] font-bold rounded-lg border flex items-center gap-1 ${statusColor}"><i class="ph-fill ${icon}"></i> ${status}</span></div>
                             </div>
                             <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-200">
                                 <p class="text-xs font-bold text-green-600">Rs. ${order.amount}</p>
-                                <button onclick="window.downloadReceipt('${order.orderId}', '${safeTitle}', '${order.amount}', '${dateStr}')" class="text-blue-600 hover:text-blue-800 text-xs font-semibold flex items-center gap-1 transition-colors">
-                                    <i class="ph ph-receipt"></i> Download Receipt
-                                </button>
+                                <button onclick="window.downloadReceipt('${order.orderId}', '${safeTitle}', '${order.amount}', '${dateStr}')" class="text-blue-600 hover:text-blue-800 text-xs font-semibold flex items-center gap-1 transition-colors"><i class="ph ph-receipt"></i> Download Receipt</button>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
-            } catch (error) {
-                container.innerHTML = '<p class="text-sm text-red-500 text-center">Failed to load orders.</p>';
-            }
+            } catch (error) { container.innerHTML = '<p class="text-sm text-red-500 text-center">Failed to load orders.</p>'; }
         }
 
         window.openProfile = function() {
             if(currentUserData) {
-                document.getElementById('profName').value = currentUserData.fullName || '';
-                document.getElementById('profEmail').value = currentUserData.email || '';
-                document.getElementById('profPhone').value = currentUserData.phone || '';
-                document.getElementById('profPassword').value = '';
-                document.getElementById('profStatus').classList.add('hidden');
-                
+                document.getElementById('profName').value = currentUserData.fullName || ''; document.getElementById('profEmail').value = currentUserData.email || ''; document.getElementById('profPhone').value = currentUserData.phone || ''; document.getElementById('profPassword').value = ''; document.getElementById('profStatus').classList.add('hidden');
                 document.getElementById('myOrdersContainer').innerHTML = '<p class="text-sm text-slate-500 text-center">Loading orders...</p>';
-                window.loadMyOrders();
-                updateAvatarDisplay();
-                document.getElementById('profileModal').classList.remove('hidden');
+                window.loadMyOrders(); updateAvatarDisplay(); document.getElementById('profileModal').classList.remove('hidden');
             }
         }
 
         window.closeProfile = function() { document.getElementById('profileModal').classList.add('hidden'); }
 
         window.saveProfile = async function() {
-            const phone = document.getElementById('profPhone').value.trim();
-            const newPassword = document.getElementById('profPassword').value;
+            const phone = document.getElementById('profPhone').value.trim(); const newPassword = document.getElementById('profPassword').value;
             const btn = document.getElementById('profSaveBtn'); const status = document.getElementById('profStatus');
-
             btn.disabled = true; btn.innerText = "Saving..."; status.classList.add('hidden');
 
             try {
-                await updateDoc(doc(db, "users", currentUser.uid), { phone: phone });
-                currentUserData.phone = phone; 
-
+                await updateDoc(doc(db, "users", currentUser.uid), { phone: phone }); currentUserData.phone = phone; 
                 if(newPassword.length > 0) {
                     if(newPassword.length < 8) throw new Error("Password must be at least 8 characters.");
                     await updatePassword(currentUser, newPassword);
                 }
-
                 window.showToast("✅ Profile changes saved!", "success");
                 setTimeout(() => { window.closeProfile(); }, 1500);
             } catch (error) {
-                let msg = error.message;
-                if(error.code === 'auth/requires-recent-login') msg = "Please log out and log in again to change password.";
+                let msg = error.message; if(error.code === 'auth/requires-recent-login') msg = "Please log out and log in again to change password.";
                 window.showToast("❌ Error: " + msg, "error");
             } finally { btn.disabled = false; btn.innerText = "Save Profile Changes"; }
         }
 
-        window.handleSearch = function(val) {
-            currentSearchQuery = val.trim();
-            window.renderItems(currentActiveCategory);
-        }
+        window.handleSearch = function(val) { currentSearchQuery = val.trim(); window.renderItems(currentActiveCategory); }
 
         window.renderItems = function(category) {
             currentActiveCategory = category; const grid = document.getElementById('resourceGrid'); grid.innerHTML = '';
-            
             let filtered = dbResources.filter(res => res.category === category);
             
             if (currentSearchQuery) {
                 const searchKey = currentSearchQuery.toLowerCase();
-                filtered = filtered.filter(res => 
-                    (res.title && res.title.toLowerCase().includes(searchKey)) || 
-                    (res.desc && res.desc.toLowerCase().includes(searchKey))
-                );
+                filtered = filtered.filter(res => (res.title && res.title.toLowerCase().includes(searchKey)) || (res.desc && res.desc.toLowerCase().includes(searchKey)));
             }
 
-            if (filtered.length === 0) { 
-                grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10 bg-white/40 border border-dashed rounded-2xl">No matching materials found.</p>`; 
-                return; 
-            }
+            if (filtered.length === 0) { grid.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10 bg-white/40 border border-dashed rounded-2xl">No matching materials found.</p>`; return; }
 
             filtered.forEach((item) => {
                 const card = document.createElement('div'); card.className = "glass-panel p-8 rounded-3xl group hover:border-blue-300 transition-colors flex flex-col h-full bg-white/50";
                 const priceVal = parseFloat(item.price); const isFree = isNaN(priceVal) || priceVal <= 0;
-                
-                let isUnlocked = false;
-                let btnText = "Log In to View";
-                let btnClass = "bg-slate-100 text-slate-800 hover:bg-slate-200";
-                let icon = "ph-lock";
+                let isUnlocked = false; let btnText = "Log In to View"; let btnClass = "bg-slate-100 text-slate-800 hover:bg-slate-200"; let icon = "ph-lock";
 
                 if (currentUser) {
                     isUnlocked = isFree || currentUserUnlockedTutes.includes(item.id);
-                    if (isUnlocked) {
-                        btnText = "View / Download PDF";
-                        btnClass = "bg-slate-100 text-slate-800 hover:bg-green-500 hover:text-white";
-                        icon = "ph-folder-open";
-                    } else {
-                        btnText = `Buy Now - Rs. ${priceVal}`;
-                        btnClass = "bg-slate-900 text-white hover:bg-blue-600 shadow-md";
-                        icon = "ph-shopping-cart";
-                    }
+                    if (isUnlocked) { btnText = "View / Download PDF"; btnClass = "bg-slate-100 text-slate-800 hover:bg-green-500 hover:text-white"; icon = "ph-folder-open"; } 
+                    else { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 text-white hover:bg-blue-600 shadow-md"; icon = "ph-shopping-cart"; }
                 } else {
-                    if(!isFree) {
-                        btnText = `Buy Now - Rs. ${priceVal}`;
-                        btnClass = "bg-slate-900 text-white hover:bg-blue-600 shadow-md";
-                        icon = "ph-shopping-cart";
-                    }
+                    if(!isFree) { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 text-white hover:bg-blue-600 shadow-md"; icon = "ph-shopping-cart"; }
                 }
-                
                 const safeTitle = item.title ? item.title.replace(/'/g, "\\'") : 'Tute';
-
                 card.innerHTML = `
                     <h3 class="text-xl font-bold text-slate-800 mb-2">${item.title}</h3><p class="text-slate-600 text-sm mb-6 flex-grow">${item.desc}</p>
-                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', '${item.price}', '${safeTitle}')" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold ${btnClass} transition-all duration-300 border border-slate-200">
-                        <i class="ph ${icon} text-xl"></i> <span>${btnText}</span>
-                    </button>`;
+                    <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', '${item.price}', '${safeTitle}')" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold ${btnClass} transition-all duration-300 border border-slate-200"><i class="ph ${icon} text-xl"></i> <span>${btnText}</span></button>`;
                 grid.appendChild(card);
             });
         }
 
         window.handleAccess = function(event, id, link, price, title) {
             event.preventDefault(); 
-            
-            if (!currentUser) {
-                window.showToast("🔒 Registration required. Opening forms...", "error");
-                window.openAuthModal();
-                return;
-            }
-
+            if (!currentUser) { window.showToast("🔒 Registration required. Opening forms...", "error"); window.openAuthModal(); return; }
             const priceVal = parseFloat(price); const isFree = isNaN(priceVal) || priceVal <= 0;
             if (isFree || currentUserUnlockedTutes.includes(id)) { window.open(link, '_blank'); } 
             else {
                 currentPurchaseTute = { id: id, title: title, price: priceVal, link: link };
-                if(currentUserData) {
-                    document.getElementById('shipName').value = currentUserData.fullName || "";
-                    document.getElementById('shipPhone1').value = currentUserData.phone || "";
-                }
-                document.getElementById('payAmountDisplay').innerText = `Rs. ${priceVal}`;
-                document.getElementById('shippingModal').classList.remove('hidden'); 
+                if(currentUserData) { document.getElementById('shipName').value = currentUserData.fullName || ""; document.getElementById('shipPhone1').value = currentUserData.phone || ""; }
+                document.getElementById('payAmountDisplay').innerText = `Rs. ${priceVal}`; document.getElementById('shippingModal').classList.remove('hidden'); 
             }
         }
 
         window.initiatePayment = function() {
-            const name = document.getElementById('shipName').value; const address = document.getElementById('shipAddress').value;
-            const postal = document.getElementById('shipPostal').value; const phone1 = document.getElementById('shipPhone1').value;
-            const phone2 = document.getElementById('shipPhone2').value;
-
+            const name = document.getElementById('shipName').value; const address = document.getElementById('shipAddress').value; const postal = document.getElementById('shipPostal').value; const phone1 = document.getElementById('shipPhone1').value; const phone2 = document.getElementById('shipPhone2').value;
             if(!name || !address || !postal || !phone1) { window.showToast("⚠️ Please fill all required shipping fields.", "error"); return; }
-
             const orderId = "TUTE_" + Date.now();
-            var payment = {
-                "sandbox": true, 
-                "merchant_id": "1211149", 
-                "return_url": window.location.href, "cancel_url": window.location.href, "notify_url": "https://dummy-notify-url.com",
-                "order_id": orderId, "items": currentPurchaseTute.title, "amount": currentPurchaseTute.price, "currency": "LKR",
-                "first_name": name, "last_name": "", "email": currentUser.email, "phone": phone1, "address": address, "city": "Sri Lanka", "country": "Sri Lanka"
-            };
-
+            var payment = { "sandbox": true, "merchant_id": "1211149", "return_url": window.location.href, "cancel_url": window.location.href, "notify_url": "https://dummy-notify-url.com", "order_id": orderId, "items": currentPurchaseTute.title, "amount": currentPurchaseTute.price, "currency": "LKR", "first_name": name, "last_name": "", "email": currentUser.email, "phone": phone1, "address": address, "city": "Sri Lanka", "country": "Sri Lanka" };
             payhere.startPayment(payment);
             payhere.onCompleted = async function onCompleted(paidOrderId) {
                 document.getElementById('payBtn').innerText = "Processing Order...";
                 try {
-                    await setDoc(doc(db, "orders", paidOrderId), {
-                        orderId: paidOrderId, studentId: currentUser.uid, studentName: name, email: currentUser.email, phone1: phone1, phone2: phone2,
-                        address: address, postalCode: postal, tuteId: currentPurchaseTute.id, tuteTitle: currentPurchaseTute.title, amount: currentPurchaseTute.price, status: 'Processing', date: new Date()
-                    });
+                    await setDoc(doc(db, "orders", paidOrderId), { orderId: paidOrderId, studentId: currentUser.uid, studentName: name, email: currentUser.email, phone1: phone1, phone2: phone2, address: address, postalCode: postal, tuteId: currentPurchaseTute.id, tuteTitle: currentPurchaseTute.title, amount: currentPurchaseTute.price, status: 'Processing', date: new Date() });
                     await updateDoc(doc(db, "users", currentUser.uid), { unlockedTutes: arrayUnion(currentPurchaseTute.id) });
                     currentUserUnlockedTutes.push(currentPurchaseTute.id);
                     document.getElementById('shippingModal').classList.add('hidden');
@@ -867,72 +606,24 @@
         }
 
         window.registerUser = async function() {
-            const fName = document.getElementById('regFirstName').value.trim(); 
-            const lName = document.getElementById('regLastName').value.trim();
-            const address = document.getElementById('regAddress').value.trim(); 
-            const district = document.getElementById('regDistrict').value;
-            const grade = document.getElementById('regGrade').value; 
-            const nic = document.getElementById('regNic').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const phone = document.getElementById('regPhone').value.trim(); 
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
-            const termsChecked = document.getElementById('regTerms').checked;
-            
-            if(!fName || !lName || !address || !district || !grade || !email || !password || !phone || !confirmPassword) { 
-                window.showToast("⚠️ All field records are required.", "error"); return; 
-            }
-
-            const phoneRegex = /^[0-9]{10}$/;
-            if (!phoneRegex.test(phone)) {
-                window.showToast("❌ Mobile number must contain exactly 10 digits.", "error"); return;
-            }
-
-            if (grade === 'Grade 12' || grade === 'Grade 13') {
-                const nicRegex = /^[0-9]{12}$/;
-                if (!nicRegex.test(nic)) {
-                    window.showToast("❌ Advanced Level NIC records must be exactly 12 digits.", "error"); return;
-                }
-            }
-
-            const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
-            if (!passwordRegex.test(password)) {
-                window.showToast("❌ Password must be 8+ characters long & contain letters and numbers.", "error"); return;
-            }
-
-            if (password !== confirmPassword) {
-                window.showToast("❌ Confirm password field does not match string criteria.", "error"); return;
-            }
-
-            if (!termsChecked) {
-                window.showToast("❌ You must accept the platform conditions checkbox rule.", "error"); return;
-            }
+            const fName = document.getElementById('regFirstName').value.trim(); const lName = document.getElementById('regLastName').value.trim(); const address = document.getElementById('regAddress').value.trim(); const district = document.getElementById('regDistrict').value; const grade = document.getElementById('regGrade').value; const nic = document.getElementById('regNic').value.trim(); const email = document.getElementById('regEmail').value.trim(); const phone = document.getElementById('regPhone').value.trim(); const password = document.getElementById('regPassword').value; const confirmPassword = document.getElementById('regConfirmPassword').value; const termsChecked = document.getElementById('regTerms').checked;
+            if(!fName || !lName || !address || !district || !grade || !email || !password || !phone || !confirmPassword) { window.showToast("⚠️ All field records are required.", "error"); return; }
+            if (!/^[0-9]{10}$/.test(phone)) { window.showToast("❌ Mobile number must contain exactly 10 digits.", "error"); return; }
+            if ((grade === 'Grade 12' || grade === 'Grade 13') && !/^[0-9]{12}$/.test(nic)) { window.showToast("❌ Advanced Level NIC records must be exactly 12 digits.", "error"); return; }
+            if (!/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(password)) { window.showToast("❌ Password must be 8+ characters long & contain letters and numbers.", "error"); return; }
+            if (password !== confirmPassword) { window.showToast("❌ Confirm password field does not match string criteria.", "error"); return; }
+            if (!termsChecked) { window.showToast("❌ You must accept the platform conditions checkbox rule.", "error"); return; }
 
             const btn = document.getElementById('signupBtn'); btn.disabled = true; btn.innerText = "Processing...";
-            
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
                 const fullName = fName + " " + lName;
-                
-                let mappedGrade = "";
-                if(grade === "Grade 10" || grade === "Grade 11") mappedGrade = "10/11";
-                else if(grade === "Grade 12" || grade === "Grade 13") mappedGrade = "12/13";
-
-                await setDoc(doc(db, "users", userCred.user.uid), { 
-                    firstName: fName, lastName: lName, fullName: fullName, address: address,
-                    district: district, grade: mappedGrade, exactGrade: grade, nic: nic,
-                    email: email, phone: phone, role: "student", unlockedTutes: [], points: 0, createdAt: new Date() 
-                });
-
+                let mappedGrade = ""; if(grade === "Grade 10" || grade === "Grade 11") mappedGrade = "10/11"; else if(grade === "Grade 12" || grade === "Grade 13") mappedGrade = "12/13";
+                await setDoc(doc(db, "users", userCred.user.uid), { firstName: fName, lastName: lName, fullName: fullName, address: address, district: district, grade: mappedGrade, exactGrade: grade, nic: nic, email: email, phone: phone, role: "student", unlockedTutes: [], points: 0, createdAt: new Date() });
                 await sendEmailVerification(userCred.user);
                 window.showToast("📨 Verification link sent! Please verify your inbox before login.", "success");
-                await signOut(auth);
-                window.toggleAuthView('loginSection');
-                
-            } catch (error) { 
-                window.showToast("❌ Error: " + error.message, "error"); 
-                btn.disabled = false; btn.innerText = "Create Account"; 
-            }
+                await signOut(auth); window.toggleAuthView('loginSection');
+            } catch (error) { window.showToast("❌ Error: " + error.message, "error"); btn.disabled = false; btn.innerText = "Create Account"; }
         }
 
         window.loginUser = async function() {
@@ -941,16 +632,9 @@
             const btn = document.getElementById('loginBtn'); btn.disabled = true; btn.innerText = "Logging in...";
             try { 
                 const userCred = await signInWithEmailAndPassword(auth, email, password);
-                
-                if (!userCred.user.emailVerified) {
-                    window.showToast("🔒 Access Denied: Please verify your inbox email link first.", "error");
-                    await signOut(auth);
-                    btn.disabled = false; btn.innerText = "Log In";
-                    return;
-                }
+                if (!userCred.user.emailVerified) { window.showToast("🔒 Access Denied: Please verify your inbox email link first.", "error"); await signOut(auth); btn.disabled = false; btn.innerText = "Log In"; return; }
                 window.showToast("✅ Welcome back to bizmind.lk!", "success");
-            } 
-            catch (error) { window.showToast("❌ Invalid Credentials.", "error"); btn.disabled = false; btn.innerText = "Log In"; }
+            } catch (error) { window.showToast("❌ Invalid Credentials.", "error"); btn.disabled = false; btn.innerText = "Log In"; }
         }
 
         window.resetUserPassword = async function() {
