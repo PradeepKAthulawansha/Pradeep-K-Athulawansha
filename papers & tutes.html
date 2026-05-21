@@ -179,15 +179,68 @@
                 </div>
             </div>
 
-            <div id="signupSection" class="auth-glass p-10 rounded-3xl text-center hidden shadow-2xl">
+            <div id="signupSection" class="auth-glass p-8 rounded-3xl text-center hidden shadow-2xl max-h-[85vh] overflow-y-auto custom-scroll">
                 <h2 class="text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
-                <input type="text" id="regName" class="auth-input" placeholder="Full Name">
+                
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <input type="text" id="regFirstName" class="auth-input mb-0" placeholder="First Name">
+                    <input type="text" id="regLastName" class="auth-input mb-0" placeholder="Last Name">
+                </div>
+                
+                <input type="text" id="regAddress" class="auth-input" placeholder="Home Address">
+                
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <select id="regDistrict" class="auth-input mb-0 text-slate-500">
+                        <option value="" disabled selected>District</option>
+                        <option value="Ampara">Ampara</option>
+                        <option value="Anuradhapura">Anuradhapura</option>
+                        <option value="Badulla">Badulla</option>
+                        <option value="Batticaloa">Batticaloa</option>
+                        <option value="Colombo">Colombo</option>
+                        <option value="Galle">Galle</option>
+                        <option value="Gampaha">Gampaha</option>
+                        <option value="Hambantota">Hambantota</option>
+                        <option value="Jaffna">Jaffna</option>
+                        <option value="Kalutara">Kalutara</option>
+                        <option value="Kandy">Kandy</option>
+                        <option value="Kegalle">Kegalle</option>
+                        <option value="Kilinochchi">Kilinochchi</option>
+                        <option value="Kurunegala">Kurunegala</option>
+                        <option value="Mannar">Mannar</option>
+                        <option value="Matale">Matale</option>
+                        <option value="Matara">Matara</option>
+                        <option value="Moneragala">Moneragala</option>
+                        <option value="Mullaitivu">Mullaitivu</option>
+                        <option value="Nuwara Eliya">Nuwara Eliya</option>
+                        <option value="Polonnaruwa">Polonnaruwa</option>
+                        <option value="Puttalam">Puttalam</option>
+                        <option value="Ratnapura">Ratnapura</option>
+                        <option value="Trincomalee">Trincomalee</option>
+                        <option value="Vavuniya">Vavuniya</option>
+                    </select>
+                    <select id="regGrade" class="auth-input mb-0 text-slate-500" onchange="window.toggleNicField()">
+                        <option value="" disabled selected>Select Grade</option>
+                        <option value="Grade 10">Grade 10</option>
+                        <option value="Grade 11">Grade 11</option>
+                        <option value="Grade 12">Grade 12</option>
+                        <option value="Grade 13">Grade 13</option>
+                    </select>
+                </div>
+
+                <div id="regNicGroup" class="hidden mb-3">
+                    <input type="text" id="regNic" class="auth-input mb-0" placeholder="NIC Number (12 Digits)" maxlength="12">
+                </div>
+
                 <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
-                <input type="tel" id="regPhone" class="auth-input" placeholder="Phone No">
-                <div class="relative mb-3">
-                    <input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Create Password">
+                
+                <input type="tel" id="regPhone" class="auth-input" placeholder="Mobile No (10 Digits)" maxlength="10">
+                
+                <div class="relative mb-1">
+                    <input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" placeholder="Strong Password">
                     <button type="button" onclick="window.togglePassword('regPassword', 'regEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="regEye" class="ph ph-eye"></i></button>
                 </div>
+                <p class="text-[10px] text-slate-500 text-left mb-4 px-2">Must be at least 8 characters long, including letters & numbers.</p>
+
                 <button id="signupBtn" class="auth-btn mt-2" onclick="window.registerUser()">Create Account</button>
                 <div class="mt-5"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Log In</span></div>
             </div>
@@ -299,6 +352,18 @@
             else { input.type = "password"; icon.classList.replace("ph-eye-slash", "ph-eye"); }
         }
 
+        // Toggle NIC field based on selected grade
+        window.toggleNicField = function() {
+            const grade = document.getElementById('regGrade').value;
+            const nicGroup = document.getElementById('regNicGroup');
+            if (grade === 'Grade 12' || grade === 'Grade 13') {
+                nicGroup.classList.remove('hidden');
+            } else {
+                nicGroup.classList.add('hidden');
+                document.getElementById('regNic').value = ''; 
+            }
+        }
+
         let dbResources = [];
         let currentUser = null;
         let currentUserData = null; 
@@ -306,7 +371,6 @@
         let currentActiveCategory = 'Grade 10 Tutes';
         let currentPurchaseTute = null;
 
-        // FETCH DATA IMMEDIATELY
         async function initPage() {
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
@@ -338,7 +402,8 @@
                 window.closeAuthModal();
                 
                 try {
-                    const docSnap = await getDoc(doc(db, "students", user.uid));
+                    // Update: Changed "students" to "users" collection across the board
+                    const docSnap = await getDoc(doc(db, "users", user.uid));
                     if (docSnap.exists()) {
                         currentUserData = docSnap.data(); 
                         document.getElementById('welcomeMsg').innerText = "Welcome back, " + currentUserData.fullName + "!";
@@ -364,16 +429,16 @@
             }
         });
 
-        // AUTH MODAL LOGIC
         window.openAuthModal = function() { document.getElementById('authModal').classList.remove('hidden'); }
         window.closeAuthModal = function() { document.getElementById('authModal').classList.add('hidden'); }
 
         window.toggleAuthView = function(showId) {
-            document.getElementById('loginSection').classList.add('hidden'); document.getElementById('signupSection').classList.add('hidden');
-            document.getElementById('forgotSection').classList.add('hidden'); document.getElementById(showId).classList.remove('hidden');
+            document.getElementById('loginSection').classList.add('hidden'); 
+            document.getElementById('signupSection').classList.add('hidden');
+            document.getElementById('forgotSection').classList.add('hidden'); 
+            document.getElementById(showId).classList.remove('hidden');
         }
 
-        // GENERATE RECEIPT (FIXED THE SCRIPT TAG ISSUE HERE)
         window.downloadReceipt = function(orderId, title, amount, date) {
             const receiptWindow = window.open('', '_blank');
             const htmlContent = `
@@ -522,11 +587,11 @@
             btn.disabled = true; btn.innerText = "Saving..."; status.classList.add('hidden');
 
             try {
-                await updateDoc(doc(db, "students", currentUser.uid), { phone: phone });
+                await updateDoc(doc(db, "users", currentUser.uid), { phone: phone });
                 currentUserData.phone = phone; 
 
                 if(newPassword.length > 0) {
-                    if(newPassword.length < 6) throw new Error("Password must be at least 6 characters.");
+                    if(newPassword.length < 8) throw new Error("Password must be at least 8 characters.");
                     await updatePassword(currentUser, newPassword);
                 }
 
@@ -628,7 +693,7 @@
                         orderId: paidOrderId, studentId: currentUser.uid, studentName: name, email: currentUser.email, phone1: phone1, phone2: phone2,
                         address: address, postalCode: postal, tuteId: currentPurchaseTute.id, tuteTitle: currentPurchaseTute.title, amount: currentPurchaseTute.price, status: 'Processing', date: new Date()
                     });
-                    await updateDoc(doc(db, "students", currentUser.uid), { unlockedTutes: arrayUnion(currentPurchaseTute.id) });
+                    await updateDoc(doc(db, "users", currentUser.uid), { unlockedTutes: arrayUnion(currentPurchaseTute.id) });
                     currentUserUnlockedTutes.push(currentPurchaseTute.id);
                     document.getElementById('shippingModal').classList.add('hidden');
                     alert("Payment Successful! PDF unlocked & Tute will be shipped.");
@@ -644,14 +709,80 @@
         }
 
         window.registerUser = async function() {
-            const name = document.getElementById('regName').value; const dob = document.getElementById('regDob').value; const email = document.getElementById('regEmail').value;
-            const phone = document.getElementById('regPhone').value; const password = document.getElementById('regPassword').value;
-            if(!name || !email || !password) { alert("Please fill Name, Email, and Password!"); return; }
-            const btn = document.getElementById('signupBtn'); btn.disabled = true; btn.innerText = "Creating Account...";
+            const fName = document.getElementById('regFirstName').value.trim(); 
+            const lName = document.getElementById('regLastName').value.trim();
+            const address = document.getElementById('regAddress').value.trim(); 
+            const district = document.getElementById('regDistrict').value;
+            const grade = document.getElementById('regGrade').value; 
+            const nic = document.getElementById('regNic').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim(); 
+            const password = document.getElementById('regPassword').value;
+            
+            // Basic Checks
+            if(!fName || !lName || !address || !district || !grade || !email || !password || !phone) { 
+                alert("Please fill in all the required fields."); 
+                return; 
+            }
+
+            // Mobile Number Validation
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("Phone Number must be exactly 10 digits. (e.g. 0712345678)");
+                return;
+            }
+
+            // NIC Validation for Grade 12 & 13
+            if (grade === 'Grade 12' || grade === 'Grade 13') {
+                const nicRegex = /^[0-9]{12}$/;
+                if (!nicRegex.test(nic)) {
+                    alert("NIC must be exactly 12 digits as requested.");
+                    return;
+                }
+            }
+
+            // Strong Password Validation (Min 8 chars, letters and numbers)
+            const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+            if (!passwordRegex.test(password)) {
+                alert("Password must be at least 8 characters long and contain both letters and numbers.");
+                return;
+            }
+
+            const btn = document.getElementById('signupBtn'); 
+            btn.disabled = true; 
+            btn.innerText = "Creating Account...";
+            
             try {
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                await setDoc(doc(db, "students", userCred.user.uid), { fullName: name, birthday: dob, email: email, phone: phone, role: "student", unlockedTutes: [], createdAt: new Date() });
-            } catch (error) { alert("Error: " + error.message); btn.disabled = false; btn.innerText = "Create Account"; }
+                const fullName = fName + " " + lName;
+                
+                // Map grade format to match the Daily Quiz logic
+                let mappedGrade = "";
+                if(grade === "Grade 10" || grade === "Grade 11") mappedGrade = "10/11";
+                else if(grade === "Grade 12" || grade === "Grade 13") mappedGrade = "12/13";
+
+                await setDoc(doc(db, "users", userCred.user.uid), { 
+                    firstName: fName, 
+                    lastName: lName,
+                    fullName: fullName, 
+                    address: address,
+                    district: district,
+                    grade: mappedGrade,
+                    exactGrade: grade,
+                    nic: nic,
+                    email: email, 
+                    phone: phone, 
+                    role: "student", 
+                    unlockedTutes: [],
+                    points: 0,
+                    createdAt: new Date() 
+                });
+                
+            } catch (error) { 
+                alert("Error: " + error.message); 
+                btn.disabled = false; 
+                btn.innerText = "Create Account"; 
+            }
         }
 
         window.loginUser = async function() {
