@@ -3,247 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BizMind | Pradeep Sir's Educational Platform</title>
-    
-    <meta name="title" content="BizMind | Pradeep Sir's Educational Platform">
-    <meta name="description" content="බිස්මයින්ඩ් - උසස් පෙළ සහ සාමාන්‍ය පෙළ දරුවන් සඳහා ප්‍රදීප් සර් විසින් හඳුන්වා දෙන නවතම අධ්‍යාපනික අත්දැකීම. දිනපතා ප්‍රශ්නාවලි සහ තවත් බොහෝ දේ.">
-
+    <title>bizmind.lk | Premium Educational Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
         .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .glass-card { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
-        .bg-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
-        .modal-backdrop { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); }
+        .hero-gradient { background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%); }
+        .star-hover:hover ~ .star-hover i { color: #cbd5e1 !important; }
+        .star-btn:hover i { color: #fbbf24 !important; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="relative text-slate-800">
-
-    <a href="https://wa.me/94719151415?text=Hello%20Pradeep%20Sir,%20I%20need%20help%20with%20bizmind.lk" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 z-[999] border-2 border-white flex items-center justify-center">
-        <i class="ph-fill ph-whatsapp text-3xl"></i>
-    </a>
+<body class="text-slate-800">
 
     <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
 
-    <div class="fixed inset-0 z-[-1] pointer-events-none">
-        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob"></div>
-        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-2000"></div>
-        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-orange-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-4000"></div>
-    </div>
-
-    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-5">
+    <header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
         <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
-            <a href="https://bizmind.lk" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                <i class="ph ph-book-open text-blue-600"></i> BizMind
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                <i class="ph ph-book-open text-blue-600"></i> bizmind.lk
             </a>
-            <nav class="hidden md:flex gap-8 items-center">
-                <a href="https://bizmind.lk" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Home</a>
-                <a href="about us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">About Us</a>
-                <a href="papers-tutes.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Papers & Tutes</a>
-                <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Contact</a>
-                <a href="papers-tutes.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50">Student Portal</a>
+            <nav class="hidden md:flex gap-8 items-center font-medium">
+                <a href="index.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Home</a>
+                <a href="about us.html" class="hover:text-blue-600 transition-colors">About Us</a>
+                <a href="papers-tutes.html" class="hover:text-blue-600 transition-colors">Papers & Tutes</a>
+                <a href="contact us.html" class="hover:text-blue-600 transition-colors">Contact</a>
             </nav>
-            <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
-        </div>
-        
-        <div id="mobileMenu" class="hidden absolute top-full left-0 w-full glass-panel flex flex-col py-4 px-6 md:hidden shadow-2xl border-t border-white/40">
-            <a href="https://bizmind.lk" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Home</a>
-            <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
-            <a href="papers-tutes.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Papers & Tutes</a>
-            <a href="contact us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Contact</a>
-            <a href="papers & tutes.html" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5 hover:shadow-blue-500/50 mt-2 text-center">Student Portal</a>
+            <a href="papers-tutes.html" class="px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Student Portal</a>
         </div>
     </header>
 
-    <main class="flex-grow pt-32">
-        <section class="min-h-[70vh] flex items-center relative z-10 py-12">
-            <div class="container mx-auto px-6 md:px-12">
-                <div class="flex flex-col lg:flex-row items-center gap-12">
-                    <div class="lg:w-1/2 text-center lg:text-left" data-aos="fade-right">
-                        <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-600 font-semibold text-sm mb-6 border border-blue-200">2026 Admissions Now Open</span>
-                        <h1 class="text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
-                            Master <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Business Studies</span> With BizMind.
-                        </h1>
-                        <p class="text-lg text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0">
-                            Join the most comprehensive Grade 10 to Grade 13 Business Studies program. Access premium tutes with home delivery!
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                            <a href="papers-tutes.html" class="px-8 py-4 rounded-xl bg-slate-900 text-white font-bold hover:shadow-xl hover:-translate-y-1 transition-all text-center flex items-center justify-center gap-2">
-                                <i class="ph-fill ph-student text-xl"></i> Access Student Portal
-                            </a>
-                        </div>
-                    </div>
-                    <div class="lg:w-1/2 w-full" data-aos="fade-left">
-                        <div class="relative">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-[3rem] blur-2xl opacity-30 transform rotate-3"></div>
-                            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Students Learning" class="relative z-10 w-full rounded-[3rem] shadow-2xl border-4 border-white/50 object-cover h-[500px]">
-                        </div>
-                    </div>
+    <section class="pt-32 pb-20 hero-gradient min-h-[80vh] flex items-center">
+        <div class="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <span class="px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 font-bold text-sm mb-6 inline-block">🚀 Master Your Future</span>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">Learn Smarter,<br>Achieve <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Greatness.</span></h1>
+                <p class="text-slate-600 text-lg mb-8 max-w-lg">Access premium educational materials, daily quizzes, and structured methodologies to unlock your full potential.</p>
+                <div class="flex gap-4">
+                    <a href="papers-tutes.html" class="px-8 py-4 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-600/30">Get Started Now</a>
                 </div>
             </div>
-        </section>
-
-        <section class="py-16 relative z-10">
-            <div class="container mx-auto px-6 md:px-12">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-10" data-aos="fade-up">
-                    <h2 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4 md:mb-0">
-                        BizMind Daily Challenge 🚀
-                    </h2>
-                    <div class="bg-blue-100/80 backdrop-blur-sm text-blue-700 px-6 py-2.5 rounded-full border border-blue-200 font-bold shadow-sm flex items-center gap-2">
-                        <i class="ph-fill ph-star text-orange-400 text-xl"></i>
-                        Your Points: <span id="user-points">0</span>
-                    </div>
-                </div>
-
-                <div class="flex justify-center mb-10" data-aos="fade-up" data-aos-delay="100">
-                    <div class="bg-white/60 backdrop-blur-md p-1.5 rounded-xl shadow-sm border border-slate-200/50 flex gap-1">
-                        <button id="btn-10" class="px-8 py-2.5 rounded-lg bg-blue-600 text-white font-semibold transition-all shadow-md">Grade 10/11</button>
-                        <button id="btn-12" class="px-8 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold transition-all">Grade 12/13</button>
-                    </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8" data-aos="fade-up" data-aos-delay="200">
-                    <div class="glass-card p-8 rounded-[2rem]">
-                        <div id="quiz-loader" class="text-center py-12">
-                            <i class="ph ph-spinner animate-spin text-4xl text-blue-600 mb-3 block"></i>
-                            <span class="text-slate-600 font-medium">Checking today's challenge...</span>
-                        </div>
-                        
-                        <div id="quiz-content" class="hidden">
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Today's Question</span>
-                            </div>
-                            <h3 id="q-text" class="text-xl font-semibold text-slate-800 mb-8 leading-relaxed"></h3>
-                            <div id="options-container" class="space-y-3"></div>
-                        </div>
-
-                        <div id="quiz-completed" class="hidden text-center py-10">
-                            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                                <i class="ph-bold ph-check text-4xl text-emerald-500"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold text-slate-800 mb-2">නියමයි! 🎉</h3>
-                            <p class="text-slate-600">ඔබ අද දවසේ ප්‍රශ්නයට පිළිතුරු ලබා දී අවසන්. හෙටත් අලුත් අභියෝගයක් සමඟින් හමුවෙමු!</p>
-                        </div>
-                    </div>
-
-                    <div class="glass-card p-8 rounded-[2rem] flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 pb-4 border-b border-slate-200/60">
-                            <i class="ph-fill ph-trophy text-orange-400 text-2xl"></i> Top Performers
-                        </h3>
-                        <div id="leaderboard-list" class="space-y-3 flex-grow">
-                            <div class="text-center py-10 text-slate-500 font-medium flex flex-col items-center">
-                                <i class="ph ph-spinner animate-spin text-3xl text-blue-400 mb-2 block"></i>
-                                Loading Leaderboard...
-                            </div>
-                        </div>
-                    </div>
+            <div class="relative hidden md:block" data-aos="fade-left">
+                <div class="w-full h-[500px] bg-gradient-to-tr from-blue-200 to-purple-200 rounded-[3rem] transform rotate-3 flex items-center justify-center overflow-hidden shadow-2xl border-8 border-white">
+                    <i class="ph-fill ph-student text-9xl text-blue-500 opacity-50"></i>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="py-20 relative z-10 bg-slate-900/5 mt-12 rounded-[3rem] mx-4 md:mx-12 mb-12">
-            <div class="container mx-auto px-6 md:px-12">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-12" data-aos="fade-up">
-                    <div>
-                        <span class="text-blue-600 font-bold tracking-wider uppercase text-sm">Success Stories</span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mt-2">What Our Students Say</h2>
-                    </div>
-                    <button onclick="document.getElementById('reviewModal').classList.remove('hidden')" class="mt-6 md:mt-0 px-6 py-3 rounded-full bg-white border border-slate-200 shadow-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2">
-                        <i class="ph-fill ph-star text-orange-400"></i> Add Your Review
-                    </button>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="reviewsGrid" data-aos="fade-up" data-aos-delay="100">
-                    <div class="col-span-full text-center text-slate-500 py-10">
-                        <i class="ph ph-spinner animate-spin text-3xl text-blue-600 mb-2 block"></i> Loading reviews...
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 rounded-t-[3rem] relative z-10 mt-auto">
+    <section class="py-20 bg-white">
         <div class="container mx-auto px-6 md:px-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 text-2xl font-bold text-white mb-6">
-                        <i class="ph ph-book-open text-blue-500"></i> BizMind
-                    </div>
-                    <p class="text-slate-400 max-w-sm mb-6">Empowering students with premium educational resources, structured methodologies, and expert guidance to achieve extraordinary results.</p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors"><i class="ph-fill ph-facebook-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors"><i class="ph-fill ph-youtube-logo text-xl"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
-                    <ul class="flex flex-col gap-3">
-                        <li><a href="https://bizmind.lk" class="hover:text-blue-400 transition-colors">Home</a></li>
-                        <li><a href="about us.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
-                        <li><a href="papers-tutes.html" class="hover:text-blue-400 transition-colors">Papers & Tutes</a></li>
-                        <li><a href="contact us.html" class="hover:text-blue-400 transition-colors">Contact</a></li>
-                        <li><a href="terms.html" class="hover:text-blue-400 transition-colors text-sm text-slate-400">Terms & Conditions</a></li>
-                        <li><a href="admin.html" class="hover:text-blue-400 transition-colors">Admin Only</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Contact</h4>
-                    <ul class="flex flex-col gap-3">
-                        <li>+94 71 915 14 15</li>
-                        <li>web.pradeepkathulawansha@gmail.com</li>
-                        <li>Kandy, Sri Lanka</li>
-                    </ul>
-                </div>
+            
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">What Our Students Say</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Real experiences from students who have transformed their results with bizmind.lk.</p>
             </div>
-            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm relative">
-                <p>&copy; 2026 Pradeep K. Athulawansha. All rights reserved.</p>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="absolute right-0 -top-6 w-12 h-12 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg transition-colors">
-                    <i class="ph ph-caret-up"></i>
-                </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                
+                <div class="lg:col-span-2">
+                    <div id="reviewsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[600px] overflow-y-auto custom-scroll pr-4">
+                        <div class="col-span-full text-center py-10 text-slate-500"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600 mx-auto mb-3"></div>Loading reviews...</div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1" data-aos="fade-left">
+                    <div class="glass-panel p-8 rounded-3xl bg-slate-50 border border-slate-200">
+                        <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph-fill ph-star text-yellow-400"></i> Rate Your Experience</h3>
+                        
+                        <div class="mb-6 text-center">
+                            <p class="text-sm font-semibold text-slate-500 mb-2">Tap a star to rate</p>
+                            <div class="flex justify-center gap-2 flex-row-reverse" id="starSelector">
+                                <button type="button" class="star-btn outline-none transition-transform hover:scale-125" onclick="window.setRating(5)"><i class="ph-fill ph-star text-3xl text-slate-300" id="s5"></i></button>
+                                <button type="button" class="star-btn outline-none transition-transform hover:scale-125" onclick="window.setRating(4)"><i class="ph-fill ph-star text-3xl text-slate-300" id="s4"></i></button>
+                                <button type="button" class="star-btn outline-none transition-transform hover:scale-125" onclick="window.setRating(3)"><i class="ph-fill ph-star text-3xl text-slate-300" id="s3"></i></button>
+                                <button type="button" class="star-btn outline-none transition-transform hover:scale-125" onclick="window.setRating(2)"><i class="ph-fill ph-star text-3xl text-slate-300" id="s2"></i></button>
+                                <button type="button" class="star-btn outline-none transition-transform hover:scale-125" onclick="window.setRating(1)"><i class="ph-fill ph-star text-3xl text-slate-300" id="s1"></i></button>
+                            </div>
+                            <input type="hidden" id="revRating" value="0">
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <input type="text" id="revName" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm" placeholder="Your Name (e.g. Nimal Perera)">
+                            </div>
+                            <div>
+                                <select id="revBatch" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm text-slate-600 bg-white">
+                                    <option value="" disabled selected>Select Your A/L Batch</option>
+                                    <option value="2024">2024 Batch</option>
+                                    <option value="2025">2025 Batch</option>
+                                    <option value="2026">2026 Batch</option>
+                                    <option value="2027">2027 Batch</option>
+                                    <option value="O/L">O/L Student</option>
+                                </select>
+                            </div>
+                            <div>
+                                <textarea id="revMessage" rows="4" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm" placeholder="Write your review here..."></textarea>
+                            </div>
+                            <button id="submitRevBtn" onclick="window.submitReview()" class="w-full py-4 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors">Post Review</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2026 bizmind.lk | Pradeep K. Athulawansha. All rights reserved.</p>
         </div>
     </footer>
-
-    <div id="reviewModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="bg-white w-full max-w-md p-8 rounded-3xl relative shadow-2xl">
-            <button onclick="document.getElementById('reviewModal').classList.add('hidden')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
-            <div class="w-16 h-16 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-3xl mb-4 mx-auto"><i class="ph-fill ph-star"></i></div>
-            <h3 class="text-2xl font-bold text-slate-800 mb-2 text-center">Share Your Experience</h3>
-            <p class="text-sm text-slate-500 text-center mb-6">Your feedback helps other students make the right choice.</p>
-            
-            <div class="space-y-4">
-                <input type="text" id="revName" class="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:border-blue-500" placeholder="Your Name">
-                <select id="revGrade" class="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:border-blue-500 text-slate-600">
-                    <option value="" disabled selected>Select Your Grade</option>
-                    <option value="Grade 10">Grade 10</option>
-                    <option value="Grade 11">Grade 11</option>
-                    <option value="Grade 12">Grade 12</option>
-                    <option value="Grade 13">Grade 13</option>
-                    <option value="University">University / Passed Out</option>
-                </select>
-                <textarea id="revMessage" rows="3" class="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:border-blue-500" placeholder="Write your review here..."></textarea>
-                
-                <button onclick="window.submitReview()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-blue-600 transition-colors mt-2">
-                    Submit Review
-                </button>
-            </div>
-        </div>
-    </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, getDoc, doc, updateDoc, increment, query, orderBy, limit, where, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
+        // ⚠️ FIREBASE CONFIG - REPLACE WITH YOUR ACTUAL CONFIG ⚠️
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
             authDomain: "pradeep-k-athulawansha.firebaseapp.com",
@@ -255,177 +137,135 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app);
 
         AOS.init({ once: true });
-        window.toggleMenu = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
 
-        window.showToast = function(message, type = 'success') {
+        // Toast System
+        window.showToast = (msg, type='success') => {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = `p-4 rounded-xl shadow-xl border text-sm font-medium flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto max-w-sm bg-white min-w-[300px]`;
-            if (type === 'success') {
-                toast.classList.add('border-green-200', 'text-green-800', 'bg-green-50/95');
-                toast.innerHTML = `<i class="ph-fill ph-check-circle text-green-500 text-lg"></i> <span>${message}</span>`;
-            } else {
-                toast.classList.add('border-red-200', 'text-red-800', 'bg-red-50/95');
-                toast.innerHTML = `<i class="ph-fill ph-warning-circle text-red-500 text-lg"></i> <span>${message}</span>`;
-            }
+            toast.className = `p-4 rounded-xl border flex items-center gap-2 shadow-lg transition-all transform translate-y-2 opacity-0 ${type==='success'?'bg-green-50 text-green-800 border-green-200':'bg-red-50 text-red-800 border-red-200'}`;
+            toast.innerHTML = `<i class="ph-fill ${type==='success'?'ph-check-circle text-green-500':'ph-warning-circle text-red-500'} text-lg"></i><span>${msg}</span>`;
             container.appendChild(toast);
             setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
-            setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 4500);
+            setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 3000);
         }
 
+        // --- Star Rating Logic ---
+        window.setRating = function(rating) {
+            document.getElementById('revRating').value = rating;
+            // Reset all stars to gray
+            for(let i=1; i<=5; i++) {
+                document.getElementById(`s${i}`).classList.replace('text-yellow-400', 'text-slate-300');
+            }
+            // Fill selected stars with yellow
+            for(let i=1; i<=rating; i++) {
+                document.getElementById(`s${i}`).classList.replace('text-slate-300', 'text-yellow-400');
+            }
+        }
+
+        // Generate static Star HTML for display
+        function getStarsHTML(rating) {
+            let html = '';
+            for(let i=1; i<=5; i++) {
+                html += i <= rating 
+                    ? '<i class="ph-fill ph-star text-yellow-400 text-lg"></i>' 
+                    : '<i class="ph-fill ph-star text-slate-200 text-lg"></i>';
+            }
+            return html;
+        }
+
+        // --- Submit Review ---
+        window.submitReview = async function() {
+            const name = document.getElementById('revName').value.trim();
+            const batch = document.getElementById('revBatch').value;
+            const message = document.getElementById('revMessage').value.trim();
+            const rating = parseInt(document.getElementById('revRating').value);
+
+            if(rating === 0) { window.showToast("Please select a star rating.", "error"); return; }
+            if(!name || !batch || !message) { window.showToast("Please fill all the details.", "error"); return; }
+
+            const btn = document.getElementById('submitRevBtn');
+            btn.disabled = true; btn.innerText = "Posting...";
+
+            try {
+                await addDoc(collection(db, "reviews"), {
+                    name: name,
+                    batch: batch,
+                    message: message,
+                    rating: rating,
+                    date: serverTimestamp()
+                });
+                
+                window.showToast("Thank you! Your review was posted.");
+                
+                // Clear Form
+                document.getElementById('revName').value = '';
+                document.getElementById('revBatch').value = '';
+                document.getElementById('revMessage').value = '';
+                window.setRating(0); // reset stars
+                
+                loadReviews(); // Reload grid
+            } catch (error) {
+                window.showToast("Failed to post review. Try again.", "error");
+                console.error(error);
+            } finally {
+                btn.disabled = false; btn.innerText = "Post Review";
+            }
+        }
+
+        // --- Load & Display Reviews ---
         async function loadReviews() {
             const grid = document.getElementById('reviewsGrid');
             try {
-                const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(6));
-                const querySnapshot = await getDocs(q);
+                const q = query(collection(db, "reviews"), orderBy("date", "desc"));
+                const snapshot = await getDocs(q);
                 
                 grid.innerHTML = '';
-                if(querySnapshot.empty) { grid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-6">Be the first to share your experience!</p>'; return; }
-
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const initial = data.name ? data.name.charAt(0).toUpperCase() : 'S';
-                    
-                    grid.innerHTML += `
-                        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-lg hover:-translate-y-1 transition-transform">
-                            <div class="flex gap-1 text-orange-400 text-sm mb-4"><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i></div>
-                            <p class="text-slate-600 text-sm italic mb-6 leading-relaxed">"${data.message}"</p>
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center">${initial}</div>
-                                <div><h4 class="font-bold text-slate-800 text-sm">${data.name}</h4><p class="text-xs text-slate-500">${data.grade}</p></div>
-                            </div>
-                        </div>`;
-                });
-            } catch (error) { grid.innerHTML = '<p class="col-span-full text-center text-red-400 py-6">Failed to load reviews.</p>'; }
-        }
-        loadReviews();
-
-        window.submitReview = async function() {
-            const name = document.getElementById('revName').value.trim();
-            const grade = document.getElementById('revGrade').value;
-            const message = document.getElementById('revMessage').value.trim();
-
-            if(!name || !grade || !message) { window.showToast("⚠️ Please fill all details before submitting.", "error"); return; }
-
-            try {
-                await addDoc(collection(db, "reviews"), { name: name, grade: grade, message: message, createdAt: new Date(), approved: true });
-                document.getElementById('reviewModal').classList.add('hidden');
-                document.getElementById('revName').value = ''; document.getElementById('revMessage').value = '';
-                window.showToast("🎉 Thank you! Your review has been published.", "success");
-                loadReviews();
-            } catch (error) { window.showToast("❌ Failed to submit review. Try again.", "error"); }
-        }
-
-        let currentGrade = '10/11';
-        let currentUserUid = null;
-        const today = new Date().toISOString().split('T')[0];
-
-        const btn10 = document.getElementById('btn-10'); const btn12 = document.getElementById('btn-12');
-        btn10.addEventListener('click', () => { switchGrade('10/11'); }); btn12.addEventListener('click', () => { switchGrade('12/13'); });
-
-        function switchGrade(grade) {
-            currentGrade = grade;
-            const activeClass = "px-8 py-2.5 rounded-lg bg-blue-600 text-white font-semibold transition-all shadow-md";
-            const inactiveClass = "px-8 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 font-semibold transition-all";
-            btn10.className = grade === '10/11' ? activeClass : inactiveClass; btn12.className = grade === '12/13' ? activeClass : inactiveClass;
-            loadQuestion(); loadLeaderboard();
-        }
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) { currentUserUid = user.uid; await checkUserStatus(user.uid); } 
-            else {
-                document.getElementById('quiz-loader').innerHTML = `
-                    <div class="text-center py-6">
-                        <i class="ph ph-lock-key text-4xl text-slate-400 mb-3 block"></i>
-                        <span class="text-slate-600 font-medium">අද දවසේ අභියෝගයට සහභාගී වීමට <a href="papers & tutes.html" class="text-blue-600 font-bold underline">Login</a> වන්න.</span>
-                    </div>`;
-            }
-            loadLeaderboard();
-        });
-
-        async function checkUserStatus(uid) {
-            try {
-                const userRef = doc(db, 'users', uid); const userSnap = await getDoc(userRef);
-                const userData = userSnap.exists() ? userSnap.data() : {};
-                document.getElementById('user-points').innerText = userData.points || 0;
-
-                if (userData.lastSolvedDate === today) { showQuizView('quiz-completed'); } 
-                else {
-                    if(userData.grade && (userData.grade === '10/11' || userData.grade === '12/13')) { switchGrade(userData.grade); } 
-                    else { loadQuestion(); }
-                }
-            } catch (error) { console.error("Status Check Error: ", error); }
-        }
-
-        async function loadQuestion() {
-            if(!currentUserUid) return;
-            showQuizView('quiz-loader');
-            try {
-                const collectionName = currentGrade === '10/11' ? 'dailyQuestions_10_11' : 'dailyQuestions_12_13';
-                const qRef = doc(db, collectionName, today); const qSnap = await getDoc(qRef);
-
-                if (!qSnap.exists()) {
-                    document.getElementById('quiz-loader').innerHTML = `
-                        <div class="text-center py-6">
-                            <i class="ph ph-coffee text-4xl text-slate-400 mb-3 block"></i>
-                            <span class="text-slate-600 font-medium">අද දිනට අදාළ ප්‍රශ්නය තවමත් ඇතුළත් කර නොමැත. පසුව නැවත පැමිණෙන්න!</span>
-                        </div>`;
+                
+                if(snapshot.empty) {
+                    grid.innerHTML = '<p class="col-span-full text-slate-500 bg-slate-50 p-6 rounded-2xl text-center border border-dashed">Be the first to share your experience!</p>';
                     return;
                 }
 
-                const data = qSnap.data(); document.getElementById('q-text').innerText = data.q;
-                const optContainer = document.getElementById('options-container'); optContainer.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const starsHTML = getStarsHTML(data.rating || 5);
+                    const initial = data.name ? data.name.charAt(0).toUpperCase() : 'S';
+                    
+                    // Simple date formatting
+                    let dateStr = "Recently";
+                    if(data.date) {
+                        const dateObj = data.date.toDate();
+                        dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    }
 
-                data.options.forEach((opt, index) => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full text-left p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md transition-all duration-300 font-medium text-slate-700";
-                    btn.innerText = opt; btn.onclick = () => submitAnswer(index);
-                    optContainer.appendChild(btn);
+                    grid.innerHTML += `
+                        <div class="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex gap-1">${starsHTML}</div>
+                                <span class="text-xs font-semibold text-slate-400">${dateStr}</span>
+                            </div>
+                            <p class="text-slate-700 text-sm mb-6 italic">"${data.message}"</p>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">${initial}</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm leading-tight">${data.name}</h4>
+                                    <p class="text-xs text-blue-600 font-bold">${data.batch} Batch</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                 });
-                showQuizView('quiz-content');
-            } catch (error) { document.getElementById('quiz-loader').innerText = "ප්‍රශ්නය ලබාගැනීමේදී දෝෂයක් ඇතිවිය."; }
+            } catch(e) {
+                grid.innerHTML = '<p class="text-red-500">Failed to load reviews.</p>';
+                console.error(e);
+            }
         }
 
-        async function submitAnswer(selectedIndex) {
-            if (!currentUserUid) return;
-            const userRef = doc(db, 'users', currentUserUid);
-            try {
-                await updateDoc(userRef, { points: increment(10), lastSolvedDate: today, lastSubmittedAns: selectedIndex });
-                window.showToast("🎉 නිවැරදි පිළිතුරයි! ඔබට ලකුණු 10ක් එකතු වුණා.", "success");
-                setTimeout(() => location.reload(), 2000);
-            } catch (error) { window.showToast("❌ පිළිතුර වැරදියි හෝ ඔබ දැනටමත් අද දිනට අදාළව පිළිතුරු ලබා දී ඇත.", "error"); }
-        }
+        // Initialize reviews on page load
+        window.addEventListener('DOMContentLoaded', loadReviews);
 
-        async function loadLeaderboard() {
-            const lbContainer = document.getElementById('leaderboard-list');
-            try {
-                const q = query(collection(db, "users"), where("grade", "==", currentGrade), orderBy("points", "desc"), limit(5));
-                const querySnapshot = await getDocs(q);
-                lbContainer.innerHTML = '';
-                if(querySnapshot.empty) { lbContainer.innerHTML = '<div class="text-center py-6 text-slate-500">No ranks available yet. Be the first!</div>'; return; }
-
-                let rank = 1;
-                querySnapshot.forEach((document) => {
-                    const data = document.data();
-                    let medal = `<span class="text-slate-400 font-bold w-6">#${rank}</span>`;
-                    if (rank === 1) medal = `<span class="text-2xl mr-2">🥇</span>`; else if (rank === 2) medal = `<span class="text-2xl mr-2">🥈</span>`; else if (rank === 3) medal = `<span class="text-2xl mr-2">🥉</span>`;
-                    lbContainer.innerHTML += `
-                        <div class="flex justify-between items-center p-4 bg-white/60 rounded-xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex items-center gap-3">${medal}<span class="font-bold text-slate-700">${data.fullName || data.name || 'Student'}</span></div>
-                            <span class="font-extrabold text-blue-600 bg-blue-100 px-4 py-1.5 rounded-full text-sm shadow-sm">${data.points || 0} pts</span>
-                        </div>`;
-                    rank++;
-                });
-            } catch (error) { lbContainer.innerHTML = '<div class="text-center py-6 text-red-400">Failed to load leaderboard.</div>'; }
-        }
-
-        function showQuizView(viewId) {
-            document.getElementById('quiz-loader').classList.add('hidden'); document.getElementById('quiz-content').classList.add('hidden');
-            document.getElementById('quiz-completed').classList.add('hidden'); document.getElementById(viewId).classList.remove('hidden');
-        }
     </script>
 </body>
 </html>
