@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Papers & Tutes | bizmind.lk</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
@@ -15,6 +15,8 @@
         .auth-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
         .auth-input { width: 100%; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); outline: none; transition: all 0.3s; margin-bottom: 12px; font-size: 15px; }
         .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; transition: all 0.3s; margin-top: 10px; cursor: pointer; }
+        .auth-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .link-text { color: #3b82f6; cursor: pointer; font-size: 14px; }
         .modal-backdrop { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); }
         .pulse-text { animation: pulse-text 2s infinite; }
         @keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
@@ -35,19 +37,26 @@
                 <a href="papers & tutes.html" class="font-medium text-blue-600">Papers & Tutes</a>
                 <a href="contact us.html" class="font-medium text-slate-700 hover:text-blue-600">Contact</a>
             </nav>
-            <button id="navLoginBtn" onclick="window.openAuthModal()" class="px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Login / Register</button>
+            <button id="navLoginBtn" onclick="window.openAuthModal()" class="px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800">Login / Register</button>
         </div>
     </header>
 
     <main class="flex-grow pt-32 pb-12">
         <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
             
+            <div id="userDashboardBar" class="hidden glass-panel p-6 rounded-2xl mb-6 flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-full bg-blue-500 text-white flex items-center justify-center"><i class="ph-fill ph-student text-2xl"></i></div>
+                    <div>
+                        <h2 id="welcomeMsg" class="font-bold text-lg">Welcome!</h2>
+                        <span id="dashboardPoints" class="text-sm text-blue-600 font-bold">0 pts</span>
+                    </div>
+                </div>
+                <button onclick="window.logoutUser()" class="px-4 py-2 text-red-500 border border-red-200 rounded-full text-sm">Log Out</button>
+            </div>
+
             <div class="max-w-md mx-auto mb-10 relative">
-                <input type="text" id="searchInput" 
-                    autocomplete="one-time-code" 
-                    oninput="window.handleSearch(this.value)" 
-                    class="w-full pl-12 pr-4 py-3.5 rounded-full border border-slate-200 outline-none focus:border-blue-500 focus:shadow-md transition-all bg-white" 
-                    placeholder="Search tutes...">
+                <input type="text" id="searchInput" autocomplete="nope" oninput="window.handleSearch(this.value)" class="w-full pl-12 pr-4 py-3.5 rounded-full border border-slate-200 outline-none focus:border-blue-500 bg-white" placeholder="Search tutes & papers...">
                 <i class="ph ph-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 text-xl"></i>
             </div>
             
@@ -57,8 +66,128 @@
         </div>
     </main>
 
+    <div id="authModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
+        <div class="w-full max-w-md relative">
+            <button onclick="window.closeAuthModal()" class="absolute -top-12 right-0 text-white text-4xl"><i class="ph ph-x"></i></button>
+            <div id="loginSection" class="auth-glass p-8 rounded-3xl text-center">
+                <h2 class="text-2xl font-bold mb-6">Student Login</h2>
+                <input type="email" id="loginEmail" class="auth-input" placeholder="Email">
+                <input type="password" id="loginPassword" class="auth-input" placeholder="Password">
+                <button class="auth-btn" onclick="window.loginUser()">Log In</button>
+                <div class="mt-4"><span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span></div>
+            </div>
+            <div id="signupSection" class="auth-glass p-8 rounded-3xl text-center hidden">
+                <h2 class="text-2xl font-bold mb-6">Register</h2>
+                <input type="text" id="regFirstName" class="auth-input" placeholder="First Name">
+                <input type="email" id="regEmail" class="auth-input" placeholder="Email">
+                <input type="password" id="regPassword" class="auth-input" placeholder="Password">
+                <input type="password" id="regConfirmPassword" class="auth-input" placeholder="Confirm Password">
+                <button id="signupBtn" class="auth-btn" onclick="window.registerUser()">Create Account</button>
+                <div class="mt-4"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')">Back to Login</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
+        <div class="bg-white w-full max-w-lg p-6 rounded-3xl relative shadow-2xl">
+            <button onclick="document.getElementById('shippingModal').classList.add('hidden')" class="absolute top-5 right-5 text-slate-400 text-2xl"><i class="ph ph-x"></i></button>
+            <div id="payMethodSelection">
+                <h3 class="text-xl font-bold text-center mb-6">Select Payment</h3>
+                <div class="space-y-4">
+                    <div onclick="window.selectPaymentMethod('online')" class="border p-4 rounded-xl cursor-pointer hover:border-blue-500">
+                        <h4 class="font-bold">Online Transfer</h4>
+                        <p class="text-xs">20 Minutes Time</p>
+                    </div>
+                    <div onclick="window.selectPaymentMethod('manual')" class="border p-4 rounded-xl cursor-pointer hover:border-orange-500">
+                        <h4 class="font-bold">Manual Deposit</h4>
+                        <p class="text-xs">24 Hours Time</p>
+                    </div>
+                </div>
+            </div>
+            <div id="payCheckoutForm" class="hidden">
+                <div class="text-center">
+                    <p id="countdownDisplay" class="text-2xl font-bold font-mono pulse-text text-red-500">00:00</p>
+                    <p class="text-sm mt-2">Bank Details: BOC Kandy | 1234567890</p>
+                </div>
+                <input type="file" id="paymentSlip" class="w-full mt-4 p-2 border rounded-xl" accept="image/*,.pdf">
+                <button id="payBtn" onclick="window.initiatePayment()" class="w-full py-4 mt-4 bg-blue-600 text-white font-bold rounded-xl">Submit Slip</button>
+                <button id="extendTimeBtn" onclick="window.extendTime()" class="w-full py-2 mt-2 text-sm text-orange-600 font-bold hidden">Need more time? (+24 Hours)</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
-        // ... (අපේ ලොජික් ටික එහෙම්මම තියෙන්න) ...
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
+            authDomain: "pradeep-k-athulawansha.firebaseapp.com",
+            projectId: "pradeep-k-athulawansha",
+            storageBucket: "pradeep-k-athulawansha.firebasestorage.app",
+            messagingSenderId: "950027835210",
+            appId: "1:950027835210:web:a2894cd14833dc101bd3b3"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app); const db = getFirestore(app); const storage = getStorage(app);
+
+        // --- Logic Helper ---
+        window.showToast = (msg, type='success') => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl border ${type==='success'?'bg-green-50 text-green-800':'bg-red-50 text-red-800'}`;
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        window.openAuthModal = () => document.getElementById('authModal').classList.remove('hidden');
+        window.closeAuthModal = () => document.getElementById('authModal').classList.add('hidden');
+        window.toggleAuthView = (id) => {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('signupSection').classList.add('hidden');
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        // --- Payment Timer Logic ---
+        let countdownInterval;
+        let currentPurchaseId = "";
+
+        window.selectPaymentMethod = (method) => {
+            const now = new Date().getTime();
+            let expiryTime = (method === 'online') ? now + (20 * 60 * 1000) : now + (24 * 60 * 60 * 1000);
+            localStorage.setItem(`pay_expiry_${currentPurchaseId}`, expiryTime);
+            localStorage.setItem(`pay_method_${currentPurchaseId}`, method);
+            
+            document.getElementById('payMethodSelection').classList.add('hidden');
+            document.getElementById('payCheckoutForm').classList.remove('hidden');
+            if(method === 'manual') document.getElementById('extendTimeBtn').classList.remove('hidden');
+            startTimer(expiryTime, method);
+        }
+
+        function startTimer(expiry, method) {
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const dist = expiry - now;
+                if(dist < 0) { clearInterval(countdownInterval); alert("Time Expired!"); return; }
+                const m = Math.floor((dist % (1000*60*60))/(1000*60));
+                const s = Math.floor((dist % (1000*60))/1000);
+                document.getElementById('countdownDisplay').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+        
+        window.closePaymentModal = () => { document.getElementById('shippingModal').classList.add('hidden'); clearInterval(countdownInterval); }
+        window.handleAccess = (e, id, link, price, title) => {
+            if(!currentUser) { window.openAuthModal(); return; }
+            currentPurchaseId = id;
+            currentPurchaseTute = {id, title, price};
+            document.getElementById('shippingModal').classList.remove('hidden');
+        }
+        
+        // --- Add other logic here (init, renderItems, login, etc) ---
     </script>
 </body>
 </html>
