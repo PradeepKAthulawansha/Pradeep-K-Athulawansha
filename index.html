@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="lg:col-span-1" data-aos="fade-left">
-                    <div class="glass-panel p-8 rounded-3xl bg-slate-50 border border-slate-200">
+                    <div class="glass-panel p-8 rounded-3xl bg-slate-50 border border-slate-200 shadow-lg">
                         <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph-fill ph-star text-yellow-400"></i> Rate Your Experience</h3>
                         
                         <div class="mb-6 text-center">
@@ -92,21 +92,53 @@
                             <div>
                                 <input type="text" id="revName" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm" placeholder="Your Name (e.g. Nimal Perera)">
                             </div>
-                            <div>
-                                <select id="revBatch" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm text-slate-600 bg-white">
-                                    <option value="" disabled selected>Select Your A/L Batch</option>
-                                    <option value="2024">2024 Batch</option>
-                                    <option value="2025">2025 Batch</option>
-                                    <option value="2026">2026 Batch</option>
-                                    <option value="2027">2027 Batch</option>
-                                    <option value="O/L">O/L Student</option>
-                                </select>
+                            
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <input type="number" id="revYear" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm" placeholder="Exam Year (e.g. 2024)">
+                                </div>
+                                <div>
+                                    <select id="revLevel" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm text-slate-600 bg-white">
+                                        <option value="A/L">A/L Student</option>
+                                        <option value="O/L">O/L Student</option>
+                                    </select>
+                                </div>
                             </div>
+
                             <div>
                                 <textarea id="revMessage" rows="4" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:border-blue-500 text-sm" placeholder="Write your review here..."></textarea>
                             </div>
                             <button id="submitRevBtn" onclick="window.submitReview()" class="w-full py-4 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors">Post Review</button>
                         </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="container mx-auto px-6 md:px-12">
+            
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="px-4 py-1.5 rounded-full bg-yellow-100 text-yellow-700 font-bold text-sm mb-4 inline-block">🏆 Hall of Fame</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Top Achievers</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Our daily quiz leaderboard superstars. Keep playing to see your name here!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+                
+                <div class="glass-panel p-6 md:p-8 rounded-3xl border-t-4 border-blue-500 bg-white shadow-xl" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center justify-center gap-2 text-slate-800"><i class="ph-fill ph-medal text-blue-500 text-3xl"></i> O/L (Grade 10/11) Top 10</h3>
+                    <div id="home-lb-ol" class="space-y-3">
+                        <div class="flex justify-center py-6"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div></div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 md:p-8 rounded-3xl border-t-4 border-purple-500 bg-white shadow-xl" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center justify-center gap-2 text-slate-800"><i class="ph-fill ph-trophy text-purple-500 text-3xl"></i> A/L (Grade 12/13) Top 10</h3>
+                    <div id="home-lb-al" class="space-y-3">
+                        <div class="flex justify-center py-6"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-600"></div></div>
                     </div>
                 </div>
 
@@ -123,7 +155,8 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        // Import where & limit for Leaderboard logic
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, where, limit } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         // ⚠️ FIREBASE CONFIG - REPLACE WITH YOUR ACTUAL CONFIG ⚠️
         const firebaseConfig = {
@@ -154,17 +187,14 @@
         // --- Star Rating Logic ---
         window.setRating = function(rating) {
             document.getElementById('revRating').value = rating;
-            // Reset all stars to gray
             for(let i=1; i<=5; i++) {
                 document.getElementById(`s${i}`).classList.replace('text-yellow-400', 'text-slate-300');
             }
-            // Fill selected stars with yellow
             for(let i=1; i<=rating; i++) {
                 document.getElementById(`s${i}`).classList.replace('text-slate-300', 'text-yellow-400');
             }
         }
 
-        // Generate static Star HTML for display
         function getStarsHTML(rating) {
             let html = '';
             for(let i=1; i<=5; i++) {
@@ -178,12 +208,16 @@
         // --- Submit Review ---
         window.submitReview = async function() {
             const name = document.getElementById('revName').value.trim();
-            const batch = document.getElementById('revBatch').value;
+            const year = document.getElementById('revYear').value.trim();
+            const level = document.getElementById('revLevel').value;
             const message = document.getElementById('revMessage').value.trim();
             const rating = parseInt(document.getElementById('revRating').value);
 
             if(rating === 0) { window.showToast("Please select a star rating.", "error"); return; }
-            if(!name || !batch || !message) { window.showToast("Please fill all the details.", "error"); return; }
+            if(!name || !year || !message) { window.showToast("Please fill all the details.", "error"); return; }
+            if(year.length !== 4) { window.showToast("Please enter a valid 4-digit year.", "error"); return; }
+
+            const batchString = `${year} ${level}`; // Combine year and level (e.g., 2024 A/L)
 
             const btn = document.getElementById('submitRevBtn');
             btn.disabled = true; btn.innerText = "Posting...";
@@ -191,7 +225,7 @@
             try {
                 await addDoc(collection(db, "reviews"), {
                     name: name,
-                    batch: batch,
+                    batch: batchString,
                     message: message,
                     rating: rating,
                     date: serverTimestamp()
@@ -201,11 +235,11 @@
                 
                 // Clear Form
                 document.getElementById('revName').value = '';
-                document.getElementById('revBatch').value = '';
+                document.getElementById('revYear').value = '';
                 document.getElementById('revMessage').value = '';
-                window.setRating(0); // reset stars
+                window.setRating(0); 
                 
-                loadReviews(); // Reload grid
+                loadReviews(); 
             } catch (error) {
                 window.showToast("Failed to post review. Try again.", "error");
                 console.error(error);
@@ -214,7 +248,7 @@
             }
         }
 
-        // --- Load & Display Reviews ---
+        // --- Load Reviews ---
         async function loadReviews() {
             const grid = document.getElementById('reviewsGrid');
             try {
@@ -222,7 +256,6 @@
                 const snapshot = await getDocs(q);
                 
                 grid.innerHTML = '';
-                
                 if(snapshot.empty) {
                     grid.innerHTML = '<p class="col-span-full text-slate-500 bg-slate-50 p-6 rounded-2xl text-center border border-dashed">Be the first to share your experience!</p>';
                     return;
@@ -233,7 +266,6 @@
                     const starsHTML = getStarsHTML(data.rating || 5);
                     const initial = data.name ? data.name.charAt(0).toUpperCase() : 'S';
                     
-                    // Simple date formatting
                     let dateStr = "Recently";
                     if(data.date) {
                         const dateObj = data.date.toDate();
@@ -259,12 +291,66 @@
                 });
             } catch(e) {
                 grid.innerHTML = '<p class="text-red-500">Failed to load reviews.</p>';
-                console.error(e);
             }
         }
 
-        // Initialize reviews on page load
-        window.addEventListener('DOMContentLoaded', loadReviews);
+        // --- Load Home Leaderboards ---
+        async function renderHomeBoard(grade, elementId) {
+            const container = document.getElementById(elementId);
+            try {
+                // Note: This query requires a composite index in Firebase!
+                const q = query(collection(db, "users"), where("grade", "==", grade), orderBy("points", "desc"), limit(11));
+                const snapshot = await getDocs(q);
+                
+                container.innerHTML = '';
+                if(snapshot.empty) { 
+                    container.innerHTML = '<p class="text-center text-sm text-slate-500 py-6">No ranking data yet.</p>'; 
+                    return; 
+                }
+                
+                let rank = 1;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    // Skip Admin account and users with 0 points
+                    if(data.email === 'admin@pradeepk.com' || !data.points || data.points === 0) return; 
+                    
+                    // Stop if we already have 10 valid students
+                    if(rank > 10) return;
+
+                    let rankIcon = `<span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-sm border border-slate-200">${rank}</span>`;
+                    if(rank === 1) rankIcon = `<span class="text-3xl" title="1st Place">🥇</span>`;
+                    else if(rank === 2) rankIcon = `<span class="text-3xl" title="2nd Place">🥈</span>`;
+                    else if(rank === 3) rankIcon = `<span class="text-3xl" title="3rd Place">🥉</span>`;
+
+                    container.innerHTML += `
+                        <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
+                            <div class="flex items-center gap-3">
+                                ${rankIcon}
+                                <span class="font-bold text-slate-700">${data.fullName || 'Student'}</span>
+                            </div>
+                            <span class="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 font-bold px-3 py-1.5 rounded-lg text-xs border border-blue-200 shadow-sm">${data.points} Pts</span>
+                        </div>
+                    `;
+                    rank++;
+                });
+
+                // If no one had > 0 points
+                if(rank === 1) {
+                    container.innerHTML = '<p class="text-center text-sm text-slate-500 py-6">Scores will appear soon!</p>';
+                }
+
+            } catch (e) { 
+                container.innerHTML = '<p class="text-center text-sm text-red-500 py-6">Check console to build Firebase Index!</p>'; 
+                console.error("Leaderboard Error:", e);
+            }
+        }
+
+        // Initialize All on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadReviews();
+            renderHomeBoard("10/11", "home-lb-ol");
+            renderHomeBoard("12/13", "home-lb-al");
+        });
 
     </script>
 </body>
