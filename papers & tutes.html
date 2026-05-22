@@ -15,9 +15,9 @@
         .auth-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
         .auth-input { width: 100%; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); outline: none; transition: all 0.3s; margin-bottom: 12px; font-size: 15px; }
         .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; transition: all 0.3s; margin-top: 10px; cursor: pointer; }
-        .auth-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
-        .link-text { color: #3b82f6; cursor: pointer; font-size: 14px; }
         .modal-backdrop { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .pulse-text { animation: pulse-text 2s infinite; }
         @keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
@@ -26,7 +26,7 @@
 
     <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
 
-    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
+    <header id="navbar" class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
         <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                 <i class="ph ph-book-open text-blue-600"></i> bizmind.lk
@@ -44,7 +44,7 @@
     <main class="flex-grow pt-32 pb-12">
         <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
             
-            <div id="userDashboardBar" class="hidden glass-panel p-6 rounded-2xl mb-6 flex justify-between items-center">
+            <div id="userDashboardBar" class="hidden glass-panel p-6 rounded-2xl mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-4">
                     <div class="w-14 h-14 rounded-full bg-blue-500 text-white flex items-center justify-center"><i class="ph-fill ph-student text-2xl"></i></div>
                     <div>
@@ -55,12 +55,14 @@
                 <button onclick="window.logoutUser()" class="px-4 py-2 text-red-500 border border-red-200 rounded-full text-sm">Log Out</button>
             </div>
 
-            <div class="max-w-md mx-auto mb-10 relative">
-                <input type="text" id="searchInput" autocomplete="nope" oninput="window.handleSearch(this.value)" class="w-full pl-12 pr-4 py-3.5 rounded-full border border-slate-200 outline-none focus:border-blue-500 bg-white" placeholder="Search tutes & papers...">
-                <i class="ph ph-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 text-xl"></i>
+            <div class="flex flex-wrap justify-center gap-4 mb-12" id="tabContainer">
+                <button onclick="window.filterItems('Grade 10 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 bg-slate-900 text-white shadow-lg scale-105">Grade 10 Tutes</button>
+                <button onclick="window.filterItems('Grade 11 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 11 Tutes</button>
+                <button onclick="window.filterItems('Grade 12 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 12 Tutes</button>
+                <button onclick="window.filterItems('Grade 13 Tutes', this)" class="tab-btn px-8 py-3 rounded-full font-medium transition-all duration-300 glass-panel text-slate-600 hover:bg-white/90">Grade 13 Tutes</button>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="resourceGrid">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
                 <div class="col-span-full text-center py-10"><div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600 mx-auto"></div></div>
             </div>
         </div>
@@ -69,49 +71,45 @@
     <div id="authModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
         <div class="w-full max-w-md relative">
             <button onclick="window.closeAuthModal()" class="absolute -top-12 right-0 text-white text-4xl"><i class="ph ph-x"></i></button>
-            <div id="loginSection" class="auth-glass p-8 rounded-3xl text-center">
-                <h2 class="text-2xl font-bold mb-6">Student Login</h2>
+            <div id="loginSection" class="auth-glass p-8 rounded-3xl text-center shadow-2xl">
+                <h2 class="text-2xl font-bold mb-6">Login</h2>
                 <input type="email" id="loginEmail" class="auth-input" placeholder="Email">
                 <input type="password" id="loginPassword" class="auth-input" placeholder="Password">
                 <button class="auth-btn" onclick="window.loginUser()">Log In</button>
-                <div class="mt-4"><span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span></div>
             </div>
             <div id="signupSection" class="auth-glass p-8 rounded-3xl text-center hidden">
                 <h2 class="text-2xl font-bold mb-6">Register</h2>
                 <input type="text" id="regFirstName" class="auth-input" placeholder="First Name">
                 <input type="email" id="regEmail" class="auth-input" placeholder="Email">
                 <input type="password" id="regPassword" class="auth-input" placeholder="Password">
-                <input type="password" id="regConfirmPassword" class="auth-input" placeholder="Confirm Password">
-                <button id="signupBtn" class="auth-btn" onclick="window.registerUser()">Create Account</button>
-                <div class="mt-4"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')">Back to Login</span></div>
+                <button class="auth-btn" onclick="window.registerUser()">Register</button>
             </div>
         </div>
     </div>
 
     <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="bg-white w-full max-w-lg p-6 rounded-3xl relative shadow-2xl">
-            <button onclick="document.getElementById('shippingModal').classList.add('hidden')" class="absolute top-5 right-5 text-slate-400 text-2xl"><i class="ph ph-x"></i></button>
+        <div class="bg-white w-full max-w-lg p-6 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="window.closePaymentModal()" class="absolute top-5 right-5 text-2xl"><i class="ph ph-x"></i></button>
             <div id="payMethodSelection">
                 <h3 class="text-xl font-bold text-center mb-6">Select Payment</h3>
                 <div class="space-y-4">
                     <div onclick="window.selectPaymentMethod('online')" class="border p-4 rounded-xl cursor-pointer hover:border-blue-500">
-                        <h4 class="font-bold">Online Transfer</h4>
-                        <p class="text-xs">20 Minutes Time</p>
+                        <h4 class="font-bold">Online Bank Transfer</h4>
+                        <p class="text-xs">20 Minutes to upload</p>
                     </div>
                     <div onclick="window.selectPaymentMethod('manual')" class="border p-4 rounded-xl cursor-pointer hover:border-orange-500">
-                        <h4 class="font-bold">Manual Deposit</h4>
-                        <p class="text-xs">24 Hours Time</p>
+                        <h4 class="font-bold">Manual Bank Deposit</h4>
+                        <p class="text-xs">24 Hours to upload</p>
                     </div>
                 </div>
             </div>
             <div id="payCheckoutForm" class="hidden">
                 <div class="text-center">
-                    <p id="countdownDisplay" class="text-2xl font-bold font-mono pulse-text text-red-500">00:00</p>
-                    <p class="text-sm mt-2">Bank Details: BOC Kandy | 1234567890</p>
+                    <p id="countdownDisplay" class="text-2xl font-bold text-red-500 pulse-text">00:00</p>
                 </div>
                 <input type="file" id="paymentSlip" class="w-full mt-4 p-2 border rounded-xl" accept="image/*,.pdf">
                 <button id="payBtn" onclick="window.initiatePayment()" class="w-full py-4 mt-4 bg-blue-600 text-white font-bold rounded-xl">Submit Slip</button>
-                <button id="extendTimeBtn" onclick="window.extendTime()" class="w-full py-2 mt-2 text-sm text-orange-600 font-bold hidden">Need more time? (+24 Hours)</button>
+                <button id="extendTimeBtn" onclick="window.extendTime()" class="w-full py-2 mt-2 text-sm text-orange-600 font-bold hidden">Extend (+24 Hours)</button>
             </div>
         </div>
     </div>
@@ -122,6 +120,7 @@
         import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
+        // FIREBASE CONFIG - REPLACE THIS!
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
             authDomain: "pradeep-k-athulawansha.firebaseapp.com",
@@ -133,7 +132,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app); const db = getFirestore(app); const storage = getStorage(app);
 
-        // --- Logic Helper ---
+        // Toast
         window.showToast = (msg, type='success') => {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -143,28 +142,28 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        window.openAuthModal = () => document.getElementById('authModal').classList.remove('hidden');
-        window.closeAuthModal = () => document.getElementById('authModal').classList.add('hidden');
-        window.toggleAuthView = (id) => {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('signupSection').classList.add('hidden');
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        // --- Payment Timer Logic ---
+        // --- Timer Logic ---
         let countdownInterval;
-        let currentPurchaseId = "";
+        let currentPurchaseTute = null;
 
         window.selectPaymentMethod = (method) => {
             const now = new Date().getTime();
-            let expiryTime = (method === 'online') ? now + (20 * 60 * 1000) : now + (24 * 60 * 60 * 1000);
-            localStorage.setItem(`pay_expiry_${currentPurchaseId}`, expiryTime);
-            localStorage.setItem(`pay_method_${currentPurchaseId}`, method);
+            let expiry = (method === 'online') ? now + (20 * 60 * 1000) : now + (24 * 60 * 60 * 1000);
+            localStorage.setItem(`pay_expiry_${currentPurchaseTute.id}`, expiry);
+            localStorage.setItem(`pay_method_${currentPurchaseTute.id}`, method);
             
             document.getElementById('payMethodSelection').classList.add('hidden');
             document.getElementById('payCheckoutForm').classList.remove('hidden');
             if(method === 'manual') document.getElementById('extendTimeBtn').classList.remove('hidden');
-            startTimer(expiryTime, method);
+            startTimer(expiry, method);
+        }
+
+        window.extendTime = () => {
+            const currentExpiry = parseInt(localStorage.getItem(`pay_expiry_${currentPurchaseTute.id}`));
+            const newExpiry = currentExpiry + (24 * 60 * 60 * 1000);
+            localStorage.setItem(`pay_expiry_${currentPurchaseTute.id}`, newExpiry);
+            startTimer(newExpiry, 'manual');
+            window.showToast("Time extended!");
         }
 
         function startTimer(expiry, method) {
@@ -172,22 +171,49 @@
             countdownInterval = setInterval(() => {
                 const now = new Date().getTime();
                 const dist = expiry - now;
-                if(dist < 0) { clearInterval(countdownInterval); alert("Time Expired!"); return; }
+                if(dist < 0) { clearInterval(countdownInterval); alert("Expired!"); return; }
                 const m = Math.floor((dist % (1000*60*60))/(1000*60));
                 const s = Math.floor((dist % (1000*60))/1000);
                 document.getElementById('countdownDisplay').innerText = `${m}:${s}`;
             }, 1000);
         }
-        
-        window.closePaymentModal = () => { document.getElementById('shippingModal').classList.add('hidden'); clearInterval(countdownInterval); }
+
+        // --- Payment Initiation ---
+        window.initiatePayment = async () => {
+            const slip = document.getElementById('paymentSlip').files[0];
+            if(!slip) { window.showToast("Please upload slip", "error"); return; }
+            
+            const btn = document.getElementById('payBtn'); btn.disabled = true; btn.innerText = "Submitting...";
+            try {
+                const orderId = "TUTE_" + Date.now();
+                const refS = ref(storage, 'slips/' + orderId);
+                const upload = await uploadBytesResumable(refS, slip);
+                const url = await getDownloadURL(upload.ref);
+                
+                await setDoc(doc(db, "orders", orderId), {
+                    studentId: auth.currentUser.uid,
+                    tuteId: currentPurchaseTute.id,
+                    tuteTitle: currentPurchaseTute.title,
+                    amount: currentPurchaseTute.price,
+                    slipUrl: url,
+                    status: 'Pending Verification',
+                    date: new Date()
+                });
+                window.showToast("Submitted!");
+                document.getElementById('shippingModal').classList.add('hidden');
+            } catch(e) { window.showToast("Error", "error"); }
+            finally { btn.disabled = false; }
+        }
+
+        // --- Essential Logic ---
         window.handleAccess = (e, id, link, price, title) => {
-            if(!currentUser) { window.openAuthModal(); return; }
-            currentPurchaseId = id;
+            if(!auth.currentUser) { window.openAuthModal(); return; }
             currentPurchaseTute = {id, title, price};
             document.getElementById('shippingModal').classList.remove('hidden');
         }
-        
-        // --- Add other logic here (init, renderItems, login, etc) ---
+
+        // Standard render and auth functions here...
+        // ... (Keep your working renderItems, filterItems, login, signup functions here) ...
     </script>
 </body>
 </html>
