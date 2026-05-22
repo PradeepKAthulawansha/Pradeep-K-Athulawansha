@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papers & Tutes | bizmind.lk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .auth-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .auth-input { width: 100%; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); outline: none; margin-bottom: 12px; font-size: 15px; }
+        .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .auth-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .link-text { color: #3b82f6; cursor: pointer; font-size: 14px; font-weight: 600; }
+        .modal-backdrop { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); }
+        .pulse-text { animation: pulse-text 2s infinite; }
+        @keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body class="relative text-slate-800">
+
+    <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
+
+    <header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                <i class="ph ph-book-open text-blue-600"></i> bizmind.lk
+            </a>
+            <nav class="hidden md:flex gap-8 items-center font-medium">
+                <a href="index.html" class="hover:text-blue-600">Home</a>
+                <a href="about us.html" class="hover:text-blue-600">About Us</a>
+                <a href="papers-tutes.html" class="text-blue-600">Papers & Tutes</a>
+                <a href="contact us.html" class="hover:text-blue-600">Contact</a>
+            </nav>
+            <button id="navLoginBtn" onclick="window.openAuthModal()" class="px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800">Login / Register</button>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-32 pb-12">
+        <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
+            
+            <div id="userDashboardBar" class="hidden glass-panel p-6 rounded-2xl mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-full bg-blue-500 text-white flex items-center justify-center text-2xl"><i class="ph-fill ph-student"></i></div>
+                    <div>
+                        <p class="text-slate-500 text-sm font-medium">Student Portal</p>
+                        <h2 id="welcomeMsg" class="font-bold text-lg text-slate-800">Welcome!</h2>
+                        <span id="dashboardPoints" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">0 pts</span>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="window.openProfile()" class="px-6 py-2 rounded-full border-2 border-blue-100 text-blue-600 hover:bg-blue-50 font-medium"><i class="ph ph-user-circle"></i> Profile</button>
+                    <button onclick="window.logoutUser()" class="px-6 py-2 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 font-medium"><i class="ph ph-sign-out"></i> Log Out</button>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="window.filterItems('Grade 10 Tutes', this)" class="tab-btn px-8 py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium">Grade 10 Tutes</button>
+                <button onclick="window.filterItems('Grade 11 Tutes', this)" class="tab-btn px-8 py-3 rounded-full glass-panel text-slate-600 font-medium">Grade 11 Tutes</button>
+                <button onclick="window.filterItems('Grade 12 Tutes', this)" class="tab-btn px-8 py-3 rounded-full glass-panel text-slate-600 font-medium">Grade 12 Tutes</button>
+                <button onclick="window.filterItems('Grade 13 Tutes', this)" class="tab-btn px-8 py-3 rounded-full glass-panel text-slate-600 font-medium">Grade 13 Tutes</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
+                <div class="col-span-full text-center py-10"><div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600 mx-auto"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
+        <div class="bg-white w-full max-w-lg p-8 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="window.closePaymentModal()" class="absolute top-5 right-5 text-2xl text-slate-400 hover:text-slate-800"><i class="ph ph-x"></i></button>
+            
+            <div id="payMethodSelection">
+                <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mb-4 mx-auto"><i class="ph-fill ph-wallet"></i></div>
+                <h3 class="text-xl font-bold text-center mb-6 text-slate-800">Select Payment Method</h3>
+                <div class="space-y-4">
+                    <div onclick="window.selectPaymentMethod('online')" class="border-2 p-4 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl"><i class="ph-fill ph-device-mobile"></i></div>
+                        <div><h4 class="font-bold text-slate-800">Online Bank Transfer</h4><p class="text-xs text-slate-500">20 Minutes time limit</p></div>
+                    </div>
+                    <div onclick="window.selectPaymentMethod('manual')" class="border-2 p-4 rounded-xl cursor-pointer hover:border-orange-500 hover:bg-orange-50 transition-all flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xl"><i class="ph-fill ph-bank"></i></div>
+                        <div><h4 class="font-bold text-slate-800">Manual Bank Deposit</h4><p class="text-xs text-slate-500">24 Hours time limit</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="payCheckoutForm" class="hidden">
+                <div class="text-center mb-4 bg-red-50 p-3 rounded-xl border border-red-200">
+                    <p class="text-xs font-bold text-red-600 uppercase tracking-wider mb-1">Time Remaining</p>
+                    <p id="countdownDisplay" class="text-3xl font-bold font-mono pulse-text text-red-600">00:00</p>
+                </div>
+                <div class="bg-slate-100 p-4 rounded-xl mb-4 text-sm text-slate-700">
+                    <p><strong>Bank:</strong> Bank of Ceylon (BOC)</p>
+                    <p><strong>Branch:</strong> Kandy Branch</p>
+                    <p><strong>Acc Name:</strong> Pradeep K. Athulawansha</p>
+                    <p><strong>Acc No:</strong> 1234567890</p>
+                    <p class="font-bold mt-2 text-lg text-blue-600 text-center border-t border-slate-200 pt-2">Amount: <span id="payAmountDisplay"></span></p>
+                </div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Upload Payment Slip</label>
+                <input type="file" id="paymentSlip" class="w-full p-2 border rounded-xl mb-4" accept="image/*,.pdf">
+                <button id="payBtn" onclick="window.initiatePayment()" class="w-full py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors">Submit Order & Slip</button>
+                <button id="extendTimeBtn" onclick="window.extendTime()" class="w-full py-2 mt-2 text-sm text-orange-600 font-bold hidden border border-orange-200 rounded-xl hover:bg-orange-50">Need more time? (+24h)</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="authModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
+        <div class="w-full max-w-md relative bg-white p-8 rounded-3xl shadow-2xl">
+            <button onclick="window.closeAuthModal()" class="absolute top-5 right-5 text-2xl text-slate-400 hover:text-slate-800"><i class="ph ph-x"></i></button>
+            
+            <div id="loginSection" class="text-center">
+                <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
+                <h2 class="text-2xl font-bold mb-6 text-slate-800">Student Login</h2>
+                <input type="email" id="loginEmail" class="auth-input" placeholder="Email Address">
+                <input type="password" id="loginPassword" class="auth-input" placeholder="Password">
+                <button class="auth-btn" onclick="window.loginUser()">Log In</button>
+                <p class="mt-4"><span class="link-text" onclick="window.toggleAuthView('signupSection')">Don't have an account? Register</span></p>
+            </div>
+
+            <div id="signupSection" class="text-center hidden max-h-[70vh] overflow-y-auto">
+                <h2 class="text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
+                <input type="text" id="regFullName" class="auth-input" placeholder="Full Name">
+                <input type="email" id="regEmail" class="auth-input" placeholder="Email Address">
+                <input type="tel" id="regPhone" class="auth-input" placeholder="Mobile Number">
+                <select id="regGrade" class="auth-input text-slate-500">
+                    <option value="" disabled selected>Select Grade</option>
+                    <option value="Grade 10">Grade 10</option>
+                    <option value="Grade 11">Grade 11</option>
+                    <option value="Grade 12">Grade 12</option>
+                    <option value="Grade 13">Grade 13</option>
+                </select>
+                <input type="password" id="regPassword" class="auth-input" placeholder="Strong Password">
+                <button id="signupBtn" class="auth-btn" onclick="window.registerUser()">Create Account</button>
+                <p class="mt-4"><span class="link-text" onclick="window.toggleAuthView('loginSection')">Back to Login</span></
