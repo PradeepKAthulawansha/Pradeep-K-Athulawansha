@@ -7,6 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
         .glass-card { background: white; border-radius: 24px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
@@ -16,40 +20,64 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="p-6 md:p-10 text-slate-800 items-center justify-center">
+<body class="p-6 md:p-10 text-slate-800">
 
-    <!-- Login Section -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
+
     <div id="adminLoginSection" class="glass-card p-10 w-full max-w-md mx-auto text-center mt-20">
         <div class="w-20 h-20 rounded-full bg-slate-900 text-white flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg"><i class="ph-fill ph-shield-check"></i></div>
         <h2 class="text-2xl font-bold mb-2 text-slate-900">Admin Access</h2>
-        <div class="space-y-4">
-            <input type="text" id="adminUsername" class="w-full p-4 border rounded-xl outline-none focus:border-slate-900 bg-slate-50" placeholder="Username">
+        <div class="space-y-4 mt-6">
+            <input type="text" id="adminUsername" class="w-full p-4 border rounded-xl outline-none focus:border-slate-900 bg-slate-50" placeholder="Username (e.g. admin)">
             <div class="relative">
                 <input type="password" id="adminPassword" class="w-full p-4 border rounded-xl outline-none focus:border-slate-900 bg-slate-50 pr-12" placeholder="Password">
                 <button type="button" onclick="window.togglePassword('adminPassword', 'adminEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-700 text-2xl"><i id="adminEye" class="ph ph-eye"></i></button>
             </div>
-            <button onclick="adminLogin()" class="w-full py-4 mt-2 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-all shadow-md">Secure Login</button>
+            <button onclick="window.adminLogin()" class="w-full py-4 mt-2 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-all shadow-md">Secure Login</button>
         </div>
         <p id="loginError" class="text-red-500 text-sm mt-4 font-medium hidden">Incorrect Username or Password!</p>
     </div>
 
-    <!-- Dashboard Section -->
     <div id="adminDashboardSection" class="w-full max-w-7xl mx-auto hidden">
         <div class="glass-card p-6 md:p-8 flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
                 <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3"><i class="ph-fill ph-database text-blue-600"></i> Master Dashboard</h2>
             </div>
-            <button onclick="adminLogout()" class="px-5 py-2 mt-4 md:mt-0 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center gap-2">
+            <button onclick="window.adminLogout()" class="px-5 py-2 mt-4 md:mt-0 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center gap-2">
                 <i class="ph ph-sign-out"></i> Logout
             </button>
         </div>
 
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
             
-            <!-- LEFT COLUMN: Quiz & Tutes Upload -->
+            <div class="xl:col-span-3 glass-card p-6 md:p-8 border-t-4 border-purple-500">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-chart-bar text-purple-600"></i> Generate Reports</h3>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Report Data</label>
+                        <select id="reportType" class="w-full p-3 border rounded-xl bg-slate-50 text-sm outline-none focus:border-purple-400">
+                            <option value="orders">Courier Orders</option>
+                            <option value="students">Registered Students</option>
+                            <option value="leaderboard">Quiz Leaderboard</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Start Date</label>
+                        <input type="date" id="reportStartDate" class="w-full p-3 border rounded-xl bg-slate-50 text-sm outline-none focus:border-purple-400">
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">End Date</label>
+                        <input type="date" id="reportEndDate" class="w-full p-3 border rounded-xl bg-slate-50 text-sm outline-none focus:border-purple-400">
+                    </div>
+                    <div class="md:col-span-2 flex gap-2">
+                        <button onclick="window.downloadReport('csv')" class="flex-1 py-3 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition-all text-sm flex items-center justify-center gap-2"><i class="ph-bold ph-file-csv text-lg"></i> Excel / CSV</button>
+                        <button onclick="window.downloadReport('pdf')" class="flex-1 py-3 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 transition-all text-sm flex items-center justify-center gap-2"><i class="ph-bold ph-file-pdf text-lg"></i> PDF Report</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="xl:col-span-1 space-y-8">
                 
-                <!-- Daily Quiz Uploader & Manager -->
                 <div class="glass-card p-6 md:p-8 border-t-4 border-indigo-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-rocket-launch text-indigo-600"></i> Daily Quiz</h3>
                     
@@ -75,18 +103,16 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-2">Options (Select the correct one)</label>
                             <div id="dynamic-options-container" class="space-y-2"></div>
-                            <button onclick="addOptionField()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 mt-2 flex items-center gap-1"><i class="ph ph-plus"></i> Add Another Option</button>
+                            <button onclick="window.addOptionField()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 mt-2 flex items-center gap-1"><i class="ph ph-plus"></i> Add Another Option</button>
                         </div>
 
-                        <button id="uploadQuizBtn" onclick="uploadDailyQuiz()" class="w-full py-3 mt-4 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all text-sm">Publish Quiz</button>
-                        <div id="quizStatusMsg" class="mt-2 p-2 rounded-xl text-center font-medium text-xs hidden"></div>
+                        <button id="uploadQuizBtn" onclick="window.uploadDailyQuiz()" class="w-full py-3 mt-4 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all text-sm">Publish Quiz</button>
                     </div>
 
-                    <!-- Manage Quizzes -->
                     <div class="mt-8 border-t pt-6">
                         <div class="flex justify-between items-center mb-4">
                             <h4 class="text-sm font-bold text-slate-700">Manage Quizzes</h4>
-                            <select id="manage-q-grade" onchange="loadQuizzes()" class="p-1 border rounded text-xs outline-none bg-slate-50">
+                            <select id="manage-q-grade" onchange="window.loadQuizzes()" class="p-1 border rounded text-xs outline-none bg-slate-50">
                                 <option value="10_11">Grade 10/11</option>
                                 <option value="12_13">Grade 12/13</option>
                             </select>
@@ -101,7 +127,6 @@
                     </div>
                 </div>
 
-                <!-- Add Material (Tutes/Papers) -->
                 <div class="glass-card p-6 md:p-8 border-t-4 border-blue-500">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph ph-plus-circle text-blue-600"></i> Add Material</h3>
                     <div class="space-y-4">
@@ -124,40 +149,35 @@
                             <input type="url" id="resLink" class="w-full p-3 border rounded-xl text-sm" placeholder="Paste Drive Link">
                         </div>
 
-                        <button id="addBtn" onclick="addResource()" class="w-full py-4 mt-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all text-sm">Publish Resource</button>
+                        <button id="addBtn" onclick="window.addResource()" class="w-full py-4 mt-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all text-sm">Publish Resource</button>
                         <div id="uploadProgressContainer" class="w-full bg-gray-200 rounded-full h-2.5 mt-2 hidden">
                             <div id="uploadProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
                         </div>
-                        <div id="statusMsg" class="mt-2 p-3 rounded-xl text-center font-medium text-sm hidden"></div>
                     </div>
                 </div>
 
-                <!-- Broadcast Notice -->
                 <div class="glass-card p-6 md:p-8 border-l-4 border-orange-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-megaphone text-orange-500"></i> Broadcast Notice</h3>
                     <div class="space-y-4">
                         <input type="text" id="noticeTitle" class="w-full p-3 border rounded-xl bg-orange-50 outline-none text-sm" placeholder="Notice Title">
                         <textarea id="noticeMessage" rows="3" class="w-full p-3 border rounded-xl bg-orange-50 outline-none text-sm" placeholder="Type your message here..."></textarea>
                         <div class="flex gap-2">
-                            <button id="noticeBtn" onclick="publishNotice()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-sm">Broadcast</button>
-                            <button onclick="clearNotice()" class="px-4 py-3 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm"><i class="ph ph-trash"></i></button>
+                            <button id="noticeBtn" onclick="window.publishNotice()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-sm">Broadcast</button>
+                            <button onclick="window.clearNotice()" class="px-4 py-3 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm"><i class="ph ph-trash"></i></button>
                         </div>
-                        <div id="noticeStatus" class="mt-2 p-3 rounded-xl text-center font-medium text-sm hidden"></div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- RIGHT COLUMN: Students, Orders, Resources Lists -->
             <div class="xl:col-span-2 space-y-8">
                 
-                <!-- Courier Orders (Tute Deliver Status) -->
                 <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Recent Courier Orders</h3>
-                    <div class="overflow-x-auto border rounded-xl">
-                        <table class="w-full text-left border-collapse whitespace-nowrap">
-                            <thead>
-                                <tr class="bg-green-50 text-green-800 text-sm">
+                    <div class="overflow-x-auto border rounded-xl max-h-[350px] overflow-y-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap relative">
+                            <thead class="sticky top-0 bg-green-50 z-10">
+                                <tr class="text-green-800 text-sm">
                                     <th class="p-4 border-b">Student Info</th>
                                     <th class="p-4 border-b">Shipping Address</th>
                                     <th class="p-4 border-b">Item Ordered</th>
@@ -169,29 +189,23 @@
                     </div>
                 </div>
 
-                <!-- Student Leaderboards (Rankings) -->
                 <div class="glass-card p-6 md:p-8 border-t-4 border-yellow-500">
-                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-ranking text-yellow-500"></i> Student Rankings (Quiz Leaderboard)</h3>
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-ranking text-yellow-500"></i> Quiz Leaderboard</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="border rounded-xl bg-slate-50 p-4">
                             <h4 class="font-bold text-slate-700 mb-3 border-b pb-2">Grade 10/11</h4>
-                            <div class="space-y-2" id="lb-10-11">
-                                <div class="text-center text-xs text-slate-500 py-4">Loading...</div>
-                            </div>
+                            <div class="space-y-2" id="lb-10-11"><div class="text-center text-xs text-slate-500 py-4">Loading...</div></div>
                         </div>
                         <div class="border rounded-xl bg-slate-50 p-4">
                             <h4 class="font-bold text-slate-700 mb-3 border-b pb-2">Grade 12/13</h4>
-                            <div class="space-y-2" id="lb-12-13">
-                                <div class="text-center text-xs text-slate-500 py-4">Loading...</div>
-                            </div>
+                            <div class="space-y-2" id="lb-12-13"><div class="text-center text-xs text-slate-500 py-4">Loading...</div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Manage Uploaded Resources (Edit & Delete) -->
                 <div class="glass-card p-6 md:p-8">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Uploaded Tutes/Papers</h3>
-                    <div class="overflow-x-auto border rounded-xl max-h-[400px]">
+                    <div class="overflow-x-auto border rounded-xl max-h-[300px] overflow-y-auto">
                         <table class="w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
                                 <tr class="text-slate-600 text-sm">
@@ -206,20 +220,24 @@
                     </div>
                 </div>
 
-                <!-- Registered Students (Fixed to show even without names) -->
                 <div class="glass-card p-6 md:p-8">
-                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-users text-blue-600"></i> Registered Students</h3>
-                    <div class="overflow-x-auto border rounded-xl max-h-[400px]">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-users text-blue-600"></i> Registered Students</h3>
+                        <input type="text" id="studentSearch" oninput="window.filterStudents(this.value)" placeholder="Search Name/Email..." class="p-2 border rounded-lg text-sm bg-slate-50 outline-none focus:border-blue-400">
+                    </div>
+                    
+                    <div class="overflow-x-auto border rounded-xl max-h-[400px] overflow-y-auto">
                         <table class="w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
                                 <tr class="text-slate-600 text-sm">
-                                    <th class="p-4 border-b">Name / UID</th>
+                                    <th class="p-4 border-b">Name</th>
                                     <th class="p-4 border-b">Phone</th>
                                     <th class="p-4 border-b">Email</th>
                                     <th class="p-4 border-b">Points</th>
+                                    <th class="p-4 border-b text-center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="studentTableBody" class="text-sm"><tr><td colspan="4" class="p-4 text-center text-slate-500">Loading...</td></tr></tbody>
+                            <tbody id="studentTableBody" class="text-sm"><tr><td colspan="5" class="p-4 text-center text-slate-500">Loading...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -228,76 +246,71 @@
         </div>
     </div>
 
-    <!-- MODALS -->
-    
-    <!-- 1. Resource Edit Modal -->
     <div id="editModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl">
-            <button onclick="closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
+            <button onclick="window.closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <h3 class="text-xl font-bold mb-6 text-slate-800 flex items-center gap-2"><i class="ph-fill ph-pencil-simple text-blue-600"></i> Edit Resource</h3>
             <input type="hidden" id="editId">
             <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">Title</label>
-                    <input type="text" id="editTitle" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
-                </div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Title</label><input type="text" id="editTitle" class="w-full p-3 border rounded-xl bg-slate-50 text-sm"></div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
                     <select id="editCategory" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
-                        <option value="Grade 10 Tutes">Grade 10 Tutes</option>
-                        <option value="Grade 11 Tutes">Grade 11 Tutes</option>
-                        <option value="Grade 12 Tutes">Grade 12 Tutes</option>
-                        <option value="Grade 13 Tutes">Grade 13 Tutes</option>
+                        <option value="Grade 10 Tutes">Grade 10 Tutes</option><option value="Grade 11 Tutes">Grade 11 Tutes</option>
+                        <option value="Grade 12 Tutes">Grade 12 Tutes</option><option value="Grade 13 Tutes">Grade 13 Tutes</option>
                     </select>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">Price (Rs.) - Empty if free</label>
-                    <input type="number" id="editPrice" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">Description</label>
-                    <textarea id="editDesc" rows="2" class="w-full p-3 border rounded-xl bg-slate-50 text-sm"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">File Link (Drive / Storage URL)</label>
-                    <input type="url" id="editLink" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
-                </div>
-                <button id="updateBtn" onclick="updateResource()" class="w-full py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 mt-2 text-sm">Save Changes</button>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Price (Rs.) - Empty if free</label><input type="number" id="editPrice" class="w-full p-3 border rounded-xl bg-slate-50 text-sm"></div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Description</label><textarea id="editDesc" rows="2" class="w-full p-3 border rounded-xl bg-slate-50 text-sm"></textarea></div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">File Link (Drive / Storage URL)</label><input type="url" id="editLink" class="w-full p-3 border rounded-xl bg-slate-50 text-sm"></div>
+                <button id="updateBtn" onclick="window.updateResource()" class="w-full py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 mt-2 text-sm">Save Changes</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. Quiz Edit Modal -->
     <div id="quizEditModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl">
-            <button onclick="closeQuizModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
+            <button onclick="window.closeQuizModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <h3 class="text-xl font-bold mb-4 text-slate-800"><i class="ph-fill ph-pencil-simple text-indigo-600"></i> Edit Quiz</h3>
-            
-            <input type="hidden" id="edit-q-date">
-            <input type="hidden" id="edit-q-grade">
-            
+            <input type="hidden" id="edit-q-date"><input type="hidden" id="edit-q-grade">
             <div class="space-y-4">
                 <textarea id="edit-q-text" rows="3" class="w-full p-3 border rounded-xl text-sm outline-none bg-slate-50"></textarea>
-                
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-2">Options</label>
                     <div id="edit-dynamic-options-container" class="space-y-2"></div>
-                    <button onclick="addEditOptionField()" class="text-xs font-semibold text-indigo-600 mt-2 flex items-center gap-1"><i class="ph ph-plus"></i> Add Option</button>
+                    <button onclick="window.addEditOptionField()" class="text-xs font-semibold text-indigo-600 mt-2 flex items-center gap-1"><i class="ph ph-plus"></i> Add Option</button>
                 </div>
-                
-                <button id="updateQuizBtn" onclick="updateDailyQuiz()" class="w-full py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 text-sm">Save Changes</button>
+                <button id="updateQuizBtn" onclick="window.updateDailyQuiz()" class="w-full py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 text-sm">Save Changes</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase Script -->
+    <div id="studentModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl">
+            <button onclick="window.closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
+            <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-identification-card"></i></div>
+            <h3 class="text-xl font-bold mb-6 text-center text-slate-800">Student Details</h3>
+            
+            <div class="space-y-3 text-sm">
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Name:</span> <span id="v-stuName" class="font-bold"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Email:</span> <span id="v-stuEmail" class="font-medium"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Phone:</span> <span id="v-stuPhone" class="font-medium"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Grade:</span> <span id="v-stuGrade" class="font-medium"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">NIC:</span> <span id="v-stuNic" class="font-medium"></span></div>
+                <div class="flex flex-col border-b pb-2"><span class="text-slate-500 mb-1">Address:</span> <span id="v-stuAddress" class="font-medium whitespace-pre-wrap"></span></div>
+                <div class="flex justify-between pt-2"><span class="text-slate-500">Total Points:</span> <span id="v-stuPoints" class="font-bold text-blue-600"></span></div>
+            </div>
+            <button onclick="window.closeStudentModal()" class="w-full py-3 mt-6 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 text-sm">Close</button>
+        </div>
+    </div>
+
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, deleteDoc, updateDoc, orderBy, query, setDoc, where, limit } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, getDoc, doc, deleteDoc, updateDoc, orderBy, query, setDoc, where, limit } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
-        // FIREBASE CONFIG - ඔයාගේ විස්තර මෙතන දාන්න
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
             authDomain: "pradeep-k-athulawansha.firebaseapp.com",
@@ -311,6 +324,18 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
+
+        // Toast Function
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl shadow-xl border text-sm font-medium flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto max-w-sm bg-white min-w-[300px]`;
+            if (type === 'success') { toast.classList.add('border-green-200', 'text-green-800', 'bg-green-50/95'); toast.innerHTML = `<i class="ph-fill ph-check-circle text-green-500 text-lg"></i> <span>${message}</span>`; } 
+            else { toast.classList.add('border-red-200', 'text-red-800', 'bg-red-50/95'); toast.innerHTML = `<i class="ph-fill ph-warning-circle text-red-500 text-lg"></i> <span>${message}</span>`; }
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+            setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 4000);
+        }
 
         // --- Authentication ---
         window.togglePassword = function(inputId, iconId) {
@@ -331,10 +356,17 @@
         });
 
         window.adminLogin = async function() {
-            const userVal = document.getElementById('adminUsername').value.trim(); const passVal = document.getElementById('adminPassword').value;
-            const err = document.getElementById('loginError'); if(!userVal || !passVal) return;
-            try { await signInWithEmailAndPassword(auth, userVal + ".com", passVal); err.classList.add('hidden'); } 
-            catch (error) { err.classList.remove('hidden'); }
+            let userVal = document.getElementById('adminUsername').value.trim(); 
+            const passVal = document.getElementById('adminPassword').value;
+            const err = document.getElementById('loginError'); 
+            
+            if(!userVal || !passVal) return;
+            if(!userVal.includes('@')) { userVal = userVal + "@pradeepk.com"; }
+
+            try { 
+                await signInWithEmailAndPassword(auth, userVal, passVal); 
+                err.classList.add('hidden'); 
+            } catch (error) { err.classList.remove('hidden'); }
         }
         window.adminLogout = async function() { await signOut(auth); }
 
@@ -346,6 +378,164 @@
             loadOrders();
             loadResources();
             loadStudents();
+            
+            // Setup default date range for reports (1st of current month to today)
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            document.getElementById('reportEndDate').valueAsDate = today;
+            document.getElementById('reportStartDate').valueAsDate = firstDay;
+        }
+
+        /* ==========================================
+           REPORTS GENERATION LOGIC
+        ========================================== */
+        window.downloadReport = async function(format) {
+            const type = document.getElementById('reportType').value;
+            const startDateInput = document.getElementById('reportStartDate').value;
+            const endDateInput = document.getElementById('reportEndDate').value;
+            
+            if(!startDateInput || !endDateInput) { window.showToast("Please select both Start and End dates.", "error"); return; }
+            
+            const startDate = new Date(startDateInput); startDate.setHours(0,0,0,0);
+            const endDate = new Date(endDateInput); endDate.setHours(23,59,59,999);
+
+            window.showToast("Generating report, please wait...");
+            
+            let dataRows = [];
+            let headers = [];
+            let title = "";
+
+            try {
+                if (type === 'orders') {
+                    title = "Courier Orders Report";
+                    headers = ["Order ID", "Date", "Student Name", "Phone", "Item Ordered", "Amount (LKR)", "Status", "Address"];
+                    const q = query(collection(db, "orders"), orderBy("date", "desc"));
+                    const snapshot = await getDocs(q);
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const orderDate = data.date ? data.date.toDate() : new Date(0);
+                        if (orderDate >= startDate && orderDate <= endDate) {
+                            dataRows.push([
+                                data.orderId || doc.id,
+                                orderDate.toLocaleDateString(),
+                                data.studentName || 'N/A',
+                                data.phone1 || 'N/A',
+                                data.tuteTitle || 'N/A',
+                                data.amount || '0',
+                                data.status || 'Processing',
+                                (data.address || '').replace(/\n/g, ' ')
+                            ]);
+                        }
+                    });
+                } 
+                else if (type === 'students') {
+                    title = "Registered Students Report";
+                    headers = ["Name", "Email", "Phone", "NIC", "Grade", "District", "Registration Date", "Points"];
+                    const q = query(collection(db, "users"));
+                    const snapshot = await getDocs(q);
+                    
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        if(data.email === 'admin@pradeepk.com') return;
+                        
+                        const regDate = data.createdAt ? data.createdAt.toDate() : new Date(0);
+                        if (regDate >= startDate && regDate <= endDate) {
+                            dataRows.push([
+                                data.fullName || 'N/A',
+                                data.email || 'N/A',
+                                data.phone || 'N/A',
+                                data.nic || 'N/A',
+                                data.exactGrade || data.grade || 'N/A',
+                                data.district || 'N/A',
+                                regDate.toLocaleDateString(),
+                                data.points || 0
+                            ]);
+                        }
+                    });
+                }
+                else if (type === 'leaderboard') {
+                    title = "Quiz Leaderboard Report (All Time)";
+                    headers = ["Rank", "Name", "Grade", "Points", "Phone"];
+                    const q = query(collection(db, "users"), orderBy("points", "desc"));
+                    const snapshot = await getDocs(q);
+                    
+                    let rank = 1;
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        if(data.email === 'admin@pradeepk.com' || !data.points || data.points === 0) return;
+                        dataRows.push([
+                            rank++,
+                            data.fullName || 'N/A',
+                            data.exactGrade || data.grade || 'N/A',
+                            data.points,
+                            data.phone || 'N/A'
+                        ]);
+                    });
+                }
+
+                if (dataRows.length === 0) { window.showToast("No data found for the selected dates.", "error"); return; }
+
+                if (format === 'csv') { generateCSV(headers, dataRows, title); } 
+                else if (format === 'pdf') { generatePDF(headers, dataRows, title, startDateInput, endDateInput, type); }
+
+            } catch (error) {
+                console.error(error);
+                window.showToast("Failed to generate report.", "error");
+            }
+        }
+
+        function generateCSV(headers, rows, title) {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += headers.join(",") + "\n";
+            rows.forEach(rowArray => {
+                // Handle commas in text by wrapping in quotes
+                let row = rowArray.map(item => `"${String(item).replace(/"/g, '""')}"`).join(",");
+                csvContent += row + "\n";
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `${title.replace(/\s+/g, '_')}_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.showToast("✅ Excel (CSV) Downloaded!");
+        }
+
+        function generatePDF(headers, rows, title, sDate, eDate, type) {
+            const { jsPDF } = window.jspdf;
+            // Landscape for orders/students due to many columns, portrait for leaderboard
+            const orientation = type === 'leaderboard' ? 'p' : 'l';
+            const doc = new jsPDF(orientation, 'pt', 'a4');
+            
+            doc.setFontSize(18);
+            doc.setTextColor(37, 99, 235); // Blue-600
+            doc.text("BizMind.lk - Admin Report", 40, 40);
+            
+            doc.setFontSize(14);
+            doc.setTextColor(15, 23, 42); // Slate-900
+            doc.text(title, 40, 65);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100, 116, 139); // Slate-500
+            if(type !== 'leaderboard') {
+                doc.text(`Date Range: ${sDate} to ${eDate}`, 40, 85);
+            } else {
+                doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 85);
+            }
+
+            doc.autoTable({
+                startY: 100,
+                head: [headers],
+                body: rows,
+                theme: 'striped',
+                headStyles: { fillColor: [37, 99, 235], fontSize: 9 },
+                styles: { fontSize: 8, cellPadding: 4 },
+            });
+
+            doc.save(`${title.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
+            window.showToast("✅ PDF Report Downloaded!");
         }
 
         /* ==========================================
@@ -356,7 +546,7 @@
         function initOptionFields() {
             document.getElementById('dynamic-options-container').innerHTML = '';
             optionCount = 0;
-            for(let i=0; i<4; i++) addOptionField(); 
+            for(let i=0; i<4; i++) window.addOptionField(); 
             document.querySelector('input[name="correctOpt"][value="0"]').checked = true;
         }
 
@@ -375,30 +565,36 @@
 
         window.uploadDailyQuiz = async function() {
             const btn = document.getElementById('uploadQuizBtn');
-            const status = document.getElementById('quizStatusMsg');
             const date = document.getElementById('q-date').value;
             const grade = document.getElementById('q-grade').value;
             const question = document.getElementById('q-text').value;
             
             const options = [];
-            document.querySelectorAll('#dynamic-options-container input[type="text"]').forEach(input => { if(input.value.trim() !== '') options.push(input.value.trim()); });
-            const correctRadio = document.querySelector('input[name="correctOpt"]:checked');
+            let correctAnsIndex = -1;
+            const optionDivs = document.querySelectorAll('#dynamic-options-container > div');
             
-            if(!date || !question || options.length < 2 || !correctRadio) { alert("Please provide question, at least 2 options, and select correct answer."); return; }
+            optionDivs.forEach((div) => {
+                const textInput = div.querySelector('input[type="text"]');
+                const radioInput = div.querySelector('input[type="radio"]');
+                const val = textInput.value.trim();
+                if(val !== '') {
+                    if(radioInput.checked) { correctAnsIndex = options.length; }
+                    options.push(val);
+                }
+            });
+            
+            if(!date || !question || options.length < 2) { window.showToast("Please provide a question and at least 2 options.", "error"); return; }
+            if(correctAnsIndex === -1) { window.showToast("Please select the correct answer by checking the radio button.", "error"); return; }
 
-            let correctAnsIndex = 0;
-            const radios = document.querySelectorAll('input[name="correctOpt"]');
-            for(let i=0; i<radios.length; i++) { if(radios[i].checked) { correctAnsIndex = i; break; } }
-
-            btn.innerText = "Publishing..."; btn.disabled = true; status.classList.add('hidden');
+            btn.innerText = "Publishing..."; btn.disabled = true;
             
             try {
                 await setDoc(doc(db, `dailyQuestions_${grade}`, date), { q: question, options: options });
                 await setDoc(doc(db, `secretAnswers_${grade}`, date), { ans: correctAnsIndex });
-                status.innerText = "✅ Quiz Published!"; status.className = "mt-2 p-2 rounded-xl text-center font-bold bg-green-50 text-green-700 block";
+                window.showToast("✅ Quiz Published Successfully!");
                 document.getElementById('q-text').value = ''; initOptionFields(); loadQuizzes();
-            } catch (error) { status.innerText = "❌ Error: " + error.message; status.className = "mt-2 p-2 rounded-xl text-center font-bold bg-red-50 text-red-700 block"; } 
-            finally { btn.innerText = "Publish Quiz"; btn.disabled = false; setTimeout(() => status.classList.add('hidden'), 3000); }
+            } catch (error) { window.showToast("❌ Error: " + error.message, "error"); } 
+            finally { btn.innerText = "Publish Quiz"; btn.disabled = false; }
         }
 
         window.loadQuizzes = async function() {
@@ -421,8 +617,8 @@
                             <td class="p-3 font-semibold text-slate-700 w-24">${data.id}</td>
                             <td class="p-3 truncate max-w-[120px] text-slate-500" title="${data.q}">${data.q}</td>
                             <td class="p-3 text-right">
-                                <button onclick="openEditQuiz('${data.id}', '${grade}')" class="text-blue-500 hover:text-blue-700 mr-2"><i class="ph-fill ph-pencil-simple text-lg"></i></button>
-                                <button onclick="deleteQuiz('${data.id}', '${grade}')" class="text-red-400 hover:text-red-600"><i class="ph-fill ph-trash text-lg"></i></button>
+                                <button onclick="window.openEditQuiz('${data.id}', '${grade}')" class="text-blue-500 hover:text-blue-700 mr-2"><i class="ph-fill ph-pencil-simple text-lg"></i></button>
+                                <button onclick="window.deleteQuiz('${data.id}', '${grade}')" class="text-red-400 hover:text-red-600"><i class="ph-fill ph-trash text-lg"></i></button>
                             </td>
                         </tr>`;
                 });
@@ -431,7 +627,7 @@
 
         window.deleteQuiz = async function(date, grade) {
             if(!confirm(`Delete quiz for ${date}?`)) return;
-            try { await deleteDoc(doc(db, `dailyQuestions_${grade}`, date)); await deleteDoc(doc(db, `secretAnswers_${grade}`, date)); loadQuizzes(); } catch (e) { alert("Error deleting."); }
+            try { await deleteDoc(doc(db, `dailyQuestions_${grade}`, date)); await deleteDoc(doc(db, `secretAnswers_${grade}`, date)); loadQuizzes(); window.showToast("Deleted"); } catch (e) { window.showToast("Error deleting", "error"); }
         }
 
         let editOptionCount = 0;
@@ -447,9 +643,9 @@
                 const container = document.getElementById('edit-dynamic-options-container');
                 container.innerHTML = ''; editOptionCount = 0;
                 
-                data.options.forEach((opt, index) => { addEditOptionField(opt, index === ansData.ans); });
+                data.options.forEach((opt, index) => { window.addEditOptionField(opt, index === ansData.ans); });
                 document.getElementById('quizEditModal').classList.remove('hidden');
-            } catch (e) { alert("Error loading."); }
+            } catch (e) { window.showToast("Error loading quiz data", "error"); }
         }
 
         window.addEditOptionField = function(val = "", isChecked = false) {
@@ -468,35 +664,44 @@
         window.updateDailyQuiz = async function() {
             const date = document.getElementById('edit-q-date').value; const grade = document.getElementById('edit-q-grade').value;
             const question = document.getElementById('edit-q-text').value;
-            const options = [];
-            document.querySelectorAll('.edit-opt-input').forEach(input => { if(input.value.trim() !== '') options.push(input.value.trim()); });
-            const correctRadio = document.querySelector('input[name="editCorrectOpt"]:checked');
             
-            if(!question || options.length < 2 || !correctRadio) { alert("Validation failed."); return; }
-            let correctAnsIndex = 0;
-            const radios = document.querySelectorAll('input[name="editCorrectOpt"]');
-            for(let i=0; i<radios.length; i++) { if(radios[i].checked) { correctAnsIndex = i; break; } }
+            const options = [];
+            let correctAnsIndex = -1;
+            const optionDivs = document.querySelectorAll('#edit-dynamic-options-container > div');
+            
+            optionDivs.forEach((div) => {
+                const textInput = div.querySelector('input[type="text"]');
+                const radioInput = div.querySelector('input[type="radio"]');
+                const val = textInput.value.trim();
+                if(val !== '') {
+                    if(radioInput.checked) { correctAnsIndex = options.length; }
+                    options.push(val);
+                }
+            });
+            
+            if(!question || options.length < 2) { window.showToast("Validation failed.", "error"); return; }
+            if(correctAnsIndex === -1) { window.showToast("Select correct answer.", "error"); return; }
 
             const btn = document.getElementById('updateQuizBtn'); btn.innerText = "Saving..."; btn.disabled = true;
             try {
                 await updateDoc(doc(db, `dailyQuestions_${grade}`, date), { q: question, options: options });
                 await updateDoc(doc(db, `secretAnswers_${grade}`, date), { ans: correctAnsIndex });
-                closeQuizModal(); loadQuizzes();
-            } catch (e) { alert("Error saving."); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
+                window.showToast("Quiz updated!"); closeQuizModal(); loadQuizzes();
+            } catch (e) { window.showToast("Error saving", "error"); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
         }
 
         /* ==========================================
-           2. RESOURCES MANAGEMENT (Add/Edit/Delete)
+           2. RESOURCES MANAGEMENT
         ========================================== */
         window.addResource = async function() {
             const title = document.getElementById('resTitle').value; const category = document.getElementById('resCategory').value;
             const desc = document.getElementById('resDesc').value; const fileInput = document.getElementById('resFile').files[0];
             let driveLink = document.getElementById('resLink').value; const price = document.getElementById('resPrice').value;
-            const btn = document.getElementById('addBtn'); const status = document.getElementById('statusMsg');
+            const btn = document.getElementById('addBtn');
             const progressCont = document.getElementById('uploadProgressContainer'); const progressBar = document.getElementById('uploadProgressBar');
 
-            if(!title || !desc) { alert("Title and Description required!"); return; }
-            if(!fileInput && !driveLink) { alert("Upload file OR provide Link!"); return; }
+            if(!title || !desc) { window.showToast("Title and Description required!", "error"); return; }
+            if(!fileInput && !driveLink) { window.showToast("Upload file OR provide Link!", "error"); return; }
 
             btn.disabled = true; btn.innerText = "Publishing...";
             try {
@@ -510,11 +715,11 @@
                     });
                 }
                 await setDoc(doc(db, "resources", customId), { title: title, category: category, desc: desc, driveLink: driveLink, price: price, createdAt: new Date() });
-                status.innerText = "✅ Published!"; status.className = "mt-2 p-3 rounded-xl text-center font-medium bg-green-50 text-green-700";
+                window.showToast("✅ Resource Published!");
                 document.querySelectorAll('#resTitle, #resDesc, #resLink, #resPrice, #resFile').forEach(i=>i.value='');
                 progressCont.classList.add('hidden'); progressBar.style.width = '0%'; loadResources(); 
-            } catch (error) { status.innerText = "❌ Error: " + error.message; status.className = "mt-2 p-3 rounded-xl bg-red-50 text-red-700"; } 
-            finally { btn.disabled = false; btn.innerText = "Publish Resource"; status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 5000); }
+            } catch (error) { window.showToast(error.message, "error"); } 
+            finally { btn.disabled = false; btn.innerText = "Publish Resource"; }
         }
 
         window.loadResources = async function() {
@@ -527,7 +732,6 @@
                     const data = doc.data(); 
                     const priceValue = parseFloat(data.price);
                     const isFree = (isNaN(priceValue) || priceValue <= 0) ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg font-bold">Free</span>' : `Rs. ${priceValue}`;
-                    
                     const safeTitle = data.title ? data.title.replace(/'/g, "\\'") : '';
                     const safeDesc = data.desc ? data.desc.replace(/'/g, "\\'").replace(/\n/g, " ") : '';
 
@@ -538,7 +742,7 @@
                             <td class="p-4">${isFree}</td>
                             <td class="p-4 flex gap-2 justify-center">
                                 <button onclick="window.openEditModal('${doc.id}', '${safeTitle}', '${data.category}', '${safeDesc}', '${data.price || ''}', '${data.driveLink}')" class="px-3 py-1.5 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg"><i class="ph ph-pencil-simple"></i></button>
-                                <button onclick="deleteResource('${doc.id}', '${data.driveLink}')" class="px-3 py-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg"><i class="ph ph-trash"></i></button>
+                                <button onclick="window.deleteResource('${doc.id}', '${data.driveLink}')" class="px-3 py-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg"><i class="ph ph-trash"></i></button>
                             </td>
                         </tr>`;
                 });
@@ -559,21 +763,21 @@
             const price = document.getElementById('editPrice').value; const desc = document.getElementById('editDesc').value;
             const link = document.getElementById('editLink').value;
 
-            if(!title || !desc) { alert("Title and Description are required."); return; }
+            if(!title || !desc) { window.showToast("Title and Description are required.", "error"); return; }
             btn.innerText = "Saving..."; btn.disabled = true;
             try {
                 await updateDoc(doc(db, "resources", id), { title: title, category: category, price: price, desc: desc, driveLink: link });
-                closeEditModal(); loadResources(); 
-            } catch (error) { alert("Error: " + error.message); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
+                closeEditModal(); loadResources(); window.showToast("Resource updated!");
+            } catch (error) { window.showToast(error.message, "error"); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
         }
 
         window.deleteResource = async function(docId, fileUrl) {
-            if(!confirm("Delete this resource?")) return;
+            if(!confirm("Are you sure you want to delete this resource?")) return;
             try { 
                 await deleteDoc(doc(db, "resources", docId)); 
                 if(fileUrl && fileUrl.includes("firebasestorage")) { await deleteObject(ref(storage, fileUrl)).catch(e=>console.log(e)); } 
-                loadResources(); 
-            } catch (error) { alert("Error: " + error.message); }
+                loadResources(); window.showToast("Resource deleted!");
+            } catch (error) { window.showToast(error.message, "error"); }
         }
 
         /* ==========================================
@@ -587,7 +791,6 @@
                 if(snapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No orders.</td></tr>'; return; }
                 snapshot.forEach((doc) => {
                     const data = doc.data(); 
-                    let dateStr = "N/A"; if(data.date) dateStr = data.date.toDate().toLocaleString();
                     const status = data.status || 'Processing';
                     let statusColor = status === 'Delivered' ? 'border-green-500 text-green-700 bg-green-50' : (status === 'Dispatched' ? 'border-blue-500 text-blue-700 bg-blue-50' : 'border-orange-500 text-orange-700 bg-orange-50');
 
@@ -609,8 +812,8 @@
         }
 
         window.updateOrderStatus = async function(orderId, newStatus) {
-            try { await updateDoc(doc(db, "orders", orderId), { status: newStatus }); loadOrders(); } 
-            catch (error) { alert("Error updating status."); }
+            try { await updateDoc(doc(db, "orders", orderId), { status: newStatus }); loadOrders(); window.showToast("Status Updated");} 
+            catch (error) { window.showToast("Error updating status.", "error"); }
         }
 
         /* ==========================================
@@ -618,18 +821,18 @@
         ========================================== */
         window.publishNotice = async function() {
             const title = document.getElementById('noticeTitle').value; const message = document.getElementById('noticeMessage').value;
-            const btn = document.getElementById('noticeBtn'); const status = document.getElementById('noticeStatus');
-            if(!title || !message) { alert("Required!"); return; }
+            const btn = document.getElementById('noticeBtn'); 
+            if(!title || !message) { window.showToast("Notice text required!", "error"); return; }
             btn.disabled = true; btn.innerText = "Broadcasting...";
             try {
                 await setDoc(doc(db, "settings", "current_notice"), { title: title, message: message, date: new Date(), active: true });
-                status.innerText = "✅ Broadcasted!"; status.className = "mt-2 p-2 rounded text-center bg-green-50 text-green-700";
+                window.showToast("✅ Broadcasted!");
                 document.getElementById('noticeTitle').value = ''; document.getElementById('noticeMessage').value = '';
-            } catch(e) { status.innerText = "❌ Error"; status.classList.remove('hidden'); } 
-            finally { btn.disabled = false; btn.innerText = "Broadcast"; status.classList.remove('hidden'); setTimeout(() => status.classList.add('hidden'), 3000); }
+            } catch(e) { window.showToast("Error", "error"); } 
+            finally { btn.disabled = false; btn.innerText = "Broadcast"; }
         }
         window.clearNotice = async function() {
-            if(confirm("Remove notice?")) { await setDoc(doc(db, "settings", "current_notice"), { active: false }, { merge: true }); alert("Removed!"); }
+            if(confirm("Remove notice from student portal?")) { await setDoc(doc(db, "settings", "current_notice"), { active: false }, { merge: true }); window.showToast("Notice Removed!"); }
         }
 
         /* ==========================================
@@ -660,41 +863,66 @@
             } catch (e) { container.innerHTML = '<div class="text-center text-xs text-red-400 py-4">Error</div>'; }
         }
 
-        // FIXED STUDENT TABLE
+        let allStudents = [];
         window.loadStudents = async function() {
             const tbody = document.getElementById('studentTableBody');
             try {
-                // Remove orderBy to prevent Index requirements causing issues if names/points vary
                 const snapshot = await getDocs(collection(db, "users")); 
-                tbody.innerHTML = '';
-                
-                if(snapshot.empty) { 
-                    tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No students yet.</td></tr>'; 
-                    return; 
-                }
-
-                snapshot.forEach((doc) => {
-                    const data = doc.data(); 
-                    if(data.email === 'admin@pradeepk.com') return; // Hide admin account
-                    
-                    // Fallback to UID if no name
-                    const name = data.fullName || data.name || `<span class="text-red-400 font-normal">No Name (UID: ${doc.id.substring(0,6)}...)</span>`;
-                    const email = data.email || 'No Email';
-                    const points = data.points || 0;
-                    
-                    tbody.innerHTML += `
-                        <tr class="border-b hover:bg-slate-50">
-                            <td class="p-4 font-semibold text-slate-700">${name}</td>
-                            <td class="p-4"><a href="tel:${data.phone || ''}" class="text-blue-600">${data.phone || 'N/A'}</a></td>
-                            <td class="p-4 text-slate-500">${email}</td>
-                            <td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td>
-                        </tr>`;
-                });
-            } catch (error) { 
-                console.error("Student Load Error:", error); 
-                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-400">Failed to load.</td></tr>';
-            }
+                allStudents = [];
+                snapshot.forEach(doc => { if(doc.data().email !== 'admin@pradeepk.com') allStudents.push({id: doc.id, ...doc.data()}); });
+                renderStudentTable(allStudents);
+            } catch (error) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-400">Failed to load.</td></tr>'; }
         }
+
+        window.filterStudents = function(val) {
+            const query = val.toLowerCase();
+            const filtered = allStudents.filter(s => 
+                (s.fullName && s.fullName.toLowerCase().includes(query)) || 
+                (s.email && s.email.toLowerCase().includes(query)) ||
+                (s.phone && s.phone.includes(query))
+            );
+            renderStudentTable(filtered);
+        }
+
+        function renderStudentTable(students) {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
+            if(students.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No matching students.</td></tr>'; return; }
+
+            students.forEach((data) => {
+                const name = data.fullName || `<span class="text-red-400">No Name</span>`;
+                const email = data.email || 'N/A';
+                const points = data.points || 0;
+                
+                const encodedData = encodeURIComponent(JSON.stringify(data));
+
+                tbody.innerHTML += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="p-4 font-semibold text-slate-700">${name}</td>
+                        <td class="p-4 text-slate-500">${data.phone || 'N/A'}</td>
+                        <td class="p-4 text-slate-500">${email}</td>
+                        <td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td>
+                        <td class="p-4 text-center">
+                            <button onclick="window.openStudentModal('${encodedData}')" class="px-4 py-1.5 bg-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg transition-colors text-xs font-bold">View</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        window.openStudentModal = function(encodedData) {
+            const data = JSON.parse(decodeURIComponent(encodedData));
+            document.getElementById('v-stuName').innerText = data.fullName || 'N/A';
+            document.getElementById('v-stuEmail').innerText = data.email || 'N/A';
+            document.getElementById('v-stuPhone').innerText = data.phone || 'N/A';
+            document.getElementById('v-stuGrade').innerText = data.exactGrade || data.grade || 'N/A';
+            document.getElementById('v-stuNic').innerText = data.nic || 'Not Provided';
+            document.getElementById('v-stuAddress').innerText = (data.address ? data.address + '\n' + (data.district || '') : 'N/A');
+            document.getElementById('v-stuPoints').innerText = (data.points || 0) + ' Pts';
+            
+            document.getElementById('studentModal').classList.remove('hidden');
+        }
+        window.closeStudentModal = function() { document.getElementById('studentModal').classList.add('hidden'); }
+
     </script>
 </body>
 </html>
