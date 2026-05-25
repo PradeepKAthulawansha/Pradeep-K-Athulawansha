@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us | bizmind.lk</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -13,138 +12,167 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
         .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .bg-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
-        .contact-input { width: 100%; padding: 14px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); outline: none; transition: all 0.3s; margin-bottom: 16px; font-size: 15px; }
-        .contact-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        .hero-gradient { background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%); }
+        .input-field { width: 100%; padding: 14px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: #fff; outline: none; transition: all 0.3s; font-size: 14px;}
+        .input-field:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
     </style>
 </head>
-<body class="relative text-slate-800">
+<body class="text-slate-800">
 
-    <a href="https://wa.me/94719151415?text=Hello%20Pradeep%20Sir,%20I%20need%20help%20with%20bizmind.lk" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 z-[999] border-2 border-white flex items-center justify-center">
-        <i class="ph-fill ph-whatsapp text-3xl"></i>
-    </a>
+    <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
 
-    <div class="fixed inset-0 z-[-1] pointer-events-none">
-        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob"></div>
-        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-2000"></div>
-        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-orange-300 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 bg-blob animation-delay-4000"></div>
-    </div>
-
-    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
+    <header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
         <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                 <i class="ph ph-book-open text-blue-600"></i> bizmind.lk
             </a>
-            <nav class="hidden md:flex gap-8 items-center">
-                <a href="index.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</a>
-                <a href="about us.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">About Us</a>
-                <a href="papers-tutes.html" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">Papers & Tutes</a>
-                <a href="contact us.html" class="font-medium text-blue-600 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-blue-600">Contact</a>
+            
+            <nav class="hidden md:flex gap-8 items-center font-medium">
+                <a href="index.html" class="hover:text-blue-600 transition-colors">Home</a>
+                <a href="about us.html" class="hover:text-blue-600 transition-colors">About Us</a>
+                <a href="papers-tutes.html" class="hover:text-blue-600 transition-colors">Papers & Tutes</a>
+                <a href="contact us.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Contact</a>
             </nav>
+
             <div class="flex items-center gap-4">
-                <a href="papers-tutes.html" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors shadow-md hover:shadow-lg">Student Portal</a>
-                <button class="md:hidden text-slate-800 text-3xl" onclick="toggleMenu()"><i class="ph ph-list"></i></button>
+                <a href="papers-tutes.html" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Student Portal</a>
+                <button onclick="window.toggleMobileMenu()" class="md:hidden text-3xl text-slate-800 focus:outline-none">
+                    <i class="ph ph-list"></i>
+                </button>
             </div>
-        </div>
-        
-        <div id="mobileMenu" class="hidden absolute top-full left-0 w-full glass-panel flex flex-col py-4 px-6 md:hidden shadow-2xl border-t border-white/40">
-            <a href="index.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Home</a>
-            <a href="about us.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">About Us</a>
-            <a href="papers-tutes.html" class="py-3 border-b border-slate-200/50 text-slate-700 font-medium">Papers & Tutes</a>
-            <a href="contact us.html" class="py-3 border-b border-slate-200/50 text-blue-600 font-medium">Contact</a>
         </div>
     </header>
 
-    <main class="flex-grow pt-32 pb-20">
+    <div id="mobileMenu" class="fixed inset-0 z-[100] bg-white hidden flex-col px-6 py-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-10">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-blue-600">
+                <i class="ph ph-book-open"></i> bizmind.lk
+            </a>
+            <button onclick="window.toggleMobileMenu()" class="text-4xl text-slate-800 focus:outline-none">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+        <nav class="flex flex-col gap-6 text-lg font-medium">
+            <a href="index.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Home</a>
+            <a href="about us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">About Us</a>
+            <a href="papers-tutes.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Papers & Tutes</a>
+            <a href="contact us.html" class="text-blue-600 border-b border-slate-100 pb-4">Contact</a>
+            <a href="papers-tutes.html" class="mt-6 px-6 py-4 rounded-xl bg-slate-900 text-white text-center font-bold text-lg shadow-lg">Student Portal <i class="ph ph-arrow-right inline align-middle"></i></a>
+        </nav>
+    </div>
+
+    <main class="flex-grow pt-28 md:pt-32 pb-16">
         <div class="container mx-auto px-6 md:px-12">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-4">Get In Touch</h1>
-                <p class="text-slate-600 max-w-2xl mx-auto">Have questions about the study materials, your orders, or anything else? We are here to help you.</p>
-            </div>
             
-            <div class="grid md:grid-cols-2 gap-12 items-start">
-                <div class="space-y-6" data-aos="fade-right">
-                    <div class="glass-panel p-8 rounded-3xl flex items-center gap-6">
-                        <div class="w-16 h-16 shrink-0 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl"><i class="ph-fill ph-phone-call"></i></div>
-                        <div>
-                            <p class="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Call / WhatsApp</p>
-                            <p class="text-xl font-bold text-slate-800">+94 71 915 14 15</p>
+            <div class="text-center mb-12 md:mb-16" data-aos="fade-up">
+                <span class="px-4 py-1.5 rounded-full bg-purple-100 text-purple-700 font-bold text-xs md:text-sm mb-4 inline-block">📞 Let's Connect</span>
+                <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Get in Touch with Us</h1>
+                <p class="text-slate-600 text-sm md:text-base max-w-2xl mx-auto">Have questions about our materials or need technical support? We're here to help you.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                
+                <div class="glass-panel p-6 md:p-10 rounded-3xl shadow-lg" data-aos="fade-right">
+                    <h3 class="text-2xl font-bold mb-6 text-slate-800">Send us a Message</h3>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" id="contactName" class="input-field" placeholder="Your Name">
+                            <input type="email" id="contactEmail" class="input-field" placeholder="Your Email">
                         </div>
+                        <input type="text" id="contactSubject" class="input-field" placeholder="Subject">
+                        <textarea id="contactMessage" rows="5" class="input-field" placeholder="How can we help you?"></textarea>
+                        <button onclick="window.sendContactMessage()" class="w-full py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors shadow-md">Send Message <i class="ph ph-paper-plane-right inline align-middle ml-1"></i></button>
                     </div>
+                </div>
+
+                <div class="flex flex-col justify-center space-y-6 md:space-y-8" data-aos="fade-left">
                     
-                    <div class="glass-panel p-8 rounded-3xl flex items-center gap-6">
-                        <div class="w-16 h-16 shrink-0 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-3xl"><i class="ph-fill ph-envelope-simple"></i></div>
+                    <div class="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-3xl shrink-0"><i class="ph-fill ph-envelope-simple"></i></div>
                         <div>
-                            <p class="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Email Us</p>
-                            <p class="text-lg font-bold text-slate-800 break-all">web.pradeepkathulawansha<br>@gmail.com</p>
+                            <h4 class="font-bold text-slate-800 text-lg">Email Us</h4>
+                            <p class="text-slate-500 text-sm mb-1">Our friendly team is here to help.</p>
+                            <a href="mailto:admin@pradeepk.com" class="text-blue-600 font-semibold text-sm">admin@pradeepk.com</a>
                         </div>
                     </div>
 
-                    <div class="glass-panel p-8 rounded-3xl flex items-center gap-6">
-                        <div class="w-16 h-16 shrink-0 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-3xl"><i class="ph-fill ph-map-pin"></i></div>
+                    <div class="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-3xl shrink-0"><i class="ph-fill ph-phone-call"></i></div>
                         <div>
-                            <p class="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Location</p>
-                            <p class="text-xl font-bold text-slate-800">Kandy, Sri Lanka</p>
+                            <h4 class="font-bold text-slate-800 text-lg">Call Us</h4>
+                            <p class="text-slate-500 text-sm mb-1">Mon-Fri from 8am to 5pm.</p>
+                            <a href="#" class="text-blue-600 font-semibold text-sm">+94 77 000 0000</a>
                         </div>
                     </div>
+
+                    <div class="flex items-start gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-14 h-14 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center text-3xl shrink-0"><i class="ph-fill ph-map-pin"></i></div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg">Location</h4>
+                            <p class="text-slate-500 text-sm mb-1">Visit our main office.</p>
+                            <p class="text-slate-800 font-medium text-sm">Colombo, Western Province, Sri Lanka</p>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="glass-panel p-8 md:p-10 rounded-3xl" data-aos="fade-left">
-                    <h3 class="text-2xl font-bold text-slate-800 mb-6">Send a Message</h3>
-                    <form action="mailto:web.pradeepkathulawansha@gmail.com" method="POST" enctype="text/plain">
-                        <input type="text" name="Name" class="contact-input" placeholder="Your Full Name" required>
-                        <input type="email" name="Email" class="contact-input" placeholder="Your Email Address" required>
-                        <input type="text" name="Subject" class="contact-input" placeholder="Subject" required>
-                        <textarea name="Message" rows="4" class="contact-input" placeholder="How can we help you?" required></textarea>
-                        
-                        <button type="submit" class="w-full py-4 rounded-xl bg-slate-900 text-white font-bold hover:shadow-lg transition-all active:scale-[0.98]">
-                            Send Email
-                        </button>
-                    </form>
-                </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 rounded-t-[3rem] relative z-10 mt-auto">
-        <div class="container mx-auto px-6 md:px-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-2 text-2xl font-bold text-white mb-6">
-                        <i class="ph ph-book-open text-blue-500"></i> bizmind.lk
-                    </div>
-                    <p class="text-slate-400 max-w-sm mb-6">Empowering students with premium educational resources, structured methodologies, and expert guidance to achieve extraordinary results.</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
-                    <ul class="flex flex-col gap-3">
-                        <li><a href="index.html" class="hover:text-blue-400 transition-colors">Home</a></li>
-                        <li><a href="about us.html" class="hover:text-blue-400 transition-colors">About Us</a></li>
-                        <li><a href="papers-tutes.html" class="hover:text-blue-400 transition-colors">Papers & Tutes</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider text-sm">Contact</h4>
-                    <ul class="flex flex-col gap-3">
-                        <li>+94 71 915 14 15</li>
-                        <li>web.pradeepkathulawansha@gmail.com</li>
-                        <li>Kandy, Sri Lanka</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm relative">
-                <p>&copy; 2026 bizmind.lk | Pradeep K. Athulawansha. All rights reserved.</p>
-            </div>
+    <footer class="bg-slate-900 text-slate-300 pt-10 pb-8 mt-auto">
+        <div class="container mx-auto px-6 text-center text-sm md:text-base">
+            <p>&copy; 2026 bizmind.lk | Pradeep K. Athulawansha. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ once: true });
-        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobileMenu');
+            if(menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Simple Toast for Contact Form
+        window.sendContactMessage = function() {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+
+            if(!name || !email || !message) {
+                showToast("Please fill all required fields.", "error");
+                return;
+            }
+
+            // Simulate sending
+            setTimeout(() => {
+                showToast("Your message has been sent successfully!");
+                document.getElementById('contactName').value = '';
+                document.getElementById('contactEmail').value = '';
+                document.getElementById('contactSubject').value = '';
+                document.getElementById('contactMessage').value = '';
+            }, 800);
+        }
+
+        function showToast(msg, type='success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-3 md:p-4 rounded-xl border flex items-center gap-2 shadow-lg transition-all transform translate-y-2 opacity-0 text-xs md:text-sm bg-white z-[9999] ${type==='success'?'border-l-4 border-l-green-500':'border-l-4 border-l-red-500'}`;
+            toast.innerHTML = `<i class="ph-fill ${type==='success'?'ph-check-circle text-green-500':'ph-warning-circle text-red-500'} text-base md:text-lg"></i><span class="font-medium text-slate-700">${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+            setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
     </script>
 </body>
 </html>
