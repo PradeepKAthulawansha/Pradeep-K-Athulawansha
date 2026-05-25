@@ -34,43 +34,68 @@
             <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                 <i class="ph ph-book-open text-blue-600"></i> bizmind.lk
             </a>
+            
             <nav class="hidden md:flex gap-8 items-center font-medium">
-                <a href="index.html" class="hover:text-blue-600">Home</a>
-                <a href="about us.html" class="hover:text-blue-600">About Us</a>
+                <a href="index.html" class="hover:text-blue-600 transition-colors">Home</a>
+                <a href="about us.html" class="hover:text-blue-600 transition-colors">About Us</a>
                 <a href="papers-tutes.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Papers & Tutes</a>
-                <a href="contact us.html" class="hover:text-blue-600">Contact</a>
+                <a href="contact us.html" class="hover:text-blue-600 transition-colors">Contact</a>
             </nav>
-            <button id="navLoginBtn" onclick="window.openAuthModal()" class="px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Login / Register</button>
+
+            <div class="flex items-center gap-4">
+                <button id="navLoginBtn" onclick="window.openAuthModal()" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Login / Register</button>
+                <button onclick="window.toggleMobileMenu()" class="md:hidden text-3xl text-slate-800 focus:outline-none">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
         </div>
     </header>
 
-    <main class="flex-grow pt-32 pb-12">
+    <div id="mobileMenu" class="fixed inset-0 z-[100] bg-white hidden flex-col px-6 py-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-10">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-blue-600">
+                <i class="ph ph-book-open"></i> bizmind.lk
+            </a>
+            <button onclick="window.toggleMobileMenu()" class="text-4xl text-slate-800 focus:outline-none">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+        <nav class="flex flex-col gap-6 text-lg font-medium">
+            <a href="index.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Home</a>
+            <a href="about us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">About Us</a>
+            <a href="papers-tutes.html" class="text-blue-600 border-b border-slate-100 pb-4">Papers & Tutes</a>
+            <a href="contact us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Contact</a>
+            <button onclick="window.toggleMobileMenu(); window.openAuthModal();" class="mt-6 px-6 py-4 rounded-xl bg-slate-900 text-white font-bold text-lg shadow-lg">Login / Register <i class="ph ph-user-circle inline align-middle"></i></button>
+        </nav>
+    </div>
+
+    <main class="flex-grow pt-28 md:pt-32 pb-12">
         <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
             
-            <div id="userDashboardBar" class="hidden glass-panel p-6 rounded-2xl mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center text-2xl shadow-md"><i class="ph-fill ph-student"></i></div>
-                    <div>
-                        <p class="text-slate-500 text-sm font-medium">Student Portal</p>
-                        <h2 id="welcomeMsg" class="font-bold text-lg text-slate-800">Welcome!</h2>
-                        <span id="dashboardPoints" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 border border-blue-200">0 pts</span>
+            <div id="userDashboardBar" class="hidden glass-panel p-5 md:p-6 rounded-2xl mb-8 md:mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-4 w-full md:w-auto justify-center md:justify-start">
+                    <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center text-xl md:text-2xl shadow-md"><i class="ph-fill ph-student"></i></div>
+                    <div class="text-center md:text-left">
+                        <p class="text-slate-500 text-xs md:text-sm font-medium">Student Portal</p>
+                        <h2 id="welcomeMsg" class="font-bold text-base md:text-lg text-slate-800">Welcome!</h2>
+                        <span id="dashboardPoints" class="px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold bg-blue-100 text-blue-700 border border-blue-200">0 pts</span>
                     </div>
                 </div>
-                <div class="flex gap-2">
-                    <button onclick="window.openProfile()" class="px-6 py-2 rounded-full border-2 border-blue-100 text-blue-600 hover:bg-blue-50 font-medium transition-colors flex items-center gap-2"><i class="ph ph-user-circle text-lg"></i> Profile</button>
-                    <button onclick="window.logoutUser()" class="px-6 py-2 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 font-medium transition-colors flex items-center gap-2"><i class="ph ph-sign-out text-lg"></i> Log Out</button>
+                <div class="flex gap-2 w-full md:w-auto justify-center md:justify-end">
+                    <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 md:py-2 rounded-full border-2 border-blue-100 text-blue-600 hover:bg-blue-50 font-medium transition-colors flex items-center gap-2 text-sm md:text-base"><i class="ph ph-user-circle text-lg"></i> Profile</button>
+                    <button onclick="window.logoutUser()" class="px-4 py-2 md:px-6 md:py-2 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 font-medium transition-colors flex items-center gap-2 text-sm md:text-base"><i class="ph ph-sign-out text-lg"></i> Log Out</button>
                 </div>
             </div>
 
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <button onclick="window.filterItems('Grade 10 Tutes', this)" class="tab-btn px-8 py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium transition-all">Grade 10 Tutes</button>
-                <button onclick="window.filterItems('Grade 11 Tutes', this)" class="tab-btn px-8 py-3 rounded-full glass-panel text-slate-600 font-medium transition-all hover:bg-white/90">Grade 11 Tutes</button>
-                <button onclick="window.filterItems('Grade 12 Tutes', this)" class="tab-btn px-8 py-3 rounded-full glass-panel text-slate-600 font-medium transition-all hover:bg-white/90">Grade 12 Tutes</button>
-                <button onclick="window.filterItems('Grade 13 Tutes', this)" class="tab-btn px-8 py-3 rounded-full glass-panel text-slate-600 font-medium transition-all hover:bg-white/90">Grade 13 Tutes</button>
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-8 md:mb-12">
+                <button onclick="window.filterItems('Grade 10 Tutes', this)" class="tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm md:text-base transition-all">Grade 10 Tutes</button>
+                <button onclick="window.filterItems('Grade 11 Tutes', this)" class="tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 11 Tutes</button>
+                <button onclick="window.filterItems('Grade 12 Tutes', this)" class="tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 12 Tutes</button>
+                <button onclick="window.filterItems('Grade 13 Tutes', this)" class="tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 13 Tutes</button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resourceGrid">
-                <div class="col-span-full text-center py-10"><div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600 mx-auto"></div><p class="text-slate-500 mt-4 font-medium">Loading materials...</p></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="resourceGrid">
+                <div class="col-span-full text-center py-10"><div class="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-t-2 border-b-2 border-blue-600 mx-auto"></div><p class="text-slate-500 mt-4 font-medium text-sm md:text-base">Loading materials...</p></div>
             </div>
         </div>
     </main>
@@ -79,31 +104,31 @@
         <div class="w-full max-w-md relative">
             <button onclick="window.closeAuthModal()" class="absolute -top-12 right-0 text-white text-4xl hover:text-blue-200 transition-colors"><i class="ph ph-x"></i></button>
             
-            <div id="loginSection" class="auth-glass p-10 rounded-3xl text-center shadow-2xl">
-                <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
-                <h2 class="text-2xl font-bold mb-2 text-slate-800">Student Login</h2>
-                <p class="text-slate-500 mb-6 text-sm">Please log in to access your materials.</p>
+            <div id="loginSection" class="auth-glass p-8 md:p-10 rounded-3xl text-center shadow-2xl">
+                <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl md:text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
+                <h2 class="text-xl md:text-2xl font-bold mb-2 text-slate-800">Student Login</h2>
+                <p class="text-slate-500 mb-6 text-xs md:text-sm">Please log in to access your materials.</p>
                 <input type="email" id="loginEmail" class="auth-input" autocomplete="new-password" placeholder="Email Address">
                 <div class="relative mb-3">
                     <input type="password" id="loginPassword" class="auth-input pr-12" style="margin-bottom: 0;" autocomplete="new-password" placeholder="Password">
                     <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="loginEye" class="ph ph-eye"></i></button>
                 </div>
-                <button id="loginBtn" class="auth-btn mt-2" onclick="window.loginUser()">Log In</button>
-                <div class="flex justify-between mt-6 px-2">
+                <button id="loginBtn" class="auth-btn mt-2 text-sm md:text-base" onclick="window.loginUser()">Log In</button>
+                <div class="flex justify-between mt-6 px-2 text-sm">
                     <span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span>
                     <span class="link-text" onclick="window.resetUserPassword()">Forgot Password?</span>
                 </div>
             </div>
 
-            <div id="signupSection" class="auth-glass p-8 rounded-3xl text-center hidden shadow-2xl max-h-[85vh] overflow-y-auto custom-scroll">
-                <h2 class="text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
+            <div id="signupSection" class="auth-glass p-6 md:p-8 rounded-3xl text-center hidden shadow-2xl max-h-[85vh] overflow-y-auto custom-scroll">
+                <h2 class="text-xl md:text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
                 <div class="grid grid-cols-2 gap-3 mb-3">
-                    <input type="text" id="regFirstName" class="auth-input mb-0" placeholder="First Name">
-                    <input type="text" id="regLastName" class="auth-input mb-0" placeholder="Last Name">
+                    <input type="text" id="regFirstName" class="auth-input mb-0 text-sm" placeholder="First Name">
+                    <input type="text" id="regLastName" class="auth-input mb-0 text-sm" placeholder="Last Name">
                 </div>
-                <input type="text" id="regAddress" class="auth-input" placeholder="Home Address">
+                <input type="text" id="regAddress" class="auth-input text-sm" placeholder="Home Address">
                 <div class="grid grid-cols-2 gap-3 mb-3">
-                    <select id="regDistrict" class="auth-input mb-0 text-slate-500">
+                    <select id="regDistrict" class="auth-input mb-0 text-sm text-slate-500">
                         <option value="" disabled selected>District</option>
                         <option value="Ampara">Ampara</option><option value="Anuradhapura">Anuradhapura</option><option value="Badulla">Badulla</option>
                         <option value="Batticaloa">Batticaloa</option><option value="Colombo">Colombo</option><option value="Galle">Galle</option>
@@ -115,87 +140,87 @@
                         <option value="Puttalam">Puttalam</option><option value="Ratnapura">Ratnapura</option><option value="Trincomalee">Trincomalee</option>
                         <option value="Vavuniya">Vavuniya</option>
                     </select>
-                    <select id="regGrade" class="auth-input mb-0 text-slate-500" onchange="window.toggleNicField()">
+                    <select id="regGrade" class="auth-input mb-0 text-sm text-slate-500" onchange="window.toggleNicField()">
                         <option value="" disabled selected>Grade</option><option value="Grade 10">Grade 10</option><option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option><option value="Grade 13">Grade 13</option>
                     </select>
                 </div>
-                <div id="regNicGroup" class="hidden mb-3"><input type="text" id="regNic" class="auth-input mb-0" placeholder="NIC Number" maxlength="12"></div>
-                <input type="email" id="regEmail" class="auth-input" autocomplete="new-password" placeholder="Email Address">
-                <input type="tel" id="regPhone" class="auth-input" placeholder="Mobile (10 Digits)" maxlength="10">
-                <div class="relative mb-3"><input type="password" id="regPassword" class="auth-input pr-12" style="margin-bottom: 0;" autocomplete="new-password" placeholder="Strong Password"><button type="button" onclick="window.togglePassword('regPassword', 'regEyeMain')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600"><i id="regEyeMain" class="ph ph-eye"></i></button></div>
-                <div class="relative mb-3"><input type="password" id="regConfirmPassword" class="auth-input pr-12" style="margin-bottom: 0;" autocomplete="new-password" placeholder="Confirm Password"><button type="button" onclick="window.togglePassword('regConfirmPassword', 'regConfirmEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600"><i id="regConfirmEye" class="ph ph-eye"></i></button></div>
-                <label class="flex items-start gap-2 mb-4 px-1 text-left text-sm text-slate-500"><input type="checkbox" id="regTerms" class="mt-1"> I agree to Terms & Conditions.</label>
-                <button id="signupBtn" class="auth-btn mt-2" onclick="window.registerUser()">Create Account</button>
-                <div class="mt-5"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Log In</span></div>
+                <div id="regNicGroup" class="hidden mb-3"><input type="text" id="regNic" class="auth-input mb-0 text-sm" placeholder="NIC Number" maxlength="12"></div>
+                <input type="email" id="regEmail" class="auth-input text-sm" autocomplete="new-password" placeholder="Email Address">
+                <input type="tel" id="regPhone" class="auth-input text-sm" placeholder="Mobile (10 Digits)" maxlength="10">
+                <div class="relative mb-3"><input type="password" id="regPassword" class="auth-input pr-12 text-sm" style="margin-bottom: 0;" autocomplete="new-password" placeholder="Strong Password"><button type="button" onclick="window.togglePassword('regPassword', 'regEyeMain')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600"><i id="regEyeMain" class="ph ph-eye"></i></button></div>
+                <div class="relative mb-3"><input type="password" id="regConfirmPassword" class="auth-input pr-12 text-sm" style="margin-bottom: 0;" autocomplete="new-password" placeholder="Confirm Password"><button type="button" onclick="window.togglePassword('regConfirmPassword', 'regConfirmEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600"><i id="regConfirmEye" class="ph ph-eye"></i></button></div>
+                <label class="flex items-start gap-2 mb-4 px-1 text-left text-xs md:text-sm text-slate-500"><input type="checkbox" id="regTerms" class="mt-1"> I agree to Terms & Conditions.</label>
+                <button id="signupBtn" class="auth-btn mt-2 text-sm md:text-base" onclick="window.registerUser()">Create Account</button>
+                <div class="mt-5 text-sm"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Log In</span></div>
             </div>
         </div>
     </div>
 
     <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="bg-white w-full max-w-lg p-8 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+        <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closePaymentModal()" class="absolute top-5 right-5 text-2xl text-slate-400 hover:text-slate-800 transition-colors"><i class="ph ph-x"></i></button>
             
             <div id="payMethodSelection">
-                <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mb-4 mx-auto"><i class="ph-fill ph-wallet"></i></div>
-                <h3 class="text-xl font-bold text-center mb-6 text-slate-800">Select Payment Method</h3>
+                <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl md:text-3xl mb-4 mx-auto"><i class="ph-fill ph-wallet"></i></div>
+                <h3 class="text-lg md:text-xl font-bold text-center mb-6 text-slate-800">Select Payment Method</h3>
                 <div class="space-y-4">
-                    <div id="method-online" onclick="window.chooseMethod('online')" class="border-2 p-4 rounded-xl cursor-pointer hover:border-blue-500 transition-all flex items-center gap-4 relative">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl"><i class="ph-fill ph-device-mobile"></i></div>
-                        <div><h4 class="font-bold text-slate-800">Online Bank Transfer</h4><p class="text-xs text-slate-500">20 Minutes time limit</p></div>
-                        <div class="absolute right-4 text-blue-500 hidden check-icon"><i class="ph-fill ph-check-circle text-2xl"></i></div>
+                    <div id="method-online" onclick="window.chooseMethod('online')" class="border-2 p-3 md:p-4 rounded-xl cursor-pointer hover:border-blue-500 transition-all flex items-center gap-3 md:gap-4 relative">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg md:text-xl"><i class="ph-fill ph-device-mobile"></i></div>
+                        <div><h4 class="font-bold text-slate-800 text-sm md:text-base">Online Bank Transfer</h4><p class="text-[10px] md:text-xs text-slate-500">20 Minutes time limit</p></div>
+                        <div class="absolute right-4 text-blue-500 hidden check-icon"><i class="ph-fill ph-check-circle text-xl md:text-2xl"></i></div>
                     </div>
-                    <div id="method-manual" onclick="window.chooseMethod('manual')" class="border-2 p-4 rounded-xl cursor-pointer hover:border-orange-500 transition-all flex items-center gap-4 relative">
-                        <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xl"><i class="ph-fill ph-bank"></i></div>
-                        <div><h4 class="font-bold text-slate-800">Manual Bank Deposit</h4><p class="text-xs text-slate-500">24 Hours time limit</p></div>
-                        <div class="absolute right-4 text-orange-500 hidden check-icon"><i class="ph-fill ph-check-circle text-2xl"></i></div>
+                    <div id="method-manual" onclick="window.chooseMethod('manual')" class="border-2 p-3 md:p-4 rounded-xl cursor-pointer hover:border-orange-500 transition-all flex items-center gap-3 md:gap-4 relative">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg md:text-xl"><i class="ph-fill ph-bank"></i></div>
+                        <div><h4 class="font-bold text-slate-800 text-sm md:text-base">Manual Bank Deposit</h4><p class="text-[10px] md:text-xs text-slate-500">24 Hours time limit</p></div>
+                        <div class="absolute right-4 text-orange-500 hidden check-icon"><i class="ph-fill ph-check-circle text-xl md:text-2xl"></i></div>
                     </div>
                 </div>
 
-                <div id="paymentWarningBox" class="hidden mt-6 p-4 rounded-xl border-l-4 bg-slate-50 text-sm shadow-inner transition-all">
+                <div id="paymentWarningBox" class="hidden mt-6 p-4 rounded-xl border-l-4 bg-slate-50 text-xs md:text-sm shadow-inner transition-all">
                     <p id="paymentWarningText" class="font-medium leading-relaxed"></p>
                 </div>
 
-                <button id="proceedPaymentBtn" onclick="window.proceedToPayment()" class="w-full py-4 mt-6 bg-slate-900 text-white font-bold rounded-xl disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors" disabled>Next Step <i class="ph ph-arrow-right"></i></button>
+                <button id="proceedPaymentBtn" onclick="window.proceedToPayment()" class="w-full py-3 md:py-4 mt-6 bg-slate-900 text-white font-bold rounded-xl disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors text-sm md:text-base" disabled>Next Step <i class="ph ph-arrow-right"></i></button>
             </div>
 
             <div id="payCheckoutForm" class="hidden">
                 <div class="text-center mb-4 bg-red-50 p-3 rounded-xl border border-red-200">
-                    <p class="text-xs font-bold text-red-600 uppercase tracking-wider mb-1">Time Remaining</p>
-                    <p id="countdownDisplay" class="text-3xl font-bold font-mono pulse-text text-red-600">00:00</p>
+                    <p class="text-[10px] md:text-xs font-bold text-red-600 uppercase tracking-wider mb-1">Time Remaining</p>
+                    <p id="countdownDisplay" class="text-2xl md:text-3xl font-bold font-mono pulse-text text-red-600">00:00</p>
                 </div>
-                <div class="bg-slate-100 p-4 rounded-xl mb-4 text-sm text-slate-700">
+                <div class="bg-slate-100 p-4 rounded-xl mb-4 text-xs md:text-sm text-slate-700">
                     <p><strong>Bank:</strong> Bank of Ceylon (BOC)</p>
                     <p><strong>Branch:</strong> Kandy Branch</p>
                     <p><strong>Acc Name:</strong> Pradeep K. Athulawansha</p>
                     <p><strong>Acc No:</strong> 1234567890</p>
-                    <p class="font-bold mt-2 text-lg text-blue-600 text-center border-t border-slate-200 pt-2">Amount: <span id="payAmountDisplay"></span></p>
+                    <p class="font-bold mt-2 text-base md:text-lg text-blue-600 text-center border-t border-slate-200 pt-2">Amount: <span id="payAmountDisplay"></span></p>
                 </div>
                 
-                <input type="text" id="shipName" class="auth-input text-sm" placeholder="Delivery Name">
-                <input type="tel" id="shipPhone" class="auth-input text-sm" placeholder="Delivery Phone Number">
-                <textarea id="shipAddress" class="auth-input text-sm" rows="2" placeholder="Full Delivery Address"></textarea>
+                <input type="text" id="shipName" class="auth-input text-xs md:text-sm" placeholder="Delivery Name">
+                <input type="tel" id="shipPhone" class="auth-input text-xs md:text-sm" placeholder="Delivery Phone Number">
+                <textarea id="shipAddress" class="auth-input text-xs md:text-sm" rows="2" placeholder="Full Delivery Address"></textarea>
 
-                <label class="block text-sm font-bold text-slate-700 mb-2">Upload Payment Slip</label>
-                <input type="file" id="paymentSlip" class="w-full p-2 border rounded-xl mb-4 bg-white" accept="image/*,.pdf">
+                <label class="block text-xs md:text-sm font-bold text-slate-700 mb-2">Upload Payment Slip</label>
+                <input type="file" id="paymentSlip" class="w-full p-2 border rounded-xl mb-4 bg-white text-xs md:text-sm" accept="image/*,.pdf">
                 
-                <button id="payBtn" onclick="window.initiatePayment()" class="w-full py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors">Submit Order & Slip</button>
-                <button id="extendTimeBtn" onclick="window.extendTime()" class="w-full py-2 mt-2 text-sm text-orange-600 font-bold hidden border border-orange-200 rounded-xl hover:bg-orange-50 transition-colors">Need more time? (+24h)</button>
+                <button id="payBtn" onclick="window.initiatePayment()" class="w-full py-3 md:py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-sm md:text-base">Submit Order & Slip</button>
+                <button id="extendTimeBtn" onclick="window.extendTime()" class="w-full py-2 mt-2 text-xs md:text-sm text-orange-600 font-bold hidden border border-orange-200 rounded-xl hover:bg-orange-50 transition-colors">Need more time? (+24h)</button>
             </div>
         </div>
     </div>
 
     <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-         <div class="bg-white w-full max-w-lg p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl transition-colors"><i class="ph ph-x"></i></button>
-            <h3 class="text-xl font-bold text-slate-800 mb-6 text-center">My Profile</h3>
+            <h3 class="text-lg md:text-xl font-bold text-slate-800 mb-6 text-center">My Profile</h3>
             <div class="space-y-4">
-                <div><label class="block text-xs font-semibold mb-1 text-slate-500">Full Name</label><input type="text" id="profName" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly></div>
-                <div><label class="block text-xs font-semibold mb-1 text-slate-500">Email Address</label><input type="email" id="profEmail" class="w-full p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed" readonly></div>
-                <button onclick="window.closeProfile()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-semibold mt-4 hover:bg-slate-800 transition-colors">Close Profile</button>
+                <div><label class="block text-[10px] md:text-xs font-semibold mb-1 text-slate-500">Full Name</label><input type="text" id="profName" class="w-full p-2 md:p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed text-sm" readonly></div>
+                <div><label class="block text-[10px] md:text-xs font-semibold mb-1 text-slate-500">Email Address</label><input type="email" id="profEmail" class="w-full p-2 md:p-3 border rounded-xl bg-slate-50 text-slate-600 outline-none cursor-not-allowed text-sm" readonly></div>
+                <button onclick="window.closeProfile()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-semibold mt-4 hover:bg-slate-800 transition-colors text-sm md:text-base">Close Profile</button>
             </div>
             <div class="mt-8 border-t border-slate-200 pt-6">
-                <h4 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-blue-600"></i> My Orders</h4>
-                <div id="myOrdersContainer" class="space-y-3"><p class="text-sm text-slate-500 text-center">Loading orders...</p></div>
+                <h4 class="text-base md:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-blue-600"></i> My Orders</h4>
+                <div id="myOrdersContainer" class="space-y-3"><p class="text-xs md:text-sm text-slate-500 text-center">Loading orders...</p></div>
             </div>
         </div>
     </div>
@@ -223,14 +248,28 @@
         let currentUserUnlockedTutes = [];
         let currentPurchaseTute = null;
         let countdownInterval;
-        let selectedMethod = null; // New state for selection
+        let selectedMethod = null;
+
+        // --- Mobile Menu Logic ---
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobileMenu');
+            if(menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
 
         // --- Toast System ---
         window.showToast = (msg, type='success') => {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = `p-4 rounded-xl border flex items-center gap-2 shadow-lg transition-all transform translate-y-2 opacity-0 ${type==='success'?'bg-green-50 text-green-800 border-green-200':'bg-red-50 text-red-800 border-red-200'}`;
-            toast.innerHTML = `<i class="ph-fill ${type==='success'?'ph-check-circle text-green-500':'ph-warning-circle text-red-500'} text-lg"></i><span>${msg}</span>`;
+            toast.className = `p-3 md:p-4 rounded-xl border flex items-center gap-2 shadow-lg transition-all transform translate-y-2 opacity-0 text-xs md:text-sm ${type==='success'?'bg-green-50 text-green-800 border-green-200':'bg-red-50 text-red-800 border-red-200'}`;
+            toast.innerHTML = `<i class="ph-fill ${type==='success'?'ph-check-circle text-green-500':'ph-warning-circle text-red-500'} text-base md:text-lg"></i><span>${msg}</span>`;
             container.appendChild(toast);
             setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
             setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 4000);
@@ -256,8 +295,7 @@
                 snap.forEach(d => dbResources.push({id: d.id, ...d.data()}));
                 window.renderItems('Grade 10 Tutes');
             } catch(e) { 
-                console.error("Error loading resources:", e);
-                document.getElementById('resourceGrid').innerHTML = '<p class="col-span-full text-center text-red-500 py-10">Error loading data. Please check connection.</p>';
+                document.getElementById('resourceGrid').innerHTML = '<p class="col-span-full text-center text-red-500 py-10 text-sm">Error loading data. Please check connection.</p>';
             }
         }
         initPage();
@@ -275,7 +313,7 @@
                         currentUserUnlockedTutes = currentUserData.unlockedTutes || [];
                         window.closeAuthModal();
                     }
-                } catch(e) { console.error(e); }
+                } catch(e) {}
             } else {
                 currentUserData = null;
                 currentUserUnlockedTutes = [];
@@ -292,7 +330,7 @@
             grid.innerHTML = '';
 
             if (items.length === 0) { 
-                grid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-10 border border-dashed rounded-2xl bg-white/50">No materials available in this category yet.</p>'; 
+                grid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-10 border border-dashed rounded-2xl bg-white/50 text-sm md:text-base">No materials available in this category yet.</p>'; 
                 return; 
             }
 
@@ -315,19 +353,19 @@
 
                 const safeTitle = item.title ? item.title.replace(/'/g, "\\'") : 'Tute';
                 grid.innerHTML += `
-                    <div class="glass-panel p-8 rounded-3xl flex flex-col justify-between h-full">
+                    <div class="glass-panel p-6 md:p-8 rounded-3xl flex flex-col justify-between h-full">
                         <div>
-                            <h3 class="font-bold text-xl mb-2 text-slate-800">${item.title}</h3>
-                            <p class="text-sm text-slate-600 mb-6">${item.desc}</p>
+                            <h3 class="font-bold text-lg md:text-xl mb-2 text-slate-800">${item.title}</h3>
+                            <p class="text-xs md:text-sm text-slate-600 mb-6">${item.desc}</p>
                         </div>
-                        <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', '${item.price}', '${safeTitle}')" class="w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${btnClass}"><i class="ph-fill ${icon} text-xl"></i> ${btnText}</button>
+                        <button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', '${item.price}', '${safeTitle}')" class="w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 text-sm md:text-base ${btnClass}"><i class="ph-fill ${icon} text-lg md:text-xl"></i> ${btnText}</button>
                     </div>`;
             });
         }
 
         window.filterItems = (cat, btn) => {
-            document.querySelectorAll('.tab-btn').forEach(b => b.className = "tab-btn px-8 py-3 rounded-full glass-panel text-slate-600 font-medium transition-all hover:bg-white/90");
-            btn.className = "tab-btn px-8 py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium transition-all scale-105";
+            document.querySelectorAll('.tab-btn').forEach(b => b.className = "tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90");
+            btn.className = "tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm md:text-base transition-all scale-105";
             window.renderItems(cat);
         }
 
@@ -348,7 +386,6 @@
                 currentPurchaseTute = {id, title, price: priceVal, link};
                 document.getElementById('payAmountDisplay').innerText = `Rs. ${priceVal}.00`;
                 
-                // Reset Payment Selection UI Every Time Modal Opens
                 selectedMethod = null;
                 document.getElementById('proceedPaymentBtn').disabled = true;
                 document.getElementById('paymentWarningBox').classList.add('hidden');
@@ -365,7 +402,6 @@
                     document.getElementById('shipAddress').value = currentUserData.address || '';
                 }
 
-                // Check for ongoing session
                 const savedExpiry = localStorage.getItem(`pay_expiry_${id}`);
                 const savedMethod = localStorage.getItem(`pay_method_${id}`);
                 if (savedExpiry && savedMethod && parseInt(savedExpiry) > new Date().getTime()) {
@@ -379,11 +415,10 @@
             }
         }
 
-        // --- NEW: Payment Selection Flow ---
+        // --- Payment Selection Flow ---
         window.chooseMethod = (method) => {
             selectedMethod = method;
             
-            // Reset existing UI colors
             document.getElementById('method-online').classList.remove('border-blue-500', 'bg-blue-50');
             document.getElementById('method-manual').classList.remove('border-orange-500', 'bg-orange-50');
             document.querySelectorAll('.check-icon').forEach(el => el.classList.add('hidden'));
@@ -577,13 +612,13 @@
                     if(d.studentId === auth.currentUser.uid) {
                         const statusColor = d.status.includes('Approved') || d.status === 'Delivered' ? 'text-green-700 bg-green-100 border-green-200' : 'text-orange-700 bg-orange-100 border-orange-200';
                         ordersHTML += `
-                            <div class="p-4 border border-slate-200 rounded-xl bg-slate-50 flex justify-between items-start mb-2">
-                                <div><p class="text-sm font-bold text-slate-800">${d.tuteTitle}</p><p class="text-xs text-slate-500 mt-1">Rs. ${d.amount}</p></div>
+                            <div class="p-3 md:p-4 border border-slate-200 rounded-xl bg-slate-50 flex justify-between items-start mb-2">
+                                <div><p class="text-xs md:text-sm font-bold text-slate-800">${d.tuteTitle}</p><p class="text-[10px] md:text-xs text-slate-500 mt-1">Rs. ${d.amount}</p></div>
                                 <span class="px-2 py-1 text-[10px] font-bold rounded border ${statusColor}">${d.status}</span>
                             </div>`;
                     }
                 });
-                container.innerHTML = ordersHTML || '<p class="text-sm text-slate-500 text-center py-4">No purchases yet.</p>';
+                container.innerHTML = ordersHTML || '<p class="text-xs md:text-sm text-slate-500 text-center py-4">No purchases yet.</p>';
             } catch(e) { container.innerHTML = '<p class="text-xs text-red-500">Error loading orders</p>'; }
         }
     </script>
