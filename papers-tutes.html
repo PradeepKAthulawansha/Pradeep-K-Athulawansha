@@ -231,7 +231,7 @@
         import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
-        // ⚠️ FIREBASE CONFIG - REPLACE THIS WITH YOUR ACTUAL CONFIG! ⚠️
+        // ⚠️ FIREBASE CONFIG ⚠️
         const firebaseConfig = {
             apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
             authDomain: "pradeep-k-athulawansha.firebaseapp.com",
@@ -250,24 +250,17 @@
         let countdownInterval;
         let selectedMethod = null;
 
-        // --- Mobile Menu Logic ---
         window.toggleMobileMenu = function() {
             const menu = document.getElementById('mobileMenu');
             if(menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                menu.classList.add('flex');
-                document.body.style.overflow = 'hidden'; 
+                menu.classList.remove('hidden'); menu.classList.add('flex'); document.body.style.overflow = 'hidden'; 
             } else {
-                menu.classList.add('hidden');
-                menu.classList.remove('flex');
-                document.body.style.overflow = '';
+                menu.classList.add('hidden'); menu.classList.remove('flex'); document.body.style.overflow = '';
             }
         }
 
-        // --- Toast System ---
         window.showToast = (msg, type='success') => {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             toast.className = `p-3 md:p-4 rounded-xl border flex items-center gap-2 shadow-lg transition-all transform translate-y-2 opacity-0 text-xs md:text-sm ${type==='success'?'bg-green-50 text-green-800 border-green-200':'bg-red-50 text-red-800 border-red-200'}`;
             toast.innerHTML = `<i class="ph-fill ${type==='success'?'ph-check-circle text-green-500':'ph-warning-circle text-red-500'} text-base md:text-lg"></i><span>${msg}</span>`;
             container.appendChild(toast);
@@ -275,28 +268,22 @@
             setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 4000);
         }
 
-        // --- Toggle Logic ---
         window.togglePassword = (id, iconId) => {
             const input = document.getElementById(id); const icon = document.getElementById(iconId);
-            input.type = input.type === 'password' ? 'text' : 'password';
-            icon.className = input.type === 'password' ? 'ph ph-eye' : 'ph ph-eye-slash';
+            input.type = input.type === 'password' ? 'text' : 'password'; icon.className = input.type === 'password' ? 'ph ph-eye' : 'ph ph-eye-slash';
         }
         window.toggleNicField = () => {
             const grade = document.getElementById('regGrade').value;
             document.getElementById('regNicGroup').classList.toggle('hidden', !['Grade 12', 'Grade 13'].includes(grade));
         }
 
-        // --- Initialization & Auth State ---
         async function initPage() {
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
-                const snap = await getDocs(q);
-                dbResources = [];
+                const snap = await getDocs(q); dbResources = [];
                 snap.forEach(d => dbResources.push({id: d.id, ...d.data()}));
                 window.renderItems('Grade 10 Tutes');
-            } catch(e) { 
-                document.getElementById('resourceGrid').innerHTML = '<p class="col-span-full text-center text-red-500 py-10 text-sm">Error loading data. Please check connection.</p>';
-            }
+            } catch(e) { document.getElementById('resourceGrid').innerHTML = '<p class="col-span-full text-center text-red-500 py-10 text-sm">Error loading data. Please check connection.</p>'; }
         }
         initPage();
 
@@ -315,41 +302,25 @@
                     }
                 } catch(e) {}
             } else {
-                currentUserData = null;
-                currentUserUnlockedTutes = [];
+                currentUserData = null; currentUserUnlockedTutes = [];
                 document.getElementById('userDashboardBar').classList.add('hidden');
                 document.getElementById('navLoginBtn').classList.remove('hidden');
             }
             window.renderItems('Grade 10 Tutes');
         });
 
-        // --- Render Items ---
         window.renderItems = (cat) => {
-            const grid = document.getElementById('resourceGrid');
-            const items = dbResources.filter(i => i.category === cat);
-            grid.innerHTML = '';
-
-            if (items.length === 0) { 
-                grid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-10 border border-dashed rounded-2xl bg-white/50 text-sm md:text-base">No materials available in this category yet.</p>'; 
-                return; 
-            }
+            const grid = document.getElementById('resourceGrid'); const items = dbResources.filter(i => i.category === cat); grid.innerHTML = '';
+            if (items.length === 0) { grid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-10 border border-dashed rounded-2xl bg-white/50 text-sm md:text-base">No materials available in this category yet.</p>'; return; }
 
             items.forEach(item => {
-                const priceVal = parseFloat(item.price);
-                const isFree = isNaN(priceVal) || priceVal <= 0;
-                let btnText = "Log In to View";
-                let btnClass = "bg-slate-100 text-slate-800";
-                let icon = "ph-lock";
+                const priceVal = parseFloat(item.price); const isFree = isNaN(priceVal) || priceVal <= 0;
+                let btnText = "Log In to View"; let btnClass = "bg-slate-100 text-slate-800"; let icon = "ph-lock";
                 
                 if (auth.currentUser) {
-                    if (isFree || (currentUserUnlockedTutes || []).includes(item.id)) {
-                        btnText = "Access PDF"; btnClass = "bg-green-500 hover:bg-green-600 text-white"; icon = "ph-folder-open";
-                    } else {
-                        btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 hover:bg-blue-600 text-white"; icon = "ph-shopping-cart";
-                    }
-                } else if (!isFree) {
-                    btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 text-white"; icon = "ph-shopping-cart";
-                }
+                    if (isFree || (currentUserUnlockedTutes || []).includes(item.id)) { btnText = "Access PDF"; btnClass = "bg-green-500 hover:bg-green-600 text-white"; icon = "ph-folder-open"; } 
+                    else { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 hover:bg-blue-600 text-white"; icon = "ph-shopping-cart"; }
+                } else if (!isFree) { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 text-white"; icon = "ph-shopping-cart"; }
 
                 const safeTitle = item.title ? item.title.replace(/'/g, "\\'") : 'Tute';
                 grid.innerHTML += `
@@ -369,15 +340,9 @@
             window.renderItems(cat);
         }
 
-        // --- handleAccess Logic ---
         window.handleAccess = (event, id, link, price, title) => {
             event.preventDefault(); 
-            
-            if(!auth.currentUser) { 
-                window.openAuthModal(); 
-                window.showToast("Please login first!", "error");
-                return; 
-            }
+            if(!auth.currentUser) { window.openAuthModal(); window.showToast("Please login first!", "error"); return; }
 
             const priceVal = parseFloat(price);
             if (isNaN(priceVal) || priceVal <= 0 || (currentUserUnlockedTutes || []).includes(id)) {
@@ -385,16 +350,13 @@
             } else {
                 currentPurchaseTute = {id, title, price: priceVal, link};
                 document.getElementById('payAmountDisplay').innerText = `Rs. ${priceVal}.00`;
-                
-                selectedMethod = null;
-                document.getElementById('proceedPaymentBtn').disabled = true;
+                selectedMethod = null; document.getElementById('proceedPaymentBtn').disabled = true;
                 document.getElementById('paymentWarningBox').classList.add('hidden');
                 document.getElementById('method-online').classList.remove('border-blue-500', 'bg-blue-50');
                 document.getElementById('method-manual').classList.remove('border-orange-500', 'bg-orange-50');
                 document.querySelectorAll('.check-icon').forEach(el => el.classList.add('hidden'));
 
-                document.getElementById('payMethodSelection').classList.remove('hidden');
-                document.getElementById('payCheckoutForm').classList.add('hidden');
+                document.getElementById('payMethodSelection').classList.remove('hidden'); document.getElementById('payCheckoutForm').classList.add('hidden');
                 
                 if(currentUserData) {
                     document.getElementById('shipName').value = currentUserData.fullName || '';
@@ -402,71 +364,49 @@
                     document.getElementById('shipAddress').value = currentUserData.address || '';
                 }
 
-                const savedExpiry = localStorage.getItem(`pay_expiry_${id}`);
-                const savedMethod = localStorage.getItem(`pay_method_${id}`);
+                const savedExpiry = localStorage.getItem(`pay_expiry_${id}`); const savedMethod = localStorage.getItem(`pay_method_${id}`);
                 if (savedExpiry && savedMethod && parseInt(savedExpiry) > new Date().getTime()) {
-                    document.getElementById('payMethodSelection').classList.add('hidden');
-                    document.getElementById('payCheckoutForm').classList.remove('hidden');
+                    document.getElementById('payMethodSelection').classList.add('hidden'); document.getElementById('payCheckoutForm').classList.remove('hidden');
                     if (savedMethod === 'manual') document.getElementById('extendTimeBtn').classList.remove('hidden');
                     startTimer(parseInt(savedExpiry), savedMethod);
                 }
-                
                 document.getElementById('shippingModal').classList.remove('hidden');
             }
         }
 
-        // --- Payment Selection Flow ---
         window.chooseMethod = (method) => {
             selectedMethod = method;
-            
-            document.getElementById('method-online').classList.remove('border-blue-500', 'bg-blue-50');
-            document.getElementById('method-manual').classList.remove('border-orange-500', 'bg-orange-50');
+            document.getElementById('method-online').classList.remove('border-blue-500', 'bg-blue-50'); document.getElementById('method-manual').classList.remove('border-orange-500', 'bg-orange-50');
             document.querySelectorAll('.check-icon').forEach(el => el.classList.add('hidden'));
-            
-            const warningBox = document.getElementById('paymentWarningBox');
-            const warningText = document.getElementById('paymentWarningText');
-            
+            const warningBox = document.getElementById('paymentWarningBox'); const warningText = document.getElementById('paymentWarningText');
             warningBox.classList.remove('hidden', 'border-blue-500', 'border-orange-500', 'text-blue-700', 'text-orange-700');
 
             if(method === 'online') {
-                document.getElementById('method-online').classList.add('border-blue-500', 'bg-blue-50');
-                document.getElementById('method-online').querySelector('.check-icon').classList.remove('hidden');
+                document.getElementById('method-online').classList.add('border-blue-500', 'bg-blue-50'); document.getElementById('method-online').querySelector('.check-icon').classList.remove('hidden');
                 warningBox.classList.add('border-blue-500', 'text-blue-700');
                 warningText.innerHTML = "<strong>වැදගත්:</strong> ඔබ තෝරාගත්තේ Online Bank Transfer ක්‍රමයයි. මීළඟ පියවරට ගිය පසු, රිසිට්පත (Slip) අප්ලෝඩ් කිරීමට ඔබට හිමිවන්නේ <strong>විනාඩි 20ක කාලයක්</strong> පමණි. කරුණාකර මුදල් යවා රිසිට්පත ඔබ සතුව තබාගෙන 'Next Step' ඔබන්න.";
             } else {
-                document.getElementById('method-manual').classList.add('border-orange-500', 'bg-orange-50');
-                document.getElementById('method-manual').querySelector('.check-icon').classList.remove('hidden');
+                document.getElementById('method-manual').classList.add('border-orange-500', 'bg-orange-50'); document.getElementById('method-manual').querySelector('.check-icon').classList.remove('hidden');
                 warningBox.classList.add('border-orange-500', 'text-orange-700');
                 warningText.innerHTML = "<strong>වැදගත්:</strong> ඔබ තෝරාගත්තේ Manual Bank Deposit ක්‍රමයයි. මීළඟ පියවරට ගිය පසු, බැංකුවට ගොස් මුදල් ගෙවා රිසිට්පත (Slip) අප්ලෝඩ් කිරීමට ඔබට <strong>පැය 24ක කාලයක්</strong> හිමිවේ. (අවශ්‍ය නම් තවත් පැය 24ක් එකතු කරගත හැක).";
             }
-            
             document.getElementById('proceedPaymentBtn').disabled = false;
         }
 
-        window.proceedToPayment = () => {
-            if(!selectedMethod) return;
-            window.selectPaymentMethod(selectedMethod);
-        }
+        window.proceedToPayment = () => { if(!selectedMethod) return; window.selectPaymentMethod(selectedMethod); }
 
         window.selectPaymentMethod = (method) => {
-            const now = new Date().getTime();
-            let expiry = (method === 'online') ? now + (20 * 60 * 1000) : now + (24 * 60 * 60 * 1000);
-            localStorage.setItem(`pay_expiry_${currentPurchaseTute.id}`, expiry);
-            localStorage.setItem(`pay_method_${currentPurchaseTute.id}`, method);
-            
-            document.getElementById('payMethodSelection').classList.add('hidden');
-            document.getElementById('payCheckoutForm').classList.remove('hidden');
+            const now = new Date().getTime(); let expiry = (method === 'online') ? now + (20 * 60 * 1000) : now + (24 * 60 * 60 * 1000);
+            localStorage.setItem(`pay_expiry_${currentPurchaseTute.id}`, expiry); localStorage.setItem(`pay_method_${currentPurchaseTute.id}`, method);
+            document.getElementById('payMethodSelection').classList.add('hidden'); document.getElementById('payCheckoutForm').classList.remove('hidden');
             if(method === 'manual') document.getElementById('extendTimeBtn').classList.remove('hidden');
             startTimer(expiry, method);
         }
 
         window.extendTime = () => {
-            const currentExpiry = parseInt(localStorage.getItem(`pay_expiry_${currentPurchaseTute.id}`));
-            const newExpiry = currentExpiry + (24 * 60 * 60 * 1000);
-            localStorage.setItem(`pay_expiry_${currentPurchaseTute.id}`, newExpiry);
-            startTimer(newExpiry, 'manual');
-            window.showToast("Time extended by 24 Hours!");
-            document.getElementById('extendTimeBtn').classList.add('hidden');
+            const currentExpiry = parseInt(localStorage.getItem(`pay_expiry_${currentPurchaseTute.id}`)); const newExpiry = currentExpiry + (24 * 60 * 60 * 1000);
+            localStorage.setItem(`pay_expiry_${currentPurchaseTute.id}`, newExpiry); startTimer(newExpiry, 'manual');
+            window.showToast("Time extended by 24 Hours!"); document.getElementById('extendTimeBtn').classList.add('hidden');
         }
 
         function startTimer(expiry, method) {
@@ -474,19 +414,15 @@
             countdownInterval = setInterval(() => {
                 const dist = expiry - new Date().getTime();
                 if(dist < 0) { 
-                    clearInterval(countdownInterval); 
-                    document.getElementById('countdownDisplay').innerText = "EXPIRED";
-                    document.getElementById('payBtn').disabled = true;
-                    localStorage.removeItem(`pay_expiry_${currentPurchaseTute.id}`);
-                    return; 
+                    clearInterval(countdownInterval); document.getElementById('countdownDisplay').innerText = "EXPIRED"; document.getElementById('payBtn').disabled = true;
+                    localStorage.removeItem(`pay_expiry_${currentPurchaseTute.id}`); return; 
                 }
-                const h = Math.floor((dist % (1000*60*60*24))/(1000*60*60));
-                const m = Math.floor((dist % (1000*60*60))/(1000*60));
-                const s = Math.floor((dist % (1000*60))/1000);
+                const h = Math.floor((dist % (1000*60*60*24))/(1000*60*60)); const m = Math.floor((dist % (1000*60*60))/(1000*60)); const s = Math.floor((dist % (1000*60))/1000);
                 document.getElementById('countdownDisplay').innerText = method === 'online' ? `${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s` : `${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
             }, 1000);
         }
 
+        // 🔥 WHATSAPP REDIRECT LOGIC 🔥
         window.initiatePayment = async () => {
             const name = document.getElementById('shipName').value;
             const phone = document.getElementById('shipPhone').value;
@@ -521,32 +457,34 @@
                 clearInterval(countdownInterval);
                 localStorage.removeItem(`pay_expiry_${currentPurchaseTute.id}`);
                 
-                window.showToast("Order Submitted! Waiting for Admin Approval.");
+                window.showToast("Order Submitted! Redirecting to WhatsApp...");
                 document.getElementById('shippingModal').classList.add('hidden');
+
+                // Generate Magic Link and WhatsApp Message
+                const adminPhone = "94719151415"; 
+                const approveLink = `https://bizmind.lk/secret-admin-panel.html?autoApprove=${orderId}`; 
+                
+                const waText = `🎓 *New Order Request!*\n\n*Student:* ${name}\n*Phone:* ${phone}\n*Tute:* ${currentPurchaseTute.title}\n*Amount:* Rs. ${currentPurchaseTute.price}\n\n📄 *View Slip:* ${url}\n\n✅ *Click below link to Auto-Approve Order:*\n${approveLink}`;
+                
+                setTimeout(() => {
+                    window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(waText)}`, '_blank');
+                }, 1500);
+
             } catch(e) { window.showToast("Upload failed: " + e.message, "error"); }
             finally { btn.disabled = false; btn.innerText = "Submit Order & Slip"; }
         }
 
         window.closePaymentModal = () => { document.getElementById('shippingModal').classList.add('hidden'); clearInterval(countdownInterval); }
 
-        // --- Auth Modals ---
         window.openAuthModal = () => document.getElementById('authModal').classList.remove('hidden');
         window.closeAuthModal = () => document.getElementById('authModal').classList.add('hidden');
-        window.toggleAuthView = (id) => {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('signupSection').classList.add('hidden');
-            document.getElementById(id).classList.remove('hidden');
-        }
+        window.toggleAuthView = (id) => { document.getElementById('loginSection').classList.add('hidden'); document.getElementById('signupSection').classList.add('hidden'); document.getElementById(id).classList.remove('hidden'); }
 
         window.registerUser = async () => {
-            const fName = document.getElementById('regFirstName').value.trim();
-            const lName = document.getElementById('regLastName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-            const grade = document.getElementById('regGrade').value;
-            const district = document.getElementById('regDistrict').value;
-            const address = document.getElementById('regAddress').value.trim();
-            const password = document.getElementById('regPassword').value;
+            const fName = document.getElementById('regFirstName').value.trim(); const lName = document.getElementById('regLastName').value.trim();
+            const email = document.getElementById('regEmail').value.trim(); const phone = document.getElementById('regPhone').value.trim();
+            const grade = document.getElementById('regGrade').value; const district = document.getElementById('regDistrict').value;
+            const address = document.getElementById('regAddress').value.trim(); const password = document.getElementById('regPassword').value;
 
             if(!fName || !email || !password || !phone || !grade || !district || !address) { window.showToast("Please fill all fields.", "error"); return; }
             
@@ -560,43 +498,34 @@
                     grade: mappedGrade, exactGrade: grade, role: "student", 
                     unlockedTutes: [], points: 0, createdAt: new Date() 
                 });
-                await sendEmailVerification(cred.user);
-                window.showToast("Account created! Check your email to verify.");
-                await signOut(auth);
-                window.toggleAuthView('loginSection');
-            } catch(e) { window.showToast(e.message, "error"); }
-            finally { btn.disabled = false; btn.innerText = "Create Account"; }
+                await sendEmailVerification(cred.user); window.showToast("Account created! Check your email to verify.");
+                await signOut(auth); window.toggleAuthView('loginSection');
+            } catch(e) { window.showToast(e.message, "error"); } finally { btn.disabled = false; btn.innerText = "Create Account"; }
         }
 
         window.loginUser = async () => {
-            const e = document.getElementById('loginEmail').value;
-            const p = document.getElementById('loginPassword').value;
+            const e = document.getElementById('loginEmail').value; const p = document.getElementById('loginPassword').value;
             if(!e || !p) return;
             const btn = document.getElementById('loginBtn'); btn.disabled = true; btn.innerText = "Logging in...";
             try {
                 const cred = await signInWithEmailAndPassword(auth, e, p);
                 if (!cred.user.emailVerified) { window.showToast("Please verify your email first.", "error"); await signOut(auth); }
                 else { window.showToast("Login Successful!"); }
-            } catch(e) { window.showToast("Invalid email or password.", "error"); }
-            finally { btn.disabled = false; btn.innerText = "Log In"; }
+            } catch(e) { window.showToast("Invalid email or password.", "error"); } finally { btn.disabled = false; btn.innerText = "Log In"; }
         }
         
         window.resetUserPassword = async function() {
             const email = document.getElementById('loginEmail').value; 
             if(!email) { window.showToast("Enter your email address first.", "error"); return; }
-            try { await sendPasswordResetEmail(auth, email); window.showToast("Password reset link sent!"); } 
-            catch (error) { window.showToast("Error sending reset link.", "error"); }
+            try { await sendPasswordResetEmail(auth, email); window.showToast("Password reset link sent!"); } catch (error) { window.showToast("Error sending reset link.", "error"); }
         }
 
         window.logoutUser = async () => { await signOut(auth); window.showToast("Logged out successfully."); }
 
-        // --- Profile ---
         window.openProfile = () => {
             if(currentUserData) {
-                document.getElementById('profName').value = currentUserData.fullName || '';
-                document.getElementById('profEmail').value = currentUserData.email || '';
-                window.loadMyOrders();
-                document.getElementById('profileModal').classList.remove('hidden');
+                document.getElementById('profName').value = currentUserData.fullName || ''; document.getElementById('profEmail').value = currentUserData.email || '';
+                window.loadMyOrders(); document.getElementById('profileModal').classList.remove('hidden');
             }
         }
         window.closeProfile = () => document.getElementById('profileModal').classList.add('hidden');
@@ -604,18 +533,12 @@
         window.loadMyOrders = async () => {
             const container = document.getElementById('myOrdersContainer');
             try {
-                const q = query(collection(db, "orders"), orderBy("date", "desc")); 
-                const snap = await getDocs(q);
-                let ordersHTML = '';
+                const q = query(collection(db, "orders"), orderBy("date", "desc")); const snap = await getDocs(q); let ordersHTML = '';
                 snap.forEach(doc => { 
                     const d = doc.data(); 
                     if(d.studentId === auth.currentUser.uid) {
                         const statusColor = d.status.includes('Approved') || d.status === 'Delivered' ? 'text-green-700 bg-green-100 border-green-200' : 'text-orange-700 bg-orange-100 border-orange-200';
-                        ordersHTML += `
-                            <div class="p-3 md:p-4 border border-slate-200 rounded-xl bg-slate-50 flex justify-between items-start mb-2">
-                                <div><p class="text-xs md:text-sm font-bold text-slate-800">${d.tuteTitle}</p><p class="text-[10px] md:text-xs text-slate-500 mt-1">Rs. ${d.amount}</p></div>
-                                <span class="px-2 py-1 text-[10px] font-bold rounded border ${statusColor}">${d.status}</span>
-                            </div>`;
+                        ordersHTML += `<div class="p-3 md:p-4 border border-slate-200 rounded-xl bg-slate-50 flex justify-between items-start mb-2"><div><p class="text-xs md:text-sm font-bold text-slate-800">${d.tuteTitle}</p><p class="text-[10px] md:text-xs text-slate-500 mt-1">Rs. ${d.amount}</p></div><span class="px-2 py-1 text-[10px] font-bold rounded border ${statusColor}">${d.status}</span></div>`;
                     }
                 });
                 container.innerHTML = ordersHTML || '<p class="text-xs md:text-sm text-slate-500 text-center py-4">No purchases yet.</p>';
