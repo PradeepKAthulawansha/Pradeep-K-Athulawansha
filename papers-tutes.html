@@ -215,7 +215,7 @@
     <div id="orderSuccessModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl shadow-2xl relative text-center">
             <div class="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-check-circle"></i></div>
-            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-2">Order Confirmed!</h3>
+            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-2">Please Confirme Your Order</h3>
             <p class="text-sm text-slate-500 mb-6">Please review your details and confirm via WhatsApp to complete your order.</p>
             
             <div class="bg-slate-50 p-4 rounded-xl text-left text-sm space-y-2 mb-6 border border-slate-100 shadow-inner">
@@ -558,7 +558,7 @@
 
                 // 3. Generate Magic Link and WhatsApp Message
                 const adminPhone = "94719151415"; 
-                const approveLink = `https://bizmind.lk/secret-admin-panel.html?autoApprove=${orderId}`; 
+                const approveLink = `https://bizmind.lk/admin.html?autoApprove=${orderId}`;
                 
                 const waText = `🎓 *New Order Request!*\n\n*Student:* ${name}\n*Phone:* ${phone}\n*Tute:* ${currentPurchaseTute.title}\n*Amount:* Rs. ${currentPurchaseTute.price}\n\n📄 *View Slip:* ${slipUrl}\n\n✅ *Click below link to Auto-Approve Order:*\n${approveLink}`;
                 
