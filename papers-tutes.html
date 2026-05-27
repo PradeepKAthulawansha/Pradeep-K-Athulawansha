@@ -481,7 +481,7 @@
             }, 1000);
         }
 
-        // 🔥 IMGBB UPLOAD & WHATSAPP REDIRECT 🔥
+        // 🔥 IMGBB UPLOAD & POPUP BLOCK FIX (CLICKABLE TOAST) 🔥
         window.initiatePayment = async () => {
             const name = document.getElementById('shipName').value;
             const phone = document.getElementById('shipPhone').value;
@@ -532,7 +532,6 @@
                 clearInterval(countdownInterval);
                 localStorage.removeItem(`pay_expiry_${currentPurchaseTute.id}`);
                 
-                window.showToast("Order Submitted! Redirecting to WhatsApp...");
                 document.getElementById('shippingModal').classList.add('hidden');
 
                 // 3. Generate Magic Link and WhatsApp Message
@@ -541,9 +540,16 @@
                 
                 const waText = `🎓 *New Order Request!*\n\n*Student:* ${name}\n*Phone:* ${phone}\n*Tute:* ${currentPurchaseTute.title}\n*Amount:* Rs. ${currentPurchaseTute.price}\n\n📄 *View Slip:* ${slipUrl}\n\n✅ *Click below link to Auto-Approve Order:*\n${approveLink}`;
                 
-                setTimeout(() => {
-                    window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(waText)}`, '_blank');
-                }, 1500);
+                const waUrl = `https://wa.me/${adminPhone}?text=${encodeURIComponent(waText)}`;
+
+                // Clickable toast instead of auto-redirect (Fixes popup block)
+                const toastContainer = document.getElementById('toast-container');
+                toastContainer.innerHTML = `
+                    <div class="p-6 bg-white border-l-8 border-green-500 rounded-xl shadow-2xl z-[9999] pointer-events-auto">
+                        <p class="font-bold text-slate-800 mb-4">Order Submitted Successfully!</p>
+                        <a href="${waUrl}" target="_blank" onclick="this.parentElement.remove()" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg block text-center hover:bg-green-700 transition-colors">Click to Send Slip via WhatsApp</a>
+                    </div>
+                `;
 
             } catch(e) { 
                 window.showToast("Upload failed: " + e.message, "error"); 
