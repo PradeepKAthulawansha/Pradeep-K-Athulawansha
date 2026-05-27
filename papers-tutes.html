@@ -212,6 +212,28 @@
         </div>
     </div>
 
+    <div id="orderSuccessModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
+        <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl shadow-2xl relative text-center">
+            <div class="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-check-circle"></i></div>
+            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-2">Order Confirmed!</h3>
+            <p class="text-sm text-slate-500 mb-6">Please review your details and confirm via WhatsApp to complete your order.</p>
+            
+            <div class="bg-slate-50 p-4 rounded-xl text-left text-sm space-y-2 mb-6 border border-slate-100 shadow-inner">
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Tute:</span> <span id="successTuteTitle" class="font-bold text-slate-800 text-right"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Amount:</span> <span id="successAmount" class="font-bold text-blue-600"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Name:</span> <span id="successName" class="font-semibold text-slate-800 text-right"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Phone:</span> <span id="successPhone" class="font-semibold text-slate-800"></span></div>
+                <div class="flex flex-col pt-1"><span class="text-slate-500 mb-1">Address:</span> <span id="successAddress" class="font-semibold text-slate-800 whitespace-pre-wrap"></span></div>
+            </div>
+
+            <a id="waConfirmBtn" href="#" target="_blank" onclick="document.getElementById('orderSuccessModal').classList.add('hidden')" class="w-full block py-4 rounded-xl bg-green-600 text-white font-bold text-base hover:bg-green-700 transition-colors shadow-lg mb-4 flex justify-center items-center gap-2">
+                <i class="ph-fill ph-whatsapp text-xl"></i> Confirm Order
+            </a>
+            
+            <button onclick="window.reOpenShippingModal()" class="text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors underline">Edit Address or Order details</button>
+        </div>
+    </div>
+
     <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
         <div class="bg-white w-full max-w-3xl p-6 md:p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl transition-colors"><i class="ph ph-x"></i></button>
@@ -481,7 +503,7 @@
             }, 1000);
         }
 
-        // 🔥 IMGBB UPLOAD & POPUP BLOCK FIX (CLICKABLE TOAST) 🔥
+        // 🔥 IMGBB UPLOAD & POPUP BLOCK FIX (ORDER CONFIRMATION MODAL) 🔥
         window.initiatePayment = async () => {
             const name = document.getElementById('shipName').value;
             const phone = document.getElementById('shipPhone').value;
@@ -491,7 +513,7 @@
             if(!name || !phone || !address) { window.showToast("Please fill delivery details.", "error"); return; }
             if(!slipFile) { window.showToast("Please upload your payment slip.", "error"); return; }
             
-            const btn = document.getElementById('payBtn'); btn.disabled = true; btn.innerText = "Uploading Slip...";
+            const btn = document.getElementById('payBtn'); btn.disabled = true; btn.innerText = "Uploading Slip & Processing...";
             try {
                 // 1. Upload to ImgBB
                 const formData = new FormData();
@@ -508,10 +530,9 @@
                     throw new Error("Failed to upload slip to ImgBB. Please try again.");
                 }
 
-                const slipUrl = imgbbData.data.url; // ImgBB Image URL
+                const slipUrl = imgbbData.data.url;
 
                 // 2. Save Order to Firestore
-                btn.innerText = "Submitting Order...";
                 const orderId = "TUTE_" + Date.now();
                 
                 await setDoc(doc(db, "orders", orderId), {
@@ -524,7 +545,7 @@
                     tuteId: currentPurchaseTute.id,
                     tuteTitle: currentPurchaseTute.title,
                     amount: currentPurchaseTute.price,
-                    slipUrl: slipUrl, // Saving ImgBB URL directly
+                    slipUrl: slipUrl,
                     status: 'Pending Verification',
                     date: new Date()
                 });
@@ -532,30 +553,39 @@
                 clearInterval(countdownInterval);
                 localStorage.removeItem(`pay_expiry_${currentPurchaseTute.id}`);
                 
+                // Hide Shipping Modal
                 document.getElementById('shippingModal').classList.add('hidden');
 
                 // 3. Generate Magic Link and WhatsApp Message
-                const adminPhone = "94719151415"; // ⚠️ Updated Number ⚠️
+                const adminPhone = "94719151415"; 
                 const approveLink = `https://bizmind.lk/secret-admin-panel.html?autoApprove=${orderId}`; 
                 
                 const waText = `🎓 *New Order Request!*\n\n*Student:* ${name}\n*Phone:* ${phone}\n*Tute:* ${currentPurchaseTute.title}\n*Amount:* Rs. ${currentPurchaseTute.price}\n\n📄 *View Slip:* ${slipUrl}\n\n✅ *Click below link to Auto-Approve Order:*\n${approveLink}`;
                 
                 const waUrl = `https://wa.me/${adminPhone}?text=${encodeURIComponent(waText)}`;
 
-                // Clickable toast instead of auto-redirect (Fixes popup block)
-                const toastContainer = document.getElementById('toast-container');
-                toastContainer.innerHTML = `
-                    <div class="p-6 bg-white border-l-8 border-green-500 rounded-xl shadow-2xl z-[9999] pointer-events-auto">
-                        <p class="font-bold text-slate-800 mb-4">Order Submitted Successfully!</p>
-                        <a href="${waUrl}" target="_blank" onclick="this.parentElement.remove()" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg block text-center hover:bg-green-700 transition-colors">Click to Send Slip via WhatsApp</a>
-                    </div>
-                `;
+                // Populate Order Confirmation Modal
+                document.getElementById('successTuteTitle').innerText = currentPurchaseTute.title;
+                document.getElementById('successAmount').innerText = "Rs. " + currentPurchaseTute.price;
+                document.getElementById('successName').innerText = name;
+                document.getElementById('successPhone').innerText = phone;
+                document.getElementById('successAddress').innerText = address;
+                document.getElementById('waConfirmBtn').href = waUrl;
+                
+                // Show Confirmation Modal
+                document.getElementById('orderSuccessModal').classList.remove('hidden');
 
             } catch(e) { 
                 window.showToast("Upload failed: " + e.message, "error"); 
                 console.error(e);
             }
             finally { btn.disabled = false; btn.innerText = "Submit Order & Slip"; }
+        }
+
+        // Action to Edit from Confirmation Screen
+        window.reOpenShippingModal = () => {
+            document.getElementById('orderSuccessModal').classList.add('hidden');
+            document.getElementById('shippingModal').classList.remove('hidden');
         }
 
         window.closePaymentModal = () => { document.getElementById('shippingModal').classList.add('hidden'); clearInterval(countdownInterval); }
