@@ -229,7 +229,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
         // ⚠️ FIREBASE CONFIG ⚠️
         const firebaseConfig = {
@@ -241,7 +240,11 @@
             appId: "1:950027835210:web:a2894cd14833dc101bd3b3"
         };
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app); const db = getFirestore(app); const storage = getStorage(app);
+        const auth = getAuth(app); 
+        const db = getFirestore(app);
+
+        // ⚠️ IMGBB API KEY ⚠️
+        const IMGBB_API_KEY = "101030d84e3f84fecb3f9cfe347c4d17";
 
         let dbResources = [];
         let currentUserData = null;
@@ -422,22 +425,38 @@
             }, 1000);
         }
 
-        // 🔥 WHATSAPP REDIRECT LOGIC 🔥
+        // 🔥 NEW IMGBB UPLOAD & WHATSAPP REDIRECT LOGIC 🔥
         window.initiatePayment = async () => {
             const name = document.getElementById('shipName').value;
             const phone = document.getElementById('shipPhone').value;
             const address = document.getElementById('shipAddress').value;
-            const slip = document.getElementById('paymentSlip').files[0];
+            const slipFile = document.getElementById('paymentSlip').files[0];
 
             if(!name || !phone || !address) { window.showToast("Please fill delivery details.", "error"); return; }
-            if(!slip) { window.showToast("Please upload your payment slip.", "error"); return; }
+            if(!slipFile) { window.showToast("Please upload your payment slip.", "error"); return; }
             
-            const btn = document.getElementById('payBtn'); btn.disabled = true; btn.innerText = "Submitting Order...";
+            const btn = document.getElementById('payBtn'); btn.disabled = true; btn.innerText = "Uploading Slip...";
             try {
+                // 1. Upload to ImgBB
+                const formData = new FormData();
+                formData.append("image", slipFile);
+
+                const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: "POST",
+                    body: formData
+                });
+
+                const imgbbData = await imgbbRes.json();
+                
+                if (!imgbbData.success) {
+                    throw new Error("Failed to upload slip to ImgBB. Please try again.");
+                }
+
+                const slipUrl = imgbbData.data.url; // ImgBB Image URL
+
+                // 2. Save Order to Firestore
+                btn.innerText = "Submitting Order...";
                 const orderId = "TUTE_" + Date.now();
-                const refS = ref(storage, `slips/${orderId}_${slip.name}`);
-                const upload = await uploadBytesResumable(refS, slip);
-                const url = await getDownloadURL(upload.ref);
                 
                 await setDoc(doc(db, "orders", orderId), {
                     orderId: orderId,
@@ -449,7 +468,7 @@
                     tuteId: currentPurchaseTute.id,
                     tuteTitle: currentPurchaseTute.title,
                     amount: currentPurchaseTute.price,
-                    slipUrl: url,
+                    slipUrl: slipUrl, // Saving ImgBB URL directly
                     status: 'Pending Verification',
                     date: new Date()
                 });
@@ -460,17 +479,20 @@
                 window.showToast("Order Submitted! Redirecting to WhatsApp...");
                 document.getElementById('shippingModal').classList.add('hidden');
 
-                // Generate Magic Link and WhatsApp Message
-                const adminPhone = "94719151415"; 
+                // 3. Generate Magic Link and WhatsApp Message
+                const adminPhone = "94766390768"; 
                 const approveLink = `https://bizmind.lk/secret-admin-panel.html?autoApprove=${orderId}`; 
                 
-                const waText = `🎓 *New Order Request!*\n\n*Student:* ${name}\n*Phone:* ${phone}\n*Tute:* ${currentPurchaseTute.title}\n*Amount:* Rs. ${currentPurchaseTute.price}\n\n📄 *View Slip:* ${url}\n\n✅ *Click below link to Auto-Approve Order:*\n${approveLink}`;
+                const waText = `🎓 *New Order Request!*\n\n*Student:* ${name}\n*Phone:* ${phone}\n*Tute:* ${currentPurchaseTute.title}\n*Amount:* Rs. ${currentPurchaseTute.price}\n\n📄 *View Slip:* ${slipUrl}\n\n✅ *Click below link to Auto-Approve Order:*\n${approveLink}`;
                 
                 setTimeout(() => {
                     window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(waText)}`, '_blank');
                 }, 1500);
 
-            } catch(e) { window.showToast("Upload failed: " + e.message, "error"); }
+            } catch(e) { 
+                window.showToast("Upload failed: " + e.message, "error"); 
+                console.error(e);
+            }
             finally { btn.disabled = false; btn.innerText = "Submit Order & Slip"; }
         }
 
