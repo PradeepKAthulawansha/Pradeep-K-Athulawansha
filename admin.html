@@ -82,6 +82,7 @@
                 
                 <div class="glass-card p-6 md:p-8 border-t-4 border-indigo-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-rocket-launch text-indigo-600"></i> Daily Quiz</h3>
+                    
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
@@ -96,12 +97,17 @@
                                 </select>
                             </div>
                         </div>
-                        <div><textarea id="q-text" rows="3" required placeholder="Type the question here..." class="w-full p-3 border rounded-xl text-sm outline-none focus:border-indigo-400 bg-slate-50"></textarea></div>
+                        
+                        <div>
+                            <textarea id="q-text" rows="3" required placeholder="Type the question here..." class="w-full p-3 border rounded-xl text-sm outline-none focus:border-indigo-400 bg-slate-50"></textarea>
+                        </div>
+                        
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-2">Options (Select the correct one)</label>
                             <div id="dynamic-options-container" class="space-y-2"></div>
                             <button onclick="window.addOptionField()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 mt-2 flex items-center gap-1"><i class="ph ph-plus"></i> Add Another Option</button>
                         </div>
+
                         <button id="uploadQuizBtn" onclick="window.uploadDailyQuiz()" class="w-full py-3 mt-4 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all text-sm">Publish Quiz</button>
                     </div>
 
@@ -115,7 +121,9 @@
                         </div>
                         <div class="overflow-y-auto max-h-[200px] border rounded-xl">
                             <table class="w-full text-left border-collapse whitespace-nowrap">
-                                <tbody id="quizTableBody" class="text-xs"><tr><td class="p-4 text-center text-slate-500">Loading quizzes...</td></tr></tbody>
+                                <tbody id="quizTableBody" class="text-xs">
+                                    <tr><td class="p-4 text-center text-slate-500">Loading quizzes...</td></tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -126,8 +134,10 @@
                     <div class="space-y-4">
                         <input type="text" id="resTitle" class="w-full p-3 border rounded-xl text-sm" placeholder="Title (e.g. Grade 12 Tute 1)">
                         <select id="resCategory" class="w-full p-3 border rounded-xl bg-white text-sm">
-                            <option value="Grade 10 Tutes">Grade 10 Tutes</option><option value="Grade 11 Tutes">Grade 11 Tutes</option>
-                            <option value="Grade 12 Tutes">Grade 12 Tutes</option><option value="Grade 13 Tutes">Grade 13 Tutes</option>
+                            <option value="Grade 10 Tutes">Grade 10 Tutes</option>
+                            <option value="Grade 11 Tutes">Grade 11 Tutes</option>
+                            <option value="Grade 12 Tutes">Grade 12 Tutes</option>
+                            <option value="Grade 13 Tutes">Grade 13 Tutes</option>
                         </select>
                         <input type="number" id="resPrice" class="w-full p-3 border rounded-xl text-sm" placeholder="Price (Rs.) - Leave empty if Free">
                         <textarea id="resDesc" rows="2" class="w-full p-3 border rounded-xl text-sm" placeholder="Short Description"></textarea>
@@ -140,8 +150,11 @@
                             <label class="block text-sm font-semibold mb-2 text-slate-500">OR Google Drive Link</label>
                             <input type="url" id="resLink" class="w-full p-3 border rounded-xl text-sm" placeholder="Paste Drive Link">
                         </div>
+
                         <button id="addBtn" onclick="window.addResource()" class="w-full py-4 mt-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all text-sm">Publish Resource</button>
-                        <div id="uploadProgressContainer" class="w-full bg-gray-200 rounded-full h-2.5 mt-2 hidden"><div id="uploadProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div></div>
+                        <div id="uploadProgressContainer" class="w-full bg-gray-200 rounded-full h-2.5 mt-2 hidden">
+                            <div id="uploadProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -163,7 +176,7 @@
                 
                 <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Student Orders & Approvals</h3>
-                    <div class="overflow-x-auto border rounded-xl max-h-[450px] overflow-y-auto">
+                    <div class="overflow-x-auto border rounded-xl max-h-[350px] overflow-y-auto">
                         <table class="w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-green-50 z-10">
                                 <tr class="text-green-800 text-sm">
@@ -213,6 +226,7 @@
                         <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-users text-blue-600"></i> Registered Students</h3>
                         <input type="text" id="studentSearch" oninput="window.filterStudents(this.value)" placeholder="Search Name/Email..." class="p-2 border rounded-lg text-sm bg-slate-50 outline-none focus:border-blue-400">
                     </div>
+                    
                     <div class="overflow-x-auto border rounded-xl max-h-[400px] overflow-y-auto">
                         <table class="w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
@@ -277,6 +291,7 @@
             <button onclick="window.closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-identification-card"></i></div>
             <h3 class="text-xl font-bold mb-6 text-center text-slate-800">Student Details</h3>
+            
             <div class="space-y-3 text-sm">
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Name:</span> <span id="v-stuName" class="font-bold"></span></div>
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Email:</span> <span id="v-stuEmail" class="font-medium"></span></div>
@@ -289,6 +304,7 @@
             <button onclick="window.closeStudentModal()" class="w-full py-3 mt-6 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 text-sm">Close</button>
         </div>
     </div>
+
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
@@ -305,8 +321,11 @@
             messagingSenderId: "950027835210",
             appId: "1:950027835210:web:a2894cd14833dc101bd3b3"
         };
+
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app); const db = getFirestore(app); const storage = getStorage(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
 
         // ⚠️ EMAILJS INIT ⚠️
         emailjs.init("msKLscXDbLA-GGmXH");
@@ -314,7 +333,7 @@
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = `p-4 rounded-xl shadow-xl border text-sm font-medium flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto max-w-sm bg-white min-w-[300px]`;
+            toast.className = `p-4 rounded-xl shadow-xl border text-sm font-medium flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto max-w-sm bg-white min-w-[300px] z-[9999]`;
             if (type === 'success') { toast.classList.add('border-green-200', 'text-green-800', 'bg-green-50/95'); toast.innerHTML = `<i class="ph-fill ph-check-circle text-green-500 text-lg"></i> <span>${message}</span>`; } 
             else { toast.classList.add('border-red-200', 'text-red-800', 'bg-red-50/95'); toast.innerHTML = `<i class="ph-fill ph-warning-circle text-red-500 text-lg"></i> <span>${message}</span>`; }
             container.appendChild(toast);
@@ -343,18 +362,32 @@
             let userVal = document.getElementById('adminUsername').value.trim(); 
             const passVal = document.getElementById('adminPassword').value;
             const err = document.getElementById('loginError'); 
+            
             if(!userVal || !passVal) return;
             if(!userVal.includes('@')) { userVal = userVal + "@pradeepk.com"; }
-            try { await signInWithEmailAndPassword(auth, userVal, passVal); err.classList.add('hidden'); } catch (error) { err.classList.remove('hidden'); }
+
+            try { 
+                await signInWithEmailAndPassword(auth, userVal, passVal); 
+                err.classList.add('hidden'); 
+            } catch (error) { err.classList.remove('hidden'); }
         }
         window.adminLogout = async function() { await signOut(auth); }
 
         function initAdmin() {
             document.getElementById('q-date').valueAsDate = new Date();
-            initOptionFields(); loadQuizzes(); loadLeaderboards(); loadOrders(); loadResources(); loadStudents();
-            const today = new Date(); const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-            document.getElementById('reportEndDate').valueAsDate = today; document.getElementById('reportStartDate').valueAsDate = firstDay;
-            checkAutoApprove(); // WhatsApp Auto-Approve Check
+            initOptionFields();
+            loadQuizzes();
+            loadLeaderboards();
+            loadOrders();
+            loadResources();
+            loadStudents();
+            
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            document.getElementById('reportEndDate').valueAsDate = today;
+            document.getElementById('reportStartDate').valueAsDate = firstDay;
+            
+            checkAutoApprove(); // WhatsApp check
         }
 
         // --- WHATSAPP AUTO APPROVE LOGIC ---
@@ -362,7 +395,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const autoApproveId = urlParams.get('autoApprove');
             if (autoApproveId) {
-                const conf = confirm(`WhatsApp Auto-Approve Request for Order ID: ${autoApproveId}\n\nDo you want to approve this order, unlock the PDF, delete the slip, and send the email?`);
+                const conf = confirm(`WhatsApp Auto-Approve Request for Order ID: ${autoApproveId}\n\nDo you want to approve this order now?`);
                 if(conf) {
                     await window.approveOrder(autoApproveId);
                     window.history.replaceState({}, document.title, window.location.pathname); // clear URL
@@ -377,12 +410,17 @@
             const type = document.getElementById('reportType').value;
             const startDateInput = document.getElementById('reportStartDate').value;
             const endDateInput = document.getElementById('reportEndDate').value;
-            if(!startDateInput || !endDateInput) { window.showToast("Please select dates.", "error"); return; }
+            
+            if(!startDateInput || !endDateInput) { window.showToast("Please select both Start and End dates.", "error"); return; }
+            
             const startDate = new Date(startDateInput); startDate.setHours(0,0,0,0);
             const endDate = new Date(endDateInput); endDate.setHours(23,59,59,999);
-            window.showToast("Generating report...");
+
+            window.showToast("Generating report, please wait...");
             
-            let dataRows = []; let headers = []; let title = "";
+            let dataRows = [];
+            let headers = [];
+            let title = "";
 
             try {
                 if (type === 'orders') {
@@ -390,10 +428,21 @@
                     headers = ["Order ID", "Date", "Student Name", "Phone", "Item Ordered", "Amount (LKR)", "Status", "Address"];
                     const q = query(collection(db, "orders"), orderBy("date", "desc"));
                     const snapshot = await getDocs(q);
+                    
                     snapshot.forEach(doc => {
-                        const data = doc.data(); const orderDate = data.date ? data.date.toDate() : new Date(0);
+                        const data = doc.data();
+                        const orderDate = data.date ? data.date.toDate() : new Date(0);
                         if (orderDate >= startDate && orderDate <= endDate) {
-                            dataRows.push([ data.orderId || doc.id, orderDate.toLocaleDateString(), data.studentName || 'N/A', data.phone1 || 'N/A', data.tuteTitle || 'N/A', data.amount || '0', data.status || 'Processing', (data.address || '').replace(/\n/g, ' ') ]);
+                            dataRows.push([
+                                data.orderId || doc.id,
+                                orderDate.toLocaleDateString(),
+                                data.studentName || 'N/A',
+                                data.phone1 || 'N/A',
+                                data.tuteTitle || 'N/A',
+                                data.amount || '0',
+                                data.status || 'Processing',
+                                (data.address || '').replace(/\n/g, ' ')
+                            ]);
                         }
                     });
                 } 
@@ -402,11 +451,23 @@
                     headers = ["Name", "Email", "Phone", "NIC", "Grade", "District", "Registration Date", "Points"];
                     const q = query(collection(db, "users"));
                     const snapshot = await getDocs(q);
+                    
                     snapshot.forEach(doc => {
-                        const data = doc.data(); if(data.email === 'admin@pradeepk.com') return;
+                        const data = doc.data();
+                        if(data.email === 'admin@pradeepk.com') return;
+                        
                         const regDate = data.createdAt ? data.createdAt.toDate() : new Date(0);
                         if (regDate >= startDate && regDate <= endDate) {
-                            dataRows.push([ data.fullName || 'N/A', data.email || 'N/A', data.phone || 'N/A', data.nic || 'N/A', data.exactGrade || data.grade || 'N/A', data.district || 'N/A', regDate.toLocaleDateString(), data.points || 0 ]);
+                            dataRows.push([
+                                data.fullName || 'N/A',
+                                data.email || 'N/A',
+                                data.phone || 'N/A',
+                                data.nic || 'N/A',
+                                data.exactGrade || data.grade || 'N/A',
+                                data.district || 'N/A',
+                                regDate.toLocaleDateString(),
+                                data.points || 0
+                            ]);
                         }
                     });
                 }
@@ -415,130 +476,233 @@
                     headers = ["Rank", "Name", "Grade", "Points", "Phone"];
                     const q = query(collection(db, "users"), orderBy("points", "desc"));
                     const snapshot = await getDocs(q);
+                    
                     let rank = 1;
                     snapshot.forEach(doc => {
-                        const data = doc.data(); if(data.email === 'admin@pradeepk.com' || !data.points || data.points === 0) return;
-                        dataRows.push([ rank++, data.fullName || 'N/A', data.exactGrade || data.grade || 'N/A', data.points, data.phone || 'N/A' ]);
+                        const data = doc.data();
+                        if(data.email === 'admin@pradeepk.com' || !data.points || data.points === 0) return;
+                        dataRows.push([
+                            rank++,
+                            data.fullName || 'N/A',
+                            data.exactGrade || data.grade || 'N/A',
+                            data.points,
+                            data.phone || 'N/A'
+                        ]);
                     });
                 }
 
-                if (dataRows.length === 0) { window.showToast("No data found.", "error"); return; }
+                if (dataRows.length === 0) { window.showToast("No data found for the selected dates.", "error"); return; }
+
                 if (format === 'csv') { generateCSV(headers, dataRows, title); } 
                 else if (format === 'pdf') { generatePDF(headers, dataRows, title, startDateInput, endDateInput, type); }
-            } catch (error) { window.showToast("Failed to generate report.", "error"); }
+
+            } catch (error) {
+                console.error(error);
+                window.showToast("Failed to generate report.", "error");
+            }
         }
 
         function generateCSV(headers, rows, title) {
-            let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
-            rows.forEach(rowArray => { csvContent += rowArray.map(item => `"${String(item).replace(/"/g, '""')}"`).join(",") + "\n"; });
-            const link = document.createElement("a"); link.setAttribute("href", encodeURI(csvContent)); link.setAttribute("download", `${title.replace(/\s+/g, '_')}_${Date.now()}.csv`);
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += headers.join(",") + "\n";
+            rows.forEach(rowArray => {
+                let row = rowArray.map(item => `"${String(item).replace(/"/g, '""')}"`).join(",");
+                csvContent += row + "\n";
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `${title.replace(/\s+/g, '_')}_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
             window.showToast("✅ Excel (CSV) Downloaded!");
         }
 
         function generatePDF(headers, rows, title, sDate, eDate, type) {
             const { jsPDF } = window.jspdf;
-            const orientation = type === 'leaderboard' ? 'p' : 'l'; const doc = new jsPDF(orientation, 'pt', 'a4');
-            doc.setFontSize(18); doc.setTextColor(37, 99, 235); doc.text("BizMind.lk - Admin Report", 40, 40);
-            doc.setFontSize(14); doc.setTextColor(15, 23, 42); doc.text(title, 40, 65);
-            doc.setFontSize(10); doc.setTextColor(100, 116, 139);
-            if(type !== 'leaderboard') { doc.text(`Date Range: ${sDate} to ${eDate}`, 40, 85); } else { doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 85); }
-            doc.autoTable({ startY: 100, head: [headers], body: rows, theme: 'striped', headStyles: { fillColor: [37, 99, 235], fontSize: 9 }, styles: { fontSize: 8, cellPadding: 4 } });
-            doc.save(`${title.replace(/\s+/g, '_')}_${Date.now()}.pdf`); window.showToast("✅ PDF Report Downloaded!");
+            const orientation = type === 'leaderboard' ? 'p' : 'l';
+            const doc = new jsPDF(orientation, 'pt', 'a4');
+            
+            doc.setFontSize(18);
+            doc.setTextColor(37, 99, 235);
+            doc.text("BizMind.lk - Admin Report", 40, 40);
+            
+            doc.setFontSize(14);
+            doc.setTextColor(15, 23, 42);
+            doc.text(title, 40, 65);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100, 116, 139);
+            if(type !== 'leaderboard') {
+                doc.text(`Date Range: ${sDate} to ${eDate}`, 40, 85);
+            } else {
+                doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 85);
+            }
+
+            doc.autoTable({
+                startY: 100,
+                head: [headers],
+                body: rows,
+                theme: 'striped',
+                headStyles: { fillColor: [37, 99, 235], fontSize: 9 },
+                styles: { fontSize: 8, cellPadding: 4 },
+            });
+
+            doc.save(`${title.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
+            window.showToast("✅ PDF Report Downloaded!");
         }
 
         /* ==========================================
            1. QUIZ MANAGEMENT
         ========================================== */
         let optionCount = 0;
+        
         function initOptionFields() {
-            document.getElementById('dynamic-options-container').innerHTML = ''; optionCount = 0;
+            document.getElementById('dynamic-options-container').innerHTML = '';
+            optionCount = 0;
             for(let i=0; i<4; i++) window.addOptionField(); 
             document.querySelector('input[name="correctOpt"][value="0"]').checked = true;
         }
 
         window.addOptionField = function() {
             const container = document.getElementById('dynamic-options-container');
-            const div = document.createElement('div'); div.className = "flex items-center gap-3";
-            div.innerHTML = `<input type="radio" name="correctOpt" value="${optionCount}" class="w-4 h-4 text-indigo-600 cursor-pointer"><input type="text" id="opt-${optionCount}" required placeholder="Option ${optionCount + 1}" class="w-full p-2 border rounded-lg text-sm bg-white">${optionCount >= 2 ? `<button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600"><i class="ph-fill ph-trash"></i></button>` : `<div class="w-4"></div>`}`;
-            container.appendChild(div); optionCount++;
+            const div = document.createElement('div');
+            div.className = "flex items-center gap-3";
+            div.innerHTML = `
+                <input type="radio" name="correctOpt" value="${optionCount}" class="w-4 h-4 text-indigo-600 cursor-pointer">
+                <input type="text" id="opt-${optionCount}" required placeholder="Option ${optionCount + 1}" class="w-full p-2 border rounded-lg text-sm bg-white">
+                ${optionCount >= 2 ? `<button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600"><i class="ph-fill ph-trash"></i></button>` : `<div class="w-4"></div>`}
+            `;
+            container.appendChild(div);
+            optionCount++;
         }
 
         window.uploadDailyQuiz = async function() {
             const btn = document.getElementById('uploadQuizBtn');
-            const date = document.getElementById('q-date').value; const grade = document.getElementById('q-grade').value; const question = document.getElementById('q-text').value;
-            const options = []; let correctAnsIndex = -1;
-            document.querySelectorAll('#dynamic-options-container > div').forEach((div) => {
-                const textInput = div.querySelector('input[type="text"]'); const radioInput = div.querySelector('input[type="radio"]');
+            const date = document.getElementById('q-date').value;
+            const grade = document.getElementById('q-grade').value;
+            const question = document.getElementById('q-text').value;
+            
+            const options = [];
+            let correctAnsIndex = -1;
+            const optionDivs = document.querySelectorAll('#dynamic-options-container > div');
+            
+            optionDivs.forEach((div) => {
+                const textInput = div.querySelector('input[type="text"]');
+                const radioInput = div.querySelector('input[type="radio"]');
                 const val = textInput.value.trim();
-                if(val !== '') { if(radioInput.checked) { correctAnsIndex = options.length; } options.push(val); }
+                if(val !== '') {
+                    if(radioInput.checked) { correctAnsIndex = options.length; }
+                    options.push(val);
+                }
             });
-            if(!date || !question || options.length < 2) { window.showToast("Please provide question and options.", "error"); return; }
-            if(correctAnsIndex === -1) { window.showToast("Select the correct answer.", "error"); return; }
+            
+            if(!date || !question || options.length < 2) { window.showToast("Please provide a question and at least 2 options.", "error"); return; }
+            if(correctAnsIndex === -1) { window.showToast("Please select the correct answer by checking the radio button.", "error"); return; }
+
             btn.innerText = "Publishing..."; btn.disabled = true;
+            
             try {
                 await setDoc(doc(db, `dailyQuestions_${grade}`, date), { q: question, options: options });
                 await setDoc(doc(db, `secretAnswers_${grade}`, date), { ans: correctAnsIndex });
-                window.showToast("✅ Quiz Published!"); document.getElementById('q-text').value = ''; initOptionFields(); loadQuizzes();
-            } catch (error) { window.showToast("❌ Error: " + error.message, "error"); } finally { btn.innerText = "Publish Quiz"; btn.disabled = false; }
+                window.showToast("✅ Quiz Published Successfully!");
+                document.getElementById('q-text').value = ''; initOptionFields(); loadQuizzes();
+            } catch (error) { window.showToast("❌ Error: " + error.message, "error"); } 
+            finally { btn.innerText = "Publish Quiz"; btn.disabled = false; }
         }
 
         window.loadQuizzes = async function() {
-            const grade = document.getElementById('manage-q-grade').value; const tbody = document.getElementById('quizTableBody');
+            const grade = document.getElementById('manage-q-grade').value;
+            const tbody = document.getElementById('quizTableBody');
             tbody.innerHTML = '<tr><td class="p-4 text-center text-slate-500">Loading...</td></tr>';
+            
             try {
-                const querySnapshot = await getDocs(collection(db, `dailyQuestions_${grade}`)); tbody.innerHTML = '';
-                if(querySnapshot.empty) { tbody.innerHTML = '<tr><td class="p-4 text-center text-slate-500">No quizzes.</td></tr>'; return; }
-                let quizzes = []; querySnapshot.forEach(doc => quizzes.push({ id: doc.id, ...doc.data() }));
+                const querySnapshot = await getDocs(collection(db, `dailyQuestions_${grade}`));
+                tbody.innerHTML = '';
+                if(querySnapshot.empty) { tbody.innerHTML = '<tr><td class="p-4 text-center text-slate-500">No quizzes found.</td></tr>'; return; }
+                
+                let quizzes = [];
+                querySnapshot.forEach(doc => quizzes.push({ id: doc.id, ...doc.data() }));
                 quizzes.sort((a, b) => new Date(b.id) - new Date(a.id));
+
                 quizzes.forEach(data => {
-                    tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-3 font-semibold text-slate-700 w-24">${data.id}</td><td class="p-3 truncate max-w-[120px] text-slate-500" title="${data.q}">${data.q}</td><td class="p-3 text-right"><button onclick="window.openEditQuiz('${data.id}', '${grade}')" class="text-blue-500 hover:text-blue-700 mr-2"><i class="ph-fill ph-pencil-simple text-lg"></i></button><button onclick="window.deleteQuiz('${data.id}', '${grade}')" class="text-red-400 hover:text-red-600"><i class="ph-fill ph-trash text-lg"></i></button></td></tr>`;
+                    tbody.innerHTML += `
+                        <tr class="border-b hover:bg-slate-50">
+                            <td class="p-3 font-semibold text-slate-700 w-24">${data.id}</td>
+                            <td class="p-3 truncate max-w-[120px] text-slate-500" title="${data.q}">${data.q}</td>
+                            <td class="p-3 text-right">
+                                <button onclick="window.openEditQuiz('${data.id}', '${grade}')" class="text-blue-500 hover:text-blue-700 mr-2"><i class="ph-fill ph-pencil-simple text-lg"></i></button>
+                                <button onclick="window.deleteQuiz('${data.id}', '${grade}')" class="text-red-400 hover:text-red-600"><i class="ph-fill ph-trash text-lg"></i></button>
+                            </td>
+                        </tr>`;
                 });
             } catch (error) { tbody.innerHTML = '<tr><td class="p-4 text-red-400">Error loading</td></tr>';}
         }
 
         window.deleteQuiz = async function(date, grade) {
             if(!confirm(`Delete quiz for ${date}?`)) return;
-            try { await deleteDoc(doc(db, `dailyQuestions_${grade}`, date)); await deleteDoc(doc(db, `secretAnswers_${grade}`, date)); loadQuizzes(); window.showToast("Deleted"); } catch (e) { window.showToast("Error", "error"); }
+            try { await deleteDoc(doc(db, `dailyQuestions_${grade}`, date)); await deleteDoc(doc(db, `secretAnswers_${grade}`, date)); loadQuizzes(); window.showToast("Deleted"); } catch (e) { window.showToast("Error deleting", "error"); }
         }
 
         let editOptionCount = 0;
         window.openEditQuiz = async function(date, grade) {
             document.getElementById('edit-q-date').value = date; document.getElementById('edit-q-grade').value = grade;
             try {
-                const qSnap = await getDoc(doc(db, `dailyQuestions_${grade}`, date)); const aSnap = await getDoc(doc(db, `secretAnswers_${grade}`, date));
+                const qSnap = await getDoc(doc(db, `dailyQuestions_${grade}`, date));
+                const aSnap = await getDoc(doc(db, `secretAnswers_${grade}`, date));
                 if(!qSnap.exists()) return;
                 const data = qSnap.data(); const ansData = aSnap.exists() ? aSnap.data() : { ans: 0 };
+                
                 document.getElementById('edit-q-text').value = data.q;
-                const container = document.getElementById('edit-dynamic-options-container'); container.innerHTML = ''; editOptionCount = 0;
+                const container = document.getElementById('edit-dynamic-options-container');
+                container.innerHTML = ''; editOptionCount = 0;
+                
                 data.options.forEach((opt, index) => { window.addEditOptionField(opt, index === ansData.ans); });
                 document.getElementById('quizEditModal').classList.remove('hidden');
-            } catch (e) { window.showToast("Error", "error"); }
+            } catch (e) { window.showToast("Error loading quiz data", "error"); }
         }
 
         window.addEditOptionField = function(val = "", isChecked = false) {
-            const container = document.getElementById('edit-dynamic-options-container'); const div = document.createElement('div'); div.className = "flex items-center gap-3";
-            div.innerHTML = `<input type="radio" name="editCorrectOpt" value="${editOptionCount}" ${isChecked ? 'checked' : ''} class="w-4 h-4 text-indigo-600"><input type="text" value="${val}" required class="edit-opt-input w-full p-2 border rounded-lg text-sm bg-white"><button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600"><i class="ph-fill ph-trash"></i></button>`;
+            const container = document.getElementById('edit-dynamic-options-container');
+            const div = document.createElement('div'); div.className = "flex items-center gap-3";
+            div.innerHTML = `
+                <input type="radio" name="editCorrectOpt" value="${editOptionCount}" ${isChecked ? 'checked' : ''} class="w-4 h-4 text-indigo-600">
+                <input type="text" value="${val}" required class="edit-opt-input w-full p-2 border rounded-lg text-sm bg-white">
+                <button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600"><i class="ph-fill ph-trash"></i></button>
+            `;
             container.appendChild(div); editOptionCount++;
         }
 
         window.closeQuizModal = function() { document.getElementById('quizEditModal').classList.add('hidden'); }
 
         window.updateDailyQuiz = async function() {
-            const date = document.getElementById('edit-q-date').value; const grade = document.getElementById('edit-q-grade').value; const question = document.getElementById('edit-q-text').value;
-            const options = []; let correctAnsIndex = -1;
-            document.querySelectorAll('#edit-dynamic-options-container > div').forEach((div) => {
-                const textInput = div.querySelector('input[type="text"]'); const radioInput = div.querySelector('input[type="radio"]');
-                const val = textInput.value.trim(); if(val !== '') { if(radioInput.checked) { correctAnsIndex = options.length; } options.push(val); }
+            const date = document.getElementById('edit-q-date').value; const grade = document.getElementById('edit-q-grade').value;
+            const question = document.getElementById('edit-q-text').value;
+            
+            const options = [];
+            let correctAnsIndex = -1;
+            const optionDivs = document.querySelectorAll('#edit-dynamic-options-container > div');
+            
+            optionDivs.forEach((div) => {
+                const textInput = div.querySelector('input[type="text"]');
+                const radioInput = div.querySelector('input[type="radio"]');
+                const val = textInput.value.trim();
+                if(val !== '') {
+                    if(radioInput.checked) { correctAnsIndex = options.length; }
+                    options.push(val);
+                }
             });
+            
             if(!question || options.length < 2) { window.showToast("Validation failed.", "error"); return; }
             if(correctAnsIndex === -1) { window.showToast("Select correct answer.", "error"); return; }
+
             const btn = document.getElementById('updateQuizBtn'); btn.innerText = "Saving..."; btn.disabled = true;
             try {
                 await updateDoc(doc(db, `dailyQuestions_${grade}`, date), { q: question, options: options });
                 await updateDoc(doc(db, `secretAnswers_${grade}`, date), { ans: correctAnsIndex });
                 window.showToast("Quiz updated!"); closeQuizModal(); loadQuizzes();
-            } catch (e) { window.showToast("Error", "error"); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
+            } catch (e) { window.showToast("Error saving", "error"); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
         }
 
         /* ==========================================
@@ -548,33 +712,54 @@
             const title = document.getElementById('resTitle').value; const category = document.getElementById('resCategory').value;
             const desc = document.getElementById('resDesc').value; const fileInput = document.getElementById('resFile').files[0];
             let driveLink = document.getElementById('resLink').value; const price = document.getElementById('resPrice').value;
-            const btn = document.getElementById('addBtn'); const progressCont = document.getElementById('uploadProgressContainer'); const progressBar = document.getElementById('uploadProgressBar');
+            const btn = document.getElementById('addBtn');
+            const progressCont = document.getElementById('uploadProgressContainer'); const progressBar = document.getElementById('uploadProgressBar');
+
             if(!title || !desc) { window.showToast("Title and Description required!", "error"); return; }
             if(!fileInput && !driveLink) { window.showToast("Upload file OR provide Link!", "error"); return; }
+
             btn.disabled = true; btn.innerText = "Publishing...";
             try {
                 const customId = category.replace(/[^a-zA-Z]/g, '').toLowerCase() + '_' + Date.now();
                 if(fileInput) {
                     progressCont.classList.remove('hidden'); const storageRef = ref(storage, 'papers/' + customId + '_' + fileInput.name);
                     const uploadTask = uploadBytesResumable(storageRef, fileInput);
-                    await new Promise((resolve, reject) => { uploadTask.on('state_changed', (snapshot) => { progressBar.style.width = (snapshot.bytesTransferred / snapshot.totalBytes) * 100 + '%'; }, (error) => reject(error), async () => { driveLink = await getDownloadURL(uploadTask.snapshot.ref); resolve(); }); });
+                    await new Promise((resolve, reject) => {
+                        uploadTask.on('state_changed', (snapshot) => { progressBar.style.width = (snapshot.bytesTransferred / snapshot.totalBytes) * 100 + '%'; }, 
+                        (error) => reject(error), async () => { driveLink = await getDownloadURL(uploadTask.snapshot.ref); resolve(); });
+                    });
                 }
                 await setDoc(doc(db, "resources", customId), { title: title, category: category, desc: desc, driveLink: driveLink, price: price, createdAt: new Date() });
-                window.showToast("✅ Resource Published!"); document.querySelectorAll('#resTitle, #resDesc, #resLink, #resPrice, #resFile').forEach(i=>i.value='');
+                window.showToast("✅ Resource Published!");
+                document.querySelectorAll('#resTitle, #resDesc, #resLink, #resPrice, #resFile').forEach(i=>i.value='');
                 progressCont.classList.add('hidden'); progressBar.style.width = '0%'; loadResources(); 
-            } catch (error) { window.showToast(error.message, "error"); } finally { btn.disabled = false; btn.innerText = "Publish Resource"; }
+            } catch (error) { window.showToast(error.message, "error"); } 
+            finally { btn.disabled = false; btn.innerText = "Publish Resource"; }
         }
 
         window.loadResources = async function() {
             const tbody = document.getElementById('resourceTableBody');
             try {
-                const q = query(collection(db, "resources"), orderBy("createdAt", "desc")); const snapshot = await getDocs(q); tbody.innerHTML = '';
+                const q = query(collection(db, "resources"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q); tbody.innerHTML = '';
                 if(snapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
                 snapshot.forEach((doc) => {
-                    const data = doc.data(); const priceValue = parseFloat(data.price);
+                    const data = doc.data(); 
+                    const priceValue = parseFloat(data.price);
                     const isFree = (isNaN(priceValue) || priceValue <= 0) ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg font-bold">Free</span>' : `Rs. ${priceValue}`;
-                    const safeTitle = data.title ? data.title.replace(/'/g, "\\'") : ''; const safeDesc = data.desc ? data.desc.replace(/'/g, "\\'").replace(/\n/g, " ") : '';
-                    tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4 font-medium text-slate-800 truncate max-w-[150px]" title="${data.title}">${data.title}</td><td class="p-4 text-blue-600 font-semibold bg-blue-50/50 rounded">${data.category}</td><td class="p-4">${isFree}</td><td class="p-4 flex gap-2 justify-center"><button onclick="window.openEditModal('${doc.id}', '${safeTitle}', '${data.category}', '${safeDesc}', '${data.price || ''}', '${data.driveLink}')" class="px-3 py-1.5 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg"><i class="ph ph-pencil-simple"></i></button><button onclick="window.deleteResource('${doc.id}', '${data.driveLink}')" class="px-3 py-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg"><i class="ph ph-trash"></i></button></td></tr>`;
+                    const safeTitle = data.title ? data.title.replace(/'/g, "\\'") : '';
+                    const safeDesc = data.desc ? data.desc.replace(/'/g, "\\'").replace(/\n/g, " ") : '';
+
+                    tbody.innerHTML += `
+                        <tr class="border-b hover:bg-slate-50">
+                            <td class="p-4 font-medium text-slate-800 truncate max-w-[150px]" title="${data.title}">${data.title}</td>
+                            <td class="p-4 text-blue-600 font-semibold bg-blue-50/50 rounded">${data.category}</td>
+                            <td class="p-4">${isFree}</td>
+                            <td class="p-4 flex gap-2 justify-center">
+                                <button onclick="window.openEditModal('${doc.id}', '${safeTitle}', '${data.category}', '${safeDesc}', '${data.price || ''}', '${data.driveLink}')" class="px-3 py-1.5 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg"><i class="ph ph-pencil-simple"></i></button>
+                                <button onclick="window.deleteResource('${doc.id}', '${data.driveLink}')" class="px-3 py-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg"><i class="ph ph-trash"></i></button>
+                            </td>
+                        </tr>`;
                 });
             } catch (error) { console.error(error); }
         }
@@ -590,21 +775,28 @@
         window.updateResource = async function() {
             const id = document.getElementById('editId').value; const btn = document.getElementById('updateBtn');
             const title = document.getElementById('editTitle').value; const category = document.getElementById('editCategory').value;
-            const price = document.getElementById('editPrice').value; const desc = document.getElementById('editDesc').value; const link = document.getElementById('editLink').value;
+            const price = document.getElementById('editPrice').value; const desc = document.getElementById('editDesc').value;
+            const link = document.getElementById('editLink').value;
+
             if(!title || !desc) { window.showToast("Title and Description are required.", "error"); return; }
             btn.innerText = "Saving..."; btn.disabled = true;
-            try { await updateDoc(doc(db, "resources", id), { title: title, category: category, price: price, desc: desc, driveLink: link }); closeEditModal(); loadResources(); window.showToast("Resource updated!"); } 
-            catch (error) { window.showToast(error.message, "error"); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
+            try {
+                await updateDoc(doc(db, "resources", id), { title: title, category: category, price: price, desc: desc, driveLink: link });
+                closeEditModal(); loadResources(); window.showToast("Resource updated!");
+            } catch (error) { window.showToast(error.message, "error"); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
         }
 
         window.deleteResource = async function(docId, fileUrl) {
-            if(!confirm("Delete this resource?")) return;
-            try { await deleteDoc(doc(db, "resources", docId)); if(fileUrl && fileUrl.includes("firebasestorage")) { await deleteObject(ref(storage, fileUrl)).catch(e=>console.log(e)); } loadResources(); window.showToast("Resource deleted!"); } 
-            catch (error) { window.showToast(error.message, "error"); }
+            if(!confirm("Are you sure you want to delete this resource?")) return;
+            try { 
+                await deleteDoc(doc(db, "resources", docId)); 
+                if(fileUrl && fileUrl.includes("firebasestorage")) { await deleteObject(ref(storage, fileUrl)).catch(e=>console.log(e)); } 
+                loadResources(); window.showToast("Resource deleted!");
+            } catch (error) { window.showToast(error.message, "error"); }
         }
 
         /* ==========================================
-           3. ORDERS & AUTO-APPROVE / STATUS UPDATE
+           3. ORDERS & STATUS UPDATE (WITH DELETE)
         ========================================== */
         window.loadOrders = async function() {
             const tbody = document.getElementById('ordersTableBody');
@@ -624,20 +816,24 @@
                     let slipBtn = data.slipUrl ? `<a href="${data.slipUrl}" target="_blank" class="text-blue-600 underline text-xs font-bold block mb-2"><i class="ph ph-file-image"></i> View Slip</a>` : '';
                     
                     let actionHTML = '';
-                    // ⚠️ නව "Approve" බට්න් එක (Pending තියෙනකොට විතරක් පේනවා)
                     if (status === 'Pending Verification') {
                         actionHTML = `<button onclick="window.approveOrder('${doc.id}')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow mb-2 w-full text-xs transition-colors"><i class="ph-bold ph-check"></i> Approve PDF & Email</button>`;
                     }
                     
-                    // ⚠️ සාමාන්‍ය Status Update Dropdown එක (කලින් තිබ්බ එකමයි)
+                    // ⚠️ Dropdown and Delete Button added here ⚠️
                     actionHTML += `
-                        <select onchange="window.updateOrderStatus('${doc.id}', this.value)" class="p-1.5 rounded border font-semibold text-xs outline-none w-full ${statusColor}">
-                            <option value="Pending Verification" ${status==='Pending Verification' ? 'selected':''}>Pending Verification</option>
-                            <option value="Approved" ${status==='Approved' ? 'selected':''}>Approved (Access Given)</option>
-                            <option value="Processing" ${status==='Processing' ? 'selected':''}>Courier Processing</option>
-                            <option value="Dispatched" ${status==='Dispatched' ? 'selected':''}>Dispatched</option>
-                            <option value="Delivered" ${status==='Delivered' ? 'selected':''}>Delivered</option>
-                        </select>`;
+                        <div class="flex gap-2 items-center mt-2">
+                            <select onchange="window.updateOrderStatus('${doc.id}', this.value)" class="p-1.5 rounded border font-semibold text-xs outline-none w-full ${statusColor}">
+                                <option value="Pending Verification" ${status==='Pending Verification' ? 'selected':''}>Pending Verification</option>
+                                <option value="Approved" ${status==='Approved' ? 'selected':''}>Approved (Access Given)</option>
+                                <option value="Processing" ${status==='Processing' ? 'selected':''}>Courier Processing</option>
+                                <option value="Dispatched" ${status==='Dispatched' ? 'selected':''}>Dispatched</option>
+                                <option value="Delivered" ${status==='Delivered' ? 'selected':''}>Delivered</option>
+                            </select>
+                            <button onclick="window.deleteOrder('${doc.id}')" class="p-2 bg-red-100 text-red-600 hover:bg-red-200 rounded transition-colors" title="Delete Order">
+                                <i class="ph-bold ph-trash"></i>
+                            </button>
+                        </div>`;
 
                     tbody.innerHTML += `
                         <tr class="border-b hover:bg-slate-50">
@@ -647,7 +843,7 @@
                                 <p class="text-xs mt-2 font-bold text-slate-700">Amount: Rs. ${data.amount}</p>
                                 ${slipBtn}
                             </td>
-                            <td class="p-4 text-center align-top w-[200px]">
+                            <td class="p-4 text-center align-top w-[220px]">
                                 ${actionHTML}
                             </td>
                         </tr>`;
@@ -655,7 +851,6 @@
             } catch (error) { console.error(error); }
         }
 
-        // ⚠️ THE MAGIC APPROVE FUNCTION (Unlocks PDF, Deletes Slip, Sends Email) ⚠️
         window.approveOrder = async (orderId) => {
             try {
                 const orderRef = doc(db, "orders", orderId);
@@ -667,22 +862,15 @@
 
                 window.showToast("Processing Approval... Please wait.");
 
-                // 1. Give access to student
-                await updateDoc(doc(db, "users", data.studentId), {
-                    unlockedTutes: arrayUnion(data.tuteId)
-                });
-
-                // 2. Mark order as Approved
+                await updateDoc(doc(db, "users", data.studentId), { unlockedTutes: arrayUnion(data.tuteId) });
                 await updateDoc(orderRef, { status: "Approved" });
 
-                // 3. Delete Slip from Storage
                 if(data.slipUrl && data.slipUrl.includes("firebasestorage")) {
                     const slipRef = ref(storage, data.slipUrl);
                     await deleteObject(slipRef).catch(e => console.log("Slip already deleted."));
                     await updateDoc(orderRef, { slipUrl: null });
                 }
 
-                // 4. Send Email via EmailJS
                 emailjs.send("service_0mwn89o", "template_3mcklw3", {
                     to_email: data.email,
                     to_name: data.studentName,
@@ -699,10 +887,21 @@
             } catch(e) { window.showToast("Error: " + e.message, "error"); }
         }
 
-        // සාමාන්‍ය Courier Status එක Update කරන ෆන්ෂන් එක
         window.updateOrderStatus = async function(orderId, newStatus) {
             try { await updateDoc(doc(db, "orders", orderId), { status: newStatus }); loadOrders(); window.showToast("Status Updated");} 
             catch (error) { window.showToast("Error updating status.", "error"); }
+        }
+
+        // ⚠️ NEW: Delete Order Function ⚠️
+        window.deleteOrder = async function(orderId) {
+            if(!confirm("Are you sure you want to permanently delete this order?")) return;
+            try { 
+                await deleteDoc(doc(db, "orders", orderId)); 
+                window.showToast("Order permanently deleted!");
+                loadOrders(); 
+            } catch (error) { 
+                window.showToast("Error deleting order.", "error"); 
+            }
         }
 
         /* ==========================================
@@ -725,7 +924,10 @@
         /* ==========================================
            5. STUDENTS & LEADERBOARDS
         ========================================== */
-        window.loadLeaderboards = async function() { renderBoard('10/11', 'lb-10-11'); renderBoard('12/13', 'lb-12-13'); }
+        window.loadLeaderboards = async function() {
+            renderBoard('10/11', 'lb-10-11');
+            renderBoard('12/13', 'lb-12-13');
+        }
 
         async function renderBoard(grade, elementId) {
             const container = document.getElementById(elementId);
@@ -733,10 +935,15 @@
                 const q = query(collection(db, "users"), where("grade", "==", grade), orderBy("points", "desc"), limit(10));
                 const snapshot = await getDocs(q); container.innerHTML = '';
                 if(snapshot.empty) { container.innerHTML = '<div class="text-center text-xs text-slate-500 py-4">No data yet.</div>'; return; }
+                
                 let rank = 1;
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    container.innerHTML += `<div class="flex justify-between items-center bg-white p-2 rounded border text-xs"><div class="flex items-center gap-2"><span class="text-slate-400 font-bold w-4">${rank}</span> <span class="font-bold text-slate-700">${data.fullName || 'Student'}</span></div><span class="bg-blue-100 text-blue-700 font-bold px-2 py-1 rounded">${data.points || 0}</span></div>`;
+                    container.innerHTML += `
+                        <div class="flex justify-between items-center bg-white p-2 rounded border text-xs">
+                            <div class="flex items-center gap-2"><span class="text-slate-400 font-bold w-4">${rank}</span> <span class="font-bold text-slate-700">${data.fullName || 'Student'}</span></div>
+                            <span class="bg-blue-100 text-blue-700 font-bold px-2 py-1 rounded">${data.points || 0}</span>
+                        </div>`;
                     rank++;
                 });
             } catch (e) { container.innerHTML = '<div class="text-center text-xs text-red-400 py-4">Error</div>'; }
@@ -746,7 +953,8 @@
         window.loadStudents = async function() {
             const tbody = document.getElementById('studentTableBody');
             try {
-                const snapshot = await getDocs(collection(db, "users")); allStudents = [];
+                const snapshot = await getDocs(collection(db, "users")); 
+                allStudents = [];
                 snapshot.forEach(doc => { if(doc.data().email !== 'admin@pradeepk.com') allStudents.push({id: doc.id, ...doc.data()}); });
                 renderStudentTable(allStudents);
             } catch (error) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-400">Failed to load.</td></tr>'; }
@@ -754,26 +962,50 @@
 
         window.filterStudents = function(val) {
             const query = val.toLowerCase();
-            const filtered = allStudents.filter(s => (s.fullName && s.fullName.toLowerCase().includes(query)) || (s.email && s.email.toLowerCase().includes(query)) || (s.phone && s.phone.includes(query)) );
+            const filtered = allStudents.filter(s => 
+                (s.fullName && s.fullName.toLowerCase().includes(query)) || 
+                (s.email && s.email.toLowerCase().includes(query)) ||
+                (s.phone && s.phone.includes(query))
+            );
             renderStudentTable(filtered);
         }
 
         function renderStudentTable(students) {
-            const tbody = document.getElementById('studentTableBody'); tbody.innerHTML = '';
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
             if(students.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No matching students.</td></tr>'; return; }
+
             students.forEach((data) => {
-                const name = data.fullName || `<span class="text-red-400">No Name</span>`; const email = data.email || 'N/A'; const points = data.points || 0;
+                const name = data.fullName || `<span class="text-red-400">No Name</span>`;
+                const email = data.email || 'N/A';
+                const points = data.points || 0;
+                
                 const encodedData = encodeURIComponent(JSON.stringify(data));
-                tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4 font-semibold text-slate-700">${name}</td><td class="p-4 text-slate-500">${data.phone || 'N/A'}</td><td class="p-4 text-slate-500">${email}</td><td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td><td class="p-4 text-center"><button onclick="window.openStudentModal('${encodedData}')" class="px-4 py-1.5 bg-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg transition-colors text-xs font-bold">View</button></td></tr>`;
+
+                tbody.innerHTML += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="p-4 font-semibold text-slate-700">${name}</td>
+                        <td class="p-4 text-slate-500">${data.phone || 'N/A'}</td>
+                        <td class="p-4 text-slate-500">${email}</td>
+                        <td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td>
+                        <td class="p-4 text-center">
+                            <button onclick="window.openStudentModal('${encodedData}')" class="px-4 py-1.5 bg-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg transition-colors text-xs font-bold">View</button>
+                        </td>
+                    </tr>`;
             });
         }
 
         window.openStudentModal = function(encodedData) {
             const data = JSON.parse(decodeURIComponent(encodedData));
-            document.getElementById('v-stuName').innerText = data.fullName || 'N/A'; document.getElementById('v-stuEmail').innerText = data.email || 'N/A';
-            document.getElementById('v-stuPhone').innerText = data.phone || 'N/A'; document.getElementById('v-stuGrade').innerText = data.exactGrade || data.grade || 'N/A';
-            document.getElementById('v-stuNic').innerText = data.nic || 'Not Provided'; document.getElementById('v-stuAddress').innerText = (data.address ? data.address + '\n' + (data.district || '') : 'N/A');
-            document.getElementById('v-stuPoints').innerText = (data.points || 0) + ' Pts'; document.getElementById('studentModal').classList.remove('hidden');
+            document.getElementById('v-stuName').innerText = data.fullName || 'N/A';
+            document.getElementById('v-stuEmail').innerText = data.email || 'N/A';
+            document.getElementById('v-stuPhone').innerText = data.phone || 'N/A';
+            document.getElementById('v-stuGrade').innerText = data.exactGrade || data.grade || 'N/A';
+            document.getElementById('v-stuNic').innerText = data.nic || 'Not Provided';
+            document.getElementById('v-stuAddress').innerText = (data.address ? data.address + '\n' + (data.district || '') : 'N/A');
+            document.getElementById('v-stuPoints').innerText = (data.points || 0) + ' Pts';
+            
+            document.getElementById('studentModal').classList.remove('hidden');
         }
         window.closeStudentModal = function() { document.getElementById('studentModal').classList.add('hidden'); }
 
