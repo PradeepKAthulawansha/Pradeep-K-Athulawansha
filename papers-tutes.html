@@ -44,6 +44,8 @@
 
             <div class="flex items-center gap-4">
                 <button id="navLoginBtn" onclick="window.openAuthModal()" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Login / Register</button>
+                <button id="navLogoutBtn" onclick="window.logoutUser()" class="hidden md:hidden px-6 py-2 rounded-full bg-red-100 text-red-600 font-medium hover:bg-red-200 transition-colors">Log Out</button>
+                
                 <button onclick="window.toggleMobileMenu()" class="md:hidden text-3xl text-slate-800 focus:outline-none">
                     <i class="ph ph-list"></i>
                 </button>
@@ -65,7 +67,9 @@
             <a href="about us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">About Us</a>
             <a href="papers-tutes.html" class="text-blue-600 border-b border-slate-100 pb-4">Papers & Tutes</a>
             <a href="contact us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Contact</a>
-            <button onclick="window.toggleMobileMenu(); window.openAuthModal();" class="mt-6 px-6 py-4 rounded-xl bg-slate-900 text-white font-bold text-lg shadow-lg">Login / Register <i class="ph ph-user-circle inline align-middle"></i></button>
+            
+            <button id="mobileLoginBtn" onclick="window.toggleMobileMenu(); window.openAuthModal();" class="mt-6 px-6 py-4 rounded-xl bg-slate-900 text-white font-bold text-lg shadow-lg">Login / Register <i class="ph ph-user-circle inline align-middle"></i></button>
+            <button id="mobileLogoutBtn" onclick="window.toggleMobileMenu(); window.logoutUser();" class="hidden mt-6 px-6 py-4 rounded-xl bg-red-100 text-red-600 font-bold text-lg shadow-lg">Log Out <i class="ph ph-sign-out inline align-middle"></i></button>
         </nav>
     </div>
 
@@ -82,8 +86,7 @@
                     </div>
                 </div>
                 <div class="flex gap-2 w-full md:w-auto justify-center md:justify-end">
-                    <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 md:py-2 rounded-full border-2 border-blue-100 text-blue-600 hover:bg-blue-50 font-medium transition-colors flex items-center gap-2 text-sm md:text-base"><i class="ph ph-user-circle text-lg"></i> Profile</button>
-                    <button onclick="window.logoutUser()" class="px-4 py-2 md:px-6 md:py-2 rounded-full border-2 border-red-100 text-red-500 hover:bg-red-50 font-medium transition-colors flex items-center gap-2 text-sm md:text-base"><i class="ph ph-sign-out text-lg"></i> Log Out</button>
+                    <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 md:py-2 rounded-full border-2 border-blue-100 text-blue-600 hover:bg-blue-50 font-medium transition-colors flex items-center gap-2 text-sm md:text-base"><i class="ph ph-user-circle text-lg"></i> My Profile</button>
                 </div>
             </div>
 
@@ -290,24 +293,44 @@
         }
         initPage();
 
+        // 🔥 ACCOUNT STATE LISTENER (Fixing Dashboard & Buttons) 🔥
         onAuthStateChanged(auth, async (user) => {
             if (user && user.email !== "admin@pradeepk.com") {
                 try {
                     const docSnap = await getDoc(doc(db, "users", user.uid));
                     if (docSnap.exists()) {
                         currentUserData = docSnap.data();
+                        
+                        // Show Dashboard & Details
                         document.getElementById('userDashboardBar').classList.remove('hidden');
-                        document.getElementById('navLoginBtn').classList.add('hidden');
                         document.getElementById('welcomeMsg').innerText = "Welcome, " + currentUserData.fullName;
                         document.getElementById('dashboardPoints').innerText = (currentUserData.points || 0) + " pts";
+                        
+                        // Header Buttons UI Update
+                        document.getElementById('navLoginBtn').classList.add('hidden');
+                        document.getElementById('navLogoutBtn').classList.remove('hidden');
+                        
+                        // Mobile Menu Buttons UI Update
+                        document.getElementById('mobileLoginBtn').classList.add('hidden');
+                        document.getElementById('mobileLogoutBtn').classList.remove('hidden');
+                        
                         currentUserUnlockedTutes = currentUserData.unlockedTutes || [];
                         window.closeAuthModal();
                     }
-                } catch(e) {}
+                } catch(e) { console.error("Error fetching user data:", e); }
             } else {
                 currentUserData = null; currentUserUnlockedTutes = [];
+                
+                // Hide Dashboard
                 document.getElementById('userDashboardBar').classList.add('hidden');
+                
+                // Header Buttons UI Update
                 document.getElementById('navLoginBtn').classList.remove('hidden');
+                document.getElementById('navLogoutBtn').classList.add('hidden');
+                
+                // Mobile Menu Buttons UI Update
+                document.getElementById('mobileLoginBtn').classList.remove('hidden');
+                document.getElementById('mobileLogoutBtn').classList.add('hidden');
             }
             window.renderItems('Grade 10 Tutes');
         });
@@ -425,7 +448,7 @@
             }, 1000);
         }
 
-        // 🔥 NEW IMGBB UPLOAD & WHATSAPP REDIRECT LOGIC 🔥
+        // 🔥 IMGBB UPLOAD & WHATSAPP REDIRECT 🔥
         window.initiatePayment = async () => {
             const name = document.getElementById('shipName').value;
             const phone = document.getElementById('shipPhone').value;
@@ -480,7 +503,7 @@
                 document.getElementById('shippingModal').classList.add('hidden');
 
                 // 3. Generate Magic Link and WhatsApp Message
-                const adminPhone = "94766390768"; 
+                const adminPhone = "94719151415"; // ⚠️ Updated Number ⚠️
                 const approveLink = `https://bizmind.lk/secret-admin-panel.html?autoApprove=${orderId}`; 
                 
                 const waText = `🎓 *New Order Request!*\n\n*Student:* ${name}\n*Phone:* ${phone}\n*Tute:* ${currentPurchaseTute.title}\n*Amount:* Rs. ${currentPurchaseTute.price}\n\n📄 *View Slip:* ${slipUrl}\n\n✅ *Click below link to Auto-Approve Order:*\n${approveLink}`;
