@@ -69,7 +69,40 @@
         <div id="tab-orders" class="tab-content active">
             <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
                 <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Student Orders & Approvals</h3>
-                <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
+                
+                <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-200">
+                    <div class="flex flex-wrap gap-3 items-end">
+                        <div class="flex-1 min-w-[200px]">
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Search</label>
+                            <input type="text" id="orderSearch" placeholder="Name, Phone, or Title..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Status</label>
+                            <select id="orderStatusFilter" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
+                                <option value="">All Statuses</option>
+                                <option value="Pending Verification">Pending Verification</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Dispatched">Dispatched</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">From Date</label>
+                            <input type="date" id="orderStartDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">To Date</label>
+                            <input type="date" id="orderEndDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="window.applyOrderFilter()" class="px-5 py-2.5 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors text-sm shadow-md">Filter</button>
+                            <button onclick="window.clearOrderFilter()" class="px-5 py-2.5 bg-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-300 transition-colors text-sm">Clear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto border rounded-xl max-h-[500px] overflow-y-auto custom-scroll">
                     <table class="w-full text-left border-collapse whitespace-nowrap relative">
                         <thead class="sticky top-0 bg-green-50 z-10">
                             <tr class="text-green-800 text-sm">
@@ -172,7 +205,10 @@
                 </div>
 
                 <div class="lg:col-span-2 glass-card p-6 md:p-8 border-t-4 border-blue-400">
-                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Uploaded Materials</h3>
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
+                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Materials</h3>
+                        <input type="text" id="tuteSearch" oninput="window.applyTuteFilter()" placeholder="Search Tutes by Title..." class="p-2.5 border rounded-lg text-sm bg-slate-50 outline-none focus:border-blue-400 w-full md:w-1/2">
+                    </div>
                     <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
                         <table class="w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
@@ -191,11 +227,32 @@
         </div>
 
         <div id="tab-students" class="tab-content">
-            <div class="glass-card p-6 md:p-8">
+            <div class="glass-card p-6 md:p-8 border-t-4 border-teal-500">
                 <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
-                    <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-users text-blue-600"></i> Registered Students</h3>
-                    <input type="text" id="studentSearch" oninput="window.filterStudents(this.value)" placeholder="Search Name/Email/Phone..." class="p-3 border rounded-xl text-sm bg-slate-50 outline-none focus:border-blue-400 w-full md:w-1/3">
+                    <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-users text-teal-600"></i> Registered Students</h3>
                 </div>
+                
+                <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-200">
+                    <div class="flex flex-wrap gap-3 items-end">
+                        <div class="flex-1 min-w-[200px]">
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Search</label>
+                            <input type="text" id="studentSearch" placeholder="Name, Email, or Phone..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Reg From</label>
+                            <input type="date" id="studentStartDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Reg To</label>
+                            <input type="date" id="studentEndDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="window.applyStudentFilter()" class="px-5 py-2.5 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700 transition-colors text-sm shadow-md">Filter</button>
+                            <button onclick="window.clearStudentFilter()" class="px-5 py-2.5 bg-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-300 transition-colors text-sm">Clear</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
                     <table class="w-full text-left border-collapse whitespace-nowrap relative">
                         <thead class="sticky top-0 bg-slate-100 z-10">
@@ -341,6 +398,11 @@
 
         emailjs.init("msKLscXDbLA-GGmXH");
 
+        // Global Arrays for Filtering
+        let allOrders = [];
+        let allStudents = [];
+        let allResources = [];
+
         // Tab Switching Logic
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -391,7 +453,11 @@
         function initAdmin() {
             document.getElementById('q-date').valueAsDate = new Date();
             initOptionFields();
-            loadQuizzes(); loadLeaderboards(); loadOrders(); loadResources(); loadStudents();
+            loadQuizzes(); 
+            loadLeaderboards(); 
+            loadOrders(); 
+            loadResources(); 
+            loadStudents();
             
             const today = new Date();
             const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -578,7 +644,7 @@
             } catch (e) { window.showToast("Error saving", "error"); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
         }
 
-        /* --- RESOURCES LOGIC --- */
+        /* --- RESOURCES LOGIC (WITH FILTER) --- */
         window.addResource = async function() {
             const title = document.getElementById('resTitle').value; const category = document.getElementById('resCategory').value;
             const desc = document.getElementById('resDesc').value; const fileInput = document.getElementById('resFile').files[0];
@@ -601,17 +667,29 @@
         }
 
         window.loadResources = async function() {
-            const tbody = document.getElementById('resourceTableBody');
             try {
-                const q = query(collection(db, "resources"), orderBy("createdAt", "desc")); const snapshot = await getDocs(q); tbody.innerHTML = '';
-                if(snapshot.empty) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
-                snapshot.forEach((doc) => {
-                    const data = doc.data(); const priceValue = parseFloat(data.price);
-                    const isFree = (isNaN(priceValue) || priceValue <= 0) ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg font-bold">Free</span>' : `Rs. ${priceValue}`;
-                    const safeTitle = data.title ? data.title.replace(/'/g, "\\'") : ''; const safeDesc = data.desc ? data.desc.replace(/'/g, "\\'").replace(/\n/g, " ") : '';
-                    tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4 font-medium text-slate-800 truncate max-w-[150px]" title="${data.title}">${data.title}</td><td class="p-4 text-blue-600 font-semibold bg-blue-50/50 rounded">${data.category}</td><td class="p-4">${isFree}</td><td class="p-4 flex gap-2 justify-center"><button onclick="window.openEditModal('${doc.id}', '${safeTitle}', '${data.category}', '${safeDesc}', '${data.price || ''}', '${data.driveLink}')" class="px-3 py-1.5 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg"><i class="ph ph-pencil-simple"></i></button><button onclick="window.deleteResource('${doc.id}', '${data.driveLink}')" class="px-3 py-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg"><i class="ph ph-trash"></i></button></td></tr>`;
-                });
+                const q = query(collection(db, "resources"), orderBy("createdAt", "desc")); 
+                const snapshot = await getDocs(q); 
+                allResources = [];
+                snapshot.forEach((doc) => allResources.push({id: doc.id, ...doc.data()}));
+                window.applyTuteFilter();
             } catch (error) { console.error(error); }
+        }
+
+        window.applyTuteFilter = function() {
+            const search = document.getElementById('tuteSearch').value.toLowerCase();
+            const filtered = allResources.filter(r => (r.title && r.title.toLowerCase().includes(search)) || (r.category && r.category.toLowerCase().includes(search)));
+            
+            const tbody = document.getElementById('resourceTableBody');
+            tbody.innerHTML = '';
+            if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
+            
+            filtered.forEach(data => {
+                const priceValue = parseFloat(data.price);
+                const isFree = (isNaN(priceValue) || priceValue <= 0) ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg font-bold">Free</span>' : `Rs. ${priceValue}`;
+                const safeTitle = data.title ? data.title.replace(/'/g, "\\'") : ''; const safeDesc = data.desc ? data.desc.replace(/'/g, "\\'").replace(/\n/g, " ") : '';
+                tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4 font-medium text-slate-800 truncate max-w-[150px]" title="${data.title}">${data.title}</td><td class="p-4 text-blue-600 font-semibold bg-blue-50/50 rounded">${data.category}</td><td class="p-4">${isFree}</td><td class="p-4 flex gap-2 justify-center"><button onclick="window.openEditModal('${data.id}', '${safeTitle}', '${data.category}', '${safeDesc}', '${data.price || ''}', '${data.driveLink}')" class="px-3 py-1.5 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg"><i class="ph ph-pencil-simple"></i></button><button onclick="window.deleteResource('${data.id}', '${data.driveLink}')" class="px-3 py-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg"><i class="ph ph-trash"></i></button></td></tr>`;
+            });
         }
 
         window.openEditModal = function(id, title, category, desc, price, link) {
@@ -638,35 +716,79 @@
             catch (error) { window.showToast(error.message, "error"); }
         }
 
-        /* --- ORDERS LOGIC --- */
+        /* --- ORDERS LOGIC (WITH FILTER & 7 DAY LIMIT) --- */
         window.loadOrders = async function() {
-            const tbody = document.getElementById('ordersTableBody');
             try {
                 const q = query(collection(db, "orders"), orderBy("date", "desc"));
-                const snapshot = await getDocs(q); tbody.innerHTML = '';
-                if(snapshot.empty) { tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-500">No orders.</td></tr>'; return; }
-                
-                snapshot.forEach((doc) => {
-                    const data = doc.data(); const status = data.status || 'Processing';
-                    let statusColor = status === 'Delivered' ? 'border-green-500 text-green-700 bg-green-50' : (status === 'Dispatched' ? 'border-blue-500 text-blue-700 bg-blue-50' : (status === 'Approved' ? 'border-indigo-500 text-indigo-700 bg-indigo-50' : 'border-orange-500 text-orange-700 bg-orange-50'));
-                    let slipBtn = data.slipUrl ? `<a href="${data.slipUrl}" target="_blank" class="text-blue-600 underline text-xs font-bold block mb-2"><i class="ph ph-file-image"></i> View Slip</a>` : '';
-                    let actionHTML = '';
-                    if (status === 'Pending Verification') { actionHTML = `<button onclick="window.approveOrder('${doc.id}')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow mb-2 w-full text-xs transition-colors"><i class="ph-bold ph-check"></i> Approve PDF & Email</button>`; }
-                    
-                    actionHTML += `<div class="flex gap-2 items-center mt-2">
-                            <select onchange="window.updateOrderStatus('${doc.id}', this.value)" class="p-1.5 rounded border font-semibold text-xs outline-none w-full ${statusColor}">
-                                <option value="Pending Verification" ${status==='Pending Verification' ? 'selected':''}>Pending Verification</option>
-                                <option value="Approved" ${status==='Approved' ? 'selected':''}>Approved (Access Given)</option>
-                                <option value="Processing" ${status==='Processing' ? 'selected':''}>Courier Processing</option>
-                                <option value="Dispatched" ${status==='Dispatched' ? 'selected':''}>Dispatched</option>
-                                <option value="Delivered" ${status==='Delivered' ? 'selected':''}>Delivered</option>
-                            </select>
-                            <button onclick="window.deleteOrder('${doc.id}')" class="p-2 bg-red-100 text-red-600 hover:bg-red-200 rounded transition-colors" title="Delete Order"><i class="ph-bold ph-trash"></i></button>
-                        </div>`;
-
-                    tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4"><p class="font-bold">${data.studentName}</p><p class="text-xs text-slate-500">${data.email}</p><p class="text-xs">📞 ${data.phone1}</p><p class="text-[10px] text-slate-400 mt-1">${(data.address || '').substring(0, 30)}...</p></td><td class="p-4 bg-slate-50/50"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold text-xs">${data.tuteTitle}</span><p class="text-xs mt-2 font-bold text-slate-700">Amount: Rs. ${data.amount}</p>${slipBtn}</td><td class="p-4 text-center align-top w-[240px]">${actionHTML}</td></tr>`;
-                });
+                const snapshot = await getDocs(q); 
+                allOrders = [];
+                snapshot.forEach(doc => allOrders.push({id: doc.id, ...doc.data()}));
+                window.clearOrderFilter(); // This applies the default 7 day filter
             } catch (error) { console.error(error); }
+        }
+
+        window.applyOrderFilter = function() {
+            const search = document.getElementById('orderSearch').value.toLowerCase();
+            const status = document.getElementById('orderStatusFilter').value;
+            const startStr = document.getElementById('orderStartDate').value;
+            const endStr = document.getElementById('orderEndDate').value;
+
+            let filtered = allOrders.filter(o => {
+                let matchSearch = (o.studentName && o.studentName.toLowerCase().includes(search)) || 
+                                  (o.phone1 && o.phone1.includes(search)) || 
+                                  (o.tuteTitle && o.tuteTitle.toLowerCase().includes(search));
+                
+                let matchStatus = status === "" || o.status === status;
+                
+                let matchDate = true;
+                if(o.date && (startStr || endStr)) {
+                    const oDate = o.date.toDate(); oDate.setHours(0,0,0,0);
+                    if(startStr) { const sDate = new Date(startStr); sDate.setHours(0,0,0,0); matchDate = matchDate && oDate >= sDate; }
+                    if(endStr) { const eDate = new Date(endStr); eDate.setHours(23,59,59,999); matchDate = matchDate && oDate <= eDate; }
+                }
+                return matchSearch && matchStatus && matchDate;
+            });
+
+            const tbody = document.getElementById('ordersTableBody');
+            tbody.innerHTML = '';
+            if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-500">No orders found.</td></tr>'; return; }
+            
+            filtered.forEach((data) => {
+                const statusStr = data.status || 'Processing';
+                let statusColor = statusStr === 'Delivered' ? 'border-green-500 text-green-700 bg-green-50' : (statusStr === 'Dispatched' ? 'border-blue-500 text-blue-700 bg-blue-50' : (statusStr === 'Approved' ? 'border-indigo-500 text-indigo-700 bg-indigo-50' : 'border-orange-500 text-orange-700 bg-orange-50'));
+                let slipBtn = data.slipUrl ? `<a href="${data.slipUrl}" target="_blank" class="text-blue-600 underline text-xs font-bold block mb-2"><i class="ph ph-file-image"></i> View Slip</a>` : '';
+                let actionHTML = '';
+                if (statusStr === 'Pending Verification') { actionHTML = `<button onclick="window.approveOrder('${data.id}')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow mb-2 w-full text-xs transition-colors"><i class="ph-bold ph-check"></i> Approve PDF & Email</button>`; }
+                
+                actionHTML += `<div class="flex gap-2 items-center mt-2">
+                        <select onchange="window.updateOrderStatus('${data.id}', this.value)" class="p-1.5 rounded border font-semibold text-xs outline-none w-full ${statusColor}">
+                            <option value="Pending Verification" ${statusStr==='Pending Verification' ? 'selected':''}>Pending Verification</option>
+                            <option value="Approved" ${statusStr==='Approved' ? 'selected':''}>Approved (Access Given)</option>
+                            <option value="Processing" ${statusStr==='Processing' ? 'selected':''}>Courier Processing</option>
+                            <option value="Dispatched" ${statusStr==='Dispatched' ? 'selected':''}>Dispatched</option>
+                            <option value="Delivered" ${statusStr==='Delivered' ? 'selected':''}>Delivered</option>
+                        </select>
+                        <button onclick="window.deleteOrder('${data.id}')" class="p-2 bg-red-100 text-red-600 hover:bg-red-200 rounded transition-colors" title="Delete Order"><i class="ph-bold ph-trash"></i></button>
+                    </div>`;
+
+                let orderDate = data.date ? data.date.toDate().toLocaleDateString() : '';
+
+                tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4"><p class="font-bold">${data.studentName}</p><p class="text-xs text-slate-500">${data.email}</p><p class="text-xs">📞 ${data.phone1}</p><p class="text-[10px] text-slate-400 mt-1">${orderDate} | ${(data.address || '').substring(0, 30)}...</p></td><td class="p-4 bg-slate-50/50"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold text-xs">${data.tuteTitle}</span><p class="text-xs mt-2 font-bold text-slate-700">Amount: Rs. ${data.amount}</p>${slipBtn}</td><td class="p-4 text-center align-top w-[240px]">${actionHTML}</td></tr>`;
+            });
+        }
+
+        window.clearOrderFilter = function() {
+            document.getElementById('orderSearch').value = '';
+            document.getElementById('orderStatusFilter').value = '';
+            
+            // Default show last 7 days
+            const end = new Date();
+            const start = new Date(); start.setDate(start.getDate() - 7);
+            
+            document.getElementById('orderStartDate').valueAsDate = start;
+            document.getElementById('orderEndDate').valueAsDate = end;
+            
+            window.applyOrderFilter();
         }
 
         window.approveOrder = async (orderId) => {
@@ -676,7 +798,10 @@
                 if(data.status === 'Approved') { window.showToast("Already approved!", "error"); return; }
 
                 window.showToast("Processing Approval... Please wait.");
-                await updateDoc(doc(db, "users", data.studentId), { unlockedTutes: arrayUnion(data.tuteId) });
+                
+                // Fixed Error: Use setDoc with merge to ensure document exists
+                await setDoc(doc(db, "users", data.studentId), { unlockedTutes: arrayUnion(data.tuteId) }, { merge: true });
+                
                 await updateDoc(orderRef, { status: "Approved" });
 
                 if(data.slipUrl && data.slipUrl.includes("firebasestorage")) {
@@ -715,7 +840,7 @@
             if(confirm("Remove notice from student portal?")) { await setDoc(doc(db, "settings", "current_notice"), { active: false }, { merge: true }); window.showToast("Notice Removed!"); }
         }
 
-        /* --- LEADERBOARD & STUDENTS LOGIC --- */
+        /* --- LEADERBOARD & STUDENTS LOGIC (WITH FILTER) --- */
         window.loadLeaderboards = async function() { renderBoard('10/11', 'lb-10-11'); renderBoard('12/13', 'lb-12-13'); }
 
         async function renderBoard(grade, elementId) {
@@ -733,30 +858,49 @@
             } catch (e) { container.innerHTML = '<div class="text-center text-xs text-red-400 py-4">Error</div>'; }
         }
 
-        let allStudents = [];
         window.loadStudents = async function() {
-            const tbody = document.getElementById('studentTableBody');
             try {
                 const snapshot = await getDocs(collection(db, "users")); allStudents = [];
                 snapshot.forEach(doc => { if(doc.data().email !== 'admin@pradeepk.com') allStudents.push({id: doc.id, ...doc.data()}); });
-                renderStudentTable(allStudents);
-            } catch (error) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-400">Failed to load.</td></tr>'; }
+                window.clearStudentFilter();
+            } catch (error) { document.getElementById('studentTableBody').innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-400">Failed to load.</td></tr>'; }
         }
 
-        window.filterStudents = function(val) {
-            const query = val.toLowerCase();
-            const filtered = allStudents.filter(s => (s.fullName && s.fullName.toLowerCase().includes(query)) || (s.email && s.email.toLowerCase().includes(query)) || (s.phone && s.phone.includes(query)) );
-            renderStudentTable(filtered);
-        }
-
-        function renderStudentTable(students) {
-            const tbody = document.getElementById('studentTableBody'); tbody.innerHTML = '';
-            if(students.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No matching students.</td></tr>'; return; }
-            students.forEach((data) => {
-                const name = data.fullName || `<span class="text-red-400">No Name</span>`; const email = data.email || 'N/A'; const points = data.points || 0;
-                const encodedData = encodeURIComponent(JSON.stringify(data));
-                tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4 font-semibold text-slate-700">${name}</td><td class="p-4 text-slate-500">${data.phone || 'N/A'}</td><td class="p-4 text-slate-500">${email}</td><td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td><td class="p-4 text-center"><button onclick="window.openStudentModal('${encodedData}')" class="px-4 py-1.5 bg-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg transition-colors text-xs font-bold">View</button></td></tr>`;
+        window.applyStudentFilter = function() {
+            const search = document.getElementById('studentSearch').value.toLowerCase();
+            const startStr = document.getElementById('studentStartDate').value;
+            const endStr = document.getElementById('studentEndDate').value;
+            
+            let filtered = allStudents.filter(s => {
+                let matchSearch = (s.fullName && s.fullName.toLowerCase().includes(search)) || 
+                                  (s.email && s.email.toLowerCase().includes(search)) || 
+                                  (s.phone && s.phone.includes(search));
+                
+                let matchDate = true;
+                if(s.createdAt && (startStr || endStr)) {
+                    const sDateObj = s.createdAt.toDate(); sDateObj.setHours(0,0,0,0);
+                    if(startStr) { const start = new Date(startStr); start.setHours(0,0,0,0); matchDate = matchDate && sDateObj >= start; }
+                    if(endStr) { const end = new Date(endStr); end.setHours(23,59,59,999); matchDate = matchDate && sDateObj <= end; }
+                }
+                return matchSearch && matchDate;
             });
+            
+            const tbody = document.getElementById('studentTableBody'); tbody.innerHTML = '';
+            if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No matching students.</td></tr>'; return; }
+            
+            filtered.forEach((data) => {
+                const name = data.fullName || `<span class="text-red-400">No Name</span>`; const email = data.email || 'N/A'; const points = data.points || 0;
+                const regDate = data.createdAt ? data.createdAt.toDate().toLocaleDateString() : '';
+                const encodedData = encodeURIComponent(JSON.stringify(data));
+                tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4"><p class="font-semibold text-slate-700">${name}</p><p class="text-[10px] text-slate-400">Reg: ${regDate}</p></td><td class="p-4 text-slate-500">${data.phone || 'N/A'}</td><td class="p-4 text-slate-500">${email}</td><td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td><td class="p-4 text-center"><button onclick="window.openStudentModal('${encodedData}')" class="px-4 py-1.5 bg-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg transition-colors text-xs font-bold">View</button></td></tr>`;
+            });
+        }
+
+        window.clearStudentFilter = function() {
+            document.getElementById('studentSearch').value = '';
+            document.getElementById('studentStartDate').value = '';
+            document.getElementById('studentEndDate').value = '';
+            window.applyStudentFilter();
         }
 
         window.openStudentModal = function(encodedData) {
