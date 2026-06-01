@@ -252,11 +252,7 @@ window.toggleMobileMenu = function() {
             });
         }
 
-        // Modal Logic
-        const modal = document.getElementById('videoPlayerModal');
-        const iframe = document.getElementById('youtubeIframe');
-
-        
+        // Direct YouTube Open
 window.openYouTube = function(ytID) {
     if(!ytID) {
         window.showToast("Invalid video link", "error");
@@ -265,12 +261,8 @@ window.openYouTube = function(ytID) {
     window.location.href = `https://www.youtube.com/watch?v=${ytID}`;
 }
 
-window.closeVideo = function() {}
-, 300);
-        }
-
-        // Load data on start
-        fetchVideos();
+// Load data on start
+fetchVideos();
 
     </script>
 </body>
