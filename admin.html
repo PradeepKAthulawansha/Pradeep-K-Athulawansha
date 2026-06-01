@@ -231,6 +231,14 @@
                 <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
                     <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-users text-teal-600"></i> Registered Students</h3>
                 </div>
+
+                <div class="bg-blue-50 border border-blue-200 p-5 rounded-2xl mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <h4 class="font-bold text-blue-800 text-lg flex items-center gap-2"><i class="ph-fill ph-graduation-cap"></i> Year-End Student Promotion</h4>
+                        <p class="text-xs md:text-sm text-blue-600 mt-1">Upgrade all students to the next grade (Grade 10 to 11, etc.). Grade 13 students will become "Old Students". Use only once a year!</p>
+                    </div>
+                    <button id="promoteBtn" onclick="window.promoteStudents()" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-sm shadow-md whitespace-nowrap">Promote All Students</button>
+                </div>
                 
                 <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-200">
                     <div class="flex flex-wrap gap-3 items-end">
@@ -259,7 +267,7 @@
                             <tr class="text-slate-600 text-sm">
                                 <th class="p-4 border-b">Name</th>
                                 <th class="p-4 border-b">Phone</th>
-                                <th class="p-4 border-b">Email</th>
+                                <th class="p-4 border-b">Email / Grade</th>
                                 <th class="p-4 border-b">Points</th>
                                 <th class="p-4 border-b text-center">Action</th>
                             </tr>
@@ -374,7 +382,6 @@
             <button onclick="window.closeStudentModal()" class="w-full py-3 mt-6 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 text-sm">Close</button>
         </div>
     </div>
-
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
@@ -840,7 +847,53 @@
             if(confirm("Remove notice from student portal?")) { await setDoc(doc(db, "settings", "current_notice"), { active: false }, { merge: true }); window.showToast("Notice Removed!"); }
         }
 
-        /* --- LEADERBOARD & STUDENTS LOGIC (WITH FILTER) --- */
+        /* --- LEADERBOARD & STUDENTS LOGIC (WITH YEAR-END PROMOTION) --- */
+        
+        // 🔥 NEW: YEAR END PROMOTION SCRIPT 🔥
+        window.promoteStudents = async function() {
+            if(!confirm("⚠️ අනතුරු ඇඟවීමයි! ⚠️\n\nමෙමගින් සියලුම සිසුන් මීළඟ ශ්‍රේණියට (Grade) මාරු කරනු ලබයි. Grade 13 සිසුන් 'Old Student' ලෙස වෙනස් වේ.\n\nමෙය වසරකට වරක් පමණක් කළ යුතු දෙයකි. ඔබ විශ්වාසද?")) return;
+
+            const btn = document.getElementById('promoteBtn');
+            btn.disabled = true; btn.innerText = "Promoting...";
+
+            try {
+                const usersRef = collection(db, "users");
+                const snapshot = await getDocs(usersRef);
+
+                let updatePromises = [];
+
+                snapshot.forEach((userDoc) => {
+                    const data = userDoc.data();
+                    if(data.email === 'admin@pradeepk.com') return;
+
+                    let newExactGrade = data.exactGrade;
+                    let newMappedGrade = data.grade;
+                    let needsUpdate = false;
+
+                    if (data.exactGrade === "Grade 10") { newExactGrade = "Grade 11"; newMappedGrade = "10/11"; needsUpdate = true; }
+                    else if (data.exactGrade === "Grade 11") { newExactGrade = "Grade 12"; newMappedGrade = "12/13"; needsUpdate = true; }
+                    else if (data.exactGrade === "Grade 12") { newExactGrade = "Grade 13"; newMappedGrade = "12/13"; needsUpdate = true; }
+                    else if (data.exactGrade === "Grade 13") { newExactGrade = "Old Student"; newMappedGrade = "Old Student"; needsUpdate = true; }
+
+                    if(needsUpdate) {
+                        updatePromises.push(updateDoc(doc(db, "users", userDoc.id), {
+                            exactGrade: newExactGrade,
+                            grade: newMappedGrade
+                        }));
+                    }
+                });
+
+                await Promise.all(updatePromises);
+                window.showToast("✅ All students promoted successfully!");
+                loadStudents(); // reload table
+            } catch(e) {
+                window.showToast("Error promoting students: " + e.message, "error");
+            } finally {
+                btn.disabled = false; btn.innerText = "Promote All Students";
+            }
+        }
+
+
         window.loadLeaderboards = async function() { renderBoard('10/11', 'lb-10-11'); renderBoard('12/13', 'lb-12-13'); }
 
         async function renderBoard(grade, elementId) {
@@ -891,8 +944,10 @@
             filtered.forEach((data) => {
                 const name = data.fullName || `<span class="text-red-400">No Name</span>`; const email = data.email || 'N/A'; const points = data.points || 0;
                 const regDate = data.createdAt ? data.createdAt.toDate().toLocaleDateString() : '';
+                const exactGradeStr = data.exactGrade || data.grade || 'N/A';
                 const encodedData = encodeURIComponent(JSON.stringify(data));
-                tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4"><p class="font-semibold text-slate-700">${name}</p><p class="text-[10px] text-slate-400">Reg: ${regDate}</p></td><td class="p-4 text-slate-500">${data.phone || 'N/A'}</td><td class="p-4 text-slate-500">${email}</td><td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td><td class="p-4 text-center"><button onclick="window.openStudentModal('${encodedData}')" class="px-4 py-1.5 bg-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg transition-colors text-xs font-bold">View</button></td></tr>`;
+                
+                tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4"><p class="font-semibold text-slate-700">${name}</p><p class="text-[10px] text-slate-400">Reg: ${regDate}</p></td><td class="p-4 text-slate-500">${data.phone || 'N/A'}</td><td class="p-4 text-slate-500"><p>${email}</p><p class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded inline-block mt-1">${exactGradeStr}</p></td><td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td><td class="p-4 text-center"><button onclick="window.openStudentModal('${encodedData}')" class="px-4 py-1.5 bg-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg transition-colors text-xs font-bold">View</button></td></tr>`;
             });
         }
 
