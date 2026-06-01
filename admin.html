@@ -33,7 +33,6 @@
 
     <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
 
-    <!-- Login Section -->
     <div id="adminLoginSection" class="glass-card p-10 w-full max-w-md mx-auto text-center mt-20">
         <div class="w-20 h-20 rounded-full bg-slate-900 text-white flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg"><i class="ph-fill ph-shield-check"></i></div>
         <h2 class="text-2xl font-bold mb-2 text-slate-900">Admin Access</h2>
@@ -48,7 +47,6 @@
         <p id="loginError" class="text-red-500 text-sm mt-4 font-medium hidden">Incorrect Username or Password!</p>
     </div>
 
-    <!-- Main Dashboard -->
     <div id="adminDashboardSection" class="w-full max-w-7xl mx-auto hidden">
         
         <div class="glass-card p-6 flex flex-col md:flex-row justify-between items-center mb-8 sticky top-4 z-50">
@@ -60,16 +58,15 @@
             </button>
         </div>
 
-        <!-- Navigation Tabs -->
         <div class="flex flex-wrap gap-3 mb-8 justify-center">
             <button onclick="switchTab('tab-orders')" class="tab-btn active" id="btn-tab-orders"><i class="ph-fill ph-package mr-2"></i>Orders</button>
             <button onclick="switchTab('tab-quiz')" class="tab-btn" id="btn-tab-quiz"><i class="ph-fill ph-rocket-launch mr-2"></i>Daily Quiz</button>
             <button onclick="switchTab('tab-tutes')" class="tab-btn" id="btn-tab-tutes"><i class="ph-fill ph-folder mr-2"></i>Tutes/Papers</button>
+            <button onclick="switchTab('tab-videos')" class="tab-btn" id="btn-tab-videos"><i class="ph-fill ph-youtube-logo mr-2"></i>Videos</button>
             <button onclick="switchTab('tab-students')" class="tab-btn" id="btn-tab-students"><i class="ph-fill ph-users mr-2"></i>Students</button>
             <button onclick="switchTab('tab-reports')" class="tab-btn" id="btn-tab-reports"><i class="ph-fill ph-chart-bar mr-2"></i>Reports & Notice</button>
         </div>
 
-        <!-- TAB: ORDERS -->
         <div id="tab-orders" class="tab-content active">
             <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
                 <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Student Orders & Approvals</h3>
@@ -121,7 +118,6 @@
             </div>
         </div>
 
-        <!-- TAB: QUIZ -->
         <div id="tab-quiz" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="glass-card p-6 md:p-8 border-t-4 border-indigo-500">
@@ -181,7 +177,6 @@
             </div>
         </div>
 
-        <!-- TAB: TUTES -->
         <div id="tab-tutes" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1 glass-card p-6 md:p-8 border-t-4 border-blue-500 h-fit">
@@ -232,13 +227,52 @@
             </div>
         </div>
 
-        <!-- TAB: STUDENTS -->
+        <div id="tab-videos" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 glass-card p-6 md:p-8 border-t-4 border-red-500 h-fit">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph-fill ph-youtube-logo text-red-600"></i> Add YouTube Video</h3>
+                    <div class="space-y-4">
+                        <input type="text" id="vidTitle" class="w-full p-3 border rounded-xl text-sm" placeholder="Video Title (e.g. Paper Discussion 01)">
+                        <select id="vidCategory" class="w-full p-3 border rounded-xl bg-white text-sm">
+                            <option value="Grade 10 Videos">Grade 10 Videos</option>
+                            <option value="Grade 11 Videos">Grade 11 Videos</option>
+                            <option value="Grade 12 Videos">Grade 12 Videos</option>
+                            <option value="Grade 13 Videos">Grade 13 Videos</option>
+                            <option value="General">General / Motivation</option>
+                        </select>
+                        <input type="url" id="vidLink" class="w-full p-3 border rounded-xl text-sm" placeholder="YouTube Video Link">
+                        <textarea id="vidDesc" rows="2" class="w-full p-3 border rounded-xl text-sm" placeholder="Short Description (Optional)"></textarea>
+                        
+                        <button id="addVidBtn" onclick="window.addVideo()" class="w-full py-4 mt-2 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 transition-all text-sm shadow-md flex justify-center items-center gap-2"><i class="ph-bold ph-upload-simple"></i> Publish Video</button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 glass-card p-6 md:p-8 border-t-4 border-red-400">
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
+                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-video-camera text-red-600"></i> Manage Videos</h3>
+                        <input type="text" id="videoSearch" oninput="window.applyVideoFilter()" placeholder="Search Videos by Title..." class="p-2.5 border rounded-lg text-sm bg-slate-50 outline-none focus:border-red-400 w-full md:w-1/2">
+                    </div>
+                    <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
+                        <table class="w-full text-left border-collapse whitespace-nowrap relative">
+                            <thead class="sticky top-0 bg-slate-100 z-10">
+                                <tr class="text-slate-600 text-sm">
+                                    <th class="p-4 border-b">Video Title</th>
+                                    <th class="p-4 border-b">Category</th>
+                                    <th class="p-4 border-b text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="videoTableBody" class="text-sm"><tr><td colspan="3" class="p-4 text-center text-slate-500">Loading videos...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="tab-students" class="tab-content">
             <div class="glass-card p-6 md:p-8 border-t-4 border-teal-500">
                 <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
                     <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-users text-teal-600"></i> Registered Students</h3>
                     
-                    <!-- 🔥 NEW: HIDDEN DANGER ZONE BUTTON 🔥 -->
                     <button onclick="window.openPromoteModal()" class="px-4 py-2 border border-red-200 text-red-500 bg-red-50 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors shadow-sm flex items-center gap-2">
                         <i class="ph-fill ph-warning"></i> Advanced Options
                     </button>
@@ -282,7 +316,6 @@
             </div>
         </div>
 
-        <!-- TAB: REPORTS & NOTICES -->
         <div id="tab-reports" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="glass-card p-6 md:p-8 border-t-4 border-purple-500">
@@ -330,9 +363,6 @@
 
     </div>
 
-    <!-- MODALS -->
-    
-    <!-- 1. PROMOTE MODAL (SECURE) -->
     <div id="promoteModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl border-t-8 border-red-500">
             <button onclick="window.closePromoteModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
@@ -350,7 +380,6 @@
         </div>
     </div>
 
-    <!-- 2. Edit Resource Modal -->
     <div id="editModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl">
             <button onclick="window.closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
@@ -373,7 +402,30 @@
         </div>
     </div>
 
-    <!-- 3. Edit Quiz Modal -->
+    <div id="editVideoModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl">
+            <button onclick="window.closeEditVideoModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
+            <h3 class="text-xl font-bold mb-6 text-slate-800 flex items-center gap-2"><i class="ph-fill ph-pencil-simple text-red-600"></i> Edit Video</h3>
+            <input type="hidden" id="editVidId">
+            <div class="space-y-4">
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Video Title</label><input type="text" id="editVidTitle" class="w-full p-3 border rounded-xl bg-slate-50 text-sm"></div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
+                    <select id="editVidCategory" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
+                        <option value="Grade 10 Videos">Grade 10 Videos</option>
+                        <option value="Grade 11 Videos">Grade 11 Videos</option>
+                        <option value="Grade 12 Videos">Grade 12 Videos</option>
+                        <option value="Grade 13 Videos">Grade 13 Videos</option>
+                        <option value="General">General / Motivation</option>
+                    </select>
+                </div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">YouTube Link</label><input type="url" id="editVidLink" class="w-full p-3 border rounded-xl bg-slate-50 text-sm"></div>
+                <div><label class="block text-xs font-semibold text-slate-500 mb-1">Description</label><textarea id="editVidDesc" rows="2" class="w-full p-3 border rounded-xl bg-slate-50 text-sm"></textarea></div>
+                <button id="updateVidBtn" onclick="window.updateVideo()" class="w-full py-4 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 mt-2 text-sm">Save Video Changes</button>
+            </div>
+        </div>
+    </div>
+
     <div id="quizEditModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl">
             <button onclick="window.closeQuizModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
@@ -391,7 +443,6 @@
         </div>
     </div>
 
-    <!-- 4. View Student Modal -->
     <div id="studentModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl">
             <button onclick="window.closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
@@ -415,7 +466,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, getDoc, doc, deleteDoc, updateDoc, orderBy, query, setDoc, where, limit, arrayUnion } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, getDoc, doc, deleteDoc, updateDoc, orderBy, query, setDoc, where, limit, arrayUnion, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
         const firebaseConfig = {
@@ -434,9 +485,11 @@
 
         emailjs.init("msKLscXDbLA-GGmXH");
 
+        // Global Arrays for Filtering
         let allOrders = [];
         let allStudents = [];
         let allResources = [];
+        let allVideos = [];
 
         // --- HELPER FUNCTION TO FIX DATE ERRORS ---
         function getSafeDate(val) {
@@ -494,7 +547,12 @@
         function initAdmin() {
             document.getElementById('q-date').valueAsDate = new Date();
             initOptionFields();
-            loadQuizzes(); loadLeaderboards(); loadOrders(); loadResources(); loadStudents();
+            loadQuizzes(); 
+            loadLeaderboards(); 
+            loadOrders(); 
+            loadResources(); 
+            loadStudents();
+            loadVideos(); // New function call
             
             const today = new Date();
             const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -610,6 +668,7 @@
             });
             if(!date || !question || options.length < 2) { window.showToast("Please provide a question and at least 2 options.", "error"); return; }
             if(correctAnsIndex === -1) { window.showToast("Select the correct answer.", "error"); return; }
+
             btn.innerText = "Publishing..."; btn.disabled = true;
             try {
                 await setDoc(doc(db, `dailyQuestions_${grade}`, date), { q: question, options: options });
@@ -675,6 +734,95 @@
             } catch (e) { window.showToast("Error saving", "error"); } finally { btn.innerText = "Save Changes"; btn.disabled = false; }
         }
 
+        /* --- VIDEOS LOGIC --- */
+        window.addVideo = async function() {
+            const title = document.getElementById('vidTitle').value; 
+            const category = document.getElementById('vidCategory').value;
+            const desc = document.getElementById('vidDesc').value; 
+            const link = document.getElementById('vidLink').value;
+            const btn = document.getElementById('addVidBtn'); 
+            
+            if(!title || !link) { window.showToast("Video Title and YouTube Link are required!", "error"); return; }
+            
+            btn.disabled = true; btn.innerText = "Publishing Video...";
+            try {
+                await addDoc(collection(db, "videos"), { 
+                    title: title, category: category, desc: desc, youtubeUrl: link, createdAt: new Date() 
+                });
+                window.showToast("✅ Video Published!"); 
+                document.querySelectorAll('#vidTitle, #vidDesc, #vidLink').forEach(i=>i.value='');
+                loadVideos(); 
+            } catch (error) { 
+                window.showToast(error.message, "error"); 
+            } finally { 
+                btn.disabled = false; btn.innerHTML = `<i class="ph-bold ph-upload-simple"></i> Publish Video`; 
+            }
+        }
+
+        window.loadVideos = async function() {
+            try {
+                const q = query(collection(db, "videos"), orderBy("createdAt", "desc")); 
+                const snapshot = await getDocs(q); 
+                allVideos = [];
+                snapshot.forEach((doc) => allVideos.push({id: doc.id, ...doc.data()}));
+                window.applyVideoFilter();
+            } catch (error) { console.error(error); }
+        }
+
+        window.applyVideoFilter = function() {
+            const search = document.getElementById('videoSearch').value.toLowerCase();
+            const filtered = allVideos.filter(v => (v.title && v.title.toLowerCase().includes(search)) || (v.category && v.category.toLowerCase().includes(search)));
+            
+            const tbody = document.getElementById('videoTableBody');
+            tbody.innerHTML = '';
+            if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-500">No videos found.</td></tr>'; return; }
+            
+            filtered.forEach(data => {
+                const safeTitle = data.title ? data.title.replace(/'/g, "\\'") : ''; 
+                const safeDesc = data.desc ? data.desc.replace(/'/g, "\\'").replace(/\n/g, " ") : '';
+                tbody.innerHTML += `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="p-4 font-medium text-slate-800 truncate max-w-[200px]" title="${data.title}">${data.title}</td>
+                        <td class="p-4 text-red-600 font-semibold bg-red-50/50 rounded">${data.category}</td>
+                        <td class="p-4 flex gap-2 justify-center">
+                            <a href="${data.youtubeUrl}" target="_blank" class="px-3 py-1.5 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg"><i class="ph-fill ph-play-circle"></i></a>
+                            <button onclick="window.openEditVideoModal('${data.id}', '${safeTitle}', '${data.category}', '${safeDesc}', '${data.youtubeUrl}')" class="px-3 py-1.5 bg-blue-100 text-blue-600 hover:bg-blue-200 rounded-lg"><i class="ph ph-pencil-simple"></i></button>
+                            <button onclick="window.deleteVideo('${data.id}')" class="px-3 py-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg"><i class="ph ph-trash"></i></button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        window.openEditVideoModal = function(id, title, category, desc, link) {
+            document.getElementById('editVidId').value = id; 
+            document.getElementById('editVidTitle').value = title;
+            document.getElementById('editVidCategory').value = category; 
+            document.getElementById('editVidDesc').value = desc; 
+            document.getElementById('editVidLink').value = link;
+            document.getElementById('editVideoModal').classList.remove('hidden');
+        }
+        window.closeEditVideoModal = function() { document.getElementById('editVideoModal').classList.add('hidden'); }
+
+        window.updateVideo = async function() {
+            const id = document.getElementById('editVidId').value; const btn = document.getElementById('updateVidBtn');
+            const title = document.getElementById('editVidTitle').value; const category = document.getElementById('editVidCategory').value;
+            const desc = document.getElementById('editVidDesc').value; const link = document.getElementById('editVidLink').value;
+            if(!title || !link) { window.showToast("Title and Link are required.", "error"); return; }
+            btn.innerText = "Saving..."; btn.disabled = true;
+            try { 
+                await updateDoc(doc(db, "videos", id), { title: title, category: category, desc: desc, youtubeUrl: link }); 
+                closeEditVideoModal(); loadVideos(); window.showToast("Video updated!"); 
+            } 
+            catch (error) { window.showToast(error.message, "error"); } finally { btn.innerText = "Save Video Changes"; btn.disabled = false; }
+        }
+
+        window.deleteVideo = async function(docId) {
+            if(!confirm("Are you sure you want to delete this video?")) return;
+            try { await deleteDoc(doc(db, "videos", docId)); loadVideos(); window.showToast("Video deleted!"); } 
+            catch (error) { window.showToast(error.message, "error"); }
+        }
+
+
         /* --- RESOURCES LOGIC (WITH FILTER) --- */
         window.addResource = async function() {
             const title = document.getElementById('resTitle').value; const category = document.getElementById('resCategory').value;
@@ -701,7 +849,8 @@
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc")); 
                 const snapshot = await getDocs(q); 
-                allResources = []; snapshot.forEach((doc) => allResources.push({id: doc.id, ...doc.data()}));
+                allResources = [];
+                snapshot.forEach((doc) => allResources.push({id: doc.id, ...doc.data()}));
                 window.applyTuteFilter();
             } catch (error) { console.error(error); }
         }
@@ -709,8 +858,11 @@
         window.applyTuteFilter = function() {
             const search = document.getElementById('tuteSearch').value.toLowerCase();
             const filtered = allResources.filter(r => (r.title && r.title.toLowerCase().includes(search)) || (r.category && r.category.toLowerCase().includes(search)));
-            const tbody = document.getElementById('resourceTableBody'); tbody.innerHTML = '';
+            
+            const tbody = document.getElementById('resourceTableBody');
+            tbody.innerHTML = '';
             if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
+            
             filtered.forEach(data => {
                 const priceValue = parseFloat(data.price);
                 const isFree = (isNaN(priceValue) || priceValue <= 0) ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg font-bold">Free</span>' : `Rs. ${priceValue}`;
@@ -857,7 +1009,6 @@
             btn.disabled = true; btn.innerText = "Verifying Password...";
 
             try {
-                // Re-authenticate Admin to verify password safely
                 await signInWithEmailAndPassword(auth, auth.currentUser.email, pass);
                 
                 btn.innerText = "Updating Database...";
