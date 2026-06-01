@@ -17,6 +17,8 @@
         .star-btn:hover i { color: #fbbf24 !important; }
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        /* Smooth Mobile Menu Animation */
+#mobileMenu { transition: transform 0.3s ease-in-out; }
     </style>
 </head>
 <body class="text-slate-800">
@@ -47,25 +49,25 @@
         </div>
     </header>
 
-    <div id="mobileMenu" class="fixed inset-0 z-[100] bg-white hidden flex-col px-6 py-6 overflow-y-auto">
-        <div class="flex justify-between items-center mb-10">
-            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-blue-600">
-                <i class="ph ph-book-open"></i> bizmind.lk
-            </a>
-            <button onclick="window.toggleMobileMenu()" class="text-4xl text-slate-800 focus:outline-none">
-                <i class="ph ph-x"></i>
-            </button>
-        </div>
-        <nav class="flex flex-col gap-6 text-lg font-medium">
-            <a href="index.html" class="text-blue-600 border-b border-slate-100 pb-4">Home</a>
-            <a href="about us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">About Us</a>
-            <a href="papers-tutes.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Papers & Tutes</a>
-            <a href="quiz.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Daily Quiz</a>
-            <a href="contact us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Contact</a>
-            <a href="watch-videos.html" class="hover:text-blue-600 transition-colors">Watch Videos</a>
-            <a href="papers-tutes.html" class="mt-6 px-6 py-4 rounded-xl bg-slate-900 text-white text-center font-bold text-lg shadow-lg">Student Portal <i class="ph ph-arrow-right inline align-middle"></i></a>
-        </nav>
+<div id="mobileMenu" class="fixed inset-0 z-[100] bg-white flex flex-col px-6 py-6 overflow-y-auto transform translate-x-full">
+    <div class="flex justify-between items-center mb-10">
+        <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-blue-600">
+            <i class="ph ph-book-open"></i> bizmind.lk
+        </a>
+        <button onclick="window.toggleMobileMenu()" class="text-4xl text-slate-800 focus:outline-none transition-transform active:scale-90">
+            <i class="ph ph-x"></i>
+        </button>
     </div>
+    <nav class="flex flex-col gap-6 text-lg font-medium">
+        <a href="index.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Home</a>
+        <a href="about us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">About Us</a>
+        <a href="papers-tutes.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Papers & Tutes</a>
+        <a href="contact us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Contact</a>
+        <a href="quiz.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Daily Quiz</a>
+        <a href="watch-videos.html" class="text-slate-700 hover:text-blue-600 transition-colors">Watch Videos</a>
+        <a href="papers-tutes.html" class="mt-6 px-6 py-4 rounded-xl bg-slate-900 text-white text-center font-bold text-lg shadow-lg">Student Portal <i class="ph ph-arrow-right inline align-middle"></i></a>
+    </nav>
+</div>
 
     <!-- 1. Hero Section -->
     <section class="pt-28 md:pt-32 pb-16 md:pb-20 hero-gradient min-h-[80vh] flex items-center">
@@ -213,19 +215,18 @@
 
         AOS.init({ once: true });
 
-        // --- Mobile Menu Toggle ---
-        window.toggleMobileMenu = function() {
-            const menu = document.getElementById('mobileMenu');
-            if(menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                menu.classList.add('flex');
-                document.body.style.overflow = 'hidden'; 
-            } else {
-                menu.classList.add('hidden');
-                menu.classList.remove('flex');
-                document.body.style.overflow = '';
-            }
-        }
+window.toggleMobileMenu = function() {
+    const menu = document.getElementById('mobileMenu');
+    if(menu.classList.contains('translate-x-full')) {
+        menu.classList.remove('translate-x-full');
+        menu.classList.add('translate-x-0');
+        document.body.style.overflow = 'hidden'; 
+    } else {
+        menu.classList.add('translate-x-full');
+        menu.classList.remove('translate-x-0');
+        document.body.style.overflow = '';
+    }
+}
 
         // Toast System
         window.showToast = (msg, type='success') => {
