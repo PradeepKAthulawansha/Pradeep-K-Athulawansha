@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Videos | bizmind.lk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .video-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .video-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.25); border-color: rgba(37, 99, 235, 0.3); }
+        .play-btn-overlay { opacity: 0; transform: scale(0.8); transition: all 0.3s ease; }
+        .video-card:hover .play-btn-overlay { opacity: 1; transform: scale(1); }
+        .video-modal-backdrop { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); z-index: 9999; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="text-slate-800 relative">
+
+    <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
+
+    <header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3 shadow-sm">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 hover:scale-105 transition-transform">
+                <i class="ph ph-book-open text-blue-600"></i> bizmind.lk
+            </a>
+            
+            <nav class="hidden md:flex gap-8 items-center font-medium">
+                <a href="index.html" class="hover:text-blue-600 transition-colors">Home</a>
+                <a href="about us.html" class="hover:text-blue-600 transition-colors">About Us</a>
+                <a href="papers-tutes.html" class="hover:text-blue-600 transition-colors">Papers & Tutes</a>
+                <a href="watch-videos.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Videos</a>
+                <a href="contact us.html" class="hover:text-blue-600 transition-colors">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button id="navLoginBtn" onclick="window.location.href='papers-tutes.html'" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors shadow-md">Student Portal</button>
+                <button id="navLogoutBtn" onclick="window.logoutUser()" class="hidden px-6 py-2 rounded-full bg-red-50 text-red-600 font-bold border border-red-200 hover:bg-red-100 transition-colors">Log Out</button>
+                <button onclick="window.toggleMobileMenu()" class="md:hidden text-3xl text-slate-800 focus:outline-none"><i class="ph ph-list"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobileMenu" class="fixed inset-0 z-[100] bg-white hidden flex-col px-6 py-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-10">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-blue-600"><i class="ph ph-book-open"></i> bizmind.lk</a>
+            <button onclick="window.toggleMobileMenu()" class="text-4xl text-slate-800 focus:outline-none"><i class="ph ph-x"></i></button>
+        </div>
+        <nav class="flex flex-col gap-6 text-lg font-medium">
+            <a href="index.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Home</a>
+            <a href="about us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">About Us</a>
+            <a href="papers-tutes.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Papers & Tutes</a>
+            <a href="watch-videos.html" class="text-blue-600 border-b border-slate-100 pb-4">Videos</a>
+            <a href="contact us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Contact</a>
+            <a href="quiz.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Daily Quiz</a>
+            <a href="papers-tutes.html" class="mt-6 px-6 py-4 rounded-xl bg-slate-900 text-white text-center font-bold text-lg shadow-lg">Student Portal <i class="ph ph-arrow-right inline align-middle"></i></a>
+        </nav>
+    </div>
+
+    <main class="flex-grow pt-28 md:pt-36 pb-16">
+        <div class="container mx-auto px-6 md:px-12">
+            
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 font-bold text-xs md:text-sm mb-4 inline-block shadow-sm"><i class="ph-fill ph-video-camera align-middle"></i> Premium Library</span>
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Expand Your Knowledge</h1>
+                <p class="text-slate-500 max-w-2xl mx-auto text-sm md:text-base">Watch exclusive paper discussions, theory lessons, and motivation sessions carefully curated to boost your academic performance.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-12" data-aos="fade-up" data-aos-delay="100">
+                <button onclick="window.filterVideos('General', this)" class="tab-btn px-6 py-2.5 md:px-8 md:py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm md:text-base transition-all scale-105">General / Motivation</button>
+                <button onclick="window.filterVideos('Grade 10 Videos', this)" class="tab-btn px-6 py-2.5 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 10</button>
+                <button onclick="window.filterVideos('Grade 11 Videos', this)" class="tab-btn px-6 py-2.5 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 11</button>
+                <button onclick="window.filterVideos('Grade 12 Videos', this)" class="tab-btn px-6 py-2.5 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 12</button>
+                <button onclick="window.filterVideos('Grade 13 Videos', this)" class="tab-btn px-6 py-2.5 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 13</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="videoGrid">
+                <div class="col-span-full text-center py-20">
+                    <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-blue-600 mx-auto"></div>
+                    <p class="text-slate-500 mt-4 font-medium">Loading high-quality videos...</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="videoPlayerModal" class="fixed inset-0 video-modal-backdrop hidden flex-col items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
+        <div class="w-full max-w-5xl flex justify-end mb-4">
+            <button onclick="window.closeVideo()" class="text-white hover:text-red-400 transition-colors flex items-center gap-2 font-bold text-lg bg-white/10 px-4 py-2 rounded-full backdrop-blur-md border border-white/20">
+                Close Video <i class="ph-bold ph-x"></i>
+            </button>
+        </div>
+        <div class="w-full max-w-5xl bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 relative" style="padding-top: 56.25%;">
+            <iframe id="youtubeIframe" class="absolute top-0 left-0 w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 border-t border-slate-800">
+        <div class="container mx-auto px-6 text-center text-sm md:text-base">
+            <p>&copy; 2026 bizmind.lk | Pradeep K. Athulawansha. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
+            authDomain: "pradeep-k-athulawansha.firebaseapp.com",
+            projectId: "pradeep-k-athulawansha",
+            storageBucket: "pradeep-k-athulawansha.firebasestorage.app",
+            messagingSenderId: "950027835210",
+            appId: "1:950027835210:web:a2894cd14833dc101bd3b3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        AOS.init({ once: true });
+
+        let allVideos = [];
+
+        // UI Helpers
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobileMenu');
+            if(menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden'); menu.classList.add('flex'); document.body.style.overflow = 'hidden'; 
+            } else {
+                menu.classList.add('hidden'); menu.classList.remove('flex'); document.body.style.overflow = '';
+            }
+        }
+
+        window.showToast = (msg, type='success') => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl border flex items-center gap-2 shadow-2xl transition-all transform translate-y-2 opacity-0 text-sm font-bold z-[9999] ${type==='success'?'bg-white text-green-800 border-green-500':'bg-white text-red-800 border-red-500'}`;
+            toast.innerHTML = `<i class="ph-fill ${type==='success'?'ph-check-circle text-green-500':'ph-warning-circle text-red-500'} text-xl"></i><span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+            setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        // Auth State (Optional for this page, but good for UI consistency)
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.email !== "admin@pradeepk.com") {
+                document.getElementById('navLoginBtn').classList.add('hidden');
+                document.getElementById('navLogoutBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('navLoginBtn').classList.remove('hidden');
+                document.getElementById('navLogoutBtn').classList.add('hidden');
+            }
+        });
+
+        window.logoutUser = async () => { 
+            await signOut(auth); 
+            window.showToast("Logged out successfully."); 
+            setTimeout(()=>window.location.reload(), 1000);
+        }
+
+        // Helper: Extract YouTube ID
+        function getYouTubeID(url) {
+            let regex = /(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))/;
+            let match = url.match(regex);
+            return (match && match[3]) ? match[3] : null;
+        }
+
+        // Fetch Videos
+        async function fetchVideos() {
+            try {
+                const q = query(collection(db, "videos"), orderBy("createdAt", "desc"));
+                const snap = await getDocs(q);
+                allVideos = [];
+                snap.forEach(doc => allVideos.push({id: doc.id, ...doc.data()}));
+                window.filterVideos('General', document.querySelector('.tab-btn.scale-105')); // Default Category
+            } catch (error) {
+                document.getElementById('videoGrid').innerHTML = '<div class="col-span-full text-center py-20 text-red-500 font-bold">Failed to load videos. Please check your connection.</div>';
+                console.error(error);
+            }
+        }
+
+        window.filterVideos = function(category, btnElement) {
+            // Update Buttons UI
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-6 py-2.5 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90";
+            });
+            btnElement.className = "tab-btn px-6 py-2.5 md:px-8 md:py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm md:text-base transition-all scale-105";
+
+            // Filter Data
+            const filtered = allVideos.filter(v => v.category === category);
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-20 glass-panel rounded-3xl" data-aos="fade-up">
+                        <div class="w-20 h-20 bg-slate-100 text-slate-300 rounded-full flex items-center justify-center text-4xl mx-auto mb-4"><i class="ph-fill ph-video-camera-slash"></i></div>
+                        <h3 class="text-xl font-bold text-slate-700">No videos available</h3>
+                        <p class="text-slate-500 mt-2">We are working on adding new content to this category. Stay tuned!</p>
+                    </div>`;
+                return;
+            }
+
+            filtered.forEach((vid, index) => {
+                const ytID = getYouTubeID(vid.youtubeUrl);
+                const thumbUrl = ytID ? `https://img.youtube.com/vi/${ytID}/hqdefault.jpg` : 'https://placehold.co/600x400/e2e8f0/64748b?text=Video+Not+Found';
+                const descHTML = vid.desc ? `<p class="text-xs md:text-sm text-slate-500 line-clamp-2 mt-2 mb-4">${vid.desc}</p>` : '<div class="h-4"></div>';
+                const delay = (index % 3) * 100;
+
+                grid.innerHTML += `
+                    <div class="video-card glass-panel rounded-3xl overflow-hidden flex flex-col bg-white" data-aos="fade-up" data-aos-delay="${delay}">
+                        <div class="relative w-full aspect-video bg-slate-200 cursor-pointer group" onclick="window.openVideo('${ytID}')">
+                            <img src="${thumbUrl}" alt="${vid.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center play-btn-overlay border border-white/50 shadow-[0_0_30px_rgba(37,99,235,0.5)]">
+                                    <i class="ph-fill ph-play text-3xl text-white ml-1"></i>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-3 right-3 bg-black/70 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded">HD Quality</div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <span class="text-[10px] uppercase tracking-wider font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded w-max mb-3">${vid.category}</span>
+                            <h3 class="font-bold text-lg text-slate-800 line-clamp-2 leading-tight">${vid.title}</h3>
+                            ${descHTML}
+                            <div class="mt-auto pt-4 border-t border-slate-100">
+                                <button onclick="window.openVideo('${ytID}')" class="w-full py-3 rounded-xl bg-slate-50 text-blue-600 font-bold hover:bg-blue-600 hover:text-white transition-colors text-sm flex items-center justify-center gap-2">
+                                    <i class="ph-fill ph-play-circle text-lg"></i> Watch Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('videoPlayerModal');
+        const iframe = document.getElementById('youtubeIframe');
+
+        window.openVideo = function(ytID) {
+            if(!ytID) { window.showToast("Invalid video link", "error"); return; }
+            iframe.src = `https://www.youtube.com/embed/${ytID}?autoplay=1&rel=0&modestbranding=1`;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Fade in
+            setTimeout(() => { modal.classList.remove('opacity-0'); modal.classList.add('opacity-100'); }, 10);
+        }
+
+        window.closeVideo = function() {
+            modal.classList.remove('opacity-100'); modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                iframe.src = ''; // Clear src to stop audio
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        // Load data on start
+        fetchVideos();
+
+    </script>
+</body>
+</html>
