@@ -402,9 +402,22 @@
             const e = document.getElementById('loginEmail').value.trim(); const p = document.getElementById('loginPassword').value;
             if(!e || !p) return window.showToast("Please enter email and password.", "error");
             document.getElementById('loginBtn').disabled = true; document.getElementById('loginBtn').innerText = "Logging in...";
-            try { await signInWithEmailAndPassword(auth, e, p); window.showToast("Login successful!"); window.closeAuthModal(); } 
-            catch(err) { window.showToast(err.message, "error"); } 
-            finally { document.getElementById('loginBtn').disabled = false; document.getElementById('loginBtn').innerText = "Log In"; }
+            try { 
+                await signInWithEmailAndPassword(auth, e, p); 
+                window.showToast("Login successful!"); 
+                window.closeAuthModal(); 
+            } catch(err) { 
+                // Custom error handling for invalid credentials
+                if(err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+                    window.showToast("Incorrect Email or Password. Please try again.", "error");
+                } else if(err.code === 'auth/too-many-requests') {
+                    window.showToast("Too many failed attempts. Try resetting your password.", "error");
+                } else {
+                    window.showToast("Login failed. Please check your details.", "error");
+                }
+            } finally { 
+                document.getElementById('loginBtn').disabled = false; document.getElementById('loginBtn').innerText = "Log In"; 
+            }
         }
 
         window.registerUser = async () => {
