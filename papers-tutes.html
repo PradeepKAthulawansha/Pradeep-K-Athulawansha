@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         html, body { max-width: 100vw; overflow-x: hidden; }
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; display: flex; flex-direction: column; min-height: 100vh;}
@@ -81,7 +82,7 @@
                     </div>
                 </div>
                 <div class="flex gap-2 w-full md:w-auto justify-center md:justify-end">
-                    <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 md:py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors flex items-center gap-2 text-sm md:text-base shadow-md"><i class="ph-fill ph-user-circle text-lg"></i> My Profile & Orders</button>
+                    <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 md:py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors flex items-center gap-2 text-sm md:text-base shadow-md"><i class="ph-fill ph-user-circle text-lg"></i> My Profile</button>
                 </div>
             </div>
 
@@ -98,45 +99,6 @@
             </div>
         </div>
     </main>
-
-    <div id="authModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="w-full max-w-md relative">
-            <button onclick="window.closeAuthModal()" class="absolute -top-12 right-0 text-white text-4xl hover:text-blue-200 transition-colors"><i class="ph ph-x"></i></button>
-            
-            <div id="loginSection" class="auth-glass p-8 md:p-10 rounded-3xl text-center shadow-2xl">
-                <div class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl md:text-3xl mx-auto mb-4"><i class="ph-fill ph-user-circle"></i></div>
-                <h2 class="text-xl md:text-2xl font-bold mb-2 text-slate-800">Student Login</h2>
-                <p class="text-slate-500 mb-6 text-xs md:text-sm">Please log in to access your materials.</p>
-                <input type="email" id="loginEmail" class="auth-input" autocomplete="new-password" placeholder="Email Address">
-                <div class="relative mb-3">
-                    <input type="password" id="loginPassword" class="auth-input pr-12" style="margin-bottom: 0;" autocomplete="new-password" placeholder="Password">
-                    <button type="button" onclick="window.togglePassword('loginPassword', 'loginEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600 text-xl outline-none"><i id="loginEye" class="ph ph-eye"></i></button>
-                </div>
-                <button id="loginBtn" class="auth-btn mt-2 text-sm md:text-base" onclick="window.loginUser()">Log In</button>
-                <div class="flex justify-between mt-6 px-2 text-sm"><span class="link-text font-semibold" onclick="window.toggleAuthView('signupSection')">Create Account</span><span class="link-text" onclick="window.resetUserPassword()">Forgot Password?</span></div>
-            </div>
-
-            <div id="signupSection" class="auth-glass p-6 md:p-8 rounded-3xl text-center hidden shadow-2xl max-h-[85vh] overflow-y-auto custom-scroll">
-                <h2 class="text-xl md:text-2xl font-bold mb-6 text-slate-800">Register Now</h2>
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <input type="text" id="regFirstName" class="auth-input mb-0 text-sm" placeholder="First Name"><input type="text" id="regLastName" class="auth-input mb-0 text-sm" placeholder="Last Name">
-                </div>
-                <input type="text" id="regAddress" class="auth-input text-sm" placeholder="Home Address">
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <select id="regDistrict" class="auth-input mb-0 text-sm text-slate-500"><option value="" disabled selected>District</option><option value="Colombo">Colombo</option><option value="Gampaha">Gampaha</option><option value="Kandy">Kandy</option><option value="Other">Other</option></select>
-                    <select id="regGrade" class="auth-input mb-0 text-sm text-slate-500" onchange="window.toggleNicField()"><option value="" disabled selected>Grade</option><option value="Grade 10">Grade 10</option><option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option><option value="Grade 13">Grade 13</option></select>
-                </div>
-                <div id="regNicGroup" class="hidden mb-3"><input type="text" id="regNic" class="auth-input mb-0 text-sm" placeholder="NIC Number" maxlength="12"></div>
-                <input type="email" id="regEmail" class="auth-input text-sm" autocomplete="new-password" placeholder="Email Address">
-                <input type="tel" id="regPhone" class="auth-input text-sm" placeholder="Mobile (10 Digits)" maxlength="10">
-                <div class="relative mb-3"><input type="password" id="regPassword" class="auth-input pr-12 text-sm" style="margin-bottom: 0;" autocomplete="new-password" placeholder="Strong Password"><button type="button" onclick="window.togglePassword('regPassword', 'regEyeMain')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600"><i id="regEyeMain" class="ph ph-eye"></i></button></div>
-                <div class="relative mb-3"><input type="password" id="regConfirmPassword" class="auth-input pr-12 text-sm" style="margin-bottom: 0;" autocomplete="new-password" placeholder="Confirm Password"><button type="button" onclick="window.togglePassword('regConfirmPassword', 'regConfirmEye')" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-blue-600"><i id="regConfirmEye" class="ph ph-eye"></i></button></div>
-                <label class="flex items-start gap-2 mb-4 px-1 text-left text-xs md:text-sm text-slate-500"><input type="checkbox" id="regTerms" class="mt-1"> I agree to Terms & Conditions.</label>
-                <button id="signupBtn" class="auth-btn mt-2 text-sm md:text-base" onclick="window.registerUser()">Create Account</button>
-                <div class="mt-5 text-sm"><span class="link-text font-semibold" onclick="window.toggleAuthView('loginSection')"><i class="ph ph-arrow-left inline align-middle"></i> Back to Log In</span></div>
-            </div>
-        </div>
-    </div>
 
     <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll relative">
@@ -166,12 +128,12 @@
                     <p class="text-[11px] text-red-600 mt-2 font-semibold">* භෞතික පන්ති වලට සහභාගී නොවන ප්‍රශ්න පත්‍ර කට්ටලය අවශ්‍ය දරුවන් පහත බැංකු ගිණුමට මුදල් තැන්පත් කරන්න.</p>
                     <p class="font-bold mt-3 text-base md:text-lg text-blue-700 text-center border-t border-slate-200 pt-2">Amount: Rs. <span id="payAmountDisplay"></span></p>
                 </div>
-                <input type="text" id="shipName" class="auth-input text-xs md:text-sm" placeholder="Student / Delivery Name">
+                <input type="text" id="shipName" class="auth-input text-xs md:text-sm" placeholder="Student Name">
                 <input type="tel" id="shipPhone" class="auth-input text-xs md:text-sm" placeholder="Phone Number (WhatsApp)">
-                <textarea id="shipAddress" class="auth-input text-xs md:text-sm" rows="2" placeholder="Full Delivery Address"></textarea>
+                <textarea id="shipAddress" class="auth-input text-xs md:text-sm" rows="2" placeholder="Full Address"></textarea>
                 <label class="block text-xs md:text-sm font-bold text-slate-700 mb-2">Upload Payment Slip</label>
-                <input type="file" id="paymentSlip" class="w-full p-2 border rounded-xl mb-4 bg-white text-xs md:text-sm" accept="image/*,.pdf">
-                <button id="payBtn" onclick="window.reviewOrder()" class="w-full py-3 md:py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-sm md:text-base">Review Order</button>
+                <input type="file" id="paymentSlip" class="w-full p-2 border rounded-xl mb-4 bg-white text-xs md:text-sm" accept="image/*">
+                <button id="payBtn" onclick="window.reviewOrder()" class="w-full py-3 md:py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-sm md:text-base">Submit Details</button>
             </div>
         </div>
     </div>
@@ -187,11 +149,10 @@
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Amount:</span> <span id="confirmAmount" class="font-bold text-blue-600"></span></div>
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Name:</span> <span id="confirmUserName" class="font-semibold text-slate-800 text-right"></span></div>
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Phone:</span> <span id="confirmUserPhone" class="font-semibold text-slate-800"></span></div>
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Method:</span> <span id="confirmMethod" class="font-semibold text-slate-800 text-right"></span></div>
             </div>
             
             <button id="finalSubmitBtn" onclick="window.submitFinalOrder()" class="w-full py-4 rounded-xl bg-green-600 text-white font-bold text-base hover:bg-green-700 transition-colors shadow-lg mb-4 flex justify-center items-center gap-2">
-                <i class="ph-fill ph-check-circle text-xl"></i> Confirm & Submit
+                <i class="ph-fill ph-check-circle text-xl"></i> Upload & Notify Sir
             </button>
             <button onclick="window.backToShipping()" class="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors underline">Back to Edit</button>
         </div>
@@ -200,10 +161,22 @@
     <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
         <div class="bg-white w-full max-w-3xl p-6 md:p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl transition-colors"><i class="ph ph-x"></i></button>
-            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-6 text-center border-b border-slate-100 pb-4"><i class="ph-fill ph-user-circle text-blue-600"></i> My Profile & Orders</h3>
             
+            <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
+                <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl"><i class="ph-fill ph-user-circle"></i></div>
+                <div>
+                    <h3 class="text-xl md:text-2xl font-bold text-slate-800" id="profileNameDisplay">Student</h3>
+                    <p class="text-sm font-semibold text-blue-600 mt-1 bg-blue-50 inline-block px-3 py-1 rounded-full border border-blue-200"><i class="ph-fill ph-star"></i> Leaderboard Points: <span id="profilePointsDisplay">0</span></p>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h4 class="font-bold text-lg mb-3">Account Security</h4>
+                <button onclick="window.sendPasswordReset()" class="px-5 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200 transition-colors border border-slate-300 text-sm"><i class="ph ph-lock-key"></i> Change / Reset Password</button>
+            </div>
+
             <div class="mb-6">
-                <h4 class="font-bold text-lg mb-3">My Orders</h4>
+                <h4 class="font-bold text-lg mb-3">My Recent Orders</h4>
                 <div id="myOrdersList" class="space-y-3">
                     <p class="text-slate-500 text-sm">Loading orders...</p>
                 </div>
@@ -215,16 +188,16 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy, addDoc, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s", authDomain: "pradeep-k-athulawansha.firebaseapp.com", projectId: "pradeep-k-athulawansha", storageBucket: "pradeep-k-athulawansha.firebasestorage.app", messagingSenderId: "950027835210", appId: "1:950027835210:web:a2894cd14833dc101bd3b3" };
-        
+        const firebaseConfig = { apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s", authDomain: "pradeep-k-athulawansha.firebaseapp.com", projectId: "pradeep-k-athulawansha" };
         const app = initializeApp(firebaseConfig); 
         const auth = getAuth(app); 
         const db = getFirestore(app);
-        const storage = getStorage(app);
+
+        // IMGBB API Key
+        const IMGBB_API_KEY = "101030d84e3f84fecb3f9cfe347c4d17";
 
         let dbResources = []; 
         let currentUserData = null; 
@@ -233,7 +206,7 @@
         let selectedMethod = null;
         let currentOrderDetails = {};
 
-        // Categories & UI Functions
+        // Categories Structure
         const categoriesData = {
             tutes: [ { id: 'Grade 10 Tutes', label: 'Grade 10 Tutes' }, { id: 'Grade 11 Tutes', label: 'Grade 11 Tutes' }, { id: 'Grade 12 Tutes', label: 'Grade 12 Tutes' }, { id: 'Grade 13 Tutes', label: 'Grade 13 Tutes' } ],
             pastpapers: [ { id: 'O/L Past Papers', label: 'O/L Past Papers' }, { id: 'A/L Past Papers', label: 'A/L Past Papers' } ],
@@ -277,6 +250,12 @@
                         currentUserData = docSnap.data();
                         document.getElementById('userDashboardBar').classList.remove('hidden'); 
                         document.getElementById('welcomeMsg').innerText = "Welcome, " + (currentUserData.fullName || 'Student'); 
+                        document.getElementById('dashboardPoints').innerText = (currentUserData.points || 0) + " pts"; // Points Update
+                        
+                        // Set in Profile Modal
+                        document.getElementById('profileNameDisplay').innerText = currentUserData.fullName;
+                        document.getElementById('profilePointsDisplay').innerText = (currentUserData.points || 0);
+
                         currentUserUnlockedTutes = currentUserData.unlockedTutes || [];
                         document.getElementById('navLoginBtn').classList.add('hidden'); document.getElementById('navLogoutBtn').classList.remove('hidden');
                         window.closeAuthModal();
@@ -307,11 +286,10 @@
             });
         }
 
-        // --- PAYMENT & ACCESS HANDLING ---
+        // --- PAYMENT & CHECKOUT ---
 
         window.handleAccess = (id, driveLink, price, title) => {
             if (!auth.currentUser) { window.openAuthModal(); return; }
-            
             const isFree = isNaN(price) || price <= 0;
             if (isFree || (currentUserUnlockedTutes && currentUserUnlockedTutes.includes(id))) {
                 window.open(driveLink, '_blank');
@@ -319,7 +297,6 @@
                 currentPurchaseTute = { id, title, price, driveLink };
                 document.getElementById('payAmountDisplay').innerText = price;
                 
-                // Reset Forms
                 selectedMethod = null;
                 document.getElementById('proceedPaymentBtn').disabled = true;
                 document.getElementById('check-online').classList.add('hidden');
@@ -336,7 +313,6 @@
         window.chooseMethod = (method) => {
             selectedMethod = method;
             document.getElementById('proceedPaymentBtn').disabled = false;
-            
             document.getElementById('check-online').classList.add('hidden');
             document.getElementById('check-manual').classList.add('hidden');
             document.getElementById('method-online').classList.remove('border-blue-500');
@@ -357,17 +333,13 @@
             const address = document.getElementById('shipAddress').value;
             const slipFile = document.getElementById('paymentSlip').files[0];
 
-            if(!name || !phone || !address || !slipFile) {
-                alert("කරුණාකර සියලුම විස්තර සහ Payment Slip එක ඇතුළත් කරන්න."); return;
-            }
-
+            if(!name || !phone || !address || !slipFile) { alert("කරුණාකර සියලුම විස්තර සහ Payment Slip එක ඇතුළත් කරන්න."); return; }
             currentOrderDetails = { name, phone, address, file: slipFile };
 
             document.getElementById('confirmItemName').innerText = currentPurchaseTute.title;
             document.getElementById('confirmAmount').innerText = "Rs. " + currentPurchaseTute.price;
             document.getElementById('confirmUserName').innerText = name;
             document.getElementById('confirmUserPhone').innerText = phone;
-            document.getElementById('confirmMethod').innerText = selectedMethod === 'online' ? "Online Transfer (20 Mins Limit)" : "Bank Deposit (24 Hrs Limit)";
 
             document.getElementById('shippingModal').classList.add('hidden');
             document.getElementById('orderConfirmModal').classList.remove('hidden');
@@ -378,6 +350,7 @@
             document.getElementById('shippingModal').classList.remove('hidden');
         };
 
+        // --- SUBMIT FINAL ORDER WITH ImgBB API ---
         window.submitFinalOrder = async () => {
             const btn = document.getElementById('finalSubmitBtn');
             btn.innerHTML = `<div class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div> Processing...`;
@@ -386,15 +359,23 @@
             try {
                 const user = auth.currentUser;
                 
-                // 1. Upload Slip to Storage
-                const fileRef = sRef(storage, `payment_slips/${user.uid}_${Date.now()}_${currentOrderDetails.file.name}`);
-                await uploadBytes(fileRef, currentOrderDetails.file);
-                const slipUrl = await getDownloadURL(fileRef);
+                // 1. Upload Slip to ImgBB
+                const formData = new FormData();
+                formData.append('image', currentOrderDetails.file);
+                
+                const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const imgbbData = await imgbbResponse.json();
+                
+                if(!imgbbData.success) { throw new Error("Image upload failed"); }
+                const slipUrl = imgbbData.data.url; // ImgBB URL එක
 
-                // 2. Save Order to Firestore (For Admin Panel)
+                // 2. Save Order to Firestore
                 const orderData = {
                     userId: user.uid,
-                    fullName: currentUserData.fullName, // FullName from users collection
+                    fullName: currentUserData.fullName, // Using known detail from users collection
                     email: user.email,
                     itemId: currentPurchaseTute.id,
                     itemTitle: currentPurchaseTute.title,
@@ -402,33 +383,46 @@
                     shippingName: currentOrderDetails.name,
                     shippingPhone: currentOrderDetails.phone,
                     shippingAddress: currentOrderDetails.address,
-                    slipUrl: slipUrl,
-                    paymentMethod: selectedMethod, // 'online' or 'manual'
-                    status: 'Pending', // pending, accepted, rejected
+                    slipUrl: slipUrl, // Save ImgBB link in DB
+                    paymentMethod: selectedMethod,
+                    status: 'Pending',
                     createdAt: serverTimestamp()
                 };
 
-                await addDoc(collection(db, "orders"), orderData);
+                const docRef = await addDoc(collection(db, "orders"), orderData);
 
-                // 3. Open WhatsApp to notify Admin
-                const waMessage = `*New Order Submitted (bizmind.lk)*\n\n*Student:* ${currentOrderDetails.name}\n*Phone:* ${currentOrderDetails.phone}\n*Item:* ${currentPurchaseTute.title}\n*Method:* ${selectedMethod}\n*Amount:* Rs.${currentPurchaseTute.price}\n\nPlease check the admin panel to review the slip and approve.`;
+                // 3. Generate Magic Link (Admin Approval URL)
+                const magicLink = `https://bizmind.lk/admin-approve.html?orderId=${docRef.id}`;
+
+                // 4. Open WhatsApp to notify Admin (0719151415)
+                const waMessage = `*New Order Submitted (bizmind.lk)*\n\n*Student:* ${currentOrderDetails.name}\n*Phone:* ${currentOrderDetails.phone}\n*Item:* ${currentPurchaseTute.title}\n*Method:* ${selectedMethod}\n*Amount:* Rs.${currentPurchaseTute.price}\n\n*View Slip:* ${slipUrl}\n\n*✅ Click here to Accept Order:* \n${magicLink}`;
                 const waUrl = `https://wa.me/94719151415?text=${encodeURIComponent(waMessage)}`;
                 
                 window.open(waUrl, '_blank');
 
                 document.getElementById('orderConfirmModal').classList.add('hidden');
-                alert("Order submitted successfully! The admin will review your slip and approve access.");
+                alert("Order submitted successfully! The admin will review your slip.");
                 
             } catch(error) {
                 console.error("Error submitting order:", error);
                 alert("An error occurred. Please try again.");
             } finally {
-                btn.innerHTML = `<i class="ph-fill ph-check-circle text-xl"></i> Confirm & Submit`;
+                btn.innerHTML = `<i class="ph-fill ph-check-circle text-xl"></i> Upload & Notify Sir`;
                 btn.disabled = false;
             }
         };
 
-        // --- PROFILE & ORDER FETCHING ---
+        // --- PROFILE SECTION & PASSWORD RESET ---
+        
+        window.sendPasswordReset = () => {
+            if(auth.currentUser) {
+                sendPasswordResetEmail(auth, auth.currentUser.email).then(() => {
+                    alert("Password reset email has been sent. Please check your inbox.");
+                }).catch((error) => {
+                    alert("Error sending password reset email: " + error.message);
+                });
+            }
+        };
 
         window.openProfile = async () => {
             document.getElementById('profileModal').classList.remove('hidden');
@@ -442,14 +436,14 @@
                 const snap = await getDocs(q);
                 
                 if(snap.empty) {
-                    list.innerHTML = '<p class="text-slate-500 text-sm">You have no orders yet.</p>';
+                    list.innerHTML = '<p class="text-slate-500 text-sm border p-4 rounded-xl border-dashed">You have no orders yet.</p>';
                     return;
                 }
 
                 list.innerHTML = '';
                 snap.forEach(doc => {
                     const data = doc.data();
-                    let statusColor = data.status === 'Accepted' ? 'text-green-600 bg-green-100' : (data.status === 'Rejected' ? 'text-red-600 bg-red-100' : 'text-orange-600 bg-orange-100');
+                    let statusColor = data.status === 'Accepted' ? 'text-green-600 bg-green-100 border-green-200' : (data.status === 'Rejected' ? 'text-red-600 bg-red-100 border-red-200' : 'text-orange-600 bg-orange-100 border-orange-200');
                     
                     list.innerHTML += `
                         <div class="border border-slate-200 p-4 rounded-xl flex justify-between items-center bg-slate-50">
@@ -457,7 +451,7 @@
                                 <h5 class="font-bold text-slate-800">${data.itemTitle}</h5>
                                 <p class="text-xs text-slate-500 mt-1">Amount: Rs. ${data.amount} | Method: ${data.paymentMethod}</p>
                             </div>
-                            <div class="px-3 py-1 rounded-full text-xs font-bold ${statusColor}">${data.status}</div>
+                            <div class="px-3 py-1 rounded-full text-xs font-bold border ${statusColor}">${data.status}</div>
                         </div>
                     `;
                 });
