@@ -88,10 +88,18 @@
             </div>
 
             <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-8 md:mb-12">
-                <button onclick="window.filterItems('Grade 10 Tutes', this)" class="tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm md:text-base transition-all scale-105">Grade 10 Tutes</button>
-                <button onclick="window.filterItems('Grade 11 Tutes', this)" class="tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 11 Tutes</button>
-                <button onclick="window.filterItems('Grade 12 Tutes', this)" class="tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 12 Tutes</button>
-                <button onclick="window.filterItems('Grade 13 Tutes', this)" class="tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 13 Tutes</button>
+                <button onclick="window.filterItems('Grade 10 Tutes', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm md:text-base transition-all scale-105">Grade 10 Tutes</button>
+                <button onclick="window.filterItems('Grade 11 Tutes', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 11 Tutes</button>
+                <button onclick="window.filterItems('Grade 12 Tutes', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 12 Tutes</button>
+                <button onclick="window.filterItems('Grade 13 Tutes', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 13 Tutes</button>
+                
+                <button onclick="window.filterItems('O/L Past Papers', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">O/L Past Papers</button>
+                <button onclick="window.filterItems('A/L Past Papers', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">A/L Past Papers</button>
+
+                <button onclick="window.filterItems('Grade 10 HW', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 10 HW</button>
+                <button onclick="window.filterItems('Grade 11 HW', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 11 HW</button>
+                <button onclick="window.filterItems('Grade 12 HW', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 12 HW</button>
+                <button onclick="window.filterItems('Grade 13 HW', this)" class="tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90">Grade 13 HW</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="resourceGrid">
@@ -212,9 +220,21 @@
                 </div>
             </div>
 
+            <div class="bg-slate-50 p-4 rounded-xl text-sm mb-6 border border-slate-100">
+                <p class="mb-2"><strong class="text-slate-700">Email:</strong> <span id="profileEmail" class="text-slate-600"></span></p>
+                <p class="mb-2"><strong class="text-slate-700">Phone:</strong> <span id="profilePhone" class="text-slate-600"></span></p>
+                <p class="mb-2"><strong class="text-slate-700">Grade:</strong> <span id="profileGrade" class="text-slate-600"></span></p>
+                <p><strong class="text-slate-700">Address:</strong> <span id="profileAddress" class="text-slate-600"></span></p>
+            </div>
+
             <div class="mb-6">
-                <h4 class="font-bold text-slate-700 mb-3 text-sm">Account Security</h4>
-                <button onclick="window.resetUserPasswordFromProfile()" class="px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-colors flex items-center gap-2 text-slate-600 w-full md:w-auto"><i class="ph ph-lock-key"></i> Change / Reset Password</button>
+                <h4 class="font-bold text-slate-700 mb-3 text-sm">Update Password</h4>
+                <div class="flex flex-col gap-2">
+                    <input type="password" id="newProfilePassword" class="auth-input mb-0 text-sm" placeholder="Enter New Password">
+                    <button onclick="window.updateUserPasswordDirectly()" class="px-4 py-3 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 w-full shadow-sm">
+                        <i class="ph ph-lock-key"></i> Save New Password
+                    </button>
+                </div>
             </div>
 
             <div>
@@ -232,7 +252,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        // IMPORT updatePassword ADDED
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updatePassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
@@ -294,7 +315,6 @@
             window.renderItems('Grade 10 Tutes');
         });
 
-        // 🔥 LOGOUT FUNCTION FULLY RESTORED 🔥
         window.logoutUser = async () => {
             try {
                 await signOut(auth);
@@ -320,7 +340,12 @@
             });
         }
 
-        window.filterItems = (cat, btn) => { document.querySelectorAll('.tab-btn').forEach(b => b.className = "tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90"); btn.className = "tab-btn px-5 py-2 md:px-8 md:py-3 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm md:text-base transition-all scale-105"; window.renderItems(cat); }
+        window.filterItems = (cat, btn) => { 
+            // Updated inline classes to match the new button sizes
+            document.querySelectorAll('.tab-btn').forEach(b => b.className = "tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm md:text-base transition-all hover:bg-white/90"); 
+            btn.className = "tab-btn px-4 py-2 md:px-6 md:py-2.5 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm md:text-base transition-all scale-105"; 
+            window.renderItems(cat); 
+        }
 
         window.openAuthModal = () => document.getElementById('authModal').classList.remove('hidden'); 
         window.closeAuthModal = () => document.getElementById('authModal').classList.add('hidden'); 
@@ -361,10 +386,23 @@
             try { await sendPasswordResetEmail(auth, e); window.showToast("Password reset email sent."); } catch(err) { window.showToast(err.message, "error"); }
         }
 
-        window.resetUserPasswordFromProfile = async () => {
-            if(!auth.currentUser) return;
-            try { await sendPasswordResetEmail(auth, auth.currentUser.email); window.showToast("Password reset link sent to your email!"); window.closeProfile(); } 
-            catch(err) { window.showToast(err.message, "error"); }
+        // NEW PASSWORD UPDATE FUNCTION
+        window.updateUserPasswordDirectly = async () => {
+            const newPass = document.getElementById('newProfilePassword').value;
+            if(!newPass || newPass.length < 6) return window.showToast("Password must be at least 6 characters.", "error");
+            if(!auth.currentUser) return window.showToast("User not found.", "error");
+
+            try {
+                await updatePassword(auth.currentUser, newPass);
+                window.showToast("Password updated successfully!");
+                document.getElementById('newProfilePassword').value = '';
+            } catch(err) {
+                if(err.code === 'auth/requires-recent-login') {
+                    window.showToast("Please log out and log in again to change your password for security reasons.", "error");
+                } else {
+                    window.showToast(err.message, "error");
+                }
+            }
         }
 
         window.handleAccess = (e, id, link, price, title) => {
@@ -427,25 +465,29 @@
 
         window.reOpenShippingModal = () => { document.getElementById('orderSuccessModal').classList.add('hidden'); document.getElementById('shippingModal').classList.remove('hidden'); }
 
-        // 🔥 PROFILE MODAL AND SAFE DATE SORTING (FIXED ERROR) 🔥
         window.openProfile = async () => {
             if(!currentUserData) return;
             document.getElementById('profileName').innerText = currentUserData.fullName || 'Student';
             document.getElementById('profilePoints').innerHTML = `<i class="ph-fill ph-star"></i> Leaderboard Points: ${currentUserData.points || 0}`;
+            
+            // Populate New Profile Details
+            document.getElementById('profileEmail').innerText = currentUserData.email || auth.currentUser.email || 'N/A';
+            document.getElementById('profilePhone').innerText = currentUserData.phone || 'N/A';
+            document.getElementById('profileGrade').innerText = currentUserData.exactGrade || currentUserData.grade || 'N/A';
+            document.getElementById('profileAddress').innerText = currentUserData.address || 'N/A';
+
             document.getElementById('profileModal').classList.remove('hidden');
             
             const ordersListDiv = document.getElementById('profileOrdersList');
             ordersListDiv.innerHTML = '<div class="text-center py-4"><div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-600 mx-auto"></div></div>';
             
             try {
-                // Fetch without orderBy to avoid Firebase Index Error
                 const q = query(collection(db, "orders"), where("studentId", "==", auth.currentUser.uid));
                 const snapshot = await getDocs(q);
                 
                 let ordersList = [];
                 snapshot.forEach(doc => ordersList.push({ id: doc.id, ...doc.data() }));
                 
-                // Client-side Javascript Sorting by Date
                 ordersList.sort((a, b) => {
                     const dateA = a.date ? (typeof a.date.toDate === 'function' ? a.date.toDate() : new Date(a.date)) : new Date(0);
                     const dateB = b.date ? (typeof b.date.toDate === 'function' ? b.date.toDate() : new Date(b.date)) : new Date(0);
