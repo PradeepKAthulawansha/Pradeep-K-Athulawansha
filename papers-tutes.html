@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <div class="flex gap-2 w-full md:w-auto justify-center md:justify-end">
-                    <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 md:py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors flex items-center gap-2 text-sm md:text-base shadow-md"><i class="ph-fill ph-user-circle text-lg"></i> My Profile</button>
+                    <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 md:py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors flex items-center gap-2 text-sm md:text-base shadow-md"><i class="ph-fill ph-user-circle text-lg"></i> My Profile & Orders</button>
                 </div>
             </div>
 
@@ -91,8 +91,7 @@
                 <button onclick="window.setMainCategory('homework', this)" class="main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-white text-slate-600 font-bold shadow-sm border border-slate-200 hover:bg-slate-50 text-sm md:text-base transition-all">Home Work</button>
             </div>
             
-            <div class="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-12" id="sub-cat-container">
-                </div>
+            <div class="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-12" id="sub-cat-container"></div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="resourceGrid">
                 <div class="col-span-full text-center py-10"><div class="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-t-2 border-b-2 border-blue-600 mx-auto"></div><p class="text-slate-500 mt-4 font-medium text-sm md:text-base">Loading materials...</p></div>
@@ -140,8 +139,9 @@
     </div>
 
     <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+        <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll relative">
             <button onclick="window.closePaymentModal()" class="absolute top-5 right-5 text-2xl text-slate-400 hover:text-slate-800 transition-colors"><i class="ph ph-x"></i></button>
+            
             <div id="payMethodSelection">
                 <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl md:text-3xl mb-4 mx-auto"><i class="ph-fill ph-wallet"></i></div>
                 <h3 class="text-lg md:text-xl font-bold text-center mb-6 text-slate-800">Select Payment Method</h3>
@@ -149,148 +149,122 @@
                     <div id="method-online" onclick="window.chooseMethod('online')" class="border-2 p-3 md:p-4 rounded-xl cursor-pointer hover:border-blue-500 transition-all flex items-center gap-3 md:gap-4 relative">
                         <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg md:text-xl"><i class="ph-fill ph-device-mobile"></i></div>
                         <div><h4 class="font-bold text-slate-800 text-sm md:text-base">Online Bank Transfer</h4><p class="text-[10px] md:text-xs text-slate-500">20 Minutes time limit</p></div>
-                        <div class="absolute right-4 text-blue-500 hidden check-icon"><i class="ph-fill ph-check-circle text-xl md:text-2xl"></i></div>
+                        <div class="absolute right-4 text-blue-500 hidden check-icon" id="check-online"><i class="ph-fill ph-check-circle text-xl md:text-2xl"></i></div>
                     </div>
                     <div id="method-manual" onclick="window.chooseMethod('manual')" class="border-2 p-3 md:p-4 rounded-xl cursor-pointer hover:border-orange-500 transition-all flex items-center gap-3 md:gap-4 relative">
                         <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg md:text-xl"><i class="ph-fill ph-bank"></i></div>
                         <div><h4 class="font-bold text-slate-800 text-sm md:text-base">Manual Bank Deposit</h4><p class="text-[10px] md:text-xs text-slate-500">24 Hours time limit</p></div>
-                        <div class="absolute right-4 text-orange-500 hidden check-icon"><i class="ph-fill ph-check-circle text-xl md:text-2xl"></i></div>
+                        <div class="absolute right-4 text-orange-500 hidden check-icon" id="check-manual"><i class="ph-fill ph-check-circle text-xl md:text-2xl"></i></div>
                     </div>
                 </div>
-                <div id="paymentWarningBox" class="hidden mt-6 p-4 rounded-xl border-l-4 bg-slate-50 text-xs md:text-sm shadow-inner transition-all"><p id="paymentWarningText" class="font-medium leading-relaxed"></p></div>
                 <button id="proceedPaymentBtn" onclick="window.proceedToPayment()" class="w-full py-3 md:py-4 mt-6 bg-slate-900 text-white font-bold rounded-xl disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors text-sm md:text-base" disabled>Next Step <i class="ph ph-arrow-right"></i></button>
             </div>
+
             <div id="payCheckoutForm" class="hidden">
-                <div class="text-center mb-4 bg-red-50 p-3 rounded-xl border border-red-200">
-                    <p class="text-[10px] md:text-xs font-bold text-red-600 uppercase tracking-wider mb-1">Time Remaining</p>
-                    <p id="countdownDisplay" class="text-2xl md:text-3xl font-bold font-mono pulse-text text-red-600">00:00</p>
-                </div>
                 <div class="bg-slate-100 p-4 rounded-xl mb-4 text-xs md:text-sm text-slate-800">
                     <p><strong>Bank:</strong> BOC</p><p><strong>Branch:</strong> Pilimathalawa</p><p><strong>Acc Name:</strong> P.G.P.D.K.Athulawansha</p><p><strong>Acc No:</strong> 82325855</p>
                     <p class="text-[11px] text-red-600 mt-2 font-semibold">* භෞතික පන්ති වලට සහභාගී නොවන ප්‍රශ්න පත්‍ර කට්ටලය අවශ්‍ය දරුවන් පහත බැංකු ගිණුමට මුදල් තැන්පත් කරන්න.</p>
-                    <p class="font-bold mt-3 text-base md:text-lg text-blue-700 text-center border-t border-slate-200 pt-2">Amount: <span id="payAmountDisplay"></span></p>
+                    <p class="font-bold mt-3 text-base md:text-lg text-blue-700 text-center border-t border-slate-200 pt-2">Amount: Rs. <span id="payAmountDisplay"></span></p>
                 </div>
-                <input type="text" id="shipName" class="auth-input text-xs md:text-sm" placeholder="Delivery Name">
-                <input type="tel" id="shipPhone" class="auth-input text-xs md:text-sm" placeholder="Delivery Phone Number">
+                <input type="text" id="shipName" class="auth-input text-xs md:text-sm" placeholder="Student / Delivery Name">
+                <input type="tel" id="shipPhone" class="auth-input text-xs md:text-sm" placeholder="Phone Number (WhatsApp)">
                 <textarea id="shipAddress" class="auth-input text-xs md:text-sm" rows="2" placeholder="Full Delivery Address"></textarea>
                 <label class="block text-xs md:text-sm font-bold text-slate-700 mb-2">Upload Payment Slip</label>
                 <input type="file" id="paymentSlip" class="w-full p-2 border rounded-xl mb-4 bg-white text-xs md:text-sm" accept="image/*,.pdf">
-                <button id="payBtn" onclick="window.initiatePayment()" class="w-full py-3 md:py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-sm md:text-base">Submit Order & Slip</button>
-                <button id="extendTimeBtn" onclick="window.extendTime()" class="w-full py-2 mt-2 text-xs md:text-sm text-orange-600 font-bold hidden border border-orange-200 rounded-xl hover:bg-orange-50 transition-colors">Need more time? (+24h)</button>
+                <button id="payBtn" onclick="window.reviewOrder()" class="w-full py-3 md:py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-sm md:text-base">Review Order</button>
             </div>
         </div>
     </div>
     
-    <div id="orderSuccessModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
+    <div id="orderConfirmModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl shadow-2xl relative text-center">
-            <div class="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-check-circle"></i></div>
-            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-2">Please confirm your Order</h3>
-            <p class="text-sm text-slate-500 mb-6">Review details and confirm via WhatsApp to complete your order.</p>
+            <div class="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-file-text"></i></div>
+            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-2">Confirm Your Order</h3>
+            <p class="text-sm text-slate-500 mb-6">Please check the details below before submitting.</p>
+            
             <div class="bg-slate-50 p-4 rounded-xl text-left text-sm space-y-2 mb-6 border border-slate-100 shadow-inner">
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Item:</span> <span id="successTuteTitle" class="font-bold text-slate-800 text-right"></span></div>
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Amount:</span> <span id="successAmount" class="font-bold text-blue-600"></span></div>
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Name:</span> <span id="successName" class="font-semibold text-slate-800 text-right"></span></div>
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Phone:</span> <span id="successPhone" class="font-semibold text-slate-800"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Item:</span> <span id="confirmItemName" class="font-bold text-slate-800 text-right"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Amount:</span> <span id="confirmAmount" class="font-bold text-blue-600"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Name:</span> <span id="confirmUserName" class="font-semibold text-slate-800 text-right"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Phone:</span> <span id="confirmUserPhone" class="font-semibold text-slate-800"></span></div>
+                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Method:</span> <span id="confirmMethod" class="font-semibold text-slate-800 text-right"></span></div>
             </div>
-            <a id="waConfirmBtn" href="#" target="_blank" onclick="document.getElementById('orderSuccessModal').classList.add('hidden')" class="w-full block py-4 rounded-xl bg-green-600 text-white font-bold text-base hover:bg-green-700 transition-colors shadow-lg mb-4 flex justify-center items-center gap-2">
-                <i class="ph-fill ph-whatsapp text-xl"></i> Confirm Order
-            </a>
-            <button onclick="window.reOpenShippingModal()" class="text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors underline">Edit Address or Order details</button>
+            
+            <button id="finalSubmitBtn" onclick="window.submitFinalOrder()" class="w-full py-4 rounded-xl bg-green-600 text-white font-bold text-base hover:bg-green-700 transition-colors shadow-lg mb-4 flex justify-center items-center gap-2">
+                <i class="ph-fill ph-check-circle text-xl"></i> Confirm & Submit
+            </button>
+            <button onclick="window.backToShipping()" class="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors underline">Back to Edit</button>
         </div>
     </div>
 
     <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
         <div class="bg-white w-full max-w-3xl p-6 md:p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl transition-colors"><i class="ph ph-x"></i></button>
-            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-6 text-center border-b border-slate-100 pb-4"><i class="ph-fill ph-user-circle text-blue-600"></i> My Profile</h3>
+            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-6 text-center border-b border-slate-100 pb-4"><i class="ph-fill ph-user-circle text-blue-600"></i> My Profile & Orders</h3>
+            
+            <div class="mb-6">
+                <h4 class="font-bold text-lg mb-3">My Orders</h4>
+                <div id="myOrdersList" class="space-y-3">
+                    <p class="text-slate-500 text-sm">Loading orders...</p>
+                </div>
+            </div>
+
             <div class="mt-6 flex justify-end"><button onclick="window.closeProfile()" class="px-8 py-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800">Close Window</button></div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy, addDoc, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s", authDomain: "pradeep-k-athulawansha.firebaseapp.com", projectId: "pradeep-k-athulawansha", storageBucket: "pradeep-k-athulawansha.firebasestorage.app", messagingSenderId: "950027835210", appId: "1:950027835210:web:a2894cd14833dc101bd3b3" };
-        const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
-
-        window.toggleMobileMenu = function() {
-            const menu = document.getElementById('mobileMenu');
-            if(menu.classList.contains('translate-x-full')) {
-                menu.classList.remove('translate-x-full'); menu.classList.add('translate-x-0'); document.body.style.overflow = 'hidden'; 
-            } else {
-                menu.classList.add('translate-x-full'); menu.classList.remove('translate-x-0'); document.body.style.overflow = '';
-            }
-        }
         
-        let dbResources = []; let currentUserData = null; let currentUserUnlockedTutes = []; let currentPurchaseTute = null; let countdownInterval; let selectedMethod = null;
+        const app = initializeApp(firebaseConfig); 
+        const auth = getAuth(app); 
+        const db = getFirestore(app);
+        const storage = getStorage(app);
 
-        // UPDATED JS LOGIC FOR CATEGORIES
+        let dbResources = []; 
+        let currentUserData = null; 
+        let currentUserUnlockedTutes = []; 
+        let currentPurchaseTute = null; 
+        let selectedMethod = null;
+        let currentOrderDetails = {};
+
+        // Categories & UI Functions
         const categoriesData = {
-            tutes: [
-                { id: 'Grade 10 Tutes', label: 'Grade 10 Tutes' },
-                { id: 'Grade 11 Tutes', label: 'Grade 11 Tutes' },
-                { id: 'Grade 12 Tutes', label: 'Grade 12 Tutes' },
-                { id: 'Grade 13 Tutes', label: 'Grade 13 Tutes' }
-            ],
-            pastpapers: [
-                { id: 'O/L Past Papers', label: 'O/L Past Papers' },
-                { id: 'A/L Past Papers', label: 'A/L Past Papers' }
-            ],
-            homework: [
-                { id: 'Grade 10 HW', label: 'Grade 10 HW' },
-                { id: 'Grade 11 HW', label: 'Grade 11 HW' },
-                { id: 'Grade 12 HW', label: 'Grade 12 HW' },
-                { id: 'Grade 13 HW', label: 'Grade 13 HW' }
-            ]
+            tutes: [ { id: 'Grade 10 Tutes', label: 'Grade 10 Tutes' }, { id: 'Grade 11 Tutes', label: 'Grade 11 Tutes' }, { id: 'Grade 12 Tutes', label: 'Grade 12 Tutes' }, { id: 'Grade 13 Tutes', label: 'Grade 13 Tutes' } ],
+            pastpapers: [ { id: 'O/L Past Papers', label: 'O/L Past Papers' }, { id: 'A/L Past Papers', label: 'A/L Past Papers' } ],
+            homework: [ { id: 'Grade 10 HW', label: 'Grade 10 HW' }, { id: 'Grade 11 HW', label: 'Grade 11 HW' }, { id: 'Grade 12 HW', label: 'Grade 12 HW' }, { id: 'Grade 13 HW', label: 'Grade 13 HW' } ]
         };
 
         window.setMainCategory = (mainCat, btn) => {
-            document.querySelectorAll('.main-btn').forEach(b => {
-                b.className = "main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-white text-slate-600 font-bold transition-all shadow-sm border border-slate-200 hover:bg-slate-50 text-sm md:text-base";
-            });
+            document.querySelectorAll('.main-btn').forEach(b => b.className = "main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-white text-slate-600 font-bold transition-all shadow-sm border border-slate-200 hover:bg-slate-50 text-sm md:text-base");
             if(btn) btn.className = "main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-blue-600 text-white font-bold transition-all shadow-md text-sm md:text-base border border-blue-600";
-            
-            const subContainer = document.getElementById('sub-cat-container');
-            subContainer.innerHTML = '';
-            
+            const subContainer = document.getElementById('sub-cat-container'); subContainer.innerHTML = '';
             categoriesData[mainCat].forEach((sub, index) => {
-                const isFirst = index === 0;
                 const subBtn = document.createElement('button');
-                subBtn.className = isFirst ? 
-                    "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm transition-all scale-105" : 
-                    "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm transition-all hover:bg-white/90";
+                subBtn.className = index === 0 ? "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm transition-all scale-105" : "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm transition-all hover:bg-white/90";
                 subBtn.innerText = sub.label;
                 subBtn.onclick = (e) => window.filterItems(sub.id, e.target);
                 subContainer.appendChild(subBtn);
-
-                if(isFirst) window.renderItems(sub.id);
+                if(index === 0) window.renderItems(sub.id);
             });
         };
 
         window.filterItems = (cat, btn) => {
-            document.querySelectorAll('.sub-btn').forEach(b => {
-                b.className = "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm transition-all hover:bg-white/90";
-            });
+            document.querySelectorAll('.sub-btn').forEach(b => b.className = "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm transition-all hover:bg-white/90");
             btn.className = "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm transition-all scale-105";
             window.renderItems(cat);
         };
 
-        window.showToast = (msg, type='success') => { /* Toasts remain functional */ }
-        window.togglePassword = (id, iconId) => { const input = document.getElementById(id); const icon = document.getElementById(iconId); input.type = input.type === 'password' ? 'text' : 'password'; icon.className = input.type === 'password' ? 'ph ph-eye' : 'ph ph-eye-slash'; }
-        window.toggleNicField = () => { const grade = document.getElementById('regGrade').value; document.getElementById('regNicGroup').classList.toggle('hidden', !['Grade 12', 'Grade 13'].includes(grade)); }
-
         async function initPage() {
             try { 
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc")); 
-                const snap = await getDocs(q); 
-                dbResources = []; 
-                snap.forEach(d => dbResources.push({id: d.id, ...d.data()})); 
-                
-                // Select Tutes by default on load
-                const firstMainBtn = document.getElementById('btn-main-tutes');
-                if(firstMainBtn) window.setMainCategory('tutes', firstMainBtn);
+                const snap = await getDocs(q); dbResources = []; snap.forEach(d => dbResources.push({id: d.id, ...d.data()})); 
+                window.setMainCategory('tutes', document.getElementById('btn-main-tutes'));
             } catch(e) { console.error(e); }
         }
         initPage();
@@ -301,25 +275,19 @@
                     const docSnap = await getDoc(doc(db, "users", user.uid));
                     if (docSnap.exists()) {
                         currentUserData = docSnap.data();
-                        document.getElementById('userDashboardBar').classList.remove('hidden'); document.getElementById('welcomeMsg').innerText = "Welcome, " + currentUserData.fullName; document.getElementById('dashboardPoints').innerText = (currentUserData.points || 0) + " pts";
+                        document.getElementById('userDashboardBar').classList.remove('hidden'); 
+                        document.getElementById('welcomeMsg').innerText = "Welcome, " + (currentUserData.fullName || 'Student'); 
                         currentUserUnlockedTutes = currentUserData.unlockedTutes || [];
-                        document.getElementById('navLoginBtn').classList.add('hidden'); document.getElementById('navLogoutBtn').classList.remove('hidden'); document.getElementById('mobileLoginBtn').classList.add('hidden'); document.getElementById('mobileLogoutBtn').classList.remove('hidden');
+                        document.getElementById('navLoginBtn').classList.add('hidden'); document.getElementById('navLogoutBtn').classList.remove('hidden');
                         window.closeAuthModal();
                     } 
                 } catch(e) { console.error("Error fetching user:", e); }
             } else {
                 currentUserData = null; currentUserUnlockedTutes = []; document.getElementById('userDashboardBar').classList.add('hidden');
-                document.getElementById('navLoginBtn').classList.remove('hidden'); document.getElementById('navLogoutBtn').classList.add('hidden'); document.getElementById('mobileLoginBtn').classList.remove('hidden'); document.getElementById('mobileLogoutBtn').classList.add('hidden');
+                document.getElementById('navLoginBtn').classList.remove('hidden'); document.getElementById('navLogoutBtn').classList.add('hidden');
             }
-            
-            // Re-render currently active category upon login/logout
             const activeSubBtn = document.querySelector('.sub-btn.bg-slate-900');
-            if (activeSubBtn) {
-                activeSubBtn.click();
-            } else {
-                const firstMainBtn = document.getElementById('btn-main-tutes');
-                if(firstMainBtn) window.setMainCategory('tutes', firstMainBtn);
-            }
+            if (activeSubBtn) activeSubBtn.click();
         });
 
         window.renderItems = (cat) => {
@@ -328,16 +296,182 @@
             items.forEach(item => {
                 const priceVal = parseFloat(item.price); const isFree = isNaN(priceVal) || priceVal <= 0;
                 let btnText = "Log In to View"; let btnClass = "bg-slate-100 text-slate-800"; let icon = "ph-lock";
+                
                 if (auth.currentUser) {
                     if (isFree || (currentUserUnlockedTutes || []).includes(item.id)) { btnText = "Access PDF"; btnClass = "bg-green-500 hover:bg-green-600 text-white shadow-md"; icon = "ph-folder-open"; } 
                     else { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 hover:bg-blue-600 text-white shadow-md"; icon = "ph-shopping-cart"; }
                 } else if (!isFree) { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 text-white shadow-md"; icon = "ph-shopping-cart"; }
+                
                 const safeTitle = item.title ? item.title.replace(/'/g, "\\'") : 'Tute';
-                grid.innerHTML += `<div class="glass-panel p-6 md:p-8 rounded-3xl flex flex-col justify-between h-full hover:-translate-y-1 transition-transform duration-300"><div><h3 class="font-bold text-lg md:text-xl mb-2 text-slate-800">${item.title}</h3><p class="text-xs md:text-sm text-slate-600 mb-6">${item.desc}</p></div><button onclick="window.handleAccess(event, '${item.id}', '${item.driveLink}', '${item.price}', '${safeTitle}')" class="w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 text-sm md:text-base ${btnClass}"><i class="ph-fill ${icon} text-lg md:text-xl"></i> ${btnText}</button></div>`;
+                grid.innerHTML += `<div class="glass-panel p-6 md:p-8 rounded-3xl flex flex-col justify-between h-full hover:-translate-y-1 transition-transform duration-300"><div><h3 class="font-bold text-lg md:text-xl mb-2 text-slate-800">${item.title}</h3><p class="text-xs md:text-sm text-slate-600 mb-6">${item.desc}</p></div><button onclick="window.handleAccess('${item.id}', '${item.driveLink}', '${priceVal}', '${safeTitle}')" class="w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 text-sm md:text-base ${btnClass}"><i class="ph-fill ${icon} text-lg md:text-xl"></i> ${btnText}</button></div>`;
             });
         }
 
-        window.openAuthModal = () => document.getElementById('authModal').classList.remove('hidden'); window.closeAuthModal = () => document.getElementById('authModal').classList.add('hidden'); window.toggleAuthView = (id) => { document.getElementById('loginSection').classList.add('hidden'); document.getElementById('signupSection').classList.add('hidden'); document.getElementById(id).classList.remove('hidden'); }
+        // --- PAYMENT & ACCESS HANDLING ---
+
+        window.handleAccess = (id, driveLink, price, title) => {
+            if (!auth.currentUser) { window.openAuthModal(); return; }
+            
+            const isFree = isNaN(price) || price <= 0;
+            if (isFree || (currentUserUnlockedTutes && currentUserUnlockedTutes.includes(id))) {
+                window.open(driveLink, '_blank');
+            } else {
+                currentPurchaseTute = { id, title, price, driveLink };
+                document.getElementById('payAmountDisplay').innerText = price;
+                
+                // Reset Forms
+                selectedMethod = null;
+                document.getElementById('proceedPaymentBtn').disabled = true;
+                document.getElementById('check-online').classList.add('hidden');
+                document.getElementById('check-manual').classList.add('hidden');
+                document.getElementById('method-online').classList.remove('border-blue-500');
+                document.getElementById('method-manual').classList.remove('border-orange-500');
+
+                document.getElementById('payMethodSelection').classList.remove('hidden');
+                document.getElementById('payCheckoutForm').classList.add('hidden');
+                document.getElementById('shippingModal').classList.remove('hidden');
+            }
+        };
+
+        window.chooseMethod = (method) => {
+            selectedMethod = method;
+            document.getElementById('proceedPaymentBtn').disabled = false;
+            
+            document.getElementById('check-online').classList.add('hidden');
+            document.getElementById('check-manual').classList.add('hidden');
+            document.getElementById('method-online').classList.remove('border-blue-500');
+            document.getElementById('method-manual').classList.remove('border-orange-500');
+            
+            if(method === 'online') { document.getElementById('check-online').classList.remove('hidden'); document.getElementById('method-online').classList.add('border-blue-500'); }
+            else { document.getElementById('check-manual').classList.remove('hidden'); document.getElementById('method-manual').classList.add('border-orange-500'); }
+        };
+
+        window.proceedToPayment = () => {
+            document.getElementById('payMethodSelection').classList.add('hidden');
+            document.getElementById('payCheckoutForm').classList.remove('hidden');
+        };
+
+        window.reviewOrder = () => {
+            const name = document.getElementById('shipName').value;
+            const phone = document.getElementById('shipPhone').value;
+            const address = document.getElementById('shipAddress').value;
+            const slipFile = document.getElementById('paymentSlip').files[0];
+
+            if(!name || !phone || !address || !slipFile) {
+                alert("කරුණාකර සියලුම විස්තර සහ Payment Slip එක ඇතුළත් කරන්න."); return;
+            }
+
+            currentOrderDetails = { name, phone, address, file: slipFile };
+
+            document.getElementById('confirmItemName').innerText = currentPurchaseTute.title;
+            document.getElementById('confirmAmount').innerText = "Rs. " + currentPurchaseTute.price;
+            document.getElementById('confirmUserName').innerText = name;
+            document.getElementById('confirmUserPhone').innerText = phone;
+            document.getElementById('confirmMethod').innerText = selectedMethod === 'online' ? "Online Transfer (20 Mins Limit)" : "Bank Deposit (24 Hrs Limit)";
+
+            document.getElementById('shippingModal').classList.add('hidden');
+            document.getElementById('orderConfirmModal').classList.remove('hidden');
+        };
+
+        window.backToShipping = () => {
+            document.getElementById('orderConfirmModal').classList.add('hidden');
+            document.getElementById('shippingModal').classList.remove('hidden');
+        };
+
+        window.submitFinalOrder = async () => {
+            const btn = document.getElementById('finalSubmitBtn');
+            btn.innerHTML = `<div class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div> Processing...`;
+            btn.disabled = true;
+
+            try {
+                const user = auth.currentUser;
+                
+                // 1. Upload Slip to Storage
+                const fileRef = sRef(storage, `payment_slips/${user.uid}_${Date.now()}_${currentOrderDetails.file.name}`);
+                await uploadBytes(fileRef, currentOrderDetails.file);
+                const slipUrl = await getDownloadURL(fileRef);
+
+                // 2. Save Order to Firestore (For Admin Panel)
+                const orderData = {
+                    userId: user.uid,
+                    fullName: currentUserData.fullName, // FullName from users collection
+                    email: user.email,
+                    itemId: currentPurchaseTute.id,
+                    itemTitle: currentPurchaseTute.title,
+                    amount: currentPurchaseTute.price,
+                    shippingName: currentOrderDetails.name,
+                    shippingPhone: currentOrderDetails.phone,
+                    shippingAddress: currentOrderDetails.address,
+                    slipUrl: slipUrl,
+                    paymentMethod: selectedMethod, // 'online' or 'manual'
+                    status: 'Pending', // pending, accepted, rejected
+                    createdAt: serverTimestamp()
+                };
+
+                await addDoc(collection(db, "orders"), orderData);
+
+                // 3. Open WhatsApp to notify Admin
+                const waMessage = `*New Order Submitted (bizmind.lk)*\n\n*Student:* ${currentOrderDetails.name}\n*Phone:* ${currentOrderDetails.phone}\n*Item:* ${currentPurchaseTute.title}\n*Method:* ${selectedMethod}\n*Amount:* Rs.${currentPurchaseTute.price}\n\nPlease check the admin panel to review the slip and approve.`;
+                const waUrl = `https://wa.me/94719151415?text=${encodeURIComponent(waMessage)}`;
+                
+                window.open(waUrl, '_blank');
+
+                document.getElementById('orderConfirmModal').classList.add('hidden');
+                alert("Order submitted successfully! The admin will review your slip and approve access.");
+                
+            } catch(error) {
+                console.error("Error submitting order:", error);
+                alert("An error occurred. Please try again.");
+            } finally {
+                btn.innerHTML = `<i class="ph-fill ph-check-circle text-xl"></i> Confirm & Submit`;
+                btn.disabled = false;
+            }
+        };
+
+        // --- PROFILE & ORDER FETCHING ---
+
+        window.openProfile = async () => {
+            document.getElementById('profileModal').classList.remove('hidden');
+            const list = document.getElementById('myOrdersList');
+            list.innerHTML = '<p class="text-slate-500 text-sm">Loading orders...</p>';
+
+            if(!auth.currentUser) return;
+
+            try {
+                const q = query(collection(db, "orders"), where("userId", "==", auth.currentUser.uid), orderBy("createdAt", "desc"));
+                const snap = await getDocs(q);
+                
+                if(snap.empty) {
+                    list.innerHTML = '<p class="text-slate-500 text-sm">You have no orders yet.</p>';
+                    return;
+                }
+
+                list.innerHTML = '';
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    let statusColor = data.status === 'Accepted' ? 'text-green-600 bg-green-100' : (data.status === 'Rejected' ? 'text-red-600 bg-red-100' : 'text-orange-600 bg-orange-100');
+                    
+                    list.innerHTML += `
+                        <div class="border border-slate-200 p-4 rounded-xl flex justify-between items-center bg-slate-50">
+                            <div>
+                                <h5 class="font-bold text-slate-800">${data.itemTitle}</h5>
+                                <p class="text-xs text-slate-500 mt-1">Amount: Rs. ${data.amount} | Method: ${data.paymentMethod}</p>
+                            </div>
+                            <div class="px-3 py-1 rounded-full text-xs font-bold ${statusColor}">${data.status}</div>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+                list.innerHTML = '<p class="text-red-500 text-sm">Failed to load orders.</p>';
+            }
+        };
+
+        window.closePaymentModal = () => document.getElementById('shippingModal').classList.add('hidden');
+        window.closeProfile = () => document.getElementById('profileModal').classList.add('hidden');
+        window.openAuthModal = () => document.getElementById('authModal').classList.remove('hidden'); 
+        window.closeAuthModal = () => document.getElementById('authModal').classList.add('hidden'); 
+        window.toggleMobileMenu = () => document.getElementById('mobileMenu').classList.toggle('translate-x-full');
     </script>
 </body>
 </html>
