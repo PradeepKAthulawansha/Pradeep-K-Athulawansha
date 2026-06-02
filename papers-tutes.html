@@ -321,12 +321,24 @@
                         document.getElementById('mobileLoginBtn').classList.add('hidden'); 
                         document.getElementById('mobileLogoutBtn').classList.remove('hidden');
                         window.closeAuthModal();
+
+                        // Re-render items after user data is loaded to update button states correctly
+                        const activeSubCat = document.querySelector('.sub-cat-btn.bg-blue-600');
+                        if (activeSubCat) {
+                            window.renderItems(activeSubCat.innerText);
+                        }
                     } 
                 } catch(e) { console.error(e); }
             } else {
                 currentUserData = null; currentUserUnlockedTutes = []; document.getElementById('userDashboardBar').classList.add('hidden');
                 document.getElementById('navLoginBtn').classList.remove('hidden'); document.getElementById('navLogoutBtn').classList.add('hidden'); 
                 document.getElementById('mobileLoginBtn').classList.remove('hidden'); document.getElementById('mobileLogoutBtn').classList.add('hidden');
+
+                // Re-render items on logout to show "Buy Now / Log In" correctly
+                const activeSubCat = document.querySelector('.sub-cat-btn.bg-blue-600');
+                if (activeSubCat) {
+                    window.renderItems(activeSubCat.innerText);
+                }
             }
         });
 
