@@ -1,471 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Papers & Tutes | bizmind.lk</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>
-        html, body { max-width: 100vw; overflow-x: hidden; }
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; display: flex; flex-direction: column; min-height: 100vh;}
-        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .auth-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-        .auth-input { width: 100%; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); outline: none; transition: all 0.3s; margin-bottom: 12px; font-size: 15px; }
-        .auth-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
-        .auth-btn { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(to right, #2563eb, #9333ea); color: white; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .auth-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
-        .link-text { color: #3b82f6; cursor: pointer; font-size: 14px; font-weight: 600; transition: color 0.3s; }
-        .link-text:hover { color: #1d4ed8; text-decoration: underline; }
-        .modal-backdrop { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); }
-        .pulse-text { animation: pulse-text 2s infinite; }
-        @keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        .custom-scroll::-webkit-scrollbar { width: 6px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile</title>
+<style>
+  /* Basic Reset */
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  body { background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; position: relative; }
+
+  /* Top Bar & Logout Button */
+  .top-bar { position: absolute; top: 20px; right: 20px; }
+  .btn-logout { background-color: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+  .btn-logout:hover { background-color: #c82333; }
+
+  /* Modal/Popup Styles */
+  .profile-modal { background-color: #ffffff; width: 500px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 30px; position: relative; }
+  .close-icon { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: #6c757d; }
+  
+  /* User Info Section */
+  .user-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+  .avatar { width: 50px; height: 50px; background-color: #e6f2ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #0056b3; font-size: 24px; }
+  .user-details h2 { font-size: 20px; color: #333; margin-bottom: 5px; }
+  .points-badge { display: inline-block; background-color: #f8f9fa; color: #0056b3; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #cce5ff; }
+
+  /* Sections */
+  .section-title { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 10px; }
+  .security-section { margin-bottom: 30px; }
+  .btn-outline { background-color: transparent; border: 1px solid #ced4da; color: #495057; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 5px; }
+  .btn-outline:hover { background-color: #f8f9fa; }
+
+  /* Orders Section */
+  .orders-section { margin-bottom: 30px; min-height: 80px; }
+  .error-text { color: #dc3545; font-size: 14px; }
+  .order-item { background: #f8f9fa; padding: 10px; margin-bottom: 8px; border-radius: 5px; border-left: 3px solid #0056b3; font-size: 14px; }
+  .loading-text { color: #6c757d; font-size: 14px; }
+
+  /* Footer */
+  .modal-footer { display: flex; justify-content: flex-end; }
+  .btn-dark { background-color: #1a202c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+  .btn-dark:hover { background-color: #2d3748; }
+</style>
 </head>
-<body class="relative text-slate-800">
+<body>
 
-    <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
+  <div class="top-bar">
+    <button id="logoutBtn" class="btn-logout">Logout</button>
+  </div>
 
-    <header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
-        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                <i class="ph ph-book-open text-blue-600"></i> bizmind.lk
-            </a>
-            <nav class="hidden md:flex gap-8 items-center font-medium">
-                <a href="index.html" class="hover:text-blue-600 transition-colors">Home</a>
-                <a href="about us.html" class="hover:text-blue-600 transition-colors">About Us</a>
-                <a href="papers-tutes.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Papers & Tutes</a>
-                <a href="watch-videos.html" class="hover:text-blue-600 transition-colors">Watch Videos</a>
-                <a href="quiz.html" class="hover:text-blue-600 transition-colors">Daily Quiz</a>
-                <a href="contact us.html" class="hover:text-blue-600 transition-colors">Contact</a>
-            </nav>
-            <div class="flex items-center gap-4">
-                <button id="navLoginBtn" onclick="window.openAuthModal()" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Login / Register</button>
-                <button id="navLogoutBtn" onclick="window.logoutUser()" class="hidden px-6 py-2 rounded-full bg-red-50 text-red-600 font-bold border border-red-200 hover:bg-red-100 transition-colors">Log Out</button>
-                <button onclick="window.toggleMobileMenu()" class="md:hidden text-3xl text-slate-800 focus:outline-none"><i class="ph ph-list"></i></button>
-            </div>
+  <div class="profile-modal">
+    <button class="close-icon">&times;</button>
+
+    <div class="user-header">
+      <div class="avatar">&#128100;</div>
+      <div class="user-details">
+        <h2 id="userNameDisplay">Loading...</h2>
+        <div class="points-badge">
+          &#11088; Leaderboard Points: <span id="userPointsDisplay">0</span>
         </div>
-    </header>
-
-    <div id="mobileMenu" class="fixed inset-y-0 right-0 z-[100] w-full bg-white flex flex-col px-6 py-6 overflow-y-auto transform translate-x-full transition-transform duration-300 ease-in-out">
-        <div class="flex justify-between items-center mb-10">
-            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-blue-600"><i class="ph ph-book-open"></i> bizmind.lk</a>
-            <button onclick="window.toggleMobileMenu()" class="text-4xl text-slate-800 focus:outline-none transition-transform active:scale-90"><i class="ph ph-x"></i></button>
-        </div>
-        <nav class="flex flex-col gap-6 text-lg font-medium">
-            <a href="index.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Home</a>
-            <a href="about us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">About Us</a>
-            <a href="papers-tutes.html" class="text-blue-600 border-b border-slate-100 pb-4">Papers & Tutes</a>
-            <a href="watch-videos.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Watch Videos</a>
-            <a href="quiz.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Daily Quiz</a>
-            <a href="contact us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Contact</a>
-            
-            <button id="mobileLoginBtn" onclick="window.openAuthModal(); window.toggleMobileMenu();" class="mt-6 px-6 py-4 rounded-xl bg-slate-900 text-white font-bold shadow-lg">Login / Register</button>
-            <button id="mobileLogoutBtn" onclick="window.logoutUser(); window.toggleMobileMenu();" class="hidden mt-6 px-6 py-4 rounded-xl bg-red-50 text-red-600 border border-red-200 font-bold shadow-lg">Log Out</button>
-        </nav>
+      </div>
     </div>
 
-    <main class="flex-grow pt-28 md:pt-32 pb-12">
-        <div class="container mx-auto px-6 md:px-12 min-h-[70vh]">
-            
-            <div id="userDashboardBar" class="hidden glass-panel p-5 md:p-6 rounded-2xl mb-8 md:mb-10 flex flex-col md:flex-row justify-between items-center gap-4 border-l-4 border-blue-500 shadow-sm">
-                <div class="flex items-center gap-4 w-full md:w-auto justify-center md:justify-start">
-                    <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center justify-center text-xl md:text-2xl shadow-md"><i class="ph-fill ph-student"></i></div>
-                    <div class="text-center md:text-left">
-                        <p class="text-slate-500 text-xs md:text-sm font-medium uppercase tracking-wider">Student Portal</p>
-                        <h2 id="welcomeMsg" class="font-bold text-base md:text-lg text-slate-800">Welcome!</h2>
-                        <span id="dashboardPoints" class="px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold bg-blue-100 text-blue-700 border border-blue-200 inline-block mt-1">0 pts</span>
-                    </div>
-                </div>
-                <div class="flex gap-2 w-full md:w-auto justify-center md:justify-end">
-                    <button onclick="window.openProfile()" class="px-4 py-2 md:px-6 md:py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors flex items-center gap-2 text-sm md:text-base shadow-md"><i class="ph-fill ph-user-circle text-lg"></i> My Profile</button>
-                </div>
-            </div>
-
-            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-4">
-                <button onclick="window.setMainCategory('tutes', this)" id="btn-main-tutes" class="main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-blue-600 text-white font-bold shadow-md text-sm md:text-base border border-blue-600 transition-all">Tutes</button>
-                <button onclick="window.setMainCategory('pastpapers', this)" class="main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-white text-slate-600 font-bold shadow-sm border border-slate-200 hover:bg-slate-50 text-sm md:text-base transition-all">Past Papers</button>
-                <button onclick="window.setMainCategory('homework', this)" class="main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-white text-slate-600 font-bold shadow-sm border border-slate-200 hover:bg-slate-50 text-sm md:text-base transition-all">Home Work</button>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-12" id="sub-cat-container"></div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="resourceGrid">
-                <div class="col-span-full text-center py-10"><div class="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-t-2 border-b-2 border-blue-600 mx-auto"></div><p class="text-slate-500 mt-4 font-medium text-sm md:text-base">Loading materials...</p></div>
-            </div>
-        </div>
-    </main>
-
-    <div id="shippingModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll relative">
-            <button onclick="window.closePaymentModal()" class="absolute top-5 right-5 text-2xl text-slate-400 hover:text-slate-800 transition-colors"><i class="ph ph-x"></i></button>
-            
-            <div id="payMethodSelection">
-                <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl md:text-3xl mb-4 mx-auto"><i class="ph-fill ph-wallet"></i></div>
-                <h3 class="text-lg md:text-xl font-bold text-center mb-6 text-slate-800">Select Payment Method</h3>
-                <div class="space-y-4">
-                    <div id="method-online" onclick="window.chooseMethod('online')" class="border-2 p-3 md:p-4 rounded-xl cursor-pointer hover:border-blue-500 transition-all flex items-center gap-3 md:gap-4 relative">
-                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg md:text-xl"><i class="ph-fill ph-device-mobile"></i></div>
-                        <div><h4 class="font-bold text-slate-800 text-sm md:text-base">Online Bank Transfer</h4><p class="text-[10px] md:text-xs text-slate-500">20 Minutes time limit</p></div>
-                        <div class="absolute right-4 text-blue-500 hidden check-icon" id="check-online"><i class="ph-fill ph-check-circle text-xl md:text-2xl"></i></div>
-                    </div>
-                    <div id="method-manual" onclick="window.chooseMethod('manual')" class="border-2 p-3 md:p-4 rounded-xl cursor-pointer hover:border-orange-500 transition-all flex items-center gap-3 md:gap-4 relative">
-                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg md:text-xl"><i class="ph-fill ph-bank"></i></div>
-                        <div><h4 class="font-bold text-slate-800 text-sm md:text-base">Manual Bank Deposit</h4><p class="text-[10px] md:text-xs text-slate-500">24 Hours time limit</p></div>
-                        <div class="absolute right-4 text-orange-500 hidden check-icon" id="check-manual"><i class="ph-fill ph-check-circle text-xl md:text-2xl"></i></div>
-                    </div>
-                </div>
-                <button id="proceedPaymentBtn" onclick="window.proceedToPayment()" class="w-full py-3 md:py-4 mt-6 bg-slate-900 text-white font-bold rounded-xl disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors text-sm md:text-base" disabled>Next Step <i class="ph ph-arrow-right"></i></button>
-            </div>
-
-            <div id="payCheckoutForm" class="hidden">
-                <div class="bg-slate-100 p-4 rounded-xl mb-4 text-xs md:text-sm text-slate-800">
-                    <p><strong>Bank:</strong> BOC</p><p><strong>Branch:</strong> Pilimathalawa</p><p><strong>Acc Name:</strong> P.G.P.D.K.Athulawansha</p><p><strong>Acc No:</strong> 82325855</p>
-                    <p class="text-[11px] text-red-600 mt-2 font-semibold">* භෞතික පන්ති වලට සහභාගී නොවන ප්‍රශ්න පත්‍ර කට්ටලය අවශ්‍ය දරුවන් පහත බැංකු ගිණුමට මුදල් තැන්පත් කරන්න.</p>
-                    <p class="font-bold mt-3 text-base md:text-lg text-blue-700 text-center border-t border-slate-200 pt-2">Amount: Rs. <span id="payAmountDisplay"></span></p>
-                </div>
-                <input type="text" id="shipName" class="auth-input text-xs md:text-sm" placeholder="Student Name">
-                <input type="tel" id="shipPhone" class="auth-input text-xs md:text-sm" placeholder="Phone Number (WhatsApp)">
-                <textarea id="shipAddress" class="auth-input text-xs md:text-sm" rows="2" placeholder="Full Address"></textarea>
-                <label class="block text-xs md:text-sm font-bold text-slate-700 mb-2">Upload Payment Slip</label>
-                <input type="file" id="paymentSlip" class="w-full p-2 border rounded-xl mb-4 bg-white text-xs md:text-sm" accept="image/*">
-                <button id="payBtn" onclick="window.reviewOrder()" class="w-full py-3 md:py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-sm md:text-base">Submit Details</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="orderConfirmModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl shadow-2xl relative text-center">
-            <div class="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-file-text"></i></div>
-            <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-2">Confirm Your Order</h3>
-            <p class="text-sm text-slate-500 mb-6">Please check the details below before submitting.</p>
-            
-            <div class="bg-slate-50 p-4 rounded-xl text-left text-sm space-y-2 mb-6 border border-slate-100 shadow-inner">
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Item:</span> <span id="confirmItemName" class="font-bold text-slate-800 text-right"></span></div>
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Amount:</span> <span id="confirmAmount" class="font-bold text-blue-600"></span></div>
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Name:</span> <span id="confirmUserName" class="font-semibold text-slate-800 text-right"></span></div>
-                <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Phone:</span> <span id="confirmUserPhone" class="font-semibold text-slate-800"></span></div>
-            </div>
-            
-            <button id="finalSubmitBtn" onclick="window.submitFinalOrder()" class="w-full py-4 rounded-xl bg-green-600 text-white font-bold text-base hover:bg-green-700 transition-colors shadow-lg mb-4 flex justify-center items-center gap-2">
-                <i class="ph-fill ph-check-circle text-xl"></i> Upload & Notify Sir
-            </button>
-            <button onclick="window.backToShipping()" class="text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors underline">Back to Edit</button>
-        </div>
+    <div class="security-section">
+      <div class="section-title">Account Security</div>
+      <button class="btn-outline">&#128274; Change / Reset Password</button>
     </div>
 
-    <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="bg-white w-full max-w-3xl p-6 md:p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
-            <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl transition-colors"><i class="ph ph-x"></i></button>
-            
-            <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl"><i class="ph-fill ph-user-circle"></i></div>
-                <div>
-                    <h3 class="text-xl md:text-2xl font-bold text-slate-800" id="profileNameDisplay">Student</h3>
-                    <p class="text-sm font-semibold text-blue-600 mt-1 bg-blue-50 inline-block px-3 py-1 rounded-full border border-blue-200"><i class="ph-fill ph-star"></i> Leaderboard Points: <span id="profilePointsDisplay">0</span></p>
-                </div>
-            </div>
-
-            <div class="mb-8">
-                <h4 class="font-bold text-lg mb-3">Account Security</h4>
-                <button onclick="window.sendPasswordReset()" class="px-5 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200 transition-colors border border-slate-300 text-sm"><i class="ph ph-lock-key"></i> Change / Reset Password</button>
-            </div>
-
-            <div class="mb-6">
-                <h4 class="font-bold text-lg mb-3">My Recent Orders</h4>
-                <div id="myOrdersList" class="space-y-3">
-                    <p class="text-slate-500 text-sm">Loading orders...</p>
-                </div>
-            </div>
-
-            <div class="mt-6 flex justify-end"><button onclick="window.closeProfile()" class="px-8 py-3 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800">Close Window</button></div>
-        </div>
+    <div class="orders-section">
+      <div class="section-title">My Recent Orders</div>
+      <div id="ordersContainer">
+        <span class="loading-text">Loading orders...</span>
+      </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, orderBy, addDoc, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    <div class="modal-footer">
+      <button class="btn-dark">Close Window</button>
+    </div>
+  </div>
 
-        const firebaseConfig = { apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s", authDomain: "pradeep-k-athulawansha.firebaseapp.com", projectId: "pradeep-k-athulawansha" };
-        const app = initializeApp(firebaseConfig); 
-        const auth = getAuth(app); 
-        const db = getFirestore(app);
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // IMGBB API Key
-        const IMGBB_API_KEY = "101030d84e3f84fecb3f9cfe347c4d17";
+    // IMPORTANT: ඔබේ Firebase Config එක මෙතනට ඇතුලත් කරන්න
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-        let dbResources = []; 
-        let currentUserData = null; 
-        let currentUserUnlockedTutes = []; 
-        let currentPurchaseTute = null; 
-        let selectedMethod = null;
-        let currentOrderDetails = {};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        // Categories Structure
-        const categoriesData = {
-            tutes: [ { id: 'Grade 10 Tutes', label: 'Grade 10 Tutes' }, { id: 'Grade 11 Tutes', label: 'Grade 11 Tutes' }, { id: 'Grade 12 Tutes', label: 'Grade 12 Tutes' }, { id: 'Grade 13 Tutes', label: 'Grade 13 Tutes' } ],
-            pastpapers: [ { id: 'O/L Past Papers', label: 'O/L Past Papers' }, { id: 'A/L Past Papers', label: 'A/L Past Papers' } ],
-            homework: [ { id: 'Grade 10 HW', label: 'Grade 10 HW' }, { id: 'Grade 11 HW', label: 'Grade 11 HW' }, { id: 'Grade 12 HW', label: 'Grade 12 HW' }, { id: 'Grade 13 HW', label: 'Grade 13 HW' } ]
-        };
+    // HTML Elements
+    const logoutBtn = document.getElementById("logoutBtn");
+    const ordersContainer = document.getElementById("ordersContainer");
+    const userNameDisplay = document.getElementById("userNameDisplay");
+    const userPointsDisplay = document.getElementById("userPointsDisplay");
 
-        window.setMainCategory = (mainCat, btn) => {
-            document.querySelectorAll('.main-btn').forEach(b => b.className = "main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-white text-slate-600 font-bold transition-all shadow-sm border border-slate-200 hover:bg-slate-50 text-sm md:text-base");
-            if(btn) btn.className = "main-btn px-5 py-2 md:px-8 md:py-2.5 rounded-full bg-blue-600 text-white font-bold transition-all shadow-md text-sm md:text-base border border-blue-600";
-            const subContainer = document.getElementById('sub-cat-container'); subContainer.innerHTML = '';
-            categoriesData[mainCat].forEach((sub, index) => {
-                const subBtn = document.createElement('button');
-                subBtn.className = index === 0 ? "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm transition-all scale-105" : "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm transition-all hover:bg-white/90";
-                subBtn.innerText = sub.label;
-                subBtn.onclick = (e) => window.filterItems(sub.id, e.target);
-                subContainer.appendChild(subBtn);
-                if(index === 0) window.renderItems(sub.id);
-            });
-        };
-
-        window.filterItems = (cat, btn) => {
-            document.querySelectorAll('.sub-btn').forEach(b => b.className = "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full glass-panel text-slate-600 font-medium text-sm transition-all hover:bg-white/90");
-            btn.className = "sub-btn px-5 py-2 md:px-6 md:py-2.5 rounded-full bg-slate-900 text-white shadow-lg font-medium text-sm transition-all scale-105";
-            window.renderItems(cat);
-        };
-
-        async function initPage() {
-            try { 
-                const q = query(collection(db, "resources"), orderBy("createdAt", "desc")); 
-                const snap = await getDocs(q); dbResources = []; snap.forEach(d => dbResources.push({id: d.id, ...d.data()})); 
-                window.setMainCategory('tutes', document.getElementById('btn-main-tutes'));
-            } catch(e) { console.error(e); }
-        }
-        initPage();
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user && user.email !== "admin@pradeepk.com") {
-                try {
-                    const docSnap = await getDoc(doc(db, "users", user.uid));
-                    if (docSnap.exists()) {
-                        currentUserData = docSnap.data();
-                        document.getElementById('userDashboardBar').classList.remove('hidden'); 
-                        document.getElementById('welcomeMsg').innerText = "Welcome, " + (currentUserData.fullName || 'Student'); 
-                        document.getElementById('dashboardPoints').innerText = (currentUserData.points || 0) + " pts"; // Points Update
-                        
-                        // Set in Profile Modal
-                        document.getElementById('profileNameDisplay').innerText = currentUserData.fullName;
-                        document.getElementById('profilePointsDisplay').innerText = (currentUserData.points || 0);
-
-                        currentUserUnlockedTutes = currentUserData.unlockedTutes || [];
-                        document.getElementById('navLoginBtn').classList.add('hidden'); document.getElementById('navLogoutBtn').classList.remove('hidden');
-                        window.closeAuthModal();
-                    } 
-                } catch(e) { console.error("Error fetching user:", e); }
-            } else {
-                currentUserData = null; currentUserUnlockedTutes = []; document.getElementById('userDashboardBar').classList.add('hidden');
-                document.getElementById('navLoginBtn').classList.remove('hidden'); document.getElementById('navLogoutBtn').classList.add('hidden');
-            }
-            const activeSubBtn = document.querySelector('.sub-btn.bg-slate-900');
-            if (activeSubBtn) activeSubBtn.click();
+    // 1. Log Out Function
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        signOut(auth).then(() => {
+          // Log out වුණාට පස්සේ login page එකට යවන්න
+          window.location.href = "login.html"; 
+        }).catch((error) => {
+          console.error("Error signing out: ", error);
+          alert("Logout වීමේදී ගැටළුවක් මතු විය.");
         });
+      });
+    }
 
-        window.renderItems = (cat) => {
-            const grid = document.getElementById('resourceGrid'); const items = dbResources.filter(i => i.category === cat); grid.innerHTML = '';
-            if (items.length === 0) { grid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-10">No materials available in this category yet.</p>'; return; }
-            items.forEach(item => {
-                const priceVal = parseFloat(item.price); const isFree = isNaN(priceVal) || priceVal <= 0;
-                let btnText = "Log In to View"; let btnClass = "bg-slate-100 text-slate-800"; let icon = "ph-lock";
-                
-                if (auth.currentUser) {
-                    if (isFree || (currentUserUnlockedTutes || []).includes(item.id)) { btnText = "Access PDF"; btnClass = "bg-green-500 hover:bg-green-600 text-white shadow-md"; icon = "ph-folder-open"; } 
-                    else { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 hover:bg-blue-600 text-white shadow-md"; icon = "ph-shopping-cart"; }
-                } else if (!isFree) { btnText = `Buy Now - Rs. ${priceVal}`; btnClass = "bg-slate-900 text-white shadow-md"; icon = "ph-shopping-cart"; }
-                
-                const safeTitle = item.title ? item.title.replace(/'/g, "\\'") : 'Tute';
-                grid.innerHTML += `<div class="glass-panel p-6 md:p-8 rounded-3xl flex flex-col justify-between h-full hover:-translate-y-1 transition-transform duration-300"><div><h3 class="font-bold text-lg md:text-xl mb-2 text-slate-800">${item.title}</h3><p class="text-xs md:text-sm text-slate-600 mb-6">${item.desc}</p></div><button onclick="window.handleAccess('${item.id}', '${item.driveLink}', '${priceVal}', '${safeTitle}')" class="w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 text-sm md:text-base ${btnClass}"><i class="ph-fill ${icon} text-lg md:text-xl"></i> ${btnText}</button></div>`;
-            });
-        }
+    // 2. Auth State Check & Data Fetching
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          // User විස්තර ගැනීම (users collection එකෙන්)
+          const userDocRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userDocRef);
 
-        // --- PAYMENT & CHECKOUT ---
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            // Full name එක නැත්නම් 'User' විදිහට පෙන්වයි
+            if (userNameDisplay) userNameDisplay.innerText = userData.fullName || "User"; 
+            if (userPointsDisplay) userPointsDisplay.innerText = userData.points || 0;
+          }
 
-        window.handleAccess = (id, driveLink, price, title) => {
-            if (!auth.currentUser) { window.openAuthModal(); return; }
-            const isFree = isNaN(price) || price <= 0;
-            if (isFree || (currentUserUnlockedTutes && currentUserUnlockedTutes.includes(id))) {
-                window.open(driveLink, '_blank');
-            } else {
-                currentPurchaseTute = { id, title, price, driveLink };
-                document.getElementById('payAmountDisplay').innerText = price;
-                
-                selectedMethod = null;
-                document.getElementById('proceedPaymentBtn').disabled = true;
-                document.getElementById('check-online').classList.add('hidden');
-                document.getElementById('check-manual').classList.add('hidden');
-                document.getElementById('method-online').classList.remove('border-blue-500');
-                document.getElementById('method-manual').classList.remove('border-orange-500');
-
-                document.getElementById('payMethodSelection').classList.remove('hidden');
-                document.getElementById('payCheckoutForm').classList.add('hidden');
-                document.getElementById('shippingModal').classList.remove('hidden');
-            }
-        };
-
-        window.chooseMethod = (method) => {
-            selectedMethod = method;
-            document.getElementById('proceedPaymentBtn').disabled = false;
-            document.getElementById('check-online').classList.add('hidden');
-            document.getElementById('check-manual').classList.add('hidden');
-            document.getElementById('method-online').classList.remove('border-blue-500');
-            document.getElementById('method-manual').classList.remove('border-orange-500');
+          // 3. Orders Load කිරීම සහ JS හරහා Sort කිරීම (Index Error එක මගහැරීම)
+          if (ordersContainer) {
+            const ordersQuery = query(collection(db, "orders"), where("userId", "==", user.uid));
+            const querySnapshot = await getDocs(ordersQuery);
             
-            if(method === 'online') { document.getElementById('check-online').classList.remove('hidden'); document.getElementById('method-online').classList.add('border-blue-500'); }
-            else { document.getElementById('check-manual').classList.remove('hidden'); document.getElementById('method-manual').classList.add('border-orange-500'); }
-        };
+            let ordersList = [];
+            querySnapshot.forEach((doc) => {
+              ordersList.push({ id: doc.id, ...doc.data() });
+            });
 
-        window.proceedToPayment = () => {
-            document.getElementById('payMethodSelection').classList.add('hidden');
-            document.getElementById('payCheckoutForm').classList.remove('hidden');
-        };
+            // දිනේ අනුව පිළිවෙළට හැදීම (Descending)
+            ordersList.sort((a, b) => {
+              let dateA = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : new Date(a.createdAt || 0).getTime();
+              let dateB = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : new Date(b.createdAt || 0).getTime();
+              return dateB - dateA; // අලුත්ම එක උඩින් එන්න
+            });
 
-        window.reviewOrder = () => {
-            const name = document.getElementById('shipName').value;
-            const phone = document.getElementById('shipPhone').value;
-            const address = document.getElementById('shipAddress').value;
-            const slipFile = document.getElementById('paymentSlip').files[0];
-
-            if(!name || !phone || !address || !slipFile) { alert("කරුණාකර සියලුම විස්තර සහ Payment Slip එක ඇතුළත් කරන්න."); return; }
-            currentOrderDetails = { name, phone, address, file: slipFile };
-
-            document.getElementById('confirmItemName').innerText = currentPurchaseTute.title;
-            document.getElementById('confirmAmount').innerText = "Rs. " + currentPurchaseTute.price;
-            document.getElementById('confirmUserName').innerText = name;
-            document.getElementById('confirmUserPhone').innerText = phone;
-
-            document.getElementById('shippingModal').classList.add('hidden');
-            document.getElementById('orderConfirmModal').classList.remove('hidden');
-        };
-
-        window.backToShipping = () => {
-            document.getElementById('orderConfirmModal').classList.add('hidden');
-            document.getElementById('shippingModal').classList.remove('hidden');
-        };
-
-        // --- SUBMIT FINAL ORDER WITH ImgBB API ---
-        window.submitFinalOrder = async () => {
-            const btn = document.getElementById('finalSubmitBtn');
-            btn.innerHTML = `<div class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div> Processing...`;
-            btn.disabled = true;
-
-            try {
-                const user = auth.currentUser;
-                
-                // 1. Upload Slip to ImgBB
-                const formData = new FormData();
-                formData.append('image', currentOrderDetails.file);
-                
-                const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                    method: 'POST',
-                    body: formData
-                });
-                const imgbbData = await imgbbResponse.json();
-                
-                if(!imgbbData.success) { throw new Error("Image upload failed"); }
-                const slipUrl = imgbbData.data.url; // ImgBB URL එක
-
-                // 2. Save Order to Firestore
-                const orderData = {
-                    userId: user.uid,
-                    fullName: currentUserData.fullName, // Using known detail from users collection
-                    email: user.email,
-                    itemId: currentPurchaseTute.id,
-                    itemTitle: currentPurchaseTute.title,
-                    amount: currentPurchaseTute.price,
-                    shippingName: currentOrderDetails.name,
-                    shippingPhone: currentOrderDetails.phone,
-                    shippingAddress: currentOrderDetails.address,
-                    slipUrl: slipUrl, // Save ImgBB link in DB
-                    paymentMethod: selectedMethod,
-                    status: 'Pending',
-                    createdAt: serverTimestamp()
-                };
-
-                const docRef = await addDoc(collection(db, "orders"), orderData);
-
-                // 3. Generate Magic Link (Admin Approval URL)
-                const magicLink = `https://bizmind.lk/admin-approve.html?orderId=${docRef.id}`;
-
-                // 4. Open WhatsApp to notify Admin (0719151415)
-                const waMessage = `*New Order Submitted (bizmind.lk)*\n\n*Student:* ${currentOrderDetails.name}\n*Phone:* ${currentOrderDetails.phone}\n*Item:* ${currentPurchaseTute.title}\n*Method:* ${selectedMethod}\n*Amount:* Rs.${currentPurchaseTute.price}\n\n*View Slip:* ${slipUrl}\n\n*✅ Click here to Accept Order:* \n${magicLink}`;
-                const waUrl = `https://wa.me/94719151415?text=${encodeURIComponent(waMessage)}`;
-                
-                window.open(waUrl, '_blank');
-
-                document.getElementById('orderConfirmModal').classList.add('hidden');
-                alert("Order submitted successfully! The admin will review your slip.");
-                
-            } catch(error) {
-                console.error("Error submitting order:", error);
-                alert("An error occurred. Please try again.");
-            } finally {
-                btn.innerHTML = `<i class="ph-fill ph-check-circle text-xl"></i> Upload & Notify Sir`;
-                btn.disabled = false;
+            // UI එකට Orders දැමීම
+            if (ordersList.length === 0) {
+              ordersContainer.innerHTML = "<p class='loading-text'>No recent orders found.</p>";
+            } else {
+              let ordersHTML = "";
+              ordersList.forEach(order => {
+                let orderDate = new Date(order.createdAt?.toDate ? order.createdAt.toDate() : order.createdAt).toLocaleDateString();
+                ordersHTML += `
+                  <div class="order-item">
+                    <strong>Order ID:</strong> ${order.id} <br>
+                    <strong>Date:</strong> ${orderDate}
+                  </div>
+                `;
+              });
+              ordersContainer.innerHTML = ordersHTML;
             }
-        };
+          }
 
-        // --- PROFILE SECTION & PASSWORD RESET ---
-        
-        window.sendPasswordReset = () => {
-            if(auth.currentUser) {
-                sendPasswordResetEmail(auth, auth.currentUser.email).then(() => {
-                    alert("Password reset email has been sent. Please check your inbox.");
-                }).catch((error) => {
-                    alert("Error sending password reset email: " + error.message);
-                });
-            }
-        };
-
-        window.openProfile = async () => {
-            document.getElementById('profileModal').classList.remove('hidden');
-            const list = document.getElementById('myOrdersList');
-            list.innerHTML = '<p class="text-slate-500 text-sm">Loading orders...</p>';
-
-            if(!auth.currentUser) return;
-
-            try {
-                const q = query(collection(db, "orders"), where("userId", "==", auth.currentUser.uid), orderBy("createdAt", "desc"));
-                const snap = await getDocs(q);
-                
-                if(snap.empty) {
-                    list.innerHTML = '<p class="text-slate-500 text-sm border p-4 rounded-xl border-dashed">You have no orders yet.</p>';
-                    return;
-                }
-
-                list.innerHTML = '';
-                snap.forEach(doc => {
-                    const data = doc.data();
-                    let statusColor = data.status === 'Accepted' ? 'text-green-600 bg-green-100 border-green-200' : (data.status === 'Rejected' ? 'text-red-600 bg-red-100 border-red-200' : 'text-orange-600 bg-orange-100 border-orange-200');
-                    
-                    list.innerHTML += `
-                        <div class="border border-slate-200 p-4 rounded-xl flex justify-between items-center bg-slate-50">
-                            <div>
-                                <h5 class="font-bold text-slate-800">${data.itemTitle}</h5>
-                                <p class="text-xs text-slate-500 mt-1">Amount: Rs. ${data.amount} | Method: ${data.paymentMethod}</p>
-                            </div>
-                            <div class="px-3 py-1 rounded-full text-xs font-bold border ${statusColor}">${data.status}</div>
-                        </div>
-                    `;
-                });
-            } catch (error) {
-                console.error("Error fetching orders:", error);
-                list.innerHTML = '<p class="text-red-500 text-sm">Failed to load orders.</p>';
-            }
-        };
-
-        window.closePaymentModal = () => document.getElementById('shippingModal').classList.add('hidden');
-        window.closeProfile = () => document.getElementById('profileModal').classList.add('hidden');
-        window.openAuthModal = () => document.getElementById('authModal').classList.remove('hidden'); 
-        window.closeAuthModal = () => document.getElementById('authModal').classList.add('hidden'); 
-        window.toggleMobileMenu = () => document.getElementById('mobileMenu').classList.toggle('translate-x-full');
-    </script>
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          // Error එකක් ආවොත් රතු පාටින් 'Failed to load orders' පෙන්වීම
+          if (ordersContainer) {
+            ordersContainer.innerHTML = `<span class="error-text">Failed to load orders.</span>`;
+          }
+        }
+      } else {
+        // ලොග් වෙලා නැත්නම් login page එකට redirect කිරීම
+        window.location.href = "login.html";
+      }
+    });
+  </script>
 </body>
 </html>
