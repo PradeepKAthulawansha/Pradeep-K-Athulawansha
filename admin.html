@@ -284,7 +284,7 @@
 
         <div id="tab-students" class="tab-content">
             <div class="glass-card p-6 md:p-8 border-t-4 border-teal-500">
-                <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
+                <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
                     <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-users text-teal-600"></i> Registered Students</h3>
                     
                     <button onclick="window.openPromoteModal()" class="px-4 py-2 border border-red-200 text-red-500 bg-red-50 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors shadow-sm flex items-center gap-2">
@@ -292,6 +292,29 @@
                     </button>
                 </div>
                 
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+                    <div class="bg-teal-50 border border-teal-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-teal-600 uppercase mb-1">Total</h4>
+                        <p class="text-2xl font-bold text-teal-800" id="stat-total">0</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Grade 10</h4>
+                        <p class="text-xl font-bold text-slate-800" id="stat-g10">0</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Grade 11</h4>
+                        <p class="text-xl font-bold text-slate-800" id="stat-g11">0</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Grade 12</h4>
+                        <p class="text-xl font-bold text-slate-800" id="stat-g12">0</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Grade 13</h4>
+                        <p class="text-xl font-bold text-slate-800" id="stat-g13">0</p>
+                    </div>
+                </div>
+
                 <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-200">
                     <div class="flex flex-wrap gap-3 items-end">
                         <div class="flex-1 min-w-[200px]">
@@ -1086,10 +1109,31 @@
             } catch (e) { container.innerHTML = '<div class="text-center text-xs text-red-400 py-4">Error</div>'; }
         }
 
+        // UPDATE STATS FUNCTION
+        window.updateStudentStats = function() {
+            let counts = { Total: 0, "Grade 10": 0, "Grade 11": 0, "Grade 12": 0, "Grade 13": 0 };
+            allStudents.forEach(s => {
+                counts.Total++;
+                let g = s.exactGrade || s.grade; 
+                if(g === 'Grade 10') counts["Grade 10"]++;
+                else if(g === 'Grade 11') counts["Grade 11"]++;
+                else if(g === 'Grade 12') counts["Grade 12"]++;
+                else if(g === 'Grade 13') counts["Grade 13"]++;
+            });
+            
+            document.getElementById('stat-total').innerText = counts.Total;
+            document.getElementById('stat-g10').innerText = counts["Grade 10"];
+            document.getElementById('stat-g11').innerText = counts["Grade 11"];
+            document.getElementById('stat-g12').innerText = counts["Grade 12"];
+            document.getElementById('stat-g13').innerText = counts["Grade 13"];
+        }
+
         window.loadStudents = async function() {
             try {
                 const snapshot = await getDocs(collection(db, "users")); allStudents = [];
                 snapshot.forEach(doc => { if(doc.data().email !== 'admin@pradeepk.com') allStudents.push({id: doc.id, ...doc.data()}); });
+                
+                window.updateStudentStats(); // Call to update the stats UI
                 window.clearStudentFilter();
             } catch (error) { document.getElementById('studentTableBody').innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-400">Failed to load.</td></tr>'; }
         }
