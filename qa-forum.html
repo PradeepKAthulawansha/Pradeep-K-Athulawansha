@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A Forum | bizmind.lk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        .glass-panel { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
+        .custom-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; transition: 0.3s; }
+        .custom-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="text-slate-800 pb-20">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md border-b py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-blue-600 flex items-center gap-2"><i class="ph ph-arrow-left"></i> Back to Home</a>
+            <div id="authStatus" class="font-semibold text-sm bg-slate-100 px-4 py-2 rounded-full text-slate-600">Checking...</div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-8 mt-8 max-w-3xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold mb-2">Student Q&A Forum <i class="ph-fill ph-chats-teardrop text-blue-500"></i></h1>
+            <p class="text-slate-500 text-sm">Ask your questions, share pictures of difficult problems, and help others!</p>
+        </div>
+
+        <!-- Ask Question Box (Hidden if not logged in) -->
+        <div id="askQuestionBox" class="glass-panel p-6 rounded-2xl mb-8 hidden">
+            <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="ph-bold ph-pencil-simple text-blue-500"></i> Ask a New Question</h3>
+            <textarea id="qText" class="custom-input mb-3" rows="3" placeholder="Type your question here... (e.g. How to solve this physics equation?)"></textarea>
+            
+            <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+                <input type="file" id="qImage" accept="image/*" class="text-sm w-full md:w-auto text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                <button id="postBtn" onclick="postQuestion()" class="bg-blue-600 text-white font-bold px-6 py-2.5 rounded-xl hover:bg-blue-700 transition w-full md:w-auto flex items-center justify-center gap-2">Post Question</button>
+            </div>
+            <p id="uploadStatus" class="text-xs text-blue-600 font-bold mt-2 hidden flex items-center gap-2"><div class="loader hidden" id="spinner"></div> <span id="statusText"></span></p>
+        </div>
+
+        <!-- Login Prompt (Shown if not logged in) -->
+        <div id="loginPromptBox" class="glass-panel p-6 rounded-2xl mb-8 text-center bg-blue-50/50">
+            <i class="ph-fill ph-lock-key text-3xl text-blue-400 mb-2"></i>
+            <h3 class="font-bold text-lg mb-2">Join the Discussion</h3>
+            <p class="text-sm text-slate-500 mb-4">You need to log in to ask questions and post comments.</p>
+            <a href="papers-tutes.html" class="bg-slate-900 text-white px-6 py-2 rounded-xl font-bold inline-block hover:bg-slate-800">Go to Login Page</a>
+        </div>
+
+        <!-- Questions Feed -->
+        <div id="questionsFeed" class="space-y-6">
+            <div class="text-center py-10 text-slate-400"><div class="loader mx-auto mb-2 border-slate-300 border-t-slate-500"></div>Loading questions...</div>
+        </div>
+    </main>
+
+    <!-- FIREBASE & LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s", authDomain: "pradeep-k-athulawansha.firebaseapp.com", projectId: "pradeep-k-athulawansha" };
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
+
+        let currentUser = null;
+        let currentUserName = "Student";
+
+        // Check Auth Status
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                // Get display name or email prefix
+                currentUserName = user.displayName || user.email.split('@')[0];
+                document.getElementById('authStatus').innerHTML = `<i class="ph-fill ph-user-circle text-lg"></i> Logged in`;
+                document.getElementById('authStatus').classList.add('bg-green-100', 'text-green-700');
+                
+                document.getElementById('askQuestionBox').classList.remove('hidden');
+                document.getElementById('loginPromptBox').classList.add('hidden');
+            } else {
+                currentUser = null;
+                document.getElementById('authStatus').innerText = "Guest Mode";
+                
+                document.getElementById('askQuestionBox').classList.add('hidden');
+                document.getElementById('loginPromptBox').classList.remove('hidden');
+            }
+        });
+
+        // 1. Post a Question
+        window.postQuestion = async () => {
+            const text = document.getElementById('qText').value.trim();
+            const file = document.getElementById('qImage').files[0];
+            if(!text && !file) return alert("Please type a question or add an image.");
+
+            const btn = document.getElementById('postBtn');
+            const status = document.getElementById('uploadStatus');
+            const spinner = document.getElementById('spinner');
+            const statusText = document.getElementById('statusText');
+            
+            btn.disabled = true; status.classList.remove('hidden'); spinner.classList.remove('hidden');
+            
+            let imageUrl = null;
+
+            try {
+                // Upload image to ImgBB if selected
+                if(file) {
+                    statusText.innerText = "Uploading Image (Saving Storage)...";
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    const imgRes = await fetch('https://api.imgbb.com/1/upload?key=101030d84e3f84fecb3f9cfe347c4d17', { method: 'POST', body: formData });
+                    const imgData = await imgRes.json();
+                    if(imgData.success) { imageUrl = imgData.data.url; } 
+                    else { throw new Error("Image upload failed"); }
+                }
+
+                statusText.innerText = "Posting Question...";
+                
+                // Save to Firestore
+                await addDoc(collection(db, "questions"), {
+                    text: text,
+                    imageUrl: imageUrl,
+                    authorId: currentUser.uid,
+                    authorName: currentUserName,
+                    createdAt: serverTimestamp()
+                });
+
+                document.getElementById('qText').value = '';
+                document.getElementById('qImage').value = '';
+                statusText.innerText = "Posted Successfully!";
+                spinner.classList.add('hidden');
+                setTimeout(() => status.classList.add('hidden'), 2000);
+
+            } catch (error) {
+                console.error(error); alert("Error posting question.");
+                status.classList.add('hidden');
+            } finally {
+                btn.disabled = false;
+            }
+        };
+
+        // 2. Load Questions Realtime
+        const qQuery = query(collection(db, "questions"), orderBy("createdAt", "desc"));
+        onSnapshot(qQuery, (snapshot) => {
+            const feed = document.getElementById('questionsFeed');
+            feed.innerHTML = '';
+            
+            if(snapshot.empty) {
+                feed.innerHTML = `<div class="text-center py-10 text-slate-400 bg-white rounded-xl">No questions yet. Be the first to ask!</div>`;
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const qId = docSnap.id;
+                const time = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleString() : "Just now";
+                
+                let imgHtml = data.imageUrl ? `<img src="${data.imageUrl}" class="mt-3 rounded-lg max-h-64 object-contain border border-slate-200 cursor-pointer hover:opacity-90" onclick="window.open('${data.imageUrl}')" alt="Question Image">` : '';
+
+                feed.innerHTML += `
+                    <div class="glass-panel p-5 md:p-6 rounded-2xl">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-white flex items-center justify-center font-bold">${data.authorName.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-800">${data.authorName}</h4>
+                                <p class="text-[10px] text-slate-400">${time}</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-700 whitespace-pre-wrap text-sm md:text-base">${data.text}</p>
+                        ${imgHtml}
+                        
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <h5 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Answers</h5>
+                            <div id="comments-${qId}" class="space-y-3 mb-4 max-h-48 overflow-y-auto pr-2 custom-scroll text-sm">
+                                <div class="text-center text-xs text-slate-400 py-2">Loading answers...</div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <input type="text" id="commentInput-${qId}" class="custom-input !py-2 !text-sm" placeholder="Write an answer...">
+                                <button onclick="postComment('${qId}')" class="bg-slate-900 text-white px-4 rounded-xl hover:bg-slate-800 transition"><i class="ph-bold ph-paper-plane-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Load comments for this question
+                loadComments(qId);
+            });
+        });
+
+        // 3. Post a Comment
+        window.postComment = async (qId) => {
+            if(!currentUser) {
+                alert("You must be logged in to answer questions! Please log in via the Papers & Tutes page.");
+                return;
+            }
+
+            const input = document.getElementById(`commentInput-${qId}`);
+            const text = input.value.trim();
+            if(!text) return;
+
+            input.disabled = true;
+            try {
+                await addDoc(collection(db, `questions/${qId}/comments`), {
+                    text: text,
+                    authorId: currentUser.uid,
+                    authorName: currentUserName,
+                    createdAt: serverTimestamp()
+                });
+                input.value = '';
+            } catch (error) {
+                console.error(error); alert("Error posting answer.");
+            } finally {
+                input.disabled = false;
+            }
+        };
+
+        // 4. Load Comments Realtime
+        function loadComments(qId) {
+            const cQuery = query(collection(db, `questions/${qId}/comments`), orderBy("createdAt", "asc"));
+            onSnapshot(cQuery, (snapshot) => {
+                const cDiv = document.getElementById(`comments-${qId}`);
+                cDiv.innerHTML = '';
+                
+                if(snapshot.empty) {
+                    cDiv.innerHTML = `<div class="text-xs text-slate-400 italic">No answers yet. Can you help?</div>`;
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const cData = docSnap.data();
+                    const isMe = currentUser && cData.authorId === currentUser.uid;
+                    const badge = isMe ? `<span class="bg-blue-100 text-blue-600 text-[9px] px-1.5 py-0.5 rounded font-bold ml-2">You</span>` : '';
+                    
+                    cDiv.innerHTML += `
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <span class="font-bold text-xs text-slate-700">${cData.authorName} ${badge}</span>
+                            <p class="text-slate-600 mt-1">${cData.text}</p>
+                        </div>
+                    `;
+                });
+                // Scroll to bottom of comments
+                cDiv.scrollTop = cDiv.scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html>
