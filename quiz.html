@@ -5,76 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Challenge | BizMind</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6VF30KL55"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-L6VF30KL55');
-</script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-L6VF30KL55');
+    </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <!-- Confetti Animation Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         body { 
             font-family: 'Poppins', sans-serif; 
-            background: #0f172a; /* Deep Slate/Dark Mode */
+            background: #0f172a; 
             color: #f8fafc;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
         }
-        
-        /* Modern Glass Effect */
         .glass-box { 
             background: rgba(255, 255, 255, 0.03); 
             backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1); 
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-
-        /* Option Button Hover Glow */
-        .option-btn {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .option-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .option-btn:hover {
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.5);
             border-color: rgba(59, 130, 246, 0.5);
             background: rgba(59, 130, 246, 0.1);
         }
-
-        /* Animated Background Blobs */
         .blob { position: absolute; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.5; animation: float 10s infinite ease-in-out alternate; }
         .blob-1 { top: -10%; left: -10%; width: 40vw; height: 40vw; background: #3b82f6; }
         .blob-2 { bottom: -10%; right: -10%; width: 30vw; height: 30vw; background: #8b5cf6; animation-delay: -5s; }
         .blob-3 { top: 40%; left: 50%; width: 20vw; height: 20vw; background: #06b6d4; animation-duration: 15s; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 50px) scale(1.1); }
-        }
-
-        /* Loading Spinner */
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 50px) scale(1.1); } }
         .loader { border: 4px solid rgba(255,255,255,0.1); border-left-color: #3b82f6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="relative">
 
-    <!-- Background Animations -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+    <div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div>
 
-    <!-- Minimal Navbar -->
     <header class="w-full py-5 px-6 md:px-12 flex justify-between items-center relative z-20 border-b border-white/10 glass-box">
         <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-white hover:opacity-80 transition">
             <i class="ph ph-arrow-left text-blue-400"></i> Back to Home
@@ -92,8 +71,6 @@
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-8 md:py-12 relative z-10 flex flex-col items-center">
-        
-        <!-- Header Section -->
         <div class="text-center mb-10 w-full max-w-4xl">
             <div class="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest mb-4">
                 <i class="ph-bold ph-lightning"></i> Daily Challenge
@@ -104,46 +81,35 @@
             <p class="text-slate-400 text-lg">Answer today's question correctly to climb the leaderboard.</p>
         </div>
 
-        <!-- Grade Selector (Pill Design) -->
         <div class="bg-white/5 p-1 rounded-full border border-white/10 flex mb-10 shadow-xl backdrop-blur-md">
             <button id="btn-10" class="px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-blue-600 text-white shadow-lg">Grade 10/11</button>
             <button id="btn-12" class="px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 text-slate-400 hover:text-white">Grade 12/13</button>
         </div>
 
         <div class="w-full max-w-5xl grid lg:grid-cols-5 gap-8">
-            
-            <!-- QUIZ AREA (Takes 3 columns) -->
             <div class="lg:col-span-3 glass-box p-6 md:p-10 rounded-[2rem] relative overflow-hidden flex flex-col justify-center min-h-[400px]">
-                
-                <!-- Not Logged In State -->
                 <div id="auth-warning" class="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center rounded-[2rem]">
                     <div class="w-20 h-20 bg-blue-600/20 rounded-full flex items-center justify-center mb-4">
                         <i class="ph-fill ph-lock-key text-4xl text-blue-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-2">Login Required</h3>
                     <p class="text-slate-400 mb-6">You must log in to participate in the daily challenge and earn points.</p>
-                    <a href="papers & tutes.html" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-full transition-all shadow-lg shadow-blue-500/30">Go to Login Page</a>
+                    <a href="papers-tutes.html" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-full transition-all shadow-lg shadow-blue-500/30">Go to Login Page</a>
                 </div>
 
-                <!-- Loading State -->
                 <div id="quiz-loader" class="text-center w-full hidden">
-                    <div class="loader mb-4"></div>
-                    <p class="text-slate-400 animate-pulse">Loading today's challenge...</p>
+                    <div class="loader mb-4"></div><p class="text-slate-400 animate-pulse">Loading today's challenge...</p>
                 </div>
 
-                <!-- Active Question State -->
                 <div id="quiz-content" class="w-full hidden">
                     <div class="flex justify-between items-center mb-6">
                         <span class="text-slate-400 font-medium text-sm"><i class="ph ph-calendar-blank"></i> <span id="current-date-display"></span></span>
                         <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-md text-xs font-bold">+10 Points</span>
                     </div>
                     <h2 id="q-text" class="text-2xl md:text-3xl font-bold leading-snug mb-8 text-white"></h2>
-                    <div id="options-container" class="grid grid-cols-1 gap-4">
-                        <!-- Options injected via JS -->
-                    </div>
+                    <div id="options-container" class="grid grid-cols-1 gap-4"></div>
                 </div>
 
-                <!-- Completed State -->
                 <div id="quiz-completed" class="text-center w-full hidden">
                     <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30">
                         <i class="ph-bold ph-check text-5xl text-white"></i>
@@ -151,88 +117,45 @@
                     <h3 class="text-3xl font-bold text-white mb-2">Awesome Job!</h3>
                     <p class="text-slate-400">You've completed today's challenge. Come back tomorrow for more points.</p>
                 </div>
-
             </div>
 
-            <!-- LEADERBOARD AREA (Takes 2 columns) -->
             <div class="lg:col-span-2 glass-box p-6 md:p-8 rounded-[2rem] flex flex-col h-full">
                 <div class="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
-                    <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
-                        <i class="ph-fill ph-trophy text-2xl text-orange-400"></i>
-                    </div>
+                    <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center"><i class="ph-fill ph-trophy text-2xl text-orange-400"></i></div>
                     <h3 class="text-xl font-bold text-white">Top Players</h3>
                 </div>
-
-                <div id="leaderboard-loader" class="text-center py-10">
-                    <div class="loader mb-3 !w-8 !h-8 border-[3px]"></div>
-                </div>
-
-                <div id="leaderboard-list" class="space-y-3 flex-grow hidden">
-                    <!-- Ranks injected via JS -->
-                </div>
+                <div id="leaderboard-loader" class="text-center py-10"><div class="loader mb-3 !w-8 !h-8 border-[3px]"></div></div>
+                <div id="leaderboard-list" class="space-y-3 flex-grow hidden"></div>
             </div>
-
         </div>
     </main>
 
-    <!-- FIREBASE MODULAR SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getFirestore, collection, getDoc, getDocs, doc, updateDoc, increment, query, orderBy, limit, where, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        // IMPORT arrayUnion for progress tracking
+        import { getFirestore, collection, getDoc, getDocs, doc, updateDoc, increment, query, orderBy, limit, where, setDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-        // FIREBASE CONFIG - REPLACE THIS
-        const firebaseConfig = {
-            apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s",
-            authDomain: "pradeep-k-athulawansha.firebaseapp.com",
-            projectId: "pradeep-k-athulawansha",
-            storageBucket: "pradeep-k-athulawansha.firebasestorage.app",
-            messagingSenderId: "950027835210",
-            appId: "1:950027835210:web:a2894cd14833dc101bd3b3"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s", authDomain: "pradeep-k-athulawansha.firebaseapp.com", projectId: "pradeep-k-athulawansha", storageBucket: "pradeep-k-athulawansha.firebasestorage.app", messagingSenderId: "950027835210", appId: "1:950027835210:web:a2894cd14833dc101bd3b3" };
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        // State variables
-        let currentGrade = '10/11';
-        let currentUserUid = null;
-        const today = new Date().toISOString().split('T')[0];
+        let currentGrade = '10/11'; let currentUserUid = null;
+        // Correctly format local date to YYYY-MM-DD
+        const d = new Date();
+        const today = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
         
-        // Display today's date
         document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
-        // Grade Toggle Logic
-        const btn10 = document.getElementById('btn-10');
-        const btn12 = document.getElementById('btn-12');
-
+        const btn10 = document.getElementById('btn-10'); const btn12 = document.getElementById('btn-12');
         function switchGrade(grade) {
-            currentGrade = grade;
-            const activeClasses = "bg-blue-600 text-white shadow-lg";
-            const inactiveClasses = "text-slate-400 hover:text-white bg-transparent";
-
-            if (grade === '10/11') {
-                btn10.className = `px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${activeClasses}`;
-                btn12.className = `px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${inactiveClasses}`;
-            } else {
-                btn12.className = `px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${activeClasses}`;
-                btn10.className = `px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${inactiveClasses}`;
-            }
-            
-            if(currentUserUid) loadQuestion();
-            loadLeaderboard();
+            currentGrade = grade; const active = "bg-blue-600 text-white shadow-lg"; const inactive = "text-slate-400 hover:text-white bg-transparent";
+            if (grade === '10/11') { btn10.className = `px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${active}`; btn12.className = `px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${inactive}`; } 
+            else { btn12.className = `px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${active}`; btn10.className = `px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${inactive}`; }
+            if(currentUserUid) loadQuestion(); loadLeaderboard();
         }
+        btn10.addEventListener('click', () => switchGrade('10/11')); btn12.addEventListener('click', () => switchGrade('12/13'));
+        document.getElementById('login-btn').addEventListener('click', () => { window.location.href = "papers-tutes.html"; });
 
-        btn10.addEventListener('click', () => switchGrade('10/11'));
-        btn12.addEventListener('click', () => switchGrade('12/13'));
-
-        // Redirect Login Button
-        document.getElementById('login-btn').addEventListener('click', () => {
-            window.location.href = "papers & tutes.html"; 
-        });
-
-        // Auth State Observer
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUserUid = user.uid;
@@ -240,35 +163,25 @@
                 document.getElementById('login-btn').classList.add('hidden');
                 document.getElementById('user-info').classList.remove('hidden');
                 document.getElementById('user-info').classList.add('flex');
-                
                 await fetchUserData(user.uid);
-            } else {
-                document.getElementById('auth-warning').classList.remove('hidden');
-            }
-            loadLeaderboard(); // Load leaderboard regardless of login status
+            } else { document.getElementById('auth-warning').classList.remove('hidden'); }
+            loadLeaderboard();
         });
 
         async function fetchUserData(uid) {
             showQuizView('quiz-loader');
             try {
-                // වෙනස් කළ කොටස: 'users' වෙනුවට 'students' පාවිච්චි කිරීම
-                const userSnap = await getDoc(doc(db, 'students', uid));
+                // FIXED: Changed 'students' back to 'users' to match your registration database!
+                const userSnap = await getDoc(doc(db, 'users', uid));
                 const userData = userSnap.exists() ? userSnap.data() : {};
                 
                 document.getElementById('user-points').innerText = userData.points || 0;
-                
-                // ළමයාගේ ඇත්ත නම ගන්න කොටස
                 const realName = userData.fullName || userData.name;
                 document.getElementById('user-name').innerText = realName ? realName.split(' ')[0] : 'Student';
 
-                // Automatically switch to user's registered grade if available
-                if(userData.grade && (userData.grade === '10/11' || userData.grade === '12/13') && userData.grade !== currentGrade) {
-                    switchGrade(userData.grade);
-                } else if (userData.lastSolvedDate === today) {
-                    showQuizView('quiz-completed');
-                } else {
-                    loadQuestion();
-                }
+                if(userData.grade && (userData.grade === '10/11' || userData.grade === '12/13') && userData.grade !== currentGrade) { switchGrade(userData.grade); } 
+                else if (userData.lastSolvedDate === today) { showQuizView('quiz-completed'); } 
+                else { loadQuestion(); }
             } catch (error) { console.error(error); }
         }
 
@@ -279,125 +192,85 @@
                 const qSnap = await getDoc(doc(db, collectionName, today));
 
                 if (!qSnap.exists()) {
-                    document.getElementById('quiz-loader').innerHTML = `
-                        <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10">
-                            <i class="ph ph-coffee text-3xl text-slate-400"></i>
-                        </div>
-                        <p class="text-slate-400 font-medium">No question for today yet. Check back later!</p>`;
+                    document.getElementById('quiz-loader').innerHTML = `<div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10"><i class="ph ph-coffee text-3xl text-slate-400"></i></div><p class="text-slate-400 font-medium">No question for today yet. Check back later!</p>`;
                     return;
                 }
 
-                // වෙනස් කළ කොටස: 'users' වෙනුවට 'students' පාවිච්චි කිරීම
-                const userSnap = await getDoc(doc(db, 'students', currentUserUid));
+                // FIXED: Changed 'students' back to 'users'
+                const userSnap = await getDoc(doc(db, 'users', currentUserUid));
                 if (userSnap.exists() && userSnap.data().lastSolvedDate === today) {
-                    showQuizView('quiz-completed');
-                    return;
+                    showQuizView('quiz-completed'); return;
                 }
 
-                const data = qSnap.data();
-                document.getElementById('q-text').innerText = data.q;
-                
-                const optContainer = document.getElementById('options-container');
-                optContainer.innerHTML = '';
-
+                const data = qSnap.data(); document.getElementById('q-text').innerText = data.q;
+                const optContainer = document.getElementById('options-container'); optContainer.innerHTML = '';
                 const letters = ['A', 'B', 'C', 'D', 'E', 'F']; 
 
                 data.options.forEach((opt, index) => {
                     const btn = document.createElement('button');
                     btn.className = "option-btn w-full text-left p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-4 group";
-                    btn.innerHTML = `
-                        <span class="w-8 h-8 rounded-full bg-white/10 text-slate-300 flex items-center justify-center font-bold text-sm group-hover:bg-blue-500 group-hover:text-white transition-colors">${letters[index]}</span>
-                        <span class="text-slate-200 font-medium">${opt}</span>
-                    `;
+                    btn.innerHTML = `<span class="w-8 h-8 rounded-full bg-white/10 text-slate-300 flex items-center justify-center font-bold text-sm group-hover:bg-blue-500 group-hover:text-white transition-colors">${letters[index]}</span><span class="text-slate-200 font-medium">${opt}</span>`;
                     btn.onclick = () => submitAnswer(index, btn);
                     optContainer.appendChild(btn);
                 });
-                
                 showQuizView('quiz-content');
-            } catch (error) {
-                console.error(error);
-                document.getElementById('quiz-loader').innerHTML = "<p class='text-red-400'>Error loading question.</p>";
-            }
+            } catch (error) { console.error(error); document.getElementById('quiz-loader').innerHTML = "<p class='text-red-400'>Error loading question.</p>"; }
         }
 
         async function submitAnswer(selectedIndex, clickedBtn) {
             if (!currentUserUid) return;
-            
-            // Visual feedback on click
-            clickedBtn.innerHTML = `<div class="loader !w-6 !h-6 border-[2px] mx-auto"></div>`;
-            clickedBtn.disabled = true;
+            clickedBtn.innerHTML = `<div class="loader !w-6 !h-6 border-[2px] mx-auto"></div>`; clickedBtn.disabled = true;
 
-            // වෙනස් කළ කොටස: 'users' වෙනුවට 'students' පාවිච්චි කිරීම
-            const userRef = doc(db, 'students', currentUserUid);
+            // FIXED: Changed 'students' back to 'users'
+            const userRef = doc(db, 'users', currentUserUid);
             
             try {
-                // අලුත් ළමයින්ට Error නොයන්න setDoc පාවිච්චි කිරීම සහ grade එක යැවීම
+                // ADDED: arrayUnion එක පාවිච්චි කරලා progressHistory එකට Data සේව් කරනවා!
                 await setDoc(userRef, {
                     points: increment(10),
                     lastSolvedDate: today,
                     lastSubmittedAns: selectedIndex,
-                    grade: currentGrade 
+                    grade: currentGrade,
+                    progressHistory: arrayUnion({ date: today, points: 10 }) 
                 }, { merge: true });
                 
-                // Trigger Confetti!
                 triggerConfetti();
-
-                // Update UI instantly
                 let currentPts = parseInt(document.getElementById('user-points').innerText);
                 document.getElementById('user-points').innerText = currentPts + 10;
                 
-                setTimeout(() => {
-                    showQuizView('quiz-completed');
-                    loadLeaderboard(); // refresh board
-                }, 1500);
-
+                setTimeout(() => { showQuizView('quiz-completed'); loadLeaderboard(); }, 1500);
             } catch (error) {
                 console.error("Quiz Error:", error);
-                // Visual feedback for wrong answer
                 clickedBtn.classList.add('border-red-500/50', 'bg-red-500/10');
                 clickedBtn.innerHTML = `<i class="ph-bold ph-x text-red-400 text-xl mx-auto block text-center"></i>`;
-                setTimeout(() => {
-                    alert("Wrong answer! Keep studying and try tomorrow.");
-                    showQuizView('quiz-completed'); // Lock out for the day
-                }, 1000);
+                setTimeout(() => { alert("Wrong answer! Keep studying and try tomorrow."); showQuizView('quiz-completed'); }, 1000);
             }
         }
 
         async function loadLeaderboard() {
-            document.getElementById('leaderboard-loader').classList.remove('hidden');
-            document.getElementById('leaderboard-list').classList.add('hidden');
+            document.getElementById('leaderboard-loader').classList.remove('hidden'); document.getElementById('leaderboard-list').classList.add('hidden');
             const lbContainer = document.getElementById('leaderboard-list');
             
             try {
-                // වෙනස් කළ කොටස: 'users' වෙනුවට 'students' පාවිච්චි කිරීම
-                const q = query(collection(db, "students"), where("grade", "==", currentGrade), orderBy("points", "desc"), limit(6));
+                // FIXED: Changed 'students' back to 'users'
+                const q = query(collection(db, "users"), where("grade", "==", currentGrade), orderBy("points", "desc"), limit(6));
                 const querySnapshot = await getDocs(q);
                 
-                lbContainer.innerHTML = '';
-                document.getElementById('leaderboard-loader').classList.add('hidden');
-                lbContainer.classList.remove('hidden');
-                
-                if(querySnapshot.empty) {
-                    lbContainer.innerHTML = '<div class="text-center py-6 text-slate-500 text-sm">No players yet.</div>';
-                    return;
-                }
+                lbContainer.innerHTML = ''; document.getElementById('leaderboard-loader').classList.add('hidden'); lbContainer.classList.remove('hidden');
+                if(querySnapshot.empty) { lbContainer.innerHTML = '<div class="text-center py-6 text-slate-500 text-sm">No players yet.</div>'; return; }
 
                 let rank = 1;
                 querySnapshot.forEach((document) => {
                     const data = document.data();
                     let rankDisplay = `<span class="text-slate-400 font-bold w-6 text-center text-sm">#${rank}</span>`;
                     let highlightClass = "bg-white/5 border-white/5";
-                    
                     if (rank === 1) { rankDisplay = `<span class="text-2xl mr-1 drop-shadow-md">👑</span>`; highlightClass = "bg-gradient-to-r from-yellow-500/10 to-transparent border-yellow-500/30"; }
                     else if (rank === 2) { rankDisplay = `<span class="text-2xl mr-1">🥈</span>`; }
                     else if (rank === 3) { rankDisplay = `<span class="text-2xl mr-1">🥉</span>`; }
 
                     const isCurrentUser = document.id === currentUserUid;
                     if(isCurrentUser) highlightClass += " border-blue-500/50";
-
-                    // Leaderboard එකේ නම පෙන්වන කොටස
-                    const realName = data.fullName || data.name;
-                    const displayName = realName ? realName.split(' ')[0] : 'Student';
+                    const realName = data.fullName || data.name; const displayName = realName ? realName.split(' ')[0] : 'Student';
 
                     lbContainer.innerHTML += `
                         <div class="flex justify-between items-center p-3 rounded-xl border ${highlightClass} transition-all hover:bg-white/10">
@@ -407,32 +280,21 @@
                             </div>
                             <span class="font-extrabold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-lg text-sm border border-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.2)]">${data.points || 0}</span>
                         </div>
-                    `;
-                    rank++;
+                    `; rank++;
                 });
-            } catch (error) {
-                console.error("Leaderboard Error:", error);
-                lbContainer.innerHTML = '<div class="text-center py-6 text-red-400 text-sm">Failed to load ranks.</div>';
-            }
+            } catch (error) { console.error("Leaderboard Error:", error); lbContainer.innerHTML = '<div class="text-center py-6 text-red-400 text-sm">Failed to load ranks.</div>'; }
         }
 
         function showQuizView(viewId) {
-            document.getElementById('quiz-loader').classList.add('hidden');
-            document.getElementById('quiz-content').classList.add('hidden');
-            document.getElementById('quiz-completed').classList.add('hidden');
-            document.getElementById(viewId).classList.remove('hidden');
+            document.getElementById('quiz-loader').classList.add('hidden'); document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('quiz-completed').classList.add('hidden'); document.getElementById(viewId).classList.remove('hidden');
         }
 
         function triggerConfetti() {
-            var duration = 3 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
-
+            var duration = 3 * 1000; var animationEnd = Date.now() + duration; var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
             function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
             var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) { return clearInterval(interval); }
+                var timeLeft = animationEnd - Date.now(); if (timeLeft <= 0) { return clearInterval(interval); }
                 var particleCount = 50 * (timeLeft / duration);
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
