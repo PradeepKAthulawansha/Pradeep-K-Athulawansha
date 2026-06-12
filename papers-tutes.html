@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Papers & Tutes | bizmind.lk</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6VF30KL55"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-L6VF30KL55');
-</script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-L6VF30KL55');
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script type="text/javascript">
        (function(){
-          // Updated with your Public Key
           emailjs.init("msKLscXDbLA-GGmXH"); 
        })();
     </script>
@@ -40,7 +40,6 @@
         @keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        /* Smooth Mobile Menu Animation */
         #mobileMenu { transition: transform 0.3s ease-in-out; }
     </style>
 </head>
@@ -57,9 +56,9 @@
                 <a href="index.html" class="hover:text-blue-600 transition-colors">Home</a>
                 <a href="about us.html" class="hover:text-blue-600 transition-colors">About Us</a>
                 <a href="papers-tutes.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Papers & Tutes</a>
+                <a href="watch-videos.html" class="hover:text-blue-600 transition-colors">Watch Videos</a>
                 <a href="quiz.html" class="hover:text-blue-600 transition-colors">Daily Quiz</a>
                 <a href="contact us.html" class="hover:text-blue-600 transition-colors">Contact</a>
-                <a href="watch-videos.html" class="hover:text-blue-600 transition-colors">Watch Videos</a>
             </nav>
             <div class="flex items-center gap-4">
                 <button id="navLoginBtn" onclick="window.openAuthModal()" class="hidden md:block px-6 py-2 rounded-full bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors">Login / Register</button>
@@ -110,8 +109,7 @@
                 <button id="main-cat-hw" onclick="window.showSubcategories('Home Work', this)" class="main-cat-btn px-6 py-3 md:px-8 md:py-3.5 rounded-xl glass-panel text-slate-600 font-bold text-sm md:text-base transition-all hover:bg-white/90">Home Work</button>
             </div>
 
-            <div id="subCategoryContainer" class="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-12">
-                </div>
+            <div id="subCategoryContainer" class="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-12"></div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="resourceGrid">
                 <div class="col-span-full text-center py-10"><div class="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-t-2 border-b-2 border-blue-600 mx-auto"></div><p class="text-slate-500 mt-4 font-medium text-sm md:text-base">Loading materials...</p></div>
@@ -179,7 +177,6 @@
                 <div id="paymentWarningBox" class="hidden mt-6 p-4 rounded-xl border-l-4 bg-slate-50 text-xs md:text-sm shadow-inner transition-all"><p id="paymentWarningText" class="font-medium leading-relaxed"></p></div>
                 <button id="proceedPaymentBtn" onclick="window.proceedToPayment()" class="w-full py-3 md:py-4 mt-6 bg-slate-900 text-white font-bold rounded-xl disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors text-sm md:text-base" disabled>Next Step <i class="ph ph-arrow-right"></i></button>
             </div>
-            
             <div id="payCheckoutForm" class="hidden">
                 <div class="text-center mb-4 bg-red-50 p-3 rounded-xl border border-red-200">
                     <p class="text-[10px] md:text-xs font-bold text-red-600 uppercase tracking-wider mb-1">Time Remaining</p>
@@ -220,7 +217,7 @@
     </div>
 
     <div id="profileModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop px-4">
-        <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+        <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="window.closeProfile()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 text-2xl transition-colors"><i class="ph ph-x"></i></button>
             
             <div class="flex items-center gap-4 border-b border-slate-100 pb-6 mb-6 mt-2">
@@ -228,6 +225,14 @@
                 <div>
                     <h3 id="profileName" class="text-xl font-bold text-slate-800 leading-tight">Student Name</h3>
                     <span id="profilePoints" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100 inline-block mt-2"><i class="ph-fill ph-star"></i> Leaderboard Points: 0</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-bold text-slate-700 mb-3 text-sm flex items-center gap-2"><i class="ph-fill ph-chart-line-up text-blue-500"></i> My Quiz Progress</h4>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner">
+                    <canvas id="progressChart" class="w-full h-40"></canvas>
+                    <p id="no-chart-data" class="text-xs text-center text-slate-400 hidden mt-4">Do a daily challenge to see your progress here!</p>
                 </div>
             </div>
 
@@ -249,7 +254,7 @@
             </div>
 
             <div>
-                <h4 class="font-bold text-slate-700 mb-3 text-sm">My Recent Orders</h4>
+                <h4 class="font-bold text-slate-700 mb-3 text-sm flex items-center gap-2"><i class="ph-fill ph-shopping-bag text-blue-500"></i> My Recent Orders</h4>
                 <div id="profileOrdersList" class="space-y-3 max-h-[200px] overflow-y-auto custom-scroll pr-2">
                     <p class="text-sm text-slate-500">Loading orders...</p>
                 </div>
@@ -305,7 +310,6 @@
                 const snap = await getDocs(q); 
                 dbResources = []; 
                 snap.forEach(d => dbResources.push({id: d.id, ...d.data()})); 
-                
                 window.showSubcategories('Tutes', document.getElementById('main-cat-tutes'));
             } catch(e) { console.error(e); }
         }
@@ -314,12 +318,10 @@
         onAuthStateChanged(auth, async (user) => {
             if (user && user.email !== "admin@pradeepk.com") {
                 try {
-                    // Update user collection reference
                     const docSnap = await getDoc(doc(db, "users", user.uid));
                     if (docSnap.exists()) {
                         currentUserData = docSnap.data();
                         document.getElementById('userDashboardBar').classList.remove('hidden'); 
-                        // Using full name field
                         document.getElementById('welcomeMsg').innerText = "Welcome, " + currentUserData.fullName; 
                         document.getElementById('dashboardPoints').innerText = (currentUserData.points || 0) + " pts";
                         currentUserUnlockedTutes = currentUserData.unlockedTutes || [];
@@ -330,23 +332,16 @@
                         document.getElementById('mobileLogoutBtn').classList.remove('hidden');
                         window.closeAuthModal();
 
-                        // Re-render items after user data is loaded to update button states correctly
                         const activeSubCat = document.querySelector('.sub-cat-btn.bg-blue-600');
-                        if (activeSubCat) {
-                            window.renderItems(activeSubCat.innerText);
-                        }
+                        if (activeSubCat) { window.renderItems(activeSubCat.innerText); }
                     } 
                 } catch(e) { console.error(e); }
             } else {
                 currentUserData = null; currentUserUnlockedTutes = []; document.getElementById('userDashboardBar').classList.add('hidden');
                 document.getElementById('navLoginBtn').classList.remove('hidden'); document.getElementById('navLogoutBtn').classList.add('hidden'); 
                 document.getElementById('mobileLoginBtn').classList.remove('hidden'); document.getElementById('mobileLogoutBtn').classList.add('hidden');
-
-                // Re-render items on logout to show "Buy Now / Log In" correctly
                 const activeSubCat = document.querySelector('.sub-cat-btn.bg-blue-600');
-                if (activeSubCat) {
-                    window.renderItems(activeSubCat.innerText);
-                }
+                if (activeSubCat) { window.renderItems(activeSubCat.innerText); }
             }
         });
 
@@ -355,9 +350,7 @@
                 await signOut(auth);
                 window.showToast("Logged out successfully.");
                 setTimeout(() => window.location.reload(), 1000);
-            } catch (error) {
-                window.showToast("Error logging out.", "error");
-            }
+            } catch (error) { window.showToast("Error logging out.", "error"); }
         };
 
         window.showSubcategories = (mainCat, btn) => {
@@ -366,7 +359,6 @@
             
             const subContainer = document.getElementById('subCategoryContainer');
             subContainer.innerHTML = '';
-
             categoriesData[mainCat].forEach((subCat, index) => {
                 const subBtn = document.createElement('button');
                 const activeClass = index === 0 ? "bg-blue-600 text-white shadow-md scale-105" : "glass-panel text-slate-600 hover:bg-white/90";
@@ -375,10 +367,7 @@
                 subBtn.onclick = function() { window.filterItems(subCat, this); };
                 subContainer.appendChild(subBtn);
             });
-
-            if(categoriesData[mainCat].length > 0) {
-                window.filterItems(categoriesData[mainCat][0], subContainer.firstChild);
-            }
+            if(categoriesData[mainCat].length > 0) { window.filterItems(categoriesData[mainCat][0], subContainer.firstChild); }
         };
 
         window.renderItems = (cat) => {
@@ -411,21 +400,12 @@
             if(!e || !p) return window.showToast("Please enter email and password.", "error");
             document.getElementById('loginBtn').disabled = true; document.getElementById('loginBtn').innerText = "Logging in...";
             try { 
-                await signInWithEmailAndPassword(auth, e, p); 
-                window.showToast("Login successful!"); 
-                window.closeAuthModal(); 
+                await signInWithEmailAndPassword(auth, e, p); window.showToast("Login successful!"); window.closeAuthModal(); 
             } catch(err) { 
-                // Custom error handling for invalid credentials
-                if(err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
-                    window.showToast("Incorrect Email or Password. Please try again.", "error");
-                } else if(err.code === 'auth/too-many-requests') {
-                    window.showToast("Too many failed attempts. Try resetting your password.", "error");
-                } else {
-                    window.showToast("Login failed. Please check your details.", "error");
-                }
-            } finally { 
-                document.getElementById('loginBtn').disabled = false; document.getElementById('loginBtn').innerText = "Log In"; 
-            }
+                if(err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') { window.showToast("Incorrect Email or Password. Please try again.", "error"); } 
+                else if(err.code === 'auth/too-many-requests') { window.showToast("Too many failed attempts. Try resetting your password.", "error"); } 
+                else { window.showToast("Login failed. Please check your details.", "error"); }
+            } finally { document.getElementById('loginBtn').disabled = false; document.getElementById('loginBtn').innerText = "Log In"; }
         }
 
         window.registerUser = async () => {
@@ -460,15 +440,10 @@
             if(!auth.currentUser) return window.showToast("User not found.", "error");
 
             try {
-                await updatePassword(auth.currentUser, newPass);
-                window.showToast("Password updated successfully!");
-                document.getElementById('newProfilePassword').value = '';
+                await updatePassword(auth.currentUser, newPass); window.showToast("Password updated successfully!"); document.getElementById('newProfilePassword').value = '';
             } catch(err) {
-                if(err.code === 'auth/requires-recent-login') {
-                    window.showToast("Please log out and log in again to change your password for security reasons.", "error");
-                } else {
-                    window.showToast(err.message, "error");
-                }
+                if(err.code === 'auth/requires-recent-login') { window.showToast("Please log out and log in again to change your password for security reasons.", "error"); } 
+                else { window.showToast(err.message, "error"); }
             }
         }
 
@@ -519,35 +494,18 @@
             const btn = document.getElementById('payBtn'); btn.disabled = true; btn.innerText = "Uploading...";
             
             try {
-                // Upload Image to ImgBB
-                const formData = new FormData();
-                formData.append('image', file);
-                const imgbbResponse = await fetch('https://api.imgbb.com/1/upload?key=101030d84e3f84fecb3f9cfe347c4d17', {
-                    method: 'POST',
-                    body: formData
-                });
-                
+                const formData = new FormData(); formData.append('image', file);
+                const imgbbResponse = await fetch('https://api.imgbb.com/1/upload?key=101030d84e3f84fecb3f9cfe347c4d17', { method: 'POST', body: formData });
                 const imgbbData = await imgbbResponse.json();
                 if(!imgbbData.success) throw new Error("Image upload failed via ImgBB.");
                 
                 const url = imgbbData.data.url;
-                
                 const orderId = 'ORD' + Math.floor(100000 + Math.random() * 900000);
                 await setDoc(doc(db, "orders", orderId), { orderId: orderId, studentId: auth.currentUser.uid, studentName: name, email: auth.currentUser.email, phone1: phone, address: addr, tuteId: currentPurchaseTute.id, tuteTitle: currentPurchaseTute.title, amount: currentPurchaseTute.price, method: selectedMethod, slipUrl: url, status: "Pending Verification", date: new Date() });
                 
-                // Send Email via EmailJS once order is successfully submitted
                 try {
-                    // Updated with your Template ID
-                    emailjs.send("service_0mwn89o", "template_3mcklw3", {
-                        to_name: name,
-                        to_email: auth.currentUser.email,
-                        order_id: orderId,
-                        item_name: currentPurchaseTute.title,
-                        amount: currentPurchaseTute.price
-                    });
-                } catch(emailErr) {
-                    console.log("Email could not be sent:", emailErr);
-                }
+                    emailjs.send("service_0mwn89o", "template_3mcklw3", { to_name: name, to_email: auth.currentUser.email, order_id: orderId, item_name: currentPurchaseTute.title, amount: currentPurchaseTute.price });
+                } catch(emailErr) { console.log("Email could not be sent:", emailErr); }
                 
                 window.closePaymentModal(); window.showToast("Order submitted!");
                 document.getElementById('successTuteTitle').innerText = currentPurchaseTute.title; document.getElementById('successAmount').innerText = "Rs. " + currentPurchaseTute.price; document.getElementById('successName').innerText = name; document.getElementById('successPhone').innerText = phone;
@@ -557,7 +515,6 @@
                 
                 document.getElementById('waConfirmBtn').href = `https://wa.me/94719151415?text=${waMsg}`;
                 document.getElementById('orderSuccessModal').classList.remove('hidden');
-                
             } catch(err) { window.showToast(err.message, "error"); } finally { btn.disabled = false; btn.innerText = "Submit Order & Slip"; }
         }
 
@@ -565,7 +522,6 @@
 
         window.openProfile = async () => {
             if(!currentUserData) return;
-            // Displaying Full Name as instructed
             document.getElementById('profileName').innerText = currentUserData.fullName || 'Student';
             document.getElementById('profilePoints').innerHTML = `<i class="ph-fill ph-star"></i> Leaderboard Points: ${currentUserData.points || 0}`;
             
@@ -573,6 +529,64 @@
             document.getElementById('profilePhone').innerText = currentUserData.phone || 'N/A';
             document.getElementById('profileGrade').innerText = currentUserData.exactGrade || currentUserData.grade || 'N/A';
             document.getElementById('profileAddress').innerText = currentUserData.address || 'N/A';
+
+            // ADDED: Initialize the Chart.js Graph!
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            const noDataMsg = document.getElementById('no-chart-data');
+            
+            // Destroy previous chart instance if exists
+            if (window.myProgressChart) { window.myProgressChart.destroy(); }
+            
+            let historyArray = currentUserData.progressHistory || [];
+            
+            if (historyArray.length === 0) {
+                noDataMsg.classList.remove('hidden');
+                document.getElementById('progressChart').classList.add('hidden');
+            } else {
+                noDataMsg.classList.add('hidden');
+                document.getElementById('progressChart').classList.remove('hidden');
+                
+                // Sort history by date to ensure correct line flow
+                historyArray.sort((a,b) => new Date(a.date) - new Date(b.date));
+                
+                let cumulativeTotal = 0;
+                const labels = [];
+                const dataPoints = [];
+                
+                historyArray.forEach(entry => {
+                    labels.push(entry.date);
+                    cumulativeTotal += entry.points; // Add up the points to show progress line going up
+                    dataPoints.push(cumulativeTotal);
+                });
+
+                window.myProgressChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Quiz Points',
+                            data: dataPoints,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                            pointBackgroundColor: '#2563eb',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            tension: 0.4, // smooth curves
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, tooltip: { enabled: true } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { borderDash: [4, 4] }, ticks: { precision: 0 } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
 
             document.getElementById('profileModal').classList.remove('hidden');
             
@@ -582,7 +596,6 @@
             try {
                 const q = query(collection(db, "orders"), where("studentId", "==", auth.currentUser.uid));
                 const snapshot = await getDocs(q);
-                
                 let ordersList = [];
                 snapshot.forEach(doc => ordersList.push({ id: doc.id, ...doc.data() }));
                 
@@ -612,10 +625,7 @@
                         </div>
                     `;
                 });
-            } catch(err) {
-                console.error(err);
-                ordersListDiv.innerHTML = '<p class="text-sm text-red-500">Failed to load orders. Please refresh and try again.</p>';
-            }
+            } catch(err) { console.error(err); ordersListDiv.innerHTML = '<p class="text-sm text-red-500">Failed to load orders. Please refresh and try again.</p>'; }
         }
         
         window.closeProfile = () => document.getElementById('profileModal').classList.add('hidden');
