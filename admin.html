@@ -17,7 +17,7 @@
         .glass-card { background: white; border-radius: 24px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
         .hidden { display: none !important; }
         .modal { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000;}
-        ::-webkit-scrollbar { height: 8px; }
+        ::-webkit-scrollbar { height: 8px; width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
         /* Tab Styles */
@@ -27,6 +27,9 @@
         .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Highlight Pending Orders */
+        .row-pending { background-color: #fffbeb !important; border-left: 4px solid #f59e0b; }
     </style>
 </head>
 <body class="p-4 md:p-8 text-slate-800">
@@ -69,20 +72,39 @@
 
         <div id="tab-orders" class="tab-content active">
             <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
-                <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Student Orders & Approvals</h3>
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Student Orders</h3>
                 
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-green-600 uppercase mb-1">Total Orders</h4>
+                        <p class="text-2xl font-bold text-green-800" id="stat-ord-total">0</p>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-orange-600 uppercase mb-1">Pending Approval</h4>
+                        <p class="text-2xl font-bold text-orange-800" id="stat-ord-pending">0</p>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-indigo-600 uppercase mb-1">Approved/Access</h4>
+                        <p class="text-2xl font-bold text-indigo-800" id="stat-ord-approved">0</p>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-xs font-bold text-blue-600 uppercase mb-1">Dispatched/Done</h4>
+                        <p class="text-2xl font-bold text-blue-800" id="stat-ord-done">0</p>
+                    </div>
+                </div>
+
                 <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-200">
                     <div class="flex flex-wrap gap-3 items-end">
                         <div class="flex-1 min-w-[200px]">
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Search</label>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Search Details</label>
                             <input type="text" id="orderSearch" placeholder="Name, Phone, or Title..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Status</label>
-                            <select id="orderStatusFilter" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
+                        <div class="flex-1 min-w-[150px]">
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Filter by Status</label>
+                            <select id="orderStatusFilter" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400 font-semibold text-slate-700">
                                 <option value="">All Statuses</option>
-                                <option value="Pending Verification">Pending Verification</option>
-                                <option value="Approved">Approved</option>
+                                <option value="Pending Verification" class="text-orange-600">Pending Verification</option>
+                                <option value="Approved" class="text-indigo-600">Approved</option>
                                 <option value="Processing">Processing</option>
                                 <option value="Dispatched">Dispatched</option>
                                 <option value="Delivered">Delivered</option>
@@ -186,20 +208,20 @@
                         
                         <select id="resCategory" class="w-full p-3 border rounded-xl bg-white text-sm">
                             <optgroup label="1. Tutes">
-                                <option value="Grade 10 Tutes">a. Grade 10 Tutes</option>
-                                <option value="Grade 11 Tutes">b. Grade 11 Tutes</option>
-                                <option value="Grade 12 Tutes">c. Grade 12 Tutes</option>
-                                <option value="Grade 13 Tutes">d. Grade 13 Tutes</option>
+                                <option value="Grade 10 Tutes">Grade 10 Tutes</option>
+                                <option value="Grade 11 Tutes">Grade 11 Tutes</option>
+                                <option value="Grade 12 Tutes">Grade 12 Tutes</option>
+                                <option value="Grade 13 Tutes">Grade 13 Tutes</option>
                             </optgroup>
                             <optgroup label="2. Past Papers">
-                                <option value="O/L Past Papers">a. O/L Past Papers</option>
-                                <option value="A/L Past Papers">b. A/L Past Papers</option>
+                                <option value="O/L Past Papers">O/L Past Papers</option>
+                                <option value="A/L Past Papers">A/L Past Papers</option>
                             </optgroup>
                             <optgroup label="3. Home Work">
-                                <option value="Grade 10 HW">a. Grade 10 HW</option>
-                                <option value="Grade 11 HW">b. Grade 11 HW</option>
-                                <option value="Grade 12 HW">c. Grade 12 HW</option>
-                                <option value="Grade 13 HW">d. Grade 13 HW</option>
+                                <option value="Grade 10 HW">Grade 10 HW</option>
+                                <option value="Grade 11 HW">Grade 11 HW</option>
+                                <option value="Grade 12 HW">Grade 12 HW</option>
+                                <option value="Grade 13 HW">Grade 13 HW</option>
                             </optgroup>
                         </select>
                         
@@ -220,10 +242,42 @@
                 </div>
 
                 <div class="lg:col-span-2 glass-card p-6 md:p-8 border-t-4 border-blue-400">
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
-                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Materials</h3>
-                        <input type="text" id="tuteSearch" oninput="window.applyTuteFilter()" placeholder="Search Tutes by Title..." class="p-2.5 border rounded-lg text-sm bg-slate-50 outline-none focus:border-blue-400 w-full md:w-1/2">
+                    <div class="grid grid-cols-3 gap-3 mb-6">
+                        <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl text-center shadow-sm">
+                            <h4 class="text-[10px] font-bold text-blue-600 uppercase mb-1">Total Materials</h4>
+                            <p class="text-xl font-bold text-blue-800" id="stat-tut-total">0</p>
+                        </div>
+                        <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl text-center shadow-sm">
+                            <h4 class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Total Tutes</h4>
+                            <p class="text-xl font-bold text-indigo-800" id="stat-tut-tutes">0</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
+                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Past Papers / HW</h4>
+                            <p class="text-xl font-bold text-slate-800" id="stat-tut-papers">0</p>
+                        </div>
                     </div>
+
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <h3 class="text-lg font-bold flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Filter</h3>
+                        
+                        <div class="flex gap-2 w-full md:w-auto flex-1">
+                            <select id="tuteCategoryFilter" onchange="window.applyTuteFilter()" class="p-2 border rounded-lg text-sm bg-white outline-none focus:border-blue-400 w-full md:w-1/3 text-slate-600 font-semibold">
+                                <option value="">All Categories</option>
+                                <option value="Grade 10 Tutes">Grade 10 Tutes</option>
+                                <option value="Grade 11 Tutes">Grade 11 Tutes</option>
+                                <option value="Grade 12 Tutes">Grade 12 Tutes</option>
+                                <option value="Grade 13 Tutes">Grade 13 Tutes</option>
+                                <option value="O/L Past Papers">O/L Past Papers</option>
+                                <option value="A/L Past Papers">A/L Past Papers</option>
+                                <option value="Grade 10 HW">Grade 10 HW</option>
+                                <option value="Grade 11 HW">Grade 11 HW</option>
+                                <option value="Grade 12 HW">Grade 12 HW</option>
+                                <option value="Grade 13 HW">Grade 13 HW</option>
+                            </select>
+                            <input type="text" id="tuteSearch" oninput="window.applyTuteFilter()" placeholder="Search Title..." class="p-2 border rounded-lg text-sm bg-white outline-none focus:border-blue-400 w-full md:w-2/3">
+                        </div>
+                    </div>
+
                     <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
                         <table class="w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
@@ -262,10 +316,41 @@
                 </div>
 
                 <div class="lg:col-span-2 glass-card p-6 md:p-8 border-t-4 border-red-400">
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
-                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-video-camera text-red-600"></i> Manage Videos</h3>
-                        <input type="text" id="videoSearch" oninput="window.applyVideoFilter()" placeholder="Search Videos by Title..." class="p-2.5 border rounded-lg text-sm bg-slate-50 outline-none focus:border-red-400 w-full md:w-1/2">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                        <div class="bg-red-50 border border-red-200 p-3 rounded-xl text-center shadow-sm">
+                            <h4 class="text-[10px] font-bold text-red-600 uppercase mb-1">Total Videos</h4>
+                            <p class="text-xl font-bold text-red-800" id="stat-vid-total">0</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
+                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Grade 10/11</h4>
+                            <p class="text-xl font-bold text-slate-800" id="stat-vid-ol">0</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
+                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Grade 12/13</h4>
+                            <p class="text-xl font-bold text-slate-800" id="stat-vid-al">0</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
+                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">General</h4>
+                            <p class="text-xl font-bold text-slate-800" id="stat-vid-gen">0</p>
+                        </div>
                     </div>
+
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <h3 class="text-lg font-bold flex items-center gap-2"><i class="ph ph-video-camera text-red-600"></i> Library Filter</h3>
+                        
+                        <div class="flex gap-2 w-full md:w-auto flex-1">
+                            <select id="videoCategoryFilter" onchange="window.applyVideoFilter()" class="p-2 border rounded-lg text-sm bg-white outline-none focus:border-red-400 w-full md:w-1/3 text-slate-600 font-semibold">
+                                <option value="">All Categories</option>
+                                <option value="Grade 10 Videos">Grade 10 Videos</option>
+                                <option value="Grade 11 Videos">Grade 11 Videos</option>
+                                <option value="Grade 12 Videos">Grade 12 Videos</option>
+                                <option value="Grade 13 Videos">Grade 13 Videos</option>
+                                <option value="General">General / Motivation</option>
+                            </select>
+                            <input type="text" id="videoSearch" oninput="window.applyVideoFilter()" placeholder="Search Videos by Title..." class="p-2 border rounded-lg text-sm bg-white outline-none focus:border-red-400 w-full md:w-2/3">
+                        </div>
+                    </div>
+
                     <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
                         <table class="w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
@@ -321,6 +406,19 @@
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Search</label>
                             <input type="text" id="studentSearch" placeholder="Name, Email, or Phone..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400">
                         </div>
+                        
+                        <div class="flex-1 min-w-[150px]">
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Filter by Grade</label>
+                            <select id="studentGradeFilter" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400 font-semibold text-slate-700">
+                                <option value="">All Grades</option>
+                                <option value="Grade 10">Grade 10</option>
+                                <option value="Grade 11">Grade 11</option>
+                                <option value="Grade 12">Grade 12</option>
+                                <option value="Grade 13">Grade 13</option>
+                                <option value="Old Student">Old Students</option>
+                            </select>
+                        </div>
+
                         <div>
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Reg From</label>
                             <input type="date" id="studentStartDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400">
@@ -428,20 +526,20 @@
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
                     <select id="editCategory" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
                         <optgroup label="1. Tutes">
-                            <option value="Grade 10 Tutes">a. Grade 10 Tutes</option>
-                            <option value="Grade 11 Tutes">b. Grade 11 Tutes</option>
-                            <option value="Grade 12 Tutes">c. Grade 12 Tutes</option>
-                            <option value="Grade 13 Tutes">d. Grade 13 Tutes</option>
+                            <option value="Grade 10 Tutes">Grade 10 Tutes</option>
+                            <option value="Grade 11 Tutes">Grade 11 Tutes</option>
+                            <option value="Grade 12 Tutes">Grade 12 Tutes</option>
+                            <option value="Grade 13 Tutes">Grade 13 Tutes</option>
                         </optgroup>
                         <optgroup label="2. Past Papers">
-                            <option value="O/L Past Papers">a. O/L Past Papers</option>
-                            <option value="A/L Past Papers">b. A/L Past Papers</option>
+                            <option value="O/L Past Papers">O/L Past Papers</option>
+                            <option value="A/L Past Papers">A/L Past Papers</option>
                         </optgroup>
                         <optgroup label="3. Home Work">
-                            <option value="Grade 10 HW">a. Grade 10 HW</option>
-                            <option value="Grade 11 HW">b. Grade 11 HW</option>
-                            <option value="Grade 12 HW">c. Grade 12 HW</option>
-                            <option value="Grade 13 HW">d. Grade 13 HW</option>
+                            <option value="Grade 10 HW">Grade 10 HW</option>
+                            <option value="Grade 11 HW">Grade 11 HW</option>
+                            <option value="Grade 12 HW">Grade 12 HW</option>
+                            <option value="Grade 13 HW">Grade 13 HW</option>
                         </optgroup>
                     </select>
                 </div>
@@ -497,7 +595,7 @@
     <div id="studentModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl">
             <button onclick="window.closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
-            <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-identification-card"></i></div>
+            <div class="w-16 h-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-identification-card"></i></div>
             <h3 class="text-xl font-bold mb-6 text-center text-slate-800">Student Details</h3>
             
             <div class="space-y-3 text-sm">
@@ -506,8 +604,8 @@
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Phone:</span> <span id="v-stuPhone" class="font-medium"></span></div>
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Grade:</span> <span id="v-stuGrade" class="font-medium"></span></div>
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">NIC:</span> <span id="v-stuNic" class="font-medium"></span></div>
-                <div class="flex flex-col border-b pb-2"><span class="text-slate-500 mb-1">Address:</span> <span id="v-stuAddress" class="font-medium whitespace-pre-wrap"></span></div>
-                <div class="flex justify-between pt-2"><span class="text-slate-500">Total Points:</span> <span id="v-stuPoints" class="font-bold text-blue-600 text-lg"></span></div>
+                <div class="flex flex-col border-b pb-2"><span class="text-slate-500 mb-1">Address:</span> <span id="v-stuAddress" class="font-medium whitespace-pre-wrap text-right"></span></div>
+                <div class="flex justify-between pt-2"><span class="text-slate-500">Total Points:</span> <span id="v-stuPoints" class="font-bold text-teal-600 text-lg"></span></div>
             </div>
             <button onclick="window.closeStudentModal()" class="w-full py-3 mt-6 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 text-sm">Close</button>
         </div>
@@ -536,13 +634,8 @@
 
         emailjs.init("msKLscXDbLA-GGmXH");
 
-        // Global Arrays for Filtering
-        let allOrders = [];
-        let allStudents = [];
-        let allResources = [];
-        let allVideos = [];
+        let allOrders = []; let allStudents = []; let allResources = []; let allVideos = [];
 
-        // --- HELPER FUNCTION TO FIX DATE ERRORS ---
         function getSafeDate(val) {
             if(!val) return null;
             if(typeof val.toDate === 'function') return val.toDate();
@@ -557,8 +650,7 @@
         }
 
         window.showToast = function(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div');
             toast.className = `p-4 rounded-xl shadow-xl border text-sm font-medium flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto max-w-sm bg-white min-w-[300px] z-[9999]`;
             if (type === 'success') { toast.classList.add('border-green-200', 'text-green-800', 'bg-green-50/95'); toast.innerHTML = `<i class="ph-fill ph-check-circle text-green-500 text-lg"></i> <span>${message}</span>`; } 
             else { toast.classList.add('border-red-200', 'text-red-800', 'bg-red-50/95'); toast.innerHTML = `<i class="ph-fill ph-warning-circle text-red-500 text-lg"></i> <span>${message}</span>`; }
@@ -598,15 +690,9 @@
         function initAdmin() {
             document.getElementById('q-date').valueAsDate = new Date();
             initOptionFields();
-            loadQuizzes(); 
-            loadLeaderboards(); 
-            loadOrders(); 
-            loadResources(); 
-            loadStudents();
-            loadVideos(); 
+            loadQuizzes(); loadLeaderboards(); loadOrders(); loadResources(); loadStudents(); loadVideos(); 
             
-            const today = new Date();
-            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const today = new Date(); const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
             document.getElementById('reportEndDate').valueAsDate = today;
             document.getElementById('reportStartDate').valueAsDate = firstDay;
             
@@ -665,8 +751,7 @@
                 else if (type === 'leaderboard') {
                     title = "Quiz Leaderboard Report (All Time)"; headers = ["Rank", "Name", "Grade", "Points", "Phone"];
                     const q = query(collection(db, "users"), orderBy("points", "desc"));
-                    const snapshot = await getDocs(q);
-                    let rank = 1;
+                    const snapshot = await getDocs(q); let rank = 1;
                     snapshot.forEach(doc => {
                         const data = doc.data(); if(data.email === 'admin@pradeepk.com' || !data.points || data.points === 0) return;
                         dataRows.push([ rank++, data.fullName || 'N/A', data.exactGrade || data.grade || 'N/A', data.points, data.phone || 'N/A' ]);
@@ -787,45 +872,54 @@
 
         /* --- VIDEOS LOGIC --- */
         window.addVideo = async function() {
-            const title = document.getElementById('vidTitle').value; 
-            const category = document.getElementById('vidCategory').value;
-            const desc = document.getElementById('vidDesc').value; 
-            const link = document.getElementById('vidLink').value;
+            const title = document.getElementById('vidTitle').value; const category = document.getElementById('vidCategory').value;
+            const desc = document.getElementById('vidDesc').value; const link = document.getElementById('vidLink').value;
             const btn = document.getElementById('addVidBtn'); 
-            
             if(!title || !link) { window.showToast("Video Title and YouTube Link are required!", "error"); return; }
             
             btn.disabled = true; btn.innerText = "Publishing Video...";
             try {
-                await addDoc(collection(db, "videos"), { 
-                    title: title, category: category, desc: desc, youtubeUrl: link, createdAt: new Date() 
-                });
+                await addDoc(collection(db, "videos"), { title: title, category: category, desc: desc, youtubeUrl: link, createdAt: new Date() });
                 window.showToast("✅ Video Published!"); 
                 document.querySelectorAll('#vidTitle, #vidDesc, #vidLink').forEach(i=>i.value='');
                 loadVideos(); 
-            } catch (error) { 
-                window.showToast(error.message, "error"); 
-            } finally { 
-                btn.disabled = false; btn.innerHTML = `<i class="ph-bold ph-upload-simple"></i> Publish Video`; 
-            }
+            } catch (error) { window.showToast(error.message, "error"); } 
+            finally { btn.disabled = false; btn.innerHTML = `<i class="ph-bold ph-upload-simple"></i> Publish Video`; }
         }
 
         window.loadVideos = async function() {
             try {
                 const q = query(collection(db, "videos"), orderBy("createdAt", "desc")); 
-                const snapshot = await getDocs(q); 
-                allVideos = [];
+                const snapshot = await getDocs(q); allVideos = [];
                 snapshot.forEach((doc) => allVideos.push({id: doc.id, ...doc.data()}));
+                
+                // Update Analytics
+                let counts = { Total: allVideos.length, ol: 0, al: 0, gen: 0 };
+                allVideos.forEach(v => {
+                    if(v.category && (v.category.includes('10') || v.category.includes('11'))) counts.ol++;
+                    else if(v.category && (v.category.includes('12') || v.category.includes('13'))) counts.al++;
+                    else counts.gen++;
+                });
+                document.getElementById('stat-vid-total').innerText = counts.Total;
+                document.getElementById('stat-vid-ol').innerText = counts.ol;
+                document.getElementById('stat-vid-al').innerText = counts.al;
+                document.getElementById('stat-vid-gen').innerText = counts.gen;
+
                 window.applyVideoFilter();
             } catch (error) { console.error(error); }
         }
 
         window.applyVideoFilter = function() {
             const search = document.getElementById('videoSearch').value.toLowerCase();
-            const filtered = allVideos.filter(v => (v.title && v.title.toLowerCase().includes(search)) || (v.category && v.category.toLowerCase().includes(search)));
+            const category = document.getElementById('videoCategoryFilter').value;
             
-            const tbody = document.getElementById('videoTableBody');
-            tbody.innerHTML = '';
+            const filtered = allVideos.filter(v => {
+                let matchSearch = (v.title && v.title.toLowerCase().includes(search)) || (v.category && v.category.toLowerCase().includes(search));
+                let matchCategory = category === "" || v.category === category;
+                return matchSearch && matchCategory;
+            });
+            
+            const tbody = document.getElementById('videoTableBody'); tbody.innerHTML = '';
             if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-500">No videos found.</td></tr>'; return; }
             
             filtered.forEach(data => {
@@ -845,12 +939,9 @@
         }
 
         window.openEditVideoModal = function(id, title, category, desc, link) {
-            document.getElementById('editVidId').value = id; 
-            document.getElementById('editVidTitle').value = title;
-            document.getElementById('editVidCategory').value = category; 
-            document.getElementById('editVidDesc').value = desc; 
-            document.getElementById('editVidLink').value = link;
-            document.getElementById('editVideoModal').classList.remove('hidden');
+            document.getElementById('editVidId').value = id; document.getElementById('editVidTitle').value = title;
+            document.getElementById('editVidCategory').value = category; document.getElementById('editVidDesc').value = desc; 
+            document.getElementById('editVidLink').value = link; document.getElementById('editVideoModal').classList.remove('hidden');
         }
         window.closeEditVideoModal = function() { document.getElementById('editVideoModal').classList.add('hidden'); }
 
@@ -874,7 +965,7 @@
         }
 
 
-        /* --- RESOURCES LOGIC (WITH FILTER) --- */
+        /* --- RESOURCES LOGIC --- */
         window.addResource = async function() {
             const title = document.getElementById('resTitle').value; const category = document.getElementById('resCategory').value;
             const desc = document.getElementById('resDesc').value; const fileInput = document.getElementById('resFile').files[0];
@@ -899,19 +990,34 @@
         window.loadResources = async function() {
             try {
                 const q = query(collection(db, "resources"), orderBy("createdAt", "desc")); 
-                const snapshot = await getDocs(q); 
-                allResources = [];
+                const snapshot = await getDocs(q); allResources = [];
                 snapshot.forEach((doc) => allResources.push({id: doc.id, ...doc.data()}));
+                
+                // Analytics 
+                let counts = { Total: allResources.length, Tutes: 0, Papers: 0 };
+                allResources.forEach(r => {
+                    if(r.category && r.category.includes('Tutes')) counts.Tutes++;
+                    else counts.Papers++;
+                });
+                document.getElementById('stat-tut-total').innerText = counts.Total;
+                document.getElementById('stat-tut-tutes').innerText = counts.Tutes;
+                document.getElementById('stat-tut-papers').innerText = counts.Papers;
+
                 window.applyTuteFilter();
             } catch (error) { console.error(error); }
         }
 
         window.applyTuteFilter = function() {
             const search = document.getElementById('tuteSearch').value.toLowerCase();
-            const filtered = allResources.filter(r => (r.title && r.title.toLowerCase().includes(search)) || (r.category && r.category.toLowerCase().includes(search)));
+            const category = document.getElementById('tuteCategoryFilter').value;
             
-            const tbody = document.getElementById('resourceTableBody');
-            tbody.innerHTML = '';
+            const filtered = allResources.filter(r => {
+                let matchSearch = (r.title && r.title.toLowerCase().includes(search));
+                let matchCategory = category === "" || r.category === category;
+                return matchSearch && matchCategory;
+            });
+            
+            const tbody = document.getElementById('resourceTableBody'); tbody.innerHTML = '';
             if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No resources found.</td></tr>'; return; }
             
             filtered.forEach(data => {
@@ -946,12 +1052,26 @@
             catch (error) { window.showToast(error.message, "error"); }
         }
 
-        /* --- ORDERS LOGIC (WITH SAFE DATES) --- */
+        /* --- ORDERS LOGIC --- */
         window.loadOrders = async function() {
             try {
                 const q = query(collection(db, "orders"), orderBy("date", "desc"));
                 const snapshot = await getDocs(q); 
                 allOrders = []; snapshot.forEach(doc => allOrders.push({id: doc.id, ...doc.data()}));
+                
+                // Orders Analytics
+                let stats = { total: allOrders.length, pending: 0, approved: 0, done: 0 };
+                allOrders.forEach(o => {
+                    if (o.status === 'Pending Verification') stats.pending++;
+                    else if (o.status === 'Approved') stats.approved++;
+                    else if (o.status === 'Dispatched' || o.status === 'Delivered') stats.done++;
+                });
+                
+                document.getElementById('stat-ord-total').innerText = stats.total;
+                document.getElementById('stat-ord-pending').innerText = stats.pending;
+                document.getElementById('stat-ord-approved').innerText = stats.approved;
+                document.getElementById('stat-ord-done').innerText = stats.done;
+
                 window.clearOrderFilter(); 
             } catch (error) { console.error(error); }
         }
@@ -986,24 +1106,28 @@
             
             filtered.forEach((data) => {
                 const statusStr = data.status || 'Processing';
+                const isPending = statusStr === 'Pending Verification';
+                
                 let statusColor = statusStr === 'Delivered' ? 'border-green-500 text-green-700 bg-green-50' : (statusStr === 'Dispatched' ? 'border-blue-500 text-blue-700 bg-blue-50' : (statusStr === 'Approved' ? 'border-indigo-500 text-indigo-700 bg-indigo-50' : 'border-orange-500 text-orange-700 bg-orange-50'));
                 let slipBtn = data.slipUrl ? `<a href="${data.slipUrl}" target="_blank" class="text-blue-600 underline text-xs font-bold block mb-2"><i class="ph ph-file-image"></i> View Slip</a>` : '';
+                
                 let actionHTML = '';
-                if (statusStr === 'Pending Verification') { actionHTML = `<button onclick="window.approveOrder('${data.id}')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow mb-2 w-full text-xs transition-colors"><i class="ph-bold ph-check"></i> Approve PDF & Email</button>`; }
+                if (isPending) { actionHTML = `<button onclick="window.approveOrder('${data.id}')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow mb-2 w-full text-xs transition-colors"><i class="ph-bold ph-check"></i> Approve PDF & Email</button>`; }
                 
                 actionHTML += `<div class="flex gap-2 items-center mt-2"><select onchange="window.updateOrderStatus('${data.id}', this.value)" class="p-1.5 rounded border font-semibold text-xs outline-none w-full ${statusColor}"><option value="Pending Verification" ${statusStr==='Pending Verification' ? 'selected':''}>Pending Verification</option><option value="Approved" ${statusStr==='Approved' ? 'selected':''}>Approved (Access Given)</option><option value="Processing" ${statusStr==='Processing' ? 'selected':''}>Courier Processing</option><option value="Dispatched" ${statusStr==='Dispatched' ? 'selected':''}>Dispatched</option><option value="Delivered" ${statusStr==='Delivered' ? 'selected':''}>Delivered</option></select><button onclick="window.deleteOrder('${data.id}')" class="p-2 bg-red-100 text-red-600 hover:bg-red-200 rounded transition-colors" title="Delete Order"><i class="ph-bold ph-trash"></i></button></div>`;
 
                 const d = getSafeDate(data.date);
                 let orderDate = d ? d.toLocaleDateString() : 'N/A';
+                
+                let rowClass = isPending ? 'row-pending hover:bg-orange-50/50' : 'border-b hover:bg-slate-50';
 
-                tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4"><p class="font-bold">${data.studentName}</p><p class="text-xs text-slate-500">${data.email}</p><p class="text-xs">📞 ${data.phone1}</p><p class="text-[10px] text-slate-400 mt-1">${orderDate} | ${(data.address || '').substring(0, 30)}...</p></td><td class="p-4 bg-slate-50/50"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold text-xs">${data.tuteTitle}</span><p class="text-xs mt-2 font-bold text-slate-700">Amount: Rs. ${data.amount}</p>${slipBtn}</td><td class="p-4 text-center align-top w-[240px]">${actionHTML}</td></tr>`;
+                tbody.innerHTML += `<tr class="${rowClass}"><td class="p-4"><p class="font-bold">${data.studentName}</p><p class="text-xs text-slate-500">${data.email}</p><p class="text-xs">📞 ${data.phone1}</p><p class="text-[10px] text-slate-400 mt-1">${orderDate} | ${(data.address || '').substring(0, 30)}...</p></td><td class="p-4 bg-slate-50/50"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold text-xs">${data.tuteTitle}</span><p class="text-xs mt-2 font-bold text-slate-700">Amount: Rs. ${data.amount}</p>${slipBtn}</td><td class="p-4 text-center align-top w-[240px]">${actionHTML}</td></tr>`;
             });
         }
 
         window.clearOrderFilter = function() {
             document.getElementById('orderSearch').value = ''; document.getElementById('orderStatusFilter').value = '';
-            const end = new Date(); const start = new Date(); start.setDate(start.getDate() - 7);
-            document.getElementById('orderStartDate').valueAsDate = start; document.getElementById('orderEndDate').valueAsDate = end;
+            document.getElementById('orderStartDate').value = ''; document.getElementById('orderEndDate').value = '';
             window.applyOrderFilter();
         }
 
@@ -1045,7 +1169,7 @@
             if(confirm("Remove notice from student portal?")) { await setDoc(doc(db, "settings", "current_notice"), { active: false }, { merge: true }); window.showToast("Notice Removed!"); }
         }
 
-        /* --- LEADERBOARD & STUDENTS LOGIC (WITH SAFE DATES) --- */
+        /* --- STUDENTS LOGIC --- */
         window.openPromoteModal = function() {
             document.getElementById('promoteModal').classList.remove('hidden');
             document.getElementById('confirmAdminPass').value = '';
@@ -1055,13 +1179,10 @@
         window.executePromotion = async function() {
             const pass = document.getElementById('confirmAdminPass').value;
             if(!pass) return window.showToast("Admin password required!", "error");
-            
-            const btn = document.getElementById('execPromoteBtn');
-            btn.disabled = true; btn.innerText = "Verifying Password...";
+            const btn = document.getElementById('execPromoteBtn'); btn.disabled = true; btn.innerText = "Verifying Password...";
 
             try {
                 await signInWithEmailAndPassword(auth, auth.currentUser.email, pass);
-                
                 btn.innerText = "Updating Database...";
                 const usersRef = collection(db, "users");
                 const snapshot = await getDocs(usersRef);
@@ -1109,7 +1230,6 @@
             } catch (e) { container.innerHTML = '<div class="text-center text-xs text-red-400 py-4">Error</div>'; }
         }
 
-        // UPDATE STATS FUNCTION
         window.updateStudentStats = function() {
             let counts = { Total: 0, "Grade 10": 0, "Grade 11": 0, "Grade 12": 0, "Grade 13": 0 };
             allStudents.forEach(s => {
@@ -1133,18 +1253,23 @@
                 const snapshot = await getDocs(collection(db, "users")); allStudents = [];
                 snapshot.forEach(doc => { if(doc.data().email !== 'admin@pradeepk.com') allStudents.push({id: doc.id, ...doc.data()}); });
                 
-                window.updateStudentStats(); // Call to update the stats UI
+                window.updateStudentStats(); 
                 window.clearStudentFilter();
             } catch (error) { document.getElementById('studentTableBody').innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-400">Failed to load.</td></tr>'; }
         }
 
         window.applyStudentFilter = function() {
             const search = document.getElementById('studentSearch').value.toLowerCase();
+            const gradeFilter = document.getElementById('studentGradeFilter').value;
             const startStr = document.getElementById('studentStartDate').value;
             const endStr = document.getElementById('studentEndDate').value;
             
             let filtered = allStudents.filter(s => {
                 let matchSearch = (s.fullName && s.fullName.toLowerCase().includes(search)) || (s.email && s.email.toLowerCase().includes(search)) || (s.phone && s.phone.includes(search));
+                
+                let actualGrade = s.exactGrade || s.grade || "";
+                let matchGrade = gradeFilter === "" || actualGrade === gradeFilter;
+
                 let matchDate = true;
                 const sDateObj = getSafeDate(s.createdAt);
                 if(sDateObj && (startStr || endStr)) {
@@ -1154,7 +1279,7 @@
                 } else if(!sDateObj && (startStr || endStr)) {
                     matchDate = false;
                 }
-                return matchSearch && matchDate;
+                return matchSearch && matchGrade && matchDate;
             });
             
             const tbody = document.getElementById('studentTableBody'); tbody.innerHTML = '';
@@ -1171,7 +1296,10 @@
         }
 
         window.clearStudentFilter = function() {
-            document.getElementById('studentSearch').value = ''; document.getElementById('studentStartDate').value = ''; document.getElementById('studentEndDate').value = '';
+            document.getElementById('studentSearch').value = ''; 
+            document.getElementById('studentGradeFilter').value = '';
+            document.getElementById('studentStartDate').value = ''; 
+            document.getElementById('studentEndDate').value = '';
             window.applyStudentFilter();
         }
 
