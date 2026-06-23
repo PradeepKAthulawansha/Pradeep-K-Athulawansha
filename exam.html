@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Exam Results | bizmind.lk</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L6VF30KL55"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-L6VF30KL55');
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; display: flex; flex-direction: column; min-height: 100vh;}
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .result-card { background: white; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; transition: transform 0.3s ease; }
+        .result-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .custom-input { width: 100%; padding: 16px 24px; border-radius: 9999px; border: 2px solid #e2e8f0; outline: none; transition: 0.3s; font-size: 16px; font-weight: 600; text-align: center; letter-spacing: 1px;}
+        .custom-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #mobileMenu { transition: transform 0.3s ease-in-out; }
+        /* Animation for results appearing */
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .result-animate { animation: slideUp 0.5s ease forwards; }
+    </style>
+</head>
+<body class="relative text-slate-800">
+
+    <div id="toast-container" class="fixed top-5 right-5 z-[9999] space-y-3 pointer-events-none"></div>
+
+    <header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-3">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                <i class="ph ph-book-open text-blue-600"></i> bizmind.lk
+            </a>
+            <nav class="hidden md:flex gap-8 items-center font-medium">
+                <a href="index.html" class="hover:text-blue-600 transition-colors">Home</a>
+                <a href="about us.html" class="hover:text-blue-600 transition-colors">About Us</a>
+                <a href="papers-tutes.html" class="hover:text-blue-600 transition-colors">Papers & Tutes</a>
+                <a href="watch-videos.html" class="hover:text-blue-600 transition-colors">Watch Videos</a>
+                <a href="quiz.html" class="hover:text-blue-600 transition-colors">Daily Quiz</a>
+                <a href="qa-forum.html" class="hover:text-blue-600 transition-colors">Live Q & A</a>
+                <a href="exam-results.html" class="text-blue-600 border-b-2 border-blue-600 pb-1">Exam Results</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button onclick="window.toggleMobileMenu()" class="md:hidden text-3xl text-slate-800 focus:outline-none transition-transform active:scale-90"><i class="ph ph-list"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobileMenu" class="fixed inset-y-0 right-0 z-[100] w-full bg-white flex flex-col px-6 py-6 overflow-y-auto transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex justify-between items-center mb-10">
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-blue-600"><i class="ph ph-book-open"></i> bizmind.lk</a>
+            <button onclick="window.toggleMobileMenu()" class="text-4xl text-slate-800 focus:outline-none transition-transform active:scale-90"><i class="ph ph-x"></i></button>
+        </div>
+        <nav class="flex flex-col gap-6 text-lg font-medium">
+            <a href="index.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Home</a>
+            <a href="about us.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">About Us</a>
+            <a href="papers-tutes.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Papers & Tutes</a>
+            <a href="watch-videos.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Watch Videos</a>
+            <a href="quiz.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Daily Quiz</a>
+            <a href="qa-forum.html" class="text-slate-700 hover:text-blue-600 border-b border-slate-100 pb-4">Live Q & A</a>
+            <a href="exam-results.html" class="text-blue-600 border-b border-slate-100 pb-4">Exam Results</a>
+        </nav>
+    </div>
+
+    <main class="flex-grow pt-32 pb-12 flex flex-col items-center">
+        <div class="container mx-auto px-4 md:px-8 max-w-4xl">
+            
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4 shadow-inner">
+                    <i class="ph-fill ph-student text-3xl"></i>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-3 tracking-tight">Check Exam Results</h1>
+                <p class="text-slate-500 text-sm md:text-base max-w-lg mx-auto">Select your exam and enter your unique Index Number below to securely view your performance.</p>
+            </div>
+
+            <!-- Search Box (UPDATED FOR NEW LOGIC) -->
+            <div class="glass-panel p-6 md:p-8 rounded-3xl mx-auto max-w-xl mb-12 shadow-md">
+                <form id="searchForm" onsubmit="window.searchResults(event)" class="flex flex-col gap-5">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Grade Select -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide px-2">1. Select Grade</label>
+                            <select id="gradeSelect" onchange="window.loadExamsByGrade()" class="w-full p-4 rounded-2xl border-2 border-e2e8f0 outline-none focus:border-blue-500 transition-colors font-semibold text-slate-700 bg-white" required>
+                                <option value="" disabled selected>Choose Grade...</option>
+                                <option value="10">Grade 10</option>
+                                <option value="11">Grade 11</option>
+                                <option value="12">Grade 12</option>
+                                <option value="13">Grade 13</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Exam Select -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide px-2">2. Select Exam</label>
+                            <select id="examSelect" class="w-full p-4 rounded-2xl border-2 border-e2e8f0 outline-none focus:border-blue-500 transition-colors font-semibold text-slate-700 bg-white" disabled required>
+                                <option value="" disabled selected>Select Grade First</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Index Number -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide px-2">3. Enter Index Number</label>
+                        <div class="flex items-center">
+                            <span class="p-4 bg-slate-100 border-2 border-e2e8f0 border-r-0 rounded-l-full font-black text-slate-600 select-none text-lg">BMG</span>
+                            <input type="text" id="indexNumberInput" class="w-full p-4 rounded-r-full border-2 border-e2e8f0 outline-none focus:border-blue-500 transition-colors text-lg font-bold tracking-widest uppercase" placeholder="10001" required autocomplete="off">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="searchBtn" class="w-full py-4 mt-2 bg-slate-900 hover:bg-blue-600 text-white font-bold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 text-lg">
+                        <span>View Results</span> <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="hidden text-center py-10">
+                <div class="loader mx-auto mb-4 border-slate-200 border-t-blue-600 w-10 h-10 border-4"></div>
+                <p class="text-slate-500 font-medium animate-pulse">Searching securely in database...</p>
+            </div>
+
+            <!-- Results Container -->
+            <div id="resultsContainer" class="hidden">
+                <div class="flex flex-col items-center justify-center gap-2 mb-8 pb-6 border-b border-slate-200 text-center">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-700 font-bold rounded-full text-xs">Performance Record</span>
+                    <h2 class="text-2xl font-bold text-slate-800" id="displayExamName">Exam Name</h2>
+                    <p class="text-slate-500 font-medium">Index No: <span id="displayIndex" class="text-slate-800 font-bold tracking-wider"></span></p>
+                </div>
+                
+                <div id="resultsGrid" class="flex justify-center">
+                    <!-- Results will be injected here (Designed as a single prominent card) -->
+                </div>
+            </div>
+
+            <!-- No Results State -->
+            <div id="noResultsState" class="hidden text-center py-12 px-4 bg-red-50 rounded-3xl border border-red-100 max-w-xl mx-auto shadow-sm">
+                <div class="w-16 h-16 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4">
+                    <i class="ph-bold ph-magnifying-glass"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">No Results Found</h3>
+                <p class="text-slate-600 text-sm">We couldn't find any results for this Index Number in the selected exam. Please double-check your details.</p>
+                <button onclick="document.getElementById('indexNumberInput').focus(); document.getElementById('indexNumberInput').select();" class="mt-6 px-6 py-2 bg-white text-red-600 font-bold rounded-full border border-red-200 hover:bg-red-100 transition-colors text-sm shadow-sm">Try Again</button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FIREBASE & LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, orderBy, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAcmeOtsIU6Ka_Vh5W1IFwm8CjQPUuu34s", authDomain: "pradeep-k-athulawansha.firebaseapp.com", projectId: "pradeep-k-athulawansha" };
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobileMenu');
+            if(menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full'); menu.classList.add('translate-x-0'); document.body.style.overflow = 'hidden'; 
+            } else {
+                menu.classList.add('translate-x-full'); menu.classList.remove('translate-x-0'); document.body.style.overflow = '';
+            }
+        }
+
+        window.showToast = (msg, type='success') => { 
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl border flex items-center gap-2 shadow-xl transition-all transform translate-y-2 opacity-0 text-sm font-bold z-[9999] ${type==='success'?'bg-white text-green-800 border-green-500':'bg-white text-red-800 border-red-500'}`;
+            toast.innerHTML = `<i class="ph-fill ${type==='success'?'ph-check-circle text-green-500':'ph-warning-circle text-red-500'} text-xl"></i><span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => { toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => toast.remove(), 300); }, 4000);
+        }
+
+        // 💡 Load Exams based on Grade Selection
+        window.loadExamsByGrade = async () => {
+            const grade = document.getElementById('gradeSelect').value;
+            const examSelect = document.getElementById('examSelect');
+            
+            examSelect.disabled = true;
+            examSelect.innerHTML = '<option value="" disabled selected>Loading exams...</option>';
+            
+            try {
+                const q = query(collection(db, "exams"), where("grade", "==", grade));
+                const snapshot = await getDocs(q);
+                
+                let examsList = [];
+                snapshot.forEach(doc => examsList.push({id: doc.id, ...doc.data()}));
+                
+                // Sort locally by date desc
+                examsList.sort((a,b) => b.createdAt.toDate() - a.createdAt.toDate());
+
+                if(examsList.length === 0) {
+                    examSelect.innerHTML = '<option value="" disabled selected>No exams found for this grade</option>';
+                } else {
+                    let options = '<option value="" disabled selected>Choose Exam...</option>';
+                    examsList.forEach(exam => {
+                        options += `<option value="${exam.id}">${exam.title}</option>`;
+                    });
+                    examSelect.innerHTML = options;
+                    examSelect.disabled = false;
+                }
+            } catch(e) {
+                console.error(e);
+                window.showToast("Failed to load exams.", "error");
+                examSelect.innerHTML = '<option value="" disabled selected>Error loading exams</option>';
+            }
+        }
+
+        window.searchResults = async (e) => {
+            e.preventDefault();
+            const examId = document.getElementById('examSelect').value;
+            const indexSuffix = document.getElementById('indexNumberInput').value.trim().toUpperCase();
+            
+            if(!examId) return window.showToast("Please select an exam.", "error");
+            if(!indexSuffix) return window.showToast("Please enter an index number.", "error");
+
+            const fullIndexNo = "BMG" + indexSuffix; // Combine prefix
+
+            // UI Setup
+            const btn = document.getElementById('searchBtn');
+            const loading = document.getElementById('loadingState');
+            const resContainer = document.getElementById('resultsContainer');
+            const noResContainer = document.getElementById('noResultsState');
+            const grid = document.getElementById('resultsGrid');
+
+            btn.disabled = true; btn.innerHTML = `<div class="loader !w-5 !h-5 !border-2"></div> Searching...`;
+            resContainer.classList.add('hidden'); noResContainer.classList.add('hidden');
+            loading.classList.remove('hidden');
+
+            try {
+                // Get Exam Name first (to display it)
+                const examSelectEl = document.getElementById('examSelect');
+                const examName = examSelectEl.options[examSelectEl.selectedIndex].text;
+
+                // Fetch specific result from subcollection
+                const resultRef = doc(db, `exams/${examId}/results`, fullIndexNo);
+                const resultSnap = await getDoc(resultRef);
+
+                loading.classList.add('hidden');
+
+                if(!resultSnap.exists()) {
+                    noResContainer.classList.remove('hidden');
+                } else {
+                    const data = resultSnap.data();
+                    
+                    document.getElementById('displayIndex').innerText = fullIndexNo;
+                    document.getElementById('displayExamName').innerText = examName;
+                    
+                    const marks = parseFloat(data.marks);
+                    
+                    // Visual logic based on marks
+                    let colorClass = 'text-green-600 bg-green-50 border-green-200';
+                    let progressColor = 'bg-green-500';
+                    let remarks = 'Excellent performance! Keep it up.';
+                    let icon = 'ph-star';
+                    
+                    if(marks < 35) { colorClass = 'text-red-600 bg-red-50 border-red-200'; progressColor = 'bg-red-500'; remarks = 'Needs improvement. Focus on weak areas.'; icon = 'ph-warning-circle'; }
+                    else if(marks < 65) { colorClass = 'text-orange-600 bg-orange-50 border-orange-200'; progressColor = 'bg-orange-500'; remarks = 'Good effort, but push for higher marks.'; icon = 'ph-thumbs-up'; }
+                    else if(marks < 75) { colorClass = 'text-blue-600 bg-blue-50 border-blue-200'; progressColor = 'bg-blue-500'; remarks = 'Very Good! Consistency is key.'; icon = 'ph-medal'; }
+
+                    const dateStr = data.updatedAt ? data.updatedAt.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A';
+
+                    grid.innerHTML = `
+                        <div class="result-card p-8 result-animate w-full max-w-md text-center border-t-8 ${colorClass.split(' ')[2]}">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-6">Published: ${dateStr}</p>
+                            
+                            <div class="inline-flex flex-col items-center justify-center w-32 h-32 rounded-full border-4 ${colorClass} shadow-inner mb-6 relative">
+                                <span class="text-5xl font-black">${data.marks}</span>
+                                <span class="absolute bottom-2 text-xs font-bold uppercase opacity-80">Marks</span>
+                            </div>
+                            
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-slate-100 rounded-full h-3 mb-4 overflow-hidden shadow-inner">
+                                <div class="${progressColor} h-3 rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-target-width="${data.marks}%"></div>
+                            </div>
+                            
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mt-6">
+                                <p class="text-sm text-slate-700 font-medium flex justify-center items-center gap-2">
+                                    <i class="ph-fill ${icon} text-lg ${colorClass.split(' ')[0]}"></i> ${remarks}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+
+                    resContainer.classList.remove('hidden');
+
+                    // Animate progress bars after a slight delay
+                    setTimeout(() => {
+                        document.querySelectorAll('[data-target-width]').forEach(bar => {
+                            bar.style.width = bar.getAttribute('data-target-width');
+                        });
+                    }, 100);
+                }
+
+            } catch(error) {
+                console.error(error);
+                loading.classList.add('hidden');
+                window.showToast("Failed to fetch results. Check your internet.", "error");
+            } finally {
+                btn.disabled = false; btn.innerHTML = `<span>View Results</span> <i class="ph-bold ph-arrow-right"></i>`;
+            }
+        }
+    </script>
+</body>
+</html>
