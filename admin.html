@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- PWA App Links -->
+    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f172a">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3050/3050400.png">
@@ -65,6 +65,23 @@
             <button onclick="window.adminLogout()" class="px-5 py-2 mt-4 md:mt-0 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center gap-2">
                 <i class="ph ph-sign-out"></i> Logout
             </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="md:col-span-2 glass-card p-6 border-l-4 border-orange-500 bg-orange-50/30">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2 mb-3"><i class="ph-fill ph-bell-ringing text-orange-500 text-xl"></i> Action Needed</h3>
+                <div id="pendingAlertsContainer">
+                    <p class="text-sm text-slate-500"><div class="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-orange-500 inline-block mr-2"></div> Checking for pending tasks...</p>
+                </div>
+            </div>
+            <div class="glass-card p-6 border-l-4 border-blue-500">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2 mb-4"><i class="ph-fill ph-lightning text-blue-500 text-xl"></i> Quick Actions</h3>
+                <div class="flex flex-col gap-2">
+                    <button onclick="switchTab('tab-orders')" class="px-4 py-3 bg-slate-100 hover:bg-blue-100 hover:text-blue-700 rounded-xl text-sm font-bold text-slate-700 text-left flex items-center gap-3 transition-colors shadow-sm"><i class="ph-bold ph-package text-lg"></i> Approve Orders</button>
+                    <button onclick="switchTab('tab-exams')" class="px-4 py-3 bg-slate-100 hover:bg-pink-100 hover:text-pink-700 rounded-xl text-sm font-bold text-slate-700 text-left flex items-center gap-3 transition-colors shadow-sm"><i class="ph-bold ph-pencil-simple text-lg"></i> Enter Exam Marks</button>
+                    <button onclick="switchTab('tab-quiz')" class="px-4 py-3 bg-slate-100 hover:bg-indigo-100 hover:text-indigo-700 rounded-xl text-sm font-bold text-slate-700 text-left flex items-center gap-3 transition-colors shadow-sm"><i class="ph-bold ph-rocket-launch text-lg"></i> Add Daily Quiz</button>
+                </div>
+            </div>
         </div>
 
         <div class="flex flex-wrap gap-3 mb-8 justify-center">
@@ -699,6 +716,15 @@
 
         emailjs.init("msKLscXDbLA-GGmXH");
 
+        // 💡 Register PWA Service Worker 💡
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('PWA Service Worker Registered', reg))
+                .catch(err => console.log('PWA Registration Failed: ', err));
+            });
+        }
+
         let allOrders = []; let allStudents = []; let allResources = []; let allVideos = [];
 
         function getSafeDate(val) {
@@ -1134,6 +1160,34 @@
                 document.getElementById('stat-ord-done').innerText = stats.done;
 
                 window.clearOrderFilter(); 
+                
+                // 💡 NEW: Update Alert Box on Dashboard 💡
+                const alertBox = document.getElementById('pendingAlertsContainer');
+                if(stats.pending > 0) {
+                    alertBox.innerHTML = `
+                        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-orange-100 shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center"><i class="ph-bold ph-package text-lg"></i></div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800">Pending Orders</p>
+                                    <p class="text-xs text-slate-500">You have ${stats.pending} order(s) waiting for approval.</p>
+                                </div>
+                            </div>
+                            <button onclick="switchTab('tab-orders'); document.getElementById('orderStatusFilter').value='Pending Verification'; window.applyOrderFilter();" class="px-4 py-2 bg-orange-500 text-white rounded-lg text-xs font-bold shadow-md hover:bg-orange-600 transition-colors">Review Now</button>
+                        </div>
+                    `;
+                } else {
+                    alertBox.innerHTML = `
+                        <div class="flex items-center gap-3 bg-white p-3 rounded-xl border border-green-100 shadow-sm">
+                            <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><i class="ph-bold ph-check text-lg"></i></div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">All Caught Up!</p>
+                                <p class="text-xs text-slate-500">No pending orders to approve right now.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                
             } catch (error) { console.error(error); }
         }
 
@@ -1352,7 +1406,6 @@
                 const exactGradeStr = data.exactGrade || data.grade || 'N/A';
                 const encodedData = encodeURIComponent(JSON.stringify(data));
                 
-                // 💡 ADDED: Display Index Number in Table 💡
                 const indexStr = data.indexNo ? `<span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded text-[10px] font-bold mt-1 inline-block">${data.indexNo}</span>` : `<span class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold mt-1 inline-block">No Index</span>`;
                 
                 tbody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4"><p class="font-semibold text-slate-700">${name}</p>${indexStr}<p class="text-[10px] text-slate-400 mt-1">Reg: ${regDate}</p></td><td class="p-4 text-slate-500">${data.phone || 'N/A'}</td><td class="p-4 text-slate-500"><p>${email}</p><p class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded inline-block mt-1">${exactGradeStr}</p></td><td class="p-4 text-slate-500 font-bold text-blue-600">${points} Pts</td><td class="p-4 text-center"><button onclick="window.openStudentModal('${encodedData}')" class="px-4 py-1.5 bg-slate-200 text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg transition-colors text-xs font-bold">View</button></td></tr>`;
@@ -1370,7 +1423,6 @@
         window.openStudentModal = function(encodedData) {
             const data = JSON.parse(decodeURIComponent(encodedData));
             
-            // 💡 ADDED: Show Index in Student Modal
             document.getElementById('v-stuIndex').innerText = data.indexNo || 'Not Assigned';
             
             document.getElementById('v-stuName').innerText = data.fullName || 'N/A'; document.getElementById('v-stuEmail').innerText = data.email || 'N/A';
