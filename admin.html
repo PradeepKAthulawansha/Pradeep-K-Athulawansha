@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <!-- PWA App Links -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f172a">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3050/3050400.png">
@@ -95,7 +94,6 @@
             <button onclick="switchTab('tab-reports')" class="tab-btn" id="btn-tab-reports"><i class="ph-fill ph-chart-bar mr-2"></i>Reports</button>
         </div>
 
-        <!-- 1. ORDERS TAB -->
         <div id="tab-orders" class="tab-content active">
             <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
                 <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Student Orders</h3>
@@ -166,7 +164,6 @@
             </div>
         </div>
 
-        <!-- 2. QUIZ TAB -->
         <div id="tab-quiz" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="glass-card p-6 md:p-8 border-t-4 border-indigo-500">
@@ -226,7 +223,6 @@
             </div>
         </div>
 
-        <!-- 3. TUTES TAB -->
         <div id="tab-tutes" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1 glass-card p-6 md:p-8 border-t-4 border-blue-500 h-fit">
@@ -323,7 +319,6 @@
             </div>
         </div>
 
-        <!-- 4. VIDEOS TAB -->
         <div id="tab-videos" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1 glass-card p-6 md:p-8 border-t-4 border-red-500 h-fit">
@@ -396,11 +391,9 @@
             </div>
         </div>
 
-        <!-- 💡 5. EXAMS & RESULTS TAB 💡 -->
         <div id="tab-exams" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
-                <!-- Create Exam -->
                 <div class="lg:col-span-1 glass-card p-6 md:p-8 border-t-4 border-pink-500 h-fit">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph-fill ph-plus-circle text-pink-600"></i> Create New Exam</h3>
                     <div class="space-y-4">
@@ -416,14 +409,13 @@
                     </div>
                 </div>
 
-                <!-- Add Results -->
                 <div class="lg:col-span-2 glass-card p-6 md:p-8 border-t-4 border-indigo-500 h-fit">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph-fill ph-keyboard text-indigo-600"></i> Enter Student Marks</h3>
                     
                     <div class="bg-indigo-50 p-5 rounded-2xl border border-indigo-100">
                         <div class="mb-4">
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Select Exam</label>
-                            <select id="resultExamSelect" class="w-full p-3 border rounded-xl bg-white text-sm outline-none focus:border-indigo-400 font-semibold text-slate-700">
+                            <select id="resultExamSelect" onchange="window.syncAndLoadResults(this.value)" class="w-full p-3 border rounded-xl bg-white text-sm outline-none focus:border-indigo-400 font-semibold text-slate-700">
                                 <option value="">Loading Exams...</option>
                             </select>
                         </div>
@@ -449,7 +441,6 @@
                 </div>
             </div>
 
-            <!-- 💡 NEW: Manage Exams & Results UI 💡 -->
             <div class="mt-8 glass-card p-6 md:p-8 border-t-4 border-slate-700">
                 <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
                     <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph-fill ph-table text-slate-700"></i> Manage Exams & Results</h3>
@@ -457,7 +448,10 @@
                         <select id="manageResultsExamSelect" onchange="window.viewExamResults()" class="p-2 border rounded-lg text-sm bg-slate-50 outline-none focus:border-slate-400 font-semibold flex-1">
                             <option value="">Select Exam to view results...</option>
                         </select>
-                        <button onclick="window.deleteExam()" class="px-4 py-2 bg-red-100 text-red-600 font-bold rounded-lg hover:bg-red-200 transition-colors text-sm shadow-sm" title="Delete selected exam entirely">
+                        <button onclick="window.loadExams(); window.viewExamResults();" class="px-3 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors text-xs font-bold shadow-sm" title="Refresh Data">
+                            <i class="ph-bold ph-arrows-clockwise"></i> Refresh
+                        </button>
+                        <button onclick="window.deleteExam()" class="px-3 py-2 bg-red-100 text-red-600 font-bold rounded-lg hover:bg-red-200 transition-colors text-xs shadow-sm" title="Delete selected exam entirely">
                             <i class="ph-bold ph-trash"></i> Delete Exam
                         </button>
                     </div>
@@ -480,7 +474,6 @@
             </div>
         </div>
 
-        <!-- 6. STUDENTS TAB -->
         <div id="tab-students" class="tab-content">
             <div class="glass-card p-6 md:p-8 border-t-4 border-teal-500">
                 <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
@@ -571,7 +564,6 @@
             </div>
         </div>
 
-        <!-- 7. REPORTS TAB -->
         <div id="tab-reports" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="glass-card p-6 md:p-8 border-t-4 border-purple-500">
@@ -619,8 +611,7 @@
 
     </div>
 
-    <!-- MODALS SECTION -->
-    <div id="promoteModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
+    <div id="promoteModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4 z-[1000]">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl border-t-8 border-red-500">
             <button onclick="window.closePromoteModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-warning"></i></div>
@@ -637,7 +628,7 @@
         </div>
     </div>
 
-    <div id="editModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
+    <div id="editModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4 z-[1000]">
         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl">
             <button onclick="window.closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <h3 class="text-xl font-bold mb-6 text-slate-800 flex items-center gap-2"><i class="ph-fill ph-pencil-simple text-blue-600"></i> Edit Resource</h3>
@@ -673,7 +664,7 @@
         </div>
     </div>
 
-    <div id="editVideoModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
+    <div id="editVideoModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4 z-[1000]">
         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl">
             <button onclick="window.closeEditVideoModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <h3 class="text-xl font-bold mb-6 text-slate-800 flex items-center gap-2"><i class="ph-fill ph-pencil-simple text-red-600"></i> Edit Video</h3>
@@ -697,7 +688,7 @@
         </div>
     </div>
 
-    <div id="quizEditModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
+    <div id="quizEditModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4 z-[1000]">
         <div class="bg-white w-full max-w-lg p-6 md:p-8 rounded-3xl relative shadow-2xl">
             <button onclick="window.closeQuizModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <h3 class="text-xl font-bold mb-4 text-slate-800"><i class="ph-fill ph-pencil-simple text-indigo-600"></i> Edit Quiz</h3>
@@ -714,7 +705,7 @@
         </div>
     </div>
 
-    <div id="studentModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4">
+    <div id="studentModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4 z-[1000]">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl">
             <button onclick="window.closeStudentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
             <div class="w-16 h-16 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-3xl mx-auto mb-4"><i class="ph-fill ph-identification-card"></i></div>
@@ -735,7 +726,6 @@
         </div>
     </div>
 
-    <!-- 💡 NEW: Edit Result Modal 💡 -->
     <div id="editResultModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4 z-[1000]">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl border-t-8 border-indigo-500">
             <button onclick="window.closeEditResultModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
@@ -777,15 +767,6 @@
         const storage = getStorage(app);
 
         emailjs.init("msKLscXDbLA-GGmXH");
-
-        // Register PWA Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('PWA Service Worker Registered', reg))
-                .catch(err => console.log('PWA Registration Failed: ', err));
-            });
-        }
 
         let allOrders = []; let allStudents = []; let allResources = []; let allVideos = [];
 
@@ -1223,6 +1204,7 @@
 
                 window.clearOrderFilter(); 
                 
+                // 💡 Alert Box Update
                 const alertBox = document.getElementById('pendingAlertsContainer');
                 if(stats.pending > 0) {
                     alertBox.innerHTML = `
@@ -1534,6 +1516,15 @@
             } catch(e) { console.error("Failed to load exams", e); }
         }
 
+        // 💡 NEW: Function to Sync both dropdowns 💡
+        window.syncAndLoadResults = function(examId) {
+            const manageSelect = document.getElementById('manageResultsExamSelect');
+            if (manageSelect && examId) {
+                manageSelect.value = examId;
+                window.viewExamResults();
+            }
+        }
+
         window.saveSingleResult = async function() {
             const examId = document.getElementById('resultExamSelect').value;
             const indexSuffix = document.getElementById('resultIndex').value.trim();
@@ -1549,7 +1540,7 @@
                 document.getElementById('resultIndex').value = ''; document.getElementById('resultMarks').value = '';
                 document.getElementById('resultIndex').focus(); 
                 
-                // If currently viewing this exam's results, refresh the table
+                // Refresh table if same exam is selected
                 const manageSelectId = document.getElementById('manageResultsExamSelect').value;
                 if(manageSelectId === examId) {
                     window.viewExamResults();
@@ -1557,7 +1548,6 @@
             } catch(e) { window.showToast("Error saving marks", "error"); }
         }
 
-        // 💡 NEW: View Results 💡
         window.viewExamResults = async function() {
             const examId = document.getElementById('manageResultsExamSelect').value;
             const tbody = document.getElementById('manageResultsTableBody');
@@ -1598,17 +1588,15 @@
             }
         }
 
-        // 💡 NEW: Delete Single Result 💡
         window.deleteResult = async function(examId, indexNo) {
             if(!confirm(`Are you sure you want to delete the result for ${indexNo}?`)) return;
             try {
                 await deleteDoc(doc(db, `exams/${examId}/results`, indexNo));
                 window.showToast(`Result for ${indexNo} deleted.`);
-                window.viewExamResults(); // Refresh table
+                window.viewExamResults(); 
             } catch(e) { window.showToast("Error deleting result", "error"); }
         }
 
-        // 💡 NEW: Delete Entire Exam 💡
         window.deleteExam = async function() {
             const examId = document.getElementById('manageResultsExamSelect').value;
             if(!examId) return window.showToast("Please select an Exam from the list first.", "error");
@@ -1617,7 +1605,6 @@
             
             window.showToast("Deleting exam and results... Please wait.");
             try {
-                // First delete all results in the subcollection
                 const resultsSnap = await getDocs(collection(db, `exams/${examId}/results`));
                 let deletePromises = [];
                 resultsSnap.forEach(rDoc => {
@@ -1625,17 +1612,15 @@
                 });
                 await Promise.all(deletePromises);
                 
-                // Then delete the exam document itself
                 await deleteDoc(doc(db, "exams", examId));
                 
                 window.showToast("✅ Exam and all results deleted successfully!");
                 document.getElementById('manageResultsExamSelect').value = '';
-                window.loadExams(); // Refresh dropdowns
-                window.viewExamResults(); // Clear table
+                window.loadExams(); 
+                window.viewExamResults(); 
             } catch(e) { window.showToast("Error deleting exam", "error"); }
         }
 
-        // 💡 NEW: Edit Result Modal Logic 💡
         window.openEditResultModal = function(examId, indexNo, currentMarks) {
             document.getElementById('editResExamId').value = examId;
             document.getElementById('editResIndex').value = indexNo;
@@ -1661,13 +1646,9 @@
                 });
                 window.showToast(`✅ Marks updated for ${indexNo}`);
                 window.closeEditResultModal();
-                window.viewExamResults(); // Refresh table
+                window.viewExamResults(); 
             } catch(e) { window.showToast("Error updating marks", "error"); }
         }
-
-        // ==========================================
-        // 💡 INDEX NUMBER GENERATOR
-        // ==========================================
 
         window.generateIndexNumbers = async function() {
             const confirmMsg = "Are you sure? This will automatically generate and assign 'BMG' Index Numbers to all registered students who don't have one.";
