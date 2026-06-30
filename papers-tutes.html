@@ -443,26 +443,21 @@
             const btn = document.getElementById('signupBtn'); btn.disabled = true; btn.innerText = "Creating Account...";
             
             try {
-                // 💡 NEW: Auto-Generate Index Number for New Student 💡
-                const gNum = grade.replace(/\D/g,''); // Extract grade number (e.g., "10" from "Grade 10")
-                const usersRef = collection(db, "users");
-                const q = query(usersRef, where("exactGrade", "==", grade));
-                const snapshot = await getDocs(q);
-                
-                let maxNum = 0;
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if(data.indexNo && data.indexNo.startsWith("BMG" + gNum)) {
-                        const numPart = parseInt(data.indexNo.substring(5)); // Extract numbers
-                        if(numPart > maxNum) maxNum = numPart;
-                    }
-                });
-                
-                const nextNum = maxNum + 1;
-                const newIndexNo = `BMG${gNum}${String(nextNum).padStart(3, '0')}`; // E.g., BMG10001
-
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
                 
+                // 💡 NEW: Auto-Generate Index Number via Counter (Fixes permission issue)
+                const gNum = grade.replace(/\D/g,''); 
+                const counterRef = doc(db, "settings", "counters");
+                const counterSnap = await getDoc(counterRef);
+                
+                let currentCount = 1;
+                if (counterSnap.exists() && counterSnap.data()[gNum]) {
+                    currentCount = counterSnap.data()[gNum] + 1; 
+                }
+                
+                await setDoc(counterRef, { [gNum]: currentCount }, { merge: true });
+                const newIndexNo = `BMG${gNum}${String(currentCount).padStart(3, '0')}`; 
+
                 await setDoc(doc(db, "users", userCred.user.uid), { 
                     fullName: fName + " " + lName, 
                     address: addr, 
@@ -474,7 +469,7 @@
                     phone: phone, 
                     points: 0, 
                     unlockedTutes: [], 
-                    indexNo: newIndexNo, // 💡 Save the assigned index!
+                    indexNo: newIndexNo,
                     createdAt: new Date() 
                 });
                 
