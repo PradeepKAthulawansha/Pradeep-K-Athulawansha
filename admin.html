@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Admin Panel - Secure Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <!-- PWA App Links -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f172a">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3050/3050400.png">
@@ -20,14 +19,14 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 80px; }
+        @media (min-width: 768px) { body { padding-bottom: 0; } }
         .glass-card { background: white; border-radius: 24px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
         .hidden { display: none !important; }
         .modal { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000;}
         ::-webkit-scrollbar { height: 8px; width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
-        /* Tab Styles */
         .tab-btn { padding: 12px 24px; border-radius: 12px; font-weight: 600; color: #64748b; transition: all 0.3s; background: white; border: 1px solid #e2e8f0; }
         .tab-btn:hover { background: #f8fafc; color: #0f172a; }
         .tab-btn.active { background: #0f172a; color: white; border-color: #0f172a; box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3); }
@@ -35,8 +34,33 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Highlight Pending Orders */
-        .row-pending { background-color: #fffbeb !important; border-left: 4px solid #f59e0b; }
+        .row-pending { background-color: #fffbeb !important; border-left: 4px solid #f59e0b !important; }
+
+        /* 💡 Responsive Mobile Tables to Cards 💡 */
+        @media (max-width: 767px) {
+            .responsive-table, .responsive-table thead, .responsive-table tbody, .responsive-table th, .responsive-table td, .responsive-table tr { 
+                display: block; 
+            }
+            .responsive-table thead { display: none; }
+            .responsive-table tr {
+                background: white;
+                border: 1px solid #e2e8f0;
+                border-radius: 16px;
+                padding: 16px;
+                margin-bottom: 12px;
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            }
+            .responsive-table td {
+                padding: 6px 0;
+                border: none;
+                white-space: normal;
+            }
+            .responsive-table td:last-child {
+                border-top: 1px solid #f1f5f9;
+                margin-top: 8px;
+                padding-top: 12px;
+            }
+        }
     </style>
 </head>
 <body class="p-4 md:p-8 text-slate-800">
@@ -59,11 +83,11 @@
 
     <div id="adminDashboardSection" class="w-full max-w-7xl mx-auto hidden">
         
-        <div class="glass-card p-6 flex flex-col md:flex-row justify-between items-center mb-8 sticky top-4 z-50">
+        <div class="glass-card p-4 md:p-6 flex justify-between items-center mb-6 md:mb-8 sticky top-4 z-40">
             <div>
-                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3"><i class="ph-fill ph-database text-blue-600"></i> Master Dashboard</h2>
+                <h2 class="text-xl md:text-2xl font-bold text-slate-900 flex items-center gap-3"><i class="ph-fill ph-database text-blue-600"></i> Master Dashboard</h2>
             </div>
-            <button onclick="window.adminLogout()" class="px-5 py-2 mt-4 md:mt-0 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center gap-2">
+            <button onclick="window.adminLogout()" class="px-4 py-2 rounded-lg bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors flex items-center gap-2 text-sm">
                 <i class="ph ph-sign-out"></i> Logout
             </button>
         </div>
@@ -85,7 +109,7 @@
             </div>
         </div>
 
-        <div class="flex flex-wrap gap-3 mb-8 justify-center">
+        <div class="hidden md:flex flex-wrap gap-3 mb-8 justify-center">
             <button onclick="switchTab('tab-orders')" class="tab-btn active" id="btn-tab-orders"><i class="ph-fill ph-package mr-2"></i>Orders</button>
             <button onclick="switchTab('tab-quiz')" class="tab-btn" id="btn-tab-quiz"><i class="ph-fill ph-rocket-launch mr-2"></i>Daily Quiz</button>
             <button onclick="switchTab('tab-tutes')" class="tab-btn" id="btn-tab-tutes"><i class="ph-fill ph-folder mr-2"></i>Materials</button>
@@ -95,39 +119,38 @@
             <button onclick="switchTab('tab-reports')" class="tab-btn" id="btn-tab-reports"><i class="ph-fill ph-chart-bar mr-2"></i>Reports</button>
         </div>
 
-        <!-- 1. ORDERS TAB -->
         <div id="tab-orders" class="tab-content active">
-            <div class="glass-card p-6 md:p-8 border-t-4 border-green-500">
+            <div class="glass-card p-4 md:p-8 border-t-4 border-green-500">
                 <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-package text-green-600"></i> Student Orders</h3>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                    <div class="bg-green-50 border border-green-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-green-600 uppercase mb-1">Total Orders</h4>
-                        <p class="text-2xl font-bold text-green-800" id="stat-ord-total">0</p>
+                    <div class="bg-green-50 border border-green-200 p-3 md:p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] md:text-xs font-bold text-green-600 uppercase mb-1">Total Orders</h4>
+                        <p class="text-xl md:text-2xl font-bold text-green-800" id="stat-ord-total">0</p>
                     </div>
-                    <div class="bg-orange-50 border border-orange-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-orange-600 uppercase mb-1">Pending Approval</h4>
-                        <p class="text-2xl font-bold text-orange-800" id="stat-ord-pending">0</p>
+                    <div class="bg-orange-50 border border-orange-200 p-3 md:p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] md:text-xs font-bold text-orange-600 uppercase mb-1">Pending Approval</h4>
+                        <p class="text-xl md:text-2xl font-bold text-orange-800" id="stat-ord-pending">0</p>
                     </div>
-                    <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-indigo-600 uppercase mb-1">Approved/Access</h4>
-                        <p class="text-2xl font-bold text-indigo-800" id="stat-ord-approved">0</p>
+                    <div class="bg-indigo-50 border border-indigo-200 p-3 md:p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] md:text-xs font-bold text-indigo-600 uppercase mb-1">Approved/Access</h4>
+                        <p class="text-xl md:text-2xl font-bold text-indigo-800" id="stat-ord-approved">0</p>
                     </div>
-                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-blue-600 uppercase mb-1">Dispatched/Done</h4>
-                        <p class="text-2xl font-bold text-blue-800" id="stat-ord-done">0</p>
+                    <div class="bg-blue-50 border border-blue-200 p-3 md:p-4 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] md:text-xs font-bold text-blue-600 uppercase mb-1">Dispatched/Done</h4>
+                        <p class="text-xl md:text-2xl font-bold text-blue-800" id="stat-ord-done">0</p>
                     </div>
                 </div>
 
                 <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-200">
-                    <div class="flex flex-wrap gap-3 items-end">
-                        <div class="flex-1 min-w-[200px]">
+                    <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-end">
+                        <div class="flex-1">
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Search Details</label>
-                            <input type="text" id="orderSearch" placeholder="Name, Phone, or Title..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
+                            <input type="text" id="orderSearch" placeholder="Name, Phone, or Title..." class="w-full p-3 border rounded-xl text-sm outline-none focus:border-green-400">
                         </div>
-                        <div class="flex-1 min-w-[150px]">
+                        <div class="flex-1">
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Filter by Status</label>
-                            <select id="orderStatusFilter" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400 font-semibold text-slate-700">
+                            <select id="orderStatusFilter" class="w-full p-3 border rounded-xl text-sm outline-none focus:border-green-400 font-semibold text-slate-700 bg-white">
                                 <option value="">All Statuses</option>
                                 <option value="Pending Verification" class="text-orange-600">Pending Verification</option>
                                 <option value="Approved" class="text-indigo-600">Approved</option>
@@ -136,23 +159,25 @@
                                 <option value="Delivered">Delivered</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">From Date</label>
-                            <input type="date" id="orderStartDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">From</label>
+                                <input type="date" id="orderStartDate" class="w-full p-2.5 border rounded-xl text-sm outline-none focus:border-green-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">To</label>
+                                <input type="date" id="orderEndDate" class="w-full p-2.5 border rounded-xl text-sm outline-none focus:border-green-400">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">To Date</label>
-                            <input type="date" id="orderEndDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-green-400">
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="window.applyOrderFilter()" class="px-5 py-2.5 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors text-sm shadow-md">Filter</button>
-                            <button onclick="window.clearOrderFilter()" class="px-5 py-2.5 bg-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-300 transition-colors text-sm">Clear</button>
+                        <div class="flex gap-2 w-full md:w-auto">
+                            <button onclick="window.applyOrderFilter()" class="flex-1 md:flex-none px-5 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 text-sm shadow-md">Filter</button>
+                            <button onclick="window.clearOrderFilter()" class="flex-1 md:flex-none px-5 py-3 bg-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-300 text-sm">Clear</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto border rounded-xl max-h-[500px] overflow-y-auto custom-scroll">
-                    <table class="w-full text-left border-collapse whitespace-nowrap relative">
+                <div class="overflow-x-auto border-0 md:border rounded-xl max-h-[500px] overflow-y-auto custom-scroll">
+                    <table class="responsive-table w-full text-left border-collapse whitespace-nowrap relative">
                         <thead class="sticky top-0 bg-green-50 z-10">
                             <tr class="text-green-800 text-sm">
                                 <th class="p-4 border-b">Student Info</th>
@@ -166,20 +191,19 @@
             </div>
         </div>
 
-        <!-- 2. QUIZ TAB -->
         <div id="tab-quiz" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="glass-card p-6 md:p-8 border-t-4 border-indigo-500">
+                <div class="glass-card p-4 md:p-8 border-t-4 border-indigo-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-rocket-launch text-indigo-600"></i> Add Daily Quiz</h3>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-500 mb-1">Date</label>
-                                <input type="date" id="q-date" required class="w-full p-2.5 border rounded-xl text-sm outline-none focus:border-indigo-400 bg-slate-50">
+                                <input type="date" id="q-date" required class="w-full p-3 border rounded-xl text-sm outline-none focus:border-indigo-400 bg-slate-50">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-500 mb-1">Grade</label>
-                                <select id="q-grade" class="w-full p-2.5 border rounded-xl text-sm outline-none bg-slate-50 focus:border-indigo-400">
+                                <select id="q-grade" class="w-full p-3 border rounded-xl text-sm outline-none bg-slate-50 focus:border-indigo-400">
                                     <option value="10_11">Grade 10/11</option>
                                     <option value="12_13">Grade 12/13</option>
                                 </select>
@@ -191,26 +215,26 @@
                             <div id="dynamic-options-container" class="space-y-2"></div>
                             <button onclick="window.addOptionField()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 mt-2 flex items-center gap-1"><i class="ph ph-plus"></i> Add Another Option</button>
                         </div>
-                        <button id="uploadQuizBtn" onclick="window.uploadDailyQuiz()" class="w-full py-3 mt-4 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all text-sm">Publish Quiz</button>
+                        <button id="uploadQuizBtn" onclick="window.uploadDailyQuiz()" class="w-full py-3.5 mt-4 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all text-sm shadow-sm">Publish Quiz</button>
                     </div>
 
                     <div class="mt-8 border-t pt-6">
                         <div class="flex justify-between items-center mb-4">
                             <h4 class="text-sm font-bold text-slate-700">Manage Quizzes</h4>
-                            <select id="manage-q-grade" onchange="window.loadQuizzes()" class="p-1 border rounded text-xs outline-none bg-slate-50">
+                            <select id="manage-q-grade" onchange="window.loadQuizzes()" class="p-2 border rounded-xl text-xs outline-none bg-slate-50 font-semibold text-slate-600">
                                 <option value="10_11">Grade 10/11</option>
                                 <option value="12_13">Grade 12/13</option>
                             </select>
                         </div>
                         <div class="overflow-y-auto max-h-[250px] border rounded-xl custom-scroll">
-                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <table class="responsive-table w-full text-left border-collapse whitespace-nowrap">
                                 <tbody id="quizTableBody" class="text-xs"><tr><td class="p-4 text-center text-slate-500">Loading quizzes...</td></tr></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass-card p-6 md:p-8 border-t-4 border-yellow-500">
+                <div class="glass-card p-4 md:p-8 border-t-4 border-yellow-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="ph-fill ph-ranking text-yellow-500"></i> Quiz Leaderboard</h3>
                     <div class="space-y-6">
                         <div class="border rounded-xl bg-slate-50 p-4 shadow-sm">
@@ -226,10 +250,9 @@
             </div>
         </div>
 
-        <!-- 3. TUTES TAB -->
         <div id="tab-tutes" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1 glass-card p-6 md:p-8 border-t-4 border-blue-500 h-fit">
+                <div class="lg:col-span-1 glass-card p-4 md:p-8 border-t-4 border-blue-500 h-fit">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph ph-plus-circle text-blue-600"></i> Add Material</h3>
                     <div class="space-y-4">
                         <input type="text" id="resTitle" class="w-full p-3 border rounded-xl text-sm" placeholder="Title (e.g. Grade 12 Tute 1)">
@@ -269,27 +292,27 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-2 glass-card p-6 md:p-8 border-t-4 border-blue-400">
-                    <div class="grid grid-cols-3 gap-3 mb-6">
+                <div class="lg:col-span-2 glass-card p-4 md:p-8 border-t-4 border-blue-400">
+                    <div class="grid grid-cols-3 gap-2 md:grid-cols-3 mb-6">
                         <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl text-center shadow-sm">
-                            <h4 class="text-[10px] font-bold text-blue-600 uppercase mb-1">Total Materials</h4>
-                            <p class="text-xl font-bold text-blue-800" id="stat-tut-total">0</p>
+                            <h4 class="text-[9px] md:text-xs font-bold text-blue-600 uppercase mb-1">Total Materials</h4>
+                            <p class="text-lg md:text-xl font-bold text-blue-800" id="stat-tut-total">0</p>
                         </div>
                         <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl text-center shadow-sm">
-                            <h4 class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Total Tutes</h4>
-                            <p class="text-xl font-bold text-indigo-800" id="stat-tut-tutes">0</p>
+                            <h4 class="text-[9px] md:text-xs font-bold text-indigo-600 uppercase mb-1">Total Tutes</h4>
+                            <p class="text-lg md:text-xl font-bold text-indigo-800" id="stat-tut-tutes">0</p>
                         </div>
                         <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
-                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Past Papers / HW</h4>
-                            <p class="text-xl font-bold text-slate-800" id="stat-tut-papers">0</p>
+                            <h4 class="text-[9px] md:text-xs font-bold text-slate-500 uppercase mb-1">Past Papers / HW</h4>
+                            <p class="text-lg md:text-xl font-bold text-slate-800" id="stat-tut-papers">0</p>
                         </div>
                     </div>
 
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center mb-4 gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
                         <h3 class="text-lg font-bold flex items-center gap-2"><i class="ph ph-folder text-blue-600"></i> Manage Filter</h3>
                         
-                        <div class="flex gap-2 w-full md:w-auto flex-1">
-                            <select id="tuteCategoryFilter" onchange="window.applyTuteFilter()" class="p-2 border rounded-lg text-sm bg-white outline-none focus:border-blue-400 w-full md:w-1/3 text-slate-600 font-semibold">
+                        <div class="flex flex-col md:flex-row gap-2 flex-1">
+                            <select id="tuteCategoryFilter" onchange="window.applyTuteFilter()" class="p-3 border rounded-xl text-sm bg-white outline-none focus:border-blue-400 w-full md:w-1/3 text-slate-600 font-semibold">
                                 <option value="">All Categories</option>
                                 <option value="Grade 10 Tutes">Grade 10 Tutes</option>
                                 <option value="Grade 11 Tutes">Grade 11 Tutes</option>
@@ -302,12 +325,12 @@
                                 <option value="Grade 12 HW">Grade 12 HW</option>
                                 <option value="Grade 13 HW">Grade 13 HW</option>
                             </select>
-                            <input type="text" id="tuteSearch" oninput="window.applyTuteFilter()" placeholder="Search Title..." class="p-2 border rounded-lg text-sm bg-white outline-none focus:border-blue-400 w-full md:w-2/3">
+                            <input type="text" id="tuteSearch" oninput="window.applyTuteFilter()" placeholder="Search Title..." class="p-3 border rounded-xl text-sm bg-white outline-none focus:border-blue-400 w-full md:w-2/3">
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
-                        <table class="w-full text-left border-collapse whitespace-nowrap relative">
+                    <div class="overflow-x-auto border-0 md:border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
+                        <table class="responsive-table w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
                                 <tr class="text-slate-600 text-sm">
                                     <th class="p-4 border-b">Title</th>
@@ -323,10 +346,9 @@
             </div>
         </div>
 
-        <!-- 4. VIDEOS TAB -->
         <div id="tab-videos" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1 glass-card p-6 md:p-8 border-t-4 border-red-500 h-fit">
+                <div class="lg:col-span-1 glass-card p-4 md:p-8 border-t-4 border-red-500 h-fit">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph-fill ph-youtube-logo text-red-600"></i> Add YouTube Video</h3>
                     <div class="space-y-4">
                         <input type="text" id="vidTitle" class="w-full p-3 border rounded-xl text-sm" placeholder="Video Title (e.g. Paper Discussion 01)">
@@ -344,31 +366,31 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-2 glass-card p-6 md:p-8 border-t-4 border-red-400">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                <div class="lg:col-span-2 glass-card p-4 md:p-8 border-t-4 border-red-400">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
                         <div class="bg-red-50 border border-red-200 p-3 rounded-xl text-center shadow-sm">
-                            <h4 class="text-[10px] font-bold text-red-600 uppercase mb-1">Total Videos</h4>
-                            <p class="text-xl font-bold text-red-800" id="stat-vid-total">0</p>
+                            <h4 class="text-[9px] md:text-xs font-bold text-red-600 uppercase mb-1">Total Videos</h4>
+                            <p class="text-lg md:text-xl font-bold text-red-800" id="stat-vid-total">0</p>
                         </div>
                         <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
-                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Grade 10/11</h4>
-                            <p class="text-xl font-bold text-slate-800" id="stat-vid-ol">0</p>
+                            <h4 class="text-[9px] md:text-xs font-bold text-slate-500 uppercase mb-1">Grade 10/11</h4>
+                            <p class="text-lg md:text-xl font-bold text-slate-800" id="stat-vid-ol">0</p>
                         </div>
                         <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
-                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Grade 12/13</h4>
-                            <p class="text-xl font-bold text-slate-800" id="stat-vid-al">0</p>
+                            <h4 class="text-[9px] md:text-xs font-bold text-slate-500 uppercase mb-1">Grade 12/13</h4>
+                            <p class="text-lg md:text-xl font-bold text-slate-800" id="stat-vid-al">0</p>
                         </div>
                         <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
-                            <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">General</h4>
-                            <p class="text-xl font-bold text-slate-800" id="stat-vid-gen">0</p>
+                            <h4 class="text-[9px] md:text-xs font-bold text-slate-500 uppercase mb-1">General</h4>
+                            <p class="text-lg md:text-xl font-bold text-slate-800" id="stat-vid-gen">0</p>
                         </div>
                     </div>
 
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center mb-4 gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
                         <h3 class="text-lg font-bold flex items-center gap-2"><i class="ph ph-video-camera text-red-600"></i> Library Filter</h3>
                         
-                        <div class="flex gap-2 w-full md:w-auto flex-1">
-                            <select id="videoCategoryFilter" onchange="window.applyVideoFilter()" class="p-2 border rounded-lg text-sm bg-white outline-none focus:border-red-400 w-full md:w-1/3 text-slate-600 font-semibold">
+                        <div class="flex flex-col md:flex-row gap-2 flex-1">
+                            <select id="videoCategoryFilter" onchange="window.applyVideoFilter()" class="p-3 border rounded-xl text-sm bg-white outline-none focus:border-red-400 w-full md:w-1/3 text-slate-600 font-semibold">
                                 <option value="">All Categories</option>
                                 <option value="Grade 10 Videos">Grade 10 Videos</option>
                                 <option value="Grade 11 Videos">Grade 11 Videos</option>
@@ -376,12 +398,12 @@
                                 <option value="Grade 13 Videos">Grade 13 Videos</option>
                                 <option value="General">General / Motivation</option>
                             </select>
-                            <input type="text" id="videoSearch" oninput="window.applyVideoFilter()" placeholder="Search Videos by Title..." class="p-2 border rounded-lg text-sm bg-white outline-none focus:border-red-400 w-full md:w-2/3">
+                            <input type="text" id="videoSearch" oninput="window.applyVideoFilter()" placeholder="Search Videos by Title..." class="p-3 border rounded-xl text-sm bg-white outline-none focus:border-red-400 w-full md:w-2/3">
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
-                        <table class="w-full text-left border-collapse whitespace-nowrap relative">
+                    <div class="overflow-x-auto border-0 md:border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
+                        <table class="responsive-table w-full text-left border-collapse whitespace-nowrap relative">
                             <thead class="sticky top-0 bg-slate-100 z-10">
                                 <tr class="text-slate-600 text-sm">
                                     <th class="p-4 border-b">Video Title</th>
@@ -396,12 +418,9 @@
             </div>
         </div>
 
-        <!-- 💡 5. EXAMS & RESULTS TAB 💡 -->
         <div id="tab-exams" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
-                <!-- Create Exam -->
-                <div class="lg:col-span-1 glass-card p-6 md:p-8 border-t-4 border-pink-500 h-fit">
+                <div class="lg:col-span-1 glass-card p-4 md:p-8 border-t-4 border-pink-500 h-fit">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph-fill ph-plus-circle text-pink-600"></i> Create New Exam</h3>
                     <div class="space-y-4">
                         <input type="text" id="examTitle" class="w-full p-3 border rounded-xl text-sm outline-none focus:border-pink-400" placeholder="Exam Name (e.g. July Monthly Test)">
@@ -416,8 +435,7 @@
                     </div>
                 </div>
 
-                <!-- Add Results -->
-                <div class="lg:col-span-2 glass-card p-6 md:p-8 border-t-4 border-indigo-500 h-fit">
+                <div class="lg:col-span-2 glass-card p-4 md:p-8 border-t-4 border-indigo-500 h-fit">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i class="ph-fill ph-keyboard text-indigo-600"></i> Enter Student Marks</h3>
                     
                     <div class="bg-indigo-50 p-5 rounded-2xl border border-indigo-100">
@@ -449,25 +467,24 @@
                 </div>
             </div>
 
-            <!-- Manage Exams & Results UI -->
-            <div class="mt-8 glass-card p-6 md:p-8 border-t-4 border-slate-700">
-                <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+            <div class="mt-8 glass-card p-4 md:p-8 border-t-4 border-slate-700">
+                <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center mb-6 gap-4">
                     <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph-fill ph-table text-slate-700"></i> Manage Exams & Results</h3>
                     <div class="flex gap-2 w-full md:w-auto">
-                        <select id="manageResultsExamSelect" onchange="window.viewExamResults()" class="p-2 border rounded-lg text-sm bg-slate-50 outline-none focus:border-slate-400 font-semibold flex-1">
+                        <select id="manageResultsExamSelect" onchange="window.viewExamResults()" class="p-3 border rounded-xl text-sm bg-slate-50 outline-none focus:border-slate-400 font-semibold flex-1">
                             <option value="">Select Exam to view results...</option>
                         </select>
-                        <button onclick="window.loadExams(); window.viewExamResults();" class="px-3 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors text-xs font-bold shadow-sm" title="Refresh Data">
+                        <button onclick="window.loadExams(); window.viewExamResults();" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors text-xs font-bold shadow-sm" title="Refresh Data">
                             <i class="ph-bold ph-arrows-clockwise"></i> Refresh
                         </button>
-                        <button onclick="window.deleteExam()" class="px-3 py-2 bg-red-100 text-red-600 font-bold rounded-lg hover:bg-red-200 transition-colors text-xs shadow-sm" title="Delete selected exam entirely">
+                        <button onclick="window.deleteExam()" class="px-4 py-2 bg-red-100 text-red-600 font-bold rounded-lg hover:bg-red-200 transition-colors text-xs shadow-sm" title="Delete selected exam entirely">
                             <i class="ph-bold ph-trash"></i> Delete Exam
                         </button>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto border rounded-xl max-h-[400px] overflow-y-auto custom-scroll">
-                    <table class="w-full text-left border-collapse whitespace-nowrap relative">
+                <div class="overflow-x-auto border-0 md:border rounded-xl max-h-[400px] overflow-y-auto custom-scroll">
+                    <table class="responsive-table w-full text-left border-collapse whitespace-nowrap relative">
                         <thead class="sticky top-0 bg-slate-100 z-10">
                             <tr class="text-slate-600 text-sm">
                                 <th class="p-4 border-b">Index Number</th>
@@ -483,56 +500,54 @@
             </div>
         </div>
 
-        <!-- 6. STUDENTS TAB -->
         <div id="tab-students" class="tab-content">
-            <div class="glass-card p-6 md:p-8 border-t-4 border-teal-500">
+            <div class="glass-card p-4 md:p-8 border-t-4 border-teal-500">
                 <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
                     <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-users text-teal-600"></i> Registered Students</h3>
                     
                     <div class="flex gap-2">
-                        <button onclick="window.generateIndexNumbers()" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2">
-                            <i class="ph-bold ph-magic-wand"></i> Auto-Generate Indexes
+                        <button onclick="window.generateIndexNumbers()" class="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition-colors shadow-sm flex items-center gap-2">
+                            <i class="ph-bold ph-magic-wand"></i> Autoindexes
                         </button>
-                        
-                        <button onclick="window.openPromoteModal()" class="px-4 py-2 border border-red-200 text-red-500 bg-red-50 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors shadow-sm flex items-center gap-2">
+                        <button onclick="window.openPromoteModal()" class="px-3 py-2 border border-red-200 text-red-500 bg-red-50 rounded-lg text-xs font-bold hover:bg-red-100 transition-colors shadow-sm flex items-center gap-2">
                             <i class="ph-fill ph-warning"></i> Advanced
                         </button>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-                    <div class="bg-teal-50 border border-teal-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-teal-600 uppercase mb-1">Total</h4>
-                        <p class="text-2xl font-bold text-teal-800" id="stat-total">0</p>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
+                    <div class="bg-teal-50 border border-teal-200 p-3 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] font-bold text-teal-600 uppercase mb-1">Total</h4>
+                        <p class="text-xl font-bold text-teal-800" id="stat-total">0</p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Grade 10</h4>
-                        <p class="text-xl font-bold text-slate-800" id="stat-g10">0</p>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Grade 10</h4>
+                        <p class="text-base font-bold text-slate-800" id="stat-g10">0</p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Grade 11</h4>
-                        <p class="text-xl font-bold text-slate-800" id="stat-g11">0</p>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Grade 11</h4>
+                        <p class="text-base font-bold text-slate-800" id="stat-g11">0</p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Grade 12</h4>
-                        <p class="text-xl font-bold text-slate-800" id="stat-g12">0</p>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Grade 12</h4>
+                        <p class="text-base font-bold text-slate-800" id="stat-g12">0</p>
                     </div>
-                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm">
-                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Grade 13</h4>
-                        <p class="text-xl font-bold text-slate-800" id="stat-g13">0</p>
+                    <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center shadow-sm">
+                        <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-1">Grade 13</h4>
+                        <p class="text-base font-bold text-slate-800" id="stat-g13">0</p>
                     </div>
                 </div>
 
                 <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-200">
-                    <div class="flex flex-wrap gap-3 items-end">
-                        <div class="flex-1 min-w-[200px]">
+                    <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-end">
+                        <div class="flex-1">
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Search</label>
-                            <input type="text" id="studentSearch" placeholder="Name, Email, or Index..." class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400">
+                            <input type="text" id="studentSearch" placeholder="Name, Email, or Index..." class="w-full p-3 border rounded-xl text-sm outline-none focus:border-teal-400">
                         </div>
                         
-                        <div class="flex-1 min-w-[150px]">
+                        <div class="flex-1">
                             <label class="block text-xs font-semibold text-slate-500 mb-1">Filter by Grade</label>
-                            <select id="studentGradeFilter" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400 font-semibold text-slate-700">
+                            <select id="studentGradeFilter" class="w-full p-3 border rounded-xl text-sm outline-none focus:border-teal-400 font-semibold text-slate-700 bg-white">
                                 <option value="">All Grades</option>
                                 <option value="Grade 10">Grade 10</option>
                                 <option value="Grade 11">Grade 11</option>
@@ -542,23 +557,25 @@
                             </select>
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Reg From</label>
-                            <input type="date" id="studentStartDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">From</label>
+                                <input type="date" id="studentStartDate" class="w-full p-2.5 border rounded-xl text-sm outline-none focus:border-teal-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">To</label>
+                                <input type="date" id="studentEndDate" class="w-full p-2.5 border rounded-xl text-sm outline-none focus:border-teal-400">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Reg To</label>
-                            <input type="date" id="studentEndDate" class="w-full p-2.5 border rounded-lg text-sm outline-none focus:border-teal-400">
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="window.applyStudentFilter()" class="px-5 py-2.5 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700 transition-colors text-sm shadow-md">Filter</button>
-                            <button onclick="window.clearStudentFilter()" class="px-5 py-2.5 bg-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-300 transition-colors text-sm">Clear</button>
+                        <div class="flex gap-2 w-full md:w-auto">
+                            <button onclick="window.applyStudentFilter()" class="flex-1 md:flex-none px-5 py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 text-sm shadow-md">Filter</button>
+                            <button onclick="window.clearStudentFilter()" class="flex-1 md:flex-none px-5 py-3 bg-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-300 text-sm">Clear</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
-                    <table class="w-full text-left border-collapse whitespace-nowrap relative">
+                <div class="overflow-x-auto border-0 md:border rounded-xl max-h-[600px] overflow-y-auto custom-scroll">
+                    <table class="responsive-table w-full text-left border-collapse whitespace-nowrap relative">
                         <thead class="sticky top-0 bg-slate-100 z-10">
                             <tr class="text-slate-600 text-sm">
                                 <th class="p-4 border-b">Name & Index</th>
@@ -574,10 +591,9 @@
             </div>
         </div>
 
-        <!-- 7. REPORTS TAB -->
         <div id="tab-reports" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="glass-card p-6 md:p-8 border-t-4 border-purple-500">
+                <div class="glass-card p-4 md:p-8 border-t-4 border-purple-500">
                     <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-chart-bar text-purple-600"></i> Generate Reports</h3>
                     <div class="space-y-4">
                         <div>
@@ -605,7 +621,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-6 md:p-8 border-t-4 border-orange-500">
+                <div class="glass-card p-4 md:p-8 border-t-4 border-orange-500">
                     <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800"><i class="ph-fill ph-megaphone text-orange-500"></i> Broadcast Notice</h3>
                     <p class="text-xs text-slate-500 mb-4">This message will appear at the top of the student portal.</p>
                     <div class="space-y-4">
@@ -622,7 +638,32 @@
 
     </div>
 
-    <!-- MODALS SECTION -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex justify-around py-2 z-50 md:hidden shadow-lg pb-safe">
+        <button onclick="switchTab('tab-orders')" id="m-btn-tab-orders" class="flex flex-col items-center gap-0.5 text-blue-600 font-bold text-[10px]">
+            <i class="ph-fill ph-package text-xl"></i>
+            <span>Orders</span>
+        </button>
+        <button onclick="switchTab('tab-exams')" id="m-btn-tab-exams" class="flex flex-col items-center gap-0.5 text-slate-400 font-medium text-[10px]">
+            <i class="ph ph-exam text-xl"></i>
+            <span>Exams</span>
+        </button>
+        <button onclick="switchTab('tab-students')" id="m-btn-tab-students" class="flex flex-col items-center gap-0.5 text-slate-400 font-medium text-[10px]">
+            <i class="ph ph-users text-xl"></i>
+            <span>Students</span>
+        </button>
+        <button onclick="window.toggleMobileMoreMenu()" class="flex flex-col items-center gap-0.5 text-slate-400 font-medium text-[10px] relative">
+            <i class="ph ph-dots-three-outline flex-bold text-xl"></i>
+            <span>More</span>
+            
+            <div id="mobileMoreMenu" class="hidden absolute bottom-14 right-2 bg-white border rounded-2xl shadow-2xl p-3 w-40 flex flex-col gap-2 text-left text-slate-700 border-slate-200 z-50">
+                <div onclick="switchTab('tab-quiz')" class="p-2 hover:bg-slate-50 font-semibold rounded-lg text-xs flex items-center gap-2"><i class="ph ph-rocket-launch text-indigo-500"></i> Quizzes</div>
+                <div onclick="switchTab('tab-tutes')" class="p-2 hover:bg-slate-50 font-semibold rounded-lg text-xs flex items-center gap-2"><i class="ph ph-folder text-blue-500"></i> Materials</div>
+                <div onclick="switchTab('tab-videos')" class="p-2 hover:bg-slate-50 font-semibold rounded-lg text-xs flex items-center gap-2"><i class="ph ph-youtube-logo text-red-500"></i> Videos</div>
+                <div onclick="switchTab('tab-reports')" class="p-2 hover:bg-slate-50 font-semibold rounded-lg text-xs flex items-center gap-2"><i class="ph ph-chart-bar text-purple-500"></i> Reports</div>
+            </div>
+        </button>
+    </div>
+
     <div id="promoteModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4 z-[1000]">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl border-t-8 border-red-500">
             <button onclick="window.closePromoteModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
@@ -725,7 +766,6 @@
             
             <div class="space-y-3 text-sm">
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Index No:</span> <span id="v-stuIndex" class="font-bold text-right text-indigo-600 tracking-wider"></span></div>
-                
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Name:</span> <span id="v-stuName" class="font-bold text-right"></span></div>
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Email:</span> <span id="v-stuEmail" class="font-medium text-right"></span></div>
                 <div class="flex justify-between border-b pb-2"><span class="text-slate-500">Phone:</span> <span id="v-stuPhone" class="font-medium"></span></div>
@@ -738,7 +778,6 @@
         </div>
     </div>
 
-    <!-- Edit Result Modal -->
     <div id="editResultModal" class="fixed inset-0 modal hidden flex items-center justify-center p-4 z-[1000]">
         <div class="bg-white w-full max-w-md p-6 md:p-8 rounded-3xl relative shadow-2xl border-t-8 border-indigo-500">
             <button onclick="window.closeEditResultModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 text-2xl"><i class="ph ph-x"></i></button>
@@ -781,15 +820,6 @@
 
         emailjs.init("msKLscXDbLA-GGmXH");
 
-        // Register PWA Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('PWA Service Worker Registered', reg))
-                .catch(err => console.log('PWA Registration Failed: ', err));
-            });
-        }
-
         let allOrders = []; let allStudents = []; let allResources = []; let allVideos = [];
 
         function getSafeDate(val) {
@@ -798,11 +828,38 @@
             return new Date(val);
         }
 
+        window.toggleMobileMoreMenu = function() {
+            const menu = document.getElementById('mobileMoreMenu');
+            menu.classList.toggle('hidden');
+        }
+
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            // Hide mobile more overlay if clicked inside
+            document.getElementById('mobileMoreMenu').classList.add('hidden');
+            
+            // Desktop Switch UI
+            const dBtn = document.getElementById('btn-' + tabId);
+            if(dBtn) dBtn.classList.add('active');
             document.getElementById(tabId).classList.add('active');
-            document.getElementById('btn-' + tabId).classList.add('active');
+            
+            // Mobile Bottom Nav Highlights Sync
+            const mobileTabsList = ['tab-orders', 'tab-exams', 'tab-students'];
+            document.querySelectorAll('.fixed.bottom-0 button').forEach(btn => {
+                btn.classList.remove('text-blue-600', 'font-bold');
+                btn.classList.add('text-slate-400', 'font-medium');
+            });
+            
+            if (mobileTabsList.includes(tabId)) {
+                const mBtn = document.getElementById('m-btn-' + tabId);
+                if(mBtn) {
+                    mBtn.classList.add('text-blue-600', 'font-bold');
+                    mBtn.classList.remove('text-slate-400', 'font-medium');
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         window.showToast = function(message, type = 'success') {
@@ -1486,9 +1543,7 @@
 
         window.openStudentModal = function(encodedData) {
             const data = JSON.parse(decodeURIComponent(encodedData));
-            
             document.getElementById('v-stuIndex').innerText = data.indexNo || 'Not Assigned';
-            
             document.getElementById('v-stuName').innerText = data.fullName || 'N/A'; document.getElementById('v-stuEmail').innerText = data.email || 'N/A';
             document.getElementById('v-stuPhone').innerText = data.phone || 'N/A'; document.getElementById('v-stuGrade').innerText = data.exactGrade || data.grade || 'N/A';
             document.getElementById('v-stuNic').innerText = data.nic || 'Not Provided'; document.getElementById('v-stuAddress').innerText = (data.address ? data.address + '\n' + (data.district || '') : 'N/A');
@@ -1498,7 +1553,7 @@
         window.closeStudentModal = function() { document.getElementById('studentModal').classList.add('hidden'); }
 
         // ==========================================
-        // 💡 EXAM & RESULTS LOGIC
+        // EXAM & RESULTS LOGIC
         // ==========================================
 
         window.createExam = async function() {
@@ -1669,7 +1724,7 @@
             } catch(e) { window.showToast("Error updating marks", "error"); }
         }
 
-        // 💡 UPDATE: Generate Index Numbers AND Sync Counters
+        // INDEX NUMBER GENERATOR & SEQUENCE COUNTER SYNC
         window.generateIndexNumbers = async function() {
             const confirmMsg = "Are you sure? This will automatically generate and assign 'BMG' Index Numbers to all registered students who don't have one.";
             if(!confirm(confirmMsg)) return;
@@ -1680,7 +1735,7 @@
                 const snapshot = await getDocs(usersRef);
                 let counters = { "10": 1, "11": 1, "12": 1, "13": 1 };
                 
-                // 1. පරණ ළමයින්ගේ අන්තිම නොම්බරේ හොයාගන්නවා
+                // 1. Find the highest assigned numbers across all existing data logs
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     if(data.indexNo && data.indexNo.startsWith("BMG")) {
@@ -1690,7 +1745,7 @@
                     }
                 });
 
-                // 2. Counters ෆයිල් එක අප්ඩේට් කරනවා (ඉස්සරහට එන අයට මෙතනින් පටන් ගන්න කියලා)
+                // 2. Sync Firestore Settings Counters doc to prevent user registration collisions
                 await setDoc(doc(db, "settings", "counters"), counters, { merge: true });
 
                 let updatePromises = [];
@@ -1710,7 +1765,7 @@
                     }
                 });
                 
-                // 3. අලුතින් ළමයින්ට නොම්බර දුන්නට පස්සේ ආයෙමත් Counter එක අප්ඩේට් කරනවා
+                // 3. Final structural rewrite back to db configs
                 await setDoc(doc(db, "settings", "counters"), counters, { merge: true });
                 
                 await Promise.all(updatePromises);
