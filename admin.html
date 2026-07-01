@@ -20,7 +20,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 90px; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 80px; }
         @media (min-width: 768px) { body { padding-bottom: 0; } }
         .glass-card { background: white; border-radius: 24px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
         .hidden { display: none !important; }
@@ -28,7 +28,10 @@
         ::-webkit-scrollbar { height: 8px; width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
-        /* Tab Styles */
+        /* 💡 FIXED: Custom Responsive Classes to avoid !important conflicts 💡 */
+        @media (max-width: 767px) { .mobile-hide { display: none !important; } }
+        @media (min-width: 768px) { .desktop-hide { display: none !important; } }
+
         .tab-btn { padding: 12px 24px; border-radius: 12px; font-weight: 600; color: #64748b; transition: all 0.3s; background: white; border: 1px solid #e2e8f0; }
         .tab-btn:hover { background: #f8fafc; color: #0f172a; }
         .tab-btn.active { background: #0f172a; color: white; border-color: #0f172a; box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3); }
@@ -36,10 +39,8 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Highlight Pending Orders */
         .row-pending { background-color: #fffbeb !important; border-left: 4px solid #f59e0b !important; }
 
-        /* Responsive Mobile Tables to Cards */
         @media (max-width: 767px) {
             .responsive-table, .responsive-table thead, .responsive-table tbody, .responsive-table th, .responsive-table td, .responsive-table tr { 
                 display: block; 
@@ -112,8 +113,8 @@
             </div>
         </div>
 
-        <!-- 💡 FIXED: hidden md:flex is added back to hide these on mobile! 💡 -->
-        <div class="hidden md:flex flex-wrap gap-2 md:gap-3 mb-8 justify-center">
+        <!-- 💡 FIXED: Added mobile-hide instead of Tailwind's hidden to ensure it ALWAYS shows on Desktop 💡 -->
+        <div class="mobile-hide flex flex-wrap gap-2 md:gap-3 mb-8 justify-center">
             <button onclick="switchTab('tab-orders')" class="tab-btn active" id="btn-tab-orders"><i class="ph-fill ph-package mr-2"></i>Orders</button>
             <button onclick="switchTab('tab-quiz')" class="tab-btn" id="btn-tab-quiz"><i class="ph-fill ph-rocket-launch mr-2"></i>Daily Quiz</button>
             <button onclick="switchTab('tab-tutes')" class="tab-btn" id="btn-tab-tutes"><i class="ph-fill ph-folder mr-2"></i>Materials</button>
@@ -652,8 +653,8 @@
 
     </div>
 
-    <!-- 📱 APP-STYLE MOBILE BOTTOM NAVIGATION BAR 📱 -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex justify-around py-3 z-50 md:hidden shadow-[0_-4px_10px_rgba(0,0,0,0.05)] pb-safe">
+    <!-- 💡 FIXED: APP-STYLE MOBILE BOTTOM NAVIGATION BAR 💡 -->
+    <div class="desktop-hide fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex justify-around py-3 z-50 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] pb-safe">
         <button onclick="switchTab('tab-orders')" id="m-btn-tab-orders" class="flex flex-col items-center gap-1 text-blue-600 font-bold text-xs">
             <i class="ph-fill ph-package text-2xl"></i>
             <span>Orders</span>
@@ -838,15 +839,6 @@
 
         emailjs.init("msKLscXDbLA-GGmXH");
 
-        // Register PWA Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('PWA Service Worker Registered', reg))
-                .catch(err => console.log('PWA Registration Failed: ', err));
-            });
-        }
-
         let allOrders = []; let allStudents = []; let allResources = []; let allVideos = [];
 
         function getSafeDate(val) {
@@ -864,15 +856,12 @@
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-            // Hide mobile more overlay if clicked inside
             document.getElementById('mobileMoreMenu').classList.add('hidden');
             
-            // Desktop Switch UI
             const dBtn = document.getElementById('btn-' + tabId);
             if(dBtn) dBtn.classList.add('active');
             document.getElementById(tabId).classList.add('active');
             
-            // Mobile Bottom Nav Highlights Sync
             const mobileTabsList = ['tab-orders', 'tab-exams', 'tab-students'];
             document.querySelectorAll('.fixed.bottom-0 button').forEach(btn => {
                 btn.classList.remove('text-blue-600', 'font-bold');
@@ -1570,6 +1559,7 @@
 
         window.openStudentModal = function(encodedData) {
             const data = JSON.parse(decodeURIComponent(encodedData));
+            
             document.getElementById('v-stuIndex').innerText = data.indexNo || 'Not Assigned';
             document.getElementById('v-stuName').innerText = data.fullName || 'N/A'; document.getElementById('v-stuEmail').innerText = data.email || 'N/A';
             document.getElementById('v-stuPhone').innerText = data.phone || 'N/A'; document.getElementById('v-stuGrade').innerText = data.exactGrade || data.grade || 'N/A';
