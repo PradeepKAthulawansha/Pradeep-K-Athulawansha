@@ -96,22 +96,6 @@
             </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="md:col-span-2 glass-card p-6 border-l-4 border-orange-500 bg-orange-50/30">
-                <h3 class="font-bold text-slate-800 flex items-center gap-2 mb-3"><i class="ph-fill ph-bell-ringing text-orange-500 text-xl"></i> Action Needed</h3>
-                <div id="pendingAlertsContainer">
-                    <p class="text-sm text-slate-500"><div class="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-orange-500 inline-block mr-2"></div> Checking for pending tasks...</p>
-                </div>
-            </div>
-            <div class="glass-card p-6 border-l-4 border-blue-500">
-                <h3 class="font-bold text-slate-800 flex items-center gap-2 mb-4"><i class="ph-fill ph-lightning text-blue-500 text-xl"></i> Quick Actions</h3>
-                <div class="flex flex-col gap-2">
-                    <button onclick="switchTab('tab-orders')" class="px-4 py-3 bg-slate-100 hover:bg-blue-100 hover:text-blue-700 rounded-xl text-sm font-bold text-slate-700 text-left flex items-center gap-3 transition-colors shadow-sm"><i class="ph-bold ph-package text-lg"></i> Approve Orders</button>
-                    <button onclick="switchTab('tab-exams')" class="px-4 py-3 bg-slate-100 hover:bg-pink-100 hover:text-pink-700 rounded-xl text-sm font-bold text-slate-700 text-left flex items-center gap-3 transition-colors shadow-sm"><i class="ph-bold ph-pencil-simple text-lg"></i> Enter Exam Marks</button>
-                    <button onclick="switchTab('tab-quiz')" class="px-4 py-3 bg-slate-100 hover:bg-indigo-100 hover:text-indigo-700 rounded-xl text-sm font-bold text-slate-700 text-left flex items-center gap-3 transition-colors shadow-sm"><i class="ph-bold ph-rocket-launch text-lg"></i> Add Daily Quiz</button>
-                </div>
-            </div>
-        </div>
 
         <!-- 💡 FIXED: Added mobile-hide instead of Tailwind's hidden to ensure it ALWAYS shows on Desktop 💡 -->
         <div class="mobile-hide flex flex-wrap gap-2 md:gap-3 mb-8 justify-center">
